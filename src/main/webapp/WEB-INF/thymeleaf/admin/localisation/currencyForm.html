@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/localisation/currency}" th:text="#{heading.title}">Currency</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/payment.png}" alt="" />
+							<span th:text="#{heading.title}"></span>
+						</h1>
+						<div class="buttons">
+							<a onclick="$('#form').submit();" class="button" th:text="#{button.save}">Save</a>
+							<a th:href="@{/admin/localisation/currency}" class="button" th:text="#{button.cancel}">Cancel</a>
+						</div>
+					</div>
+					<div class="content">
+						<form th:action="@{/admin/localisation/currency/save}" th:object="${currency}" method="post" id="form">
+							<input type="hidden" th:field="*{id}" />
+							<table class="form">
+								<tr>
+									<td><span class="required">*</span><span th:text="#{entry.title}">Currency Title</span></td>
+									<td>
+										<input type="text" th:field="*{title}" />
+										<span class="error" th:if="${#fields.hasErrors('title')}" th:text="#{error.title}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.code}">Code</span></td>
+									<td>
+										<input type="text" th:field="*{code}" />
+										<span class="error" th:if="${#fields.hasErrors('code')}" th:text="#{error.code}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.symbolLeft}">Symbol Left</span></td>
+									<td>
+										<input type="text" th:field="*{symbolLeft}" />
+										<span class="error" th:if="${#fields.hasErrors('symbolLeft')}" th:text="#{error.symbolLeft}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.symbolRight}">Symbol Right</span></td>
+									<td>
+										<input type="text" th:field="*{symbolRight}" />
+										<span class="error" th:if="${#fields.hasErrors('symbolRight')}" th:text="#{error.symbolRight}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.decimalPlace}">Decimal Place</span></td>
+									<td>
+										<input type="text" th:field="*{decimalPlace}" />
+										<span class="error" th:if="${#fields.hasErrors('decimalPlace')}" th:text="#{error.decimalPlace}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.value}">Value</span></td>
+									<td>
+										<input type="text" th:field="*{value}" />
+										<span class="error" th:if="${#fields.hasErrors('value')}" th:text="#{error.value}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.status}">Status:</span></td>
+									<td>
+										<select th:field="*{status}">
+											<option value="0" th:text="#{text.disabled}">Disabled</option>
+											<option value="1" th:text="#{text.enabled}">Enabled</option>
+										</select>
+									</td>
+								</tr>
+							</table>
+						</form>
+					</div><!-- .content -->
+				</div><!-- .box -->
+			</div><!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
+	</body>
+</html>

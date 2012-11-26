@@ -1,0 +1,9 @@
+
+1. Pretty URL
+2. Faster
+3. Support various DBMS
+4. Template is HTML (This cannot be achieve without Thymeleaf)
+5. Out of the box AWS Cloud support
+6. The plugin does have to be open source
+
+ 

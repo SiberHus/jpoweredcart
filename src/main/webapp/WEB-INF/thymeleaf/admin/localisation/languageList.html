@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/localisation/language}" th:text="#{heading.title}">Language</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="success" th:if="${msg_success!=null}" th:text="#{${msg_success}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/language.png}" alt="" />
+							<span th:text="#{heading.title}"></span>
+						</h1>
+						<div class="buttons">
+							<a th:href="@{/admin/localisation/language/create}" class="button" th:text="#{button.insert}">Insert</a>
+							<a onclick="$('form').submit();" class="button" th:text="#{button.delete}">Delete</a>
+						</div>
+					</div>
+					<div class="content">
+						<form th:action="@{/admin/localisation/language/delete}" method="post" id="form">
+							<table class="list">
+								<thead>
+									<tr>
+										<td width="1" style="text-align: center;"><input type="checkbox" onclick="$('input[name*=\'selected\']').attr('checked', this.checked);" /></td>
+										<td class="left">
+											<a th:href="@{/admin/localisation/language}+'?sort=name&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='name'?param.order[0]:''}" th:text="#{column.name}">Language Name</a>
+										</td>
+										<td class="left">
+											<a th:href="@{/admin/localisation/language}+'?sort=code&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='code'?param.order[0]:''}" th:text="#{column.code}">Code</a>
+										</td>
+										<td class="right">
+											<a th:href="@{/admin/localisation/language}+'?sort=sort_order&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='sort_order'?param.order[0]:''}" th:text="#{column.sortOrder}">Sort Order</a>
+										</td>
+										<td class="right" th:text="#{column.action}">Action</td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="lang : ${languages}">
+										<td style="text-align: center;">
+											<input type="checkbox" name="selected" th:value="${lang.id}" />
+										</td>
+										<td class="left" th:text="${lang.name}">English</td>
+										<td class="left" th:text="${lang.code}">en</td>
+										<td class="left" th:text="${lang.sortOrder}">0</td>
+										<td class="right">
+											[ <a th:href="@{/admin/localisation/language/edit/}+${lang.id}" th:text="#{text.edit}">Edit</a> ]
+										</td>
+									</tr>
+									<tr th:if="${#lists.isEmpty(languages)}">
+										<td class="center" colspan="5" th:text="#{text.noResults}">No results!</td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+						<div class="pagination" th:utext="${pagination}"></div>
+					</div>
+				</div>
+			</div>  <!-- div[id=content] -->
+		</div> <!-- container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
+	</body>
+</html>

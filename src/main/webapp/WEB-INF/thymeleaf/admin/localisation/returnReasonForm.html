@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/localisation/returnReason}" th:text="#{heading.title}">Return Status</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/order.png}" alt="" />
+							<span th:text="#{heading.title}"></span>
+						</h1>
+						<div class="buttons">
+							<a onclick="$('#form').submit();" class="button" th:text="#{button.save}">Save</a>
+							<a th:href="@{/admin/localisation/returnReason}" class="button" th:text="#{button.cancel}">Cancel</a>
+						</div>
+					</div>
+					<div class="content">
+						<form th:action="@{/admin/localisation/returnReason/save}" method="post" id="form">
+							<input type="hidden" name="newEntities" th:value="${returnReasons.newEntities}" />
+							<table class="form">
+								<tr>
+									<td><span class="required">*</span><span th:text="#{entry.name}">Return Status Name:</span></td>
+									<td>
+										<div th:each="returnReason, rowStat : ${returnReasons.list}">
+											<input type="hidden" th:name="${'list['+rowStat.index+'].languageId'}" th:value="${returnReason.languageId}" />
+											<input type="hidden" th:name="${'list['+rowStat.index+'].languageName'}" th:value="${returnReason.languageName}" />
+											<input type="hidden" th:name="${'list['+rowStat.index+'].languageImage'}" th:value="${returnReason.languageImage}" />
+											<input type="hidden" th:name="${'list['+rowStat.index+'].id'}" th:value="${returnReason.id}" />
+											<input type="text" th:name="${'list['+rowStat.index+'].name'}" th:value="${returnReason.name}"/>
+											<img th:src="@{'/resources/admin/image/flags/'+${returnReason.languageImage}}" th:title="${returnReason.languageName}" />
+											<span class="error" th:if="${returnReason.error}" th:text="#{error.name}"></span>
+											<br />
+										</div>
+									</td>
+								</tr>
+							</table>
+						</form>
+					</div><!-- .content -->
+				</div><!-- .box -->
+			</div><!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
+	</body>
+</html>

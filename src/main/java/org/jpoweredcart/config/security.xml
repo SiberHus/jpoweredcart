@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+	
+	<beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+		<beans:property name="decisionVoters">
+			<beans:list>
+				<beans:bean class="org.springframework.security.access.vote.RoleVoter" />
+				<beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	
+	<beans:bean id="authSuccessHandler" class="org.jpoweredcart.common.security.AuthSuccessHandler">
+		<beans:property name="defaultTargetUrl" value="/admin/common/home"/>
+	</beans:bean>
+	
+	<!-- Automatically registers a login form, BASIC authentication, anonymous 
+		authentication, logout services, remember-me and servlet-api-integration.
+		<http auto-config="true" use-expressions="true"> 
+	-->
+	<http auto-config="true" use-expressions="true" authentication-manager-ref="adminAuthenticationManager">
+		
+		<form-login login-page="/admin/common/login" login-processing-url="/admin/auth/j_spring_security_check"
+			authentication-failure-url="/admin/common/login?error" 
+			authentication-success-handler-ref="authSuccessHandler" 
+			default-target-url="/admin/common/home"/>
+		<logout logout-url="/admin/auth/j_spring_security_logout" logout-success-url="/admin" />
+		
+		<intercept-url pattern="/admin/common/login" access="permitAll" requires-channel="http" />
+		<intercept-url pattern="/admin/**" access="isAuthenticated()" requires-channel="any"/>
+		<!-- 
+		<intercept-url pattern="/signup" access="permitAll" requires-channel="http"/>
+		<intercept-url pattern="/account/activate/**" access="permitAll" requires-channel="http"/>
+		<intercept-url pattern="/account/**" access="isAuthenticated()" requires-channel="http"/>
+		<intercept-url pattern="/object_refs/**" access="isAuthenticated()" requires-channel="http"/>
+		<intercept-url pattern="/tracking_details/**" access="isAuthenticated()" requires-channel="http"/>
+		<intercept-url pattern="/file_manager/**" access="isAuthenticated()" requires-channel="http"/>
+		<intercept-url pattern="/usage_reports/**" access="isAuthenticated()" requires-channel="http"/>
+		<intercept-url pattern="/h2/**" access="isAuthenticated() and hasRole('ADMIN')" requires-channel="http"/>
+		<intercept-url pattern="/settings/configs/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')" requires-channel="http"/>
+		<intercept-url pattern="/h2/**" access="isAuthenticated() and hasRole('ROLE_ADMIN') and !hasRole('ROLE_DEMO')" requires-channel="http"/>
+		 -->
+		<remember-me key="jpoweredcartKey" token-validity-seconds="2419200" authentication-success-handler-ref="authSuccessHandler" />
+		
+	</http>
+	
+	<global-method-security secured-annotations="enabled" pre-post-annotations="enabled" />
+	
+	<beans:bean id="cartAdminUserDetailsService" class="org.jpoweredcart.common.security.CartAdminUserDetailService" />
+	<beans:bean id="adminAuthenticationProvider" class="org.jpoweredcart.common.security.CartAuthenticationProvider">
+		<beans:property name="userDetailsService" ref="cartAdminUserDetailsService"/>
+	</beans:bean>
+	
+	<authentication-manager id="adminAuthenticationManager">
+		<authentication-provider ref="adminAuthenticationProvider" />
+	</authentication-manager>
+	
+</beans:beans>

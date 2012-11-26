@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/localisation/taxClass}" th:text="#{heading.title}">Tax Class</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/tax.png}" alt="" />
+							<span th:text="#{heading.title}"></span>
+						</h1>
+						<div class="buttons">
+							<a onclick="$('#form').submit();" class="button" th:text="#{button.save}">Save</a>
+							<a th:href="@{/admin/localisation/taxClass}" class="button" th:text="#{button.cancel}">Cancel</a>
+						</div>
+					</div>
+					<div class="content">
+						<form th:action="@{/admin/localisation/taxClass/save}" th:object="${taxClass}" method="post" id="form">
+							<input type="hidden" th:field="*{id}" />
+							<table class="form">
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.title}">Tax Class Title:</span></td>
+									<td>
+										<input type="text" th:field="*{title}" />
+										<span class="error" th:if="${#fields.hasErrors('title')}" th:text="#{error.title}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.description}">Description:</span></td>
+									<td>
+										<input type="text" th:field="*{description}" />
+										<span class="error" th:if="${#fields.hasErrors('description')}" th:text="#{error.description}"></span>
+									</td>
+								</tr>
+							</table>
+							
+							<br />
+							<table class="list dynatable">
+							<thead>
+								<tr>
+									<td class="left" th:text="#{entry.rate}">Tax Rate:</td>
+									<td class="left" th:text="#{entry.based}">Based On:</td>
+									<td class="left" th:text="#{entry.priority}">Priority:</td>
+									<td></td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="prototype">
+									<td class="left">
+										<select name="taxRules.countryId" class="country">
+											<option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}">Thailand</option>
+										</select>
+									</td>
+									<td class="left">
+										<select name="zoneToGeoZones.zoneId" class="zone">
+											<option value="0">Dummy</option>
+										</select>
+									</td>
+									<td class="left">
+										<a class="button remove" th:text="#{button.remove}">
+											Remove
+										</a>
+									</td>
+								</tr>
+								
+								<tr th:each="ztgz, rowStat : ${taxClass.zoneToGeoZones}" th:id="'tr_'+${rowStat.index}">
+									<td class="left">
+										<select name="zoneToGeoZones.countryId" class="country">
+											<option th:attr="selected=${country.id==ztgz.countryId?'selected':''}" 
+												th:each="country : ${countries}" th:value="${country.id}" 
+												th:text="${country.name}">Thailand</option>
+										</select>
+									</td>
+									<td class="left">
+										<select name="zoneToGeoZones.zoneId" class="zone">
+										</select>
+									</td>
+									<td class="left">
+										<a class="button remove" th:text="#{button.remove}">
+											Remove
+										</a>
+										<script th:inline="javascript">
+										/*<![CDATA[*/
+											var baseUrl = /*[[@{/admin/localisation/taxClass/getZoneOptions.html}]]*/ '';
+											var rowId = /*[[${rowStat.index}]]*/ 0;
+											var countryId = /*[[${ztgz.countryId}]]*/0;
+											var zoneId = /*[[${ztgz.zoneId}]]*/0;
+											zonesElem = $('#tr_'+rowId+' select.zone');
+											zonesElem.load(baseUrl+'?countryId='+countryId+'&zoneId='+zoneId);
+											$('#tr_'+rowId+' select.country').change(function(){
+												$('#tr_'+rowId+' select.zone').load(baseUrl+'?countryId='+$(this).val()+'&zoneId=0');
+											});
+										/*]]>*/
+										</script>
+									</td>
+								</tr>
+								
+							</tbody>
+							
+							<tfoot>
+								<tr>
+									<td colspan="2"></td>
+									<td class="left">
+										<a href="javascript:void(0);" class="button add" th:text="#{button.addGeoZone}">Add Geo Zone</a>
+									</td>
+								</tr>
+							</tfoot>
+							</table>
+						</form>
+					</div><!-- .content -->
+				</div><!-- .box -->
+			</div><!-- #content -->
+		</div> <!-- #container -->
+		<script th:inline="javascript">
+		/*<![CDATA[*/
+			$(function(){
+				initDynaTable({
+					'startId' : /*[[${#lists.size(taxClass.zoneToGeoZones)}]]*/0,
+					'className': 'dynatable',
+					'rowName' : 'tr_',
+					'addCallback' : function(id, tr){
+						//alert(currentId);
+						var baseUrl = /*[[@{/admin/localisation/taxClass/getZoneOptions.html}]]*/ '';
+						$('#tr_'+id+' select.zone').load(baseUrl+'?countryId=0&zoneId=0');
+						$('#tr_'+id+' select.country').change(function(){
+							$('#tr_'+id+' select.zone').load(baseUrl+'?countryId='+$(this).val()+'&zoneId=0');
+						});
+					},
+				});
+			});
+		/*]]>*/
+		</script> 
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
+	</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/springsecurity">
+	<head th:fragment="header">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title th:text="${title}">Administration</title>
+		<base th:href="${base}" />
+		<meta name="description" th:if="${not #strings.isEmpty(description)}" th:content="${description}" />
+		<meta name="keywords" th:if="${not #strings.isEmpty(keywords)}" th:content="${keywords}" />
+		<link th:each="link : ${links}" th:href="${link.href}" th:rel="${link.rel}" />
+		<link rel="stylesheet" type="text/css" th:href="@{/resources/admin/stylesheet/stylesheet.css}" />
+		<link th:each="style: ${styles}" th:rel="${style.rel}" th:type="text/css" th:href="${style.href}" th:media="${style.media}" />
+		<script type="text/javascript" th:src="@{/resources/admin/javascript/jquery/jquery-1.7.1.min.js}"></script>
+		<script type="text/javascript" th:src="@{/resources/admin/javascript/jquery/ui/jquery-ui-1.8.16.custom.min.js}"></script>
+		<link type="text/css" th:src="@{/resources/admin/javascript/jquery/ui/themes/ui-lightness/jquery-ui-1.8.16.custom.css}" rel="stylesheet" />
+		<script type="text/javascript" th:src="@{/resources/admin/javascript/jquery/tabs.js}"></script>
+		<script type="text/javascript" th:src="@{/resources/admin/javascript/jquery/superfish/js/superfish.js}"></script>
+		<script type="text/javascript" th:src="@{/resources/admin/javascript/admin.js}"></script>
+		<script th:each="script : ${scripts}" type="text/javascript" th:src="${script}"></script>
+		<script type="text/javascript">
+			/*<![CDATA[*/
+			//-----------------------------------------
+			// Confirm Actions (delete, uninstall)
+			//-----------------------------------------
+			$(document).ready(function(){
+				// Confirm Delete
+				$('#form').submit(function(){
+					if ($(this).attr('action').indexOf('delete',1) != -1) {
+						if (!confirm($('#head\\.text\\.confirm').text())) {
+							return false;
+						}
+					}
+				});
+				// Confirm Uninstall
+				$('a').click(function(){
+					if ($(this).attr('href') != null && $(this).attr('href').indexOf('uninstall', 1) != -1) {
+						if (!confirm($('#head\\.text\\.confirm').text())) {
+							return false;
+						}
+					}
+				});
+			});
+			/*]]>*/
+		</script>
+	</head>
+	<body>
+		<div id="container" th:fragment="content_top">
+			<span id="head.text.confirm" th:text="#{head.text.confirm}" style="display: none;"></span>
+			<div id="header">
+				<div class="div1">
+					<div class="div2"><img th:src="@{/resources/admin/image/logo.png}" th:title="#{heading.title}" onclick="location = '${home}'" /></div>
+					<div sec:authorize="isAuthenticated()" class="div3"><img th:src="@{/resources/admin/image/lock.png}" alt="" style="position: relative; top: 3px;" />&nbsp;
+						<span th:text="#{head.text.logged}">You are logged in as</span>&nbsp;
+						<span sec:authentication="name"></span>
+					</div>
+				</div>
+				<div id="menu" sec:authorize="isAuthenticated()">
+					<ul class="left" style="display: none;">
+						<li id="dashboard"><a th:href="@{/admin/common/home}" class="top" th:text="#{head.text.dashboard}">Dashboard</a></li>
+						<li id="catalog"><a class="top" th:text="#{head.text.catalog}">Catalog</a>
+							<ul>
+								<li><a th:href="${category}" th:text="#{head.text.category}">Categories</a></li>
+								<li><a th:href="${product}" th:text="#{head.text.product}">Products</a></li>
+								<li><a th:href="${filter}" th:text="#{head.text.filter}">Filters</a></li>
+								<li><a class="parent" th:text="#{head.text.attribute}">Attributes</a>
+									<ul>
+										<li><a th:href="${attribute}" th:text="#{head.text.attribute}">Attributes</a></li>
+										<li><a th:href="${$attributeGroup}" th:text="#{head.text.attributeGroup}">Attribute Groups</a></li>
+									</ul>
+								</li>
+								<li><a th:href="${option}" th:text="#{head.text.option}">Options</a></li>
+								<li><a th:href="${manufacturer}" th:text="#{head.text.manufacturer}">Manufacturers</a></li>
+								<li><a th:href="${download}" th:text="#{head.text.download}">Downloads</a></li>
+								<li><a th:href="${review}" th:text="#{head.text.review}"></a></li>
+								 <li><a th:href="${information}" th:text="#{head.text.information}">Information</a></li>
+							</ul>
+						</li>
+						<li id="extension"><a class="top" th:text="#{head.text.extension}">Extensions</a>
+							<ul>
+								<li><a th:href="${manager}" th:text="#{head.text.manager}">Extension Manager</a></li>
+								<li><a th:href="${module}" th:text="#{head.text.module}">Modules</a></li>
+								<li><a th:href="${shipping}" th:text="#{head.text.shipping}">Shipping</a></li>
+								<li><a th:href="${payment}" th:text="#{head.text.payment}">Payments</a></li>
+								<li><a th:href="${total}" th:text="#{head.text.total}">Order Totals</a></li>
+								<li><a th:href="${feed}" th:text="#{head.text.feed}">Product Feeds</a></li>
+							</ul>
+						</li>
+						<li id="sale"><a class="top" th:text="#{head.text.sale}">Sales</a>
+							<ul>
+								<li><a th:href="${order}" th:text="#{head.text.order}">Orders</a></li>
+								<li><a th:href="${return}" th:text="#{head.text.return}">Returns</a></li>
+								<li><a class="parent" th:text="#{head.text.customer}">Customers</a>
+									<ul>
+										<li><a th:href="${customer}" th:text="#{head.text.customer}">Customers</a></li>
+										<li><a th:href="${customerGroup}" th:text="#{head.text.customerGroup}">Customer Groups</a></li>
+										<li><a th:href="${customerBlacklist}" th:text="#{head.text.customerBlacklist}">IP Blacklist</a></li>
+									</ul>
+								</li>
+								<li><a th:href="${affiliate}" th:text="#{head.text.affiliate}">Affiliates</a></li>
+								<li><a th:href="${coupon}" th:text="#{head.text.coupon}">Coupons</a></li>
+								<li><a class="parent" th:text="#{head.text.voucher}">Gift Vouchers</a>
+									<ul>
+										<li><a th:href="${voucher}" th:text="#{head.text.voucher}"></a></li>
+										<li><a th:href="${voucherTheme}" th:text="#{head.text.voucherTheme}"></a></li>
+									</ul>
+								</li>
+								<li><a th:href="${contact}" th:text="#{head.text.contact}"></a></li>
+							</ul>
+						</li>
+						<li id="system"><a class="top" th:text="#{head.text.system}">System</a>
+							<ul>
+								<li><a th:href="${setting}" th:text="#{head.text.setting}">Settings</a></li>
+								<li><a class="parent" th:text="#{head.text.design}">Design</a>
+									<ul>
+										<li><a th:href="${layout}" th:text="#{head.text.layout}">Layouts</a></li>
+										<li><a th:href="${banner}" th:text="#{head.text.banner}">Banners</a></li>
+									</ul>
+								</li>
+								<li><a class="parent" th:text="#{head.text.users}">Users</a>
+									<ul>
+										<li><a th:href="@{/admin/user/user}" th:text="#{head.text.user}">Users</a></li>
+										<li><a th:href="${userGroup}" th:text="#{head.text.userGroup}">User Groups</a></li>
+									</ul>
+								</li>
+								<li><a class="parent" th:text="#{head.text.localisation}">Localisation</a>
+									<ul>
+										<li><a th:href="@{/admin/localisation/language}" th:text="#{head.text.language}">Languages</a></li>
+										<li><a th:href="@{/admin/localisation/currency}" th:text="#{head.text.currency}">Currencies</a></li>
+										<li><a th:href="@{/admin/localisation/stockStatus}" th:text="#{head.text.stockStatus}">Stock Statuses</a></li>
+										<li><a th:href="@{/admin/localisation/orderStatus}" th:text="#{head.text.orderStatus}">Order Statuses</a></li>
+										<li><a class="parent" th:text="#{head.text.return}">Returns</a>
+											<ul>
+												<li><a th:href="@{/admin/localisation/returnStatus}" th:text="#{head.text.returnStatus}">Return Statuses</a></li>
+												<li><a th:href="@{/admin/localisation/returnAction}" th:text="#{head.text.returnAction}">Return Actions</a></li>
+												<li><a th:href="@{/admin/localisation/returnReason}" th:text="#{head.text.returnReason}">Return Reasons</a></li>
+											</ul>
+										</li>
+										<li><a th:href="@{/admin/localisation/country}" th:text="#{head.text.country}">Countries</a></li>
+										<li><a th:href="@{/admin/localisation/zone}" th:text="#{head.text.zone}">Zones</a></li>
+										<li><a th:href="@{/admin/localisation/geoZone}" th:text="#{head.text.geoZone}">Geo Zones</a></li>
+										<li><a class="parent" th:text="#{head.text.tax}">Taxes</a>
+											<ul>
+												<li><a th:href="@{/admin/localisation/taxClass}" th:text="#{head.text.taxClass}">Tax Classes</a></li>
+												<li><a th:href="@{/admin/localisation/taxRate}" th:text="#{head.text.taxRate}">Tax Rates</a></li>
+											</ul>
+										</li>
+										<li><a th:href="@{/admin/localisation/lengthClass}" th:text="#{head.text.lengthClass}">Length Classes</a></li>
+										<li><a th:href="@{/admin/localisation/weightClass}" th:text="#{head.text.weightClass}">Weight Classes</a></li>
+									</ul>
+								</li>
+								<li><a th:href="${errorLog}" th:text="#{head.text.errorLog}">Error Logs</a></li>
+								<li><a th:href="${backup}" th:text="#{head.text.backup}">Backup/Restore</a></li>
+							</ul>
+						</li>
+						<li id="reports"><a class="top" th:text="#{head.text.reports}">Reports</a>
+							<ul>
+								<li><a class="parent" th:text="#{head.text.sale}">Sales</a>
+									<ul>
+										<li><a th:href="${reportSaleOrder}" th:text="#{head.text.reportSaleOrder}">Orders</a></li>
+										<li><a th:href="${reportSaleTax}" th:text="#{head.text.reportSaleTax}">Tax</a></li>
+										<li><a th:href="${reportSaleShipping}" th:text="#{head.text.reportSaleShipping}">Shipping</a></li>
+										<li><a th:href="${reportSaleReturn}" th:text="#{head.text.reportSaleReturn}">Returns</a></li>
+										<li><a th:href="${reportSaleCoupon}" th:text="#{head.text.reportSaleCoupon}">Coupons</a></li>
+									</ul>
+								</li>
+								<li><a class="parent" th:text="#{head.text.product}">Products</a>
+									<ul>
+										<li><a th:href="${reportProductViewed}" th:text="#{head.text.reportProductViewed}">Viewed</a></li>
+										<li><a th:href="${reportProductPurchased}" th:text="#{head.text.reportProductPurchased}">Purchased</a></li>
+									</ul>
+								</li>
+								<li><a class="parent" th:text="#{head.text.customer}">Customers</a>
+									<ul>
+										<li><a th:href="${reportCustomerOnline}" th:text="#{head.text.reportCustomerOnline}">Customers Online</a></li>
+										<li><a th:href="${reportCustomerOrder}" th:text="#{head.text.reportCustomerOrder}">Orders</a></li>
+										<li><a th:href="${reportCustomerReward}" th:text="#{head.text.reportCustomerReward}">Reward Points</a></li>
+										<li><a th:href="${reportCustomerCredit}" th:text="#{head.text.reportCustomerCredit}">Credit</a></li>
+									</ul>
+								</li>
+								<li><a class="parent" th:text="#{head.text.affiliate}">Affiliates</a>
+									<ul>
+										<li><a th:href="${reportAffiliateCommission}" th:text="#{head.text.reportAffiliateCommission}">Commission</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li id="help"><a class="top" th:text="#{head.text.help}">Help</a>
+							<ul>
+								<li><a onClick="window.open('http://www.jpoweredcart.com');" th:text="#{head.text.opencart}">Homepage</a></li>
+								<li><a onClick="window.open('http://www.jpoweredcart.com/docs');">Documentation</a></li>
+								<li><a onClick="window.open('http://www.jpoweredcart.com/forum');">Support Forum</a></li>
+							</ul>
+						</li>
+					</ul>
+					<ul class="right">
+						<li id="store"><a th:onclick="'window.open('+${store}+');'" class="top" th:text="#{head.text.front}">Store Front</a>
+							<ul>
+								<li th:each="store : ${stores}"><a th:onclick="window.open('${store.href}');" th:text="${store.name}"></a></li>
+							</ul>
+						</li>
+						<li id="store"><a class="top" th:href="@{/admin/auth/j_spring_security_logout}" th:text="#{head.text.logout}">Logout</a></li>
+					</ul>
+					
+					<script type="text/javascript">
+						/*<![CDATA[*/
+						$(document).ready(function() {
+							$('#menu > ul').superfish({
+								hoverClass	 : 'sfHover',
+								pathClass	 : 'overideThisToUse',
+								delay		 : 0,
+								animation	 : {height: 'show'},
+								speed		 : 'normal',
+								autoArrows   : false,
+								dropShadows  : false, 
+								disableHI	 : false, /* set to true to disable hoverIntent detection */
+								onInit		 : function(){},
+								onBeforeShow : function(){},
+								onShow		 : function(){},
+								onHide		 : function(){}
+							});
+							$('#menu > ul').css('display', 'block');
+						});
+
+						$(document).ready(function() {
+							route = String(document.location).toLowerCase();
+							paramPos = route.indexOf('?');
+							if(paramPos!==-1) route = route.substring(0, route.indexOf('?'));
+							route = route.split('/');
+							routeIdx = route.length;
+							//alert(route.length);
+							url = route[routeIdx-3]+'/'+route[routeIdx-2];
+							if (url.search('/admin/common/home')!==-1) {
+								$('#dashboard').addClass('selected');
+							} else {
+								//alert(url);
+								$('a[href*=\'' + url + '\']').parents('li[id]').addClass('selected');
+							}
+						});
+						/*]]>*/
+					</script>
+				</div>
+			</div>
+			
+		</div>
+		
+		<div id="footer" th:fragment="footer">
+			<a href="http://www.jpoweredcart.com">JPoweredCart</a> &copy; 2009-2012 All Rights Reserved.<br />
+			Based on <a href="http://www.opencart.com">OpenCart</a> Version 1.5.5
+		</div>
+		
+	</body>
+</html>

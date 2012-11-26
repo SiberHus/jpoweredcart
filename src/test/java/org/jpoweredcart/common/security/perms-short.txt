@@ -1,0 +1,1 @@
+a:2:{s:6:"access";a:4:{i:0;s:17:"catalog/attribute";i:1;s:23:"catalog/attribute_group";i:2;s:16:"catalog/category";i:3;s:16:"catalog/download";}s:6:"modify";a:2:{i:0;s:17:"catalog/attribute";i:1;s:16:"catalog/category";}}

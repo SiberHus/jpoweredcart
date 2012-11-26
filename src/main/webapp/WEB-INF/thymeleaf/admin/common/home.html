@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header">
+		
+	</head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb" th:text="${breadcrumb}">
+				</div>
+				<div class="warning" th:if="${error_install!=null}" th:text="#{error.install}"></div>
+				<div class="warning" th:if="${error_image!=null}" th:text="#{error.image}"></div>
+				<div class="warning" th:if="${error_imageCache!=null}" th:text="#{error.imageCache}"></div>
+				<div class="warning" th:if="${error_cache!=null}" th:text="#{error.cache}"></div>
+				<div class="warning" th:if="${error_download!=null}" th:text="#{error.download}"></div>
+				<div class="warning" th:if="${error_logs!=null}" th:text="#{error.logs}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/home.png}" alt="" />
+							<span th:text="#{heading.title}">Dashboard</span>
+						</h1>
+					</div>
+					<div class="content">
+						<div class="overview">
+							<div class="dashboard-heading" th:text="#{text.overview}"></div>
+							<div class="dashboard-content">
+								<table>
+									<tr>
+										<td th:text="#{text.totalSale}">Total Sales:</td>
+										<td th:text="${totalSale}">$0.00</td>
+									</tr>
+									<tr>
+										<td th:text="#{text.totalSaleYear}">Total Sales This Year:</td>
+										<td th:text="${totalSaleYear}">$0.00</td>
+									</tr>
+									<tr>
+										<td th:text="#{text.totalOrder}">Total Orders:</td>
+										<td th:text="${totalOrder}">0</td>
+									</tr>
+									<tr>
+										<td th:text="#{text.totalCustomer}">No. of Customers:</td>
+										<td th:text="${totalCustomer}">0</td>
+									</tr>
+									<tr>
+										<td th:text="#{text.totalCustomerApproval}">Customers Awaiting Approval:</td>
+										<td th:text="${totalCustomerApproval}">0</td>
+									</tr>
+									<tr>
+										<td th:text="#{text.totalReviewApproval}">Reviews Awaiting Approval:</td>
+										<td th:text="${totalReviewApproval}">0</td>
+									</tr>
+									<tr>
+										<td th:text="#{text.totalAffiliate}">No. of Affiliates:</td>
+										<td th:text="${totalAffiliate}">0</td>
+									</tr>
+									<tr>
+										<td th:text="#{text.totalAffiliateApproval}">Affiliates Awaiting Approval:</td>
+										<td th:text="${totalAffiliateApproval}">0</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div class="statistic">
+							<div class="range"><span th:text="#{entry.range}">Select Range:</span>
+								<select id="range" onchange="getSalesChart(this.value)">
+									<option value="day" th:text="#{text.day}">Today</option>
+									<option value="week" th:text="#{text.week}">This week</option>
+									<option value="month" th:text="#{text.month}">This month</option>
+									<option value="year" th:text="#{text.year}">This year</option>
+								</select>
+							</div>
+							<div class="dashboard-heading" th:text="#{text.statistics}"></div>
+							<div class="dashboard-content">
+								<div id="report" style="width: 390px; height: 170px; margin: auto;"></div>
+							</div>
+						</div>
+						<div class="latest">
+							<div class="dashboard-heading" th:text="#{text.latest10Orders}"></div>
+							<div class="dashboard-content">
+								<table class="list">
+									<thead>
+										<tr>
+											<td class="right" th:text="#{column.order}">Order ID</td>
+											<td class="left" th:text="#{column.customer}">Customer</td>
+											<td class="left" th:text="#{column.status}">Status</td>
+											<td class="left" th:text="#{column.dateAdded}">Date Added</td>
+											<td class="right" th:text="#{column.total}">Total</td>
+											<td class="right" th:text="#{column.action}">Action</td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="order : ${orders}" >
+											<td class="right" th:text="${order.id}"></td>
+											<td class="left" th:text="${order.customer}"></td>
+											<td class="left" th:text="${order.status}"></td>
+											<td class="left" th:text="${order.dateAdded}"></td>
+											<td class="right" th:text="${order.total}"></td>
+											<td class="right">
+												[ <a th:each="action : ${order.actions}" th:href="${action.href}" th:text="${action.text}"></a> ]
+											</td>
+										</tr>
+										<tr>
+											<td class="center" colspan="6" th:text="#{text.noResults}">No results!</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!-- container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
+<!--[if IE]>
+<script type="text/javascript" th:src="@{/resources/admin/javascript/jquery/flot/excanvas.js}"></script>
+<![endif]--> 
+<script type="text/javascript" th:src="@{/resources/admin/javascript/jquery/flot/jquery.flot.js}"></script> 
+<script type="text/javascript">
+/*<![CDATA[*/
+function getSalesChart(range) {
+	$.ajax({
+		type: 'get',
+		url: 'index.php?route=common/home/chart&token=<?php echo $token; ?>&range=' + range,
+		dataType: 'json',
+		async: false,
+		success: function(json) {
+			var option = {	
+				shadowSize: 0,
+				lines: { 
+					show: true,
+					fill: true,
+					lineWidth: 1
+				},
+				grid: {
+					backgroundColor: '#FFFFFF'
+				},	
+				xaxis: {
+					ticks: json.xaxis
+				}
+			}
+
+			$.plot($('#report'), [json.order, json.customer], option);
+		}
+	});
+}
+
+getSalesChart($('#range').val());
+/*]]>*/
+</script> 
+	</body>
+</html>

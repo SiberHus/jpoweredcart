@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header">
+		
+	</head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="box" style="width: 400px; min-height: 300px; margin-top: 40px; margin-left: auto; margin-right: auto;">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/lockscreen.png}" alt="" />
+							<span th:text="#{text.login}">Please enter your login details.</span>
+						</h1>
+					</div>
+					<div class="content" style="min-height: 150px; overflow: hidden;">
+						<div class="success" th:if="${success}" th:text="${sucess}"></div>
+						<div class="warning" th:if="${param.error}" th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"></div>
+						<form th:action="@{/admin/auth/j_spring_security_check}" method="post" id="form">
+							<table style="width: 100%;">
+								<tr>
+									<td style="text-align: center;" rowspan="4"><img th:src="@{/resources/admin/image/login.png}" th:alt="#{text.login}" /></td>
+								</tr>
+								<tr>
+									<td>
+										<span th:text="#{entry.username}">Username</span><br />
+										<input type="text" name="j_username" th:value="${username}" style="margin-top: 4px;" />
+										<br /><br />
+										<span th:text="#{entry.password}">Password</span><br />
+										<input type="password" name="j_password" th:value="${password}" style="margin-top: 4px;" />
+										<br />
+										<a href="${forgotten}" th:text="#{text.forgotten}">Forgotten Password</a>
+									</td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+								</tr>
+								<tr>
+									<td style="text-align: right;"><a onclick="$('#form').submit();" class="button" th:text="#{button.login}">Login</a></td>
+								</tr>
+							</table>
+							<input type="hidden" th:if="${redirect}" name="redirect" th:value="${redirect}" />
+						</form>
+					</div>
+				</div> <!-- box -->
+			</div> <!-- content -->
+		</div><!-- container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+	</body>
+</html>

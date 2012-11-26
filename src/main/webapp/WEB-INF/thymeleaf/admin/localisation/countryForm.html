@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/localisation/country}" th:text="#{heading.title}">Country</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/country.png}" alt="" />
+							<span th:text="#{heading.title}"></span>
+						</h1>
+						<div class="buttons">
+							<a onclick="$('#form').submit();" class="button" th:text="#{button.save}">Save</a>
+							<a th:href="@{/admin/localisation/country}" class="button" th:text="#{button.cancel}">Cancel</a>
+						</div>
+					</div>
+					<div class="content">
+						<form th:action="@{/admin/localisation/country/save}" th:object="${country}" method="post" id="form">
+							<input type="hidden" th:field="*{id}" />
+							<table class="form">
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.name}">Country Name:</span></td>
+									<td>
+										<input type="text" th:field="*{name}" />
+										<span class="error" th:if="${#fields.hasErrors('name')}" th:text="#{error.name}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.isoCode2}">ISO Code (2):</span></td>
+									<td>
+										<input type="text" th:field="*{isoCode2}" />
+										<span class="error" th:if="${#fields.hasErrors('isoCode2')}" th:text="#{error.isoCode2}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.isoCode3}">ISO Code (3):</span></td>
+									<td>
+										<input type="text" th:field="*{isoCode3}" />
+										<span class="error" th:if="${#fields.hasErrors('isoCode3')}" th:text="#{error.isoCode3}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.addressFormat}">Address Format:</span></td>
+									<td>
+										<textarea rows="5" cols="40" th:field="*{addressFormat}"></textarea>
+										<span class="error" th:if="${#fields.hasErrors('addressFormat')}" th:text="#{error.addressFormat}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.postcodeRequired}">Postcode Required:</span></td>
+									<td>
+										<input type="radio" th:field="*{postcodeRequired}" value="true"/>
+										<span th:text="#{text.yes}"></span>
+										<input type="radio" th:field="*{postcodeRequired}" value="false"/>
+										<span th:text="#{text.no}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.status}">Status:</span></td>
+									<td>
+										<select th:field="*{status}">
+											<option value="0" th:text="#{text.disabled}">Disabled</option>
+											<option value="1" th:text="#{text.enabled}">Enabled</option>
+										</select>
+									</td>
+								</tr>
+							</table>
+						</form>
+					</div><!-- .content -->
+				</div><!-- .box -->
+			</div><!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
+	</body>
+</html>

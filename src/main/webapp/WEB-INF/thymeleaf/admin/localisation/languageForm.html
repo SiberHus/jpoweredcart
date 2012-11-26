@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/localisation/language}" th:text="#{heading.title}">Language</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/language.png}" alt="" />
+							<span th:text="#{heading.title}"></span>
+						</h1>
+						<div class="buttons">
+							<a onclick="$('#form').submit();" class="button" th:text="#{button.save}">Save</a>
+							<a th:href="@{/admin/localisation/language}" class="button" th:text="#{button.cancel}">Cancel</a>
+						</div>
+					</div>
+					<div class="content">
+						<form th:action="@{/admin/localisation/language/save}" th:object="${language}" method="post" id="form">
+							<input type="hidden" th:field="*{id}" />
+							<table class="form">
+								<tr>
+									<td><span class="required">*</span><span th:text="#{entry.name}">Language Name</span></td>
+									<td>
+										<input type="text" th:field="*{name}" />
+										<span class="error" th:if="${#fields.hasErrors('name')}" th:text="#{error.name}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.code}">Code</span></td>
+									<td>
+										<input type="text" th:field="*{code}" />
+										<span class="error" th:if="${#fields.hasErrors('code')}" th:text="#{error.code}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.locale}">Locale</span></td>
+									<td>
+										<input type="text" th:field="*{locale}" />
+										<span class="error" th:if="${#fields.hasErrors('locale')}" th:text="#{error.locale}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.image}">Image</span></td>
+									<td>
+										<input type="text" th:field="*{image}" />
+										<span class="error" th:if="${#fields.hasErrors('image')}" th:text="#{error.image}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.directory}">Directory</span></td>
+									<td>
+										<input type="text" th:field="*{directory}" />
+										<span class="error" th:if="${#fields.hasErrors('directory')}" th:text="#{error.directory}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.filename}">Filename</span></td>
+									<td>
+										<input type="text" th:field="*{filename}" />
+										<span class="error" th:if="${#fields.hasErrors('filename')}" th:text="#{error.filename}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.status}">Status:</span></td>
+									<td>
+										<select th:field="*{status}">
+											<option value="0" th:text="#{text.disabled}">Disabled</option>
+											<option value="1" th:text="#{text.enabled}">Enabled</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:text="#{entry.sortOrder}">Sort Order</span></td>
+									<td>
+										<input type="text" th:field="*{sortOrder}" size="1"/>
+										<span class="error" th:if="${#fields.hasErrors('sortOrder')}" th:text="#{error.sortOrder}"></span>
+									</td>
+								</tr>
+							</table>
+						</form>
+					</div><!-- .content -->
+				</div><!-- .box -->
+			</div><!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
+	</body>
+</html>
