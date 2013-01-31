@@ -1,9 +1,12 @@
 package org.jpoweredcart.admin.entity.localisation;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.validation.constraints.Size;
+
+import org.springframework.util.AutoPopulatingList;
 
 public class TaxClass implements Serializable{
 	
@@ -11,15 +14,17 @@ public class TaxClass implements Serializable{
 	
 	protected Integer id;
 	
+	@Size(min=3, max=32)
 	protected String title;
 	
+	@Size(min=3, max=255)
 	protected String description;
 	
 	protected Date dateAdded;
 	
 	protected Date dateModified;
 
-	protected List<TaxRule> taxRules = new ArrayList<TaxRule>();
+	protected List<TaxRule> taxRules = new AutoPopulatingList<TaxRule>(TaxRule.class);
 	
 	public Integer getId() {
 		return id;

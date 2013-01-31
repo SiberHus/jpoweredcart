@@ -54,14 +54,20 @@
 							<tbody>
 								<tr class="prototype">
 									<td class="left">
-										<select name="taxRules.countryId" class="country">
-											<option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}">Thailand</option>
+										<select name="taxRules.taxRateId">
+											<option th:each="taxRate : ${taxRates}" th:value="${taxRate.id}" 
+												th:text="${taxRate.name}">VAT (17.5%)</option>
 										</select>
 									</td>
 									<td class="left">
-										<select name="zoneToGeoZones.zoneId" class="zone">
-											<option value="0">Dummy</option>
+										<select name="taxRules.based">
+											<option value="shipping" th:text="#{text.shipping}">Shipping Address</option>
+											<option value="payment" th:text="#{text.payment}">Payment Address</option>
+											<option value="store" th:text="#{text.store}">Store Address</option>
 										</select>
+									</td>
+									<td class="left">
+										<input type="text" name="taxRules.priority" size="1" />
 									</td>
 									<td class="left">
 										<a class="button remove" th:text="#{button.remove}">
@@ -70,35 +76,27 @@
 									</td>
 								</tr>
 								
-								<tr th:each="ztgz, rowStat : ${taxClass.zoneToGeoZones}" th:id="'tr_'+${rowStat.index}">
+								<tr th:each="taxRule, rowStat : ${taxClass.taxRules}" th:id="'tr_'+${rowStat.index}">
 									<td class="left">
-										<select name="zoneToGeoZones.countryId" class="country">
-											<option th:attr="selected=${country.id==ztgz.countryId?'selected':''}" 
-												th:each="country : ${countries}" th:value="${country.id}" 
-												th:text="${country.name}">Thailand</option>
+										<select name="taxRules.taxRateId">
+											<option th:each="taxRate : ${taxRates}" th:value="${taxRate.id}" th:attr="test=${taxRule.taxRateId}" th:text="${taxRate.name}"
+												th:selected="${taxRule.taxRateId==taxRate.id}" >VAT (17.5%)</option>
 										</select>
 									</td>
 									<td class="left">
-										<select name="zoneToGeoZones.zoneId" class="zone">
+										<select name="taxRules.based">
+											<option value="shipping" th:text="#{text.shipping}" th:selected="${taxRule.based=='shipping'}">Shipping Address</option>
+											<option value="payment" th:text="#{text.payment}" th:selected="${taxRule.based=='payment'}">Payment Address</option>
+											<option value="store" th:text="#{text.store}" th:selected="${taxRule.based=='store'}">Store Address</option>
 										</select>
+									</td>
+									<td class="left">
+										<input type="text" name="taxRules.priority" size="1" th:value="${taxRule.priority}"/>
 									</td>
 									<td class="left">
 										<a class="button remove" th:text="#{button.remove}">
 											Remove
 										</a>
-										<script th:inline="javascript">
-										/*<![CDATA[*/
-											var baseUrl = /*[[@{/admin/localisation/taxClass/getZoneOptions.html}]]*/ '';
-											var rowId = /*[[${rowStat.index}]]*/ 0;
-											var countryId = /*[[${ztgz.countryId}]]*/0;
-											var zoneId = /*[[${ztgz.zoneId}]]*/0;
-											zonesElem = $('#tr_'+rowId+' select.zone');
-											zonesElem.load(baseUrl+'?countryId='+countryId+'&zoneId='+zoneId);
-											$('#tr_'+rowId+' select.country').change(function(){
-												$('#tr_'+rowId+' select.zone').load(baseUrl+'?countryId='+$(this).val()+'&zoneId=0');
-											});
-										/*]]>*/
-										</script>
 									</td>
 								</tr>
 								
@@ -106,9 +104,9 @@
 							
 							<tfoot>
 								<tr>
-									<td colspan="2"></td>
+									<td colspan="3"></td>
 									<td class="left">
-										<a href="javascript:void(0);" class="button add" th:text="#{button.addGeoZone}">Add Geo Zone</a>
+										<a href="javascript:void(0);" class="button add" th:text="#{button.addRule}">Add Rule</a>
 									</td>
 								</tr>
 							</tfoot>
@@ -122,17 +120,9 @@
 		/*<![CDATA[*/
 			$(function(){
 				initDynaTable({
-					'startId' : /*[[${#lists.size(taxClass.zoneToGeoZones)}]]*/0,
+					'startId' : /*[[${#lists.size(taxClass.taxRules)}]]*/0,
 					'className': 'dynatable',
 					'rowName' : 'tr_',
-					'addCallback' : function(id, tr){
-						//alert(currentId);
-						var baseUrl = /*[[@{/admin/localisation/taxClass/getZoneOptions.html}]]*/ '';
-						$('#tr_'+id+' select.zone').load(baseUrl+'?countryId=0&zoneId=0');
-						$('#tr_'+id+' select.country').change(function(){
-							$('#tr_'+id+' select.zone').load(baseUrl+'?countryId='+$(this).val()+'&zoneId=0');
-						});
-					},
 				});
 			});
 		/*]]>*/

@@ -21,6 +21,7 @@ import org.jpoweredcart.admin.model.localisation.ReturnReasonAdminModel;
 import org.jpoweredcart.admin.model.localisation.ReturnStatusAdminModel;
 import org.jpoweredcart.admin.model.localisation.StockStatusAdminModel;
 import org.jpoweredcart.admin.model.localisation.TaxClassAdminModel;
+import org.jpoweredcart.admin.model.localisation.TaxRateAdminModel;
 import org.jpoweredcart.admin.model.localisation.WeightClassAdminModel;
 import org.jpoweredcart.admin.model.localisation.ZoneAdminModel;
 import org.jpoweredcart.admin.model.localisation.jdbc.CountryAdminModelImpl;
@@ -34,10 +35,17 @@ import org.jpoweredcart.admin.model.localisation.jdbc.ReturnReasonAdminModelImpl
 import org.jpoweredcart.admin.model.localisation.jdbc.ReturnStatusAdminModelImpl;
 import org.jpoweredcart.admin.model.localisation.jdbc.StockStatusAdminModelImpl;
 import org.jpoweredcart.admin.model.localisation.jdbc.TaxClassAdminModelImpl;
+import org.jpoweredcart.admin.model.localisation.jdbc.TaxRateAdminModelImpl;
 import org.jpoweredcart.admin.model.localisation.jdbc.WeightClassAdminModelImpl;
 import org.jpoweredcart.admin.model.localisation.jdbc.ZoneAdminModelImpl;
+import org.jpoweredcart.admin.model.sale.CustomerGroupAdminModel;
+import org.jpoweredcart.admin.model.sale.IpBlacklistAdminModel;
 import org.jpoweredcart.admin.model.sale.OrderAdminModel;
+import org.jpoweredcart.admin.model.sale.VoucherAdminModel;
+import org.jpoweredcart.admin.model.sale.jdbc.CustomerGroupAdminModelImpl;
+import org.jpoweredcart.admin.model.sale.jdbc.IpBlacklistAdminModelImpl;
 import org.jpoweredcart.admin.model.sale.jdbc.OrderAdminModelImpl;
+import org.jpoweredcart.admin.model.sale.jdbc.VoucherAdminModelImpl;
 import org.jpoweredcart.admin.model.setting.StoreAdminModel;
 import org.jpoweredcart.admin.model.setting.jdbc.StoreAdminModelImpl;
 import org.jpoweredcart.admin.model.user.UserAdminModel;
@@ -45,6 +53,7 @@ import org.jpoweredcart.admin.model.user.UserGroupAdminModel;
 import org.jpoweredcart.admin.model.user.jdbc.UserAdminModelImpl;
 import org.jpoweredcart.admin.model.user.jdbc.UserGroupAdminModelImpl;
 import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.EmailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -60,6 +69,8 @@ public class AdminModelConfig {
 	@Inject
 	private JdbcOperations jdbcOperations;
 
+	@Inject
+	private EmailService emailService;
 	
 	//================= Catalog ========================//
 	@Bean
@@ -97,6 +108,8 @@ public class AdminModelConfig {
 	@Bean
 	public TaxClassAdminModel taxClassAdminModel(){ return new TaxClassAdminModelImpl(configService, jdbcOperations); }
 	@Bean
+	public TaxRateAdminModel taxRateAdminModel(){ return new TaxRateAdminModelImpl(configService, jdbcOperations); }
+	@Bean
 	public WeightClassAdminModel weightClassAdminModel(){ return new WeightClassAdminModelImpl(configService, jdbcOperations); }
 	@Bean
 	public LengthClassAdminModel lengthClassAdminModel(){ return new LengthClassAdminModelImpl(configService, jdbcOperations); }
@@ -104,13 +117,22 @@ public class AdminModelConfig {
 	//================= Sale ========================//
 	@Bean
 	public OrderAdminModel orderAdminModel(){ return new OrderAdminModelImpl(configService, jdbcOperations); }
-	
+	@Bean
+	public CustomerGroupAdminModel customerGroupAdminModel(){ return new CustomerGroupAdminModelImpl(configService, jdbcOperations); }
+	@Bean
+	public IpBlacklistAdminModel ipBlacklistAdminModel(){ return new IpBlacklistAdminModelImpl(configService, jdbcOperations); }
+	@Bean
+	public VoucherAdminModel voucherAdminModel(){ 
+		VoucherAdminModelImpl voucherAdminModel = new VoucherAdminModelImpl(configService, jdbcOperations);
+		voucherAdminModel.setEmailService(emailService);
+		return voucherAdminModel;
+	}
 	//================= User ========================//
 	@Bean
 	public UserAdminModel userAdminModel(){ return new UserAdminModelImpl(configService, jdbcOperations);}
-	
 	@Bean
 	public UserGroupAdminModel userGroupAdminModel(){ return new UserGroupAdminModelImpl(configService, jdbcOperations);}
+	
 	
 	//================= Setting ========================//
 	@Bean

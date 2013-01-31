@@ -17,8 +17,8 @@ public interface TaxRateAdminModel {
 	
 	public TaxRate getTaxRate(Integer taxRateId);
 	
-	public List<TaxRate> getTaxRatees(PageParam pageParam);
+	public List<TaxRate> getTaxRates(PageParam pageParam);
 	
-	public int getTotalTaxRatees();
+	public int getTotalTaxRates();
 	
 }

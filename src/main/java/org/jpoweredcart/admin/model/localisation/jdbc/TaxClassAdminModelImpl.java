@@ -46,7 +46,7 @@ public class TaxClassAdminModelImpl extends BaseModel implements TaxClassAdminMo
 		
 		int taxClassId = keyHolder.getKey().intValue();
 		
-		addTaxClasses(taxClassId, taxClass.getTaxRules());
+		addTaxRules(taxClassId, taxClass.getTaxRules());
 	}
 	
 	@Transactional
@@ -57,14 +57,14 @@ public class TaxClassAdminModelImpl extends BaseModel implements TaxClassAdminMo
 		getJdbcOperations().update(sql, taxClass.getTitle(), taxClass.getDescription(),
 				new Date(), taxClass.getId());
 		
-		sql = "DELETE FROM " +quoteTable("tax_class")+ " WHERE tax_class_id = ?";
+		sql = "DELETE FROM " +quoteTable("tax_rule")+ " WHERE tax_class_id = ?";
 		
 		getJdbcOperations().update(sql, taxClass.getId());
 		
-		addTaxClasses(taxClass.getId(), taxClass.getTaxRules());
+		addTaxRules(taxClass.getId(), taxClass.getTaxRules());
 	}
 	
-	private void addTaxClasses(Integer taxClassId, List<TaxRule> taxRules){
+	private void addTaxRules(Integer taxClassId, List<TaxRule> taxRules){
 		if(taxRules!=null){
 			String sql = "INSERT INTO "+quoteTable("tax_rule")
 					+"(tax_class_id, tax_rate_id, based, priority) VALUES(?,?,?,?)";

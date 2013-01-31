@@ -37,7 +37,9 @@
 									<td>&nbsp;</td>
 								</tr>
 								<tr>
-									<td style="text-align: right;"><a onclick="$('#form').submit();" class="button" th:text="#{button.login}">Login</a></td>
+									<td style="text-align: right;">
+										<a onclick="$('#form').submit();" class="button" th:text="#{button.login}">Login</a>
+									</td>
 								</tr>
 							</table>
 							<input type="hidden" th:if="${redirect}" name="redirect" th:value="${redirect}" />
@@ -47,6 +49,16 @@
 			</div> <!-- content -->
 		</div><!-- container -->
 		
+		<script type="text/javascript">
+		/*<![CDATA[*/
+			$('#form input').keydown(function(e) {
+				if (e.keyCode == 13) {
+					$('#form').submit();
+			}
+			});
+		/*]]>*/
+		</script> 
+
 		<div id="footer" th:include="/admin :: footer"></div>
 	</body>
 </html>

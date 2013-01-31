@@ -3,6 +3,10 @@ package org.jpoweredcart.admin.entity.localisation;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class TaxRate implements Serializable{
 	
@@ -12,8 +16,12 @@ public class TaxRate implements Serializable{
 	
 	protected Integer geoZoneId;
 	
+	protected String geoZone;
+	
+	@Size(min=3, max=32)
 	protected String name;
 	
+	@NotNull
 	protected BigDecimal rate;
 	
 	protected String type;
@@ -22,6 +30,7 @@ public class TaxRate implements Serializable{
 	
 	protected Date dateModified;
 	
+	protected List<Integer> customerGroupIds;
 	
 	public Integer getId() {
 		return id;
@@ -37,6 +46,14 @@ public class TaxRate implements Serializable{
 
 	public void setGeoZoneId(Integer geoZoneId) {
 		this.geoZoneId = geoZoneId;
+	}
+	
+	public String getGeoZone() {
+		return geoZone;
+	}
+
+	public void setGeoZone(String geoZone) {
+		this.geoZone = geoZone;
 	}
 
 	public String getName() {
@@ -77,6 +94,14 @@ public class TaxRate implements Serializable{
 
 	public void setDateModified(Date dateModified) {
 		this.dateModified = dateModified;
+	}
+
+	public List<Integer> getCustomerGroupIds() {
+		return customerGroupIds;
+	}
+
+	public void setCustomerGroupIds(List<Integer> customerGroupIds) {
+		this.customerGroupIds = customerGroupIds;
 	}
 	
 }

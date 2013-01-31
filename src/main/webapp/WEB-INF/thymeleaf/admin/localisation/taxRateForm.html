@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/localisation/taxRate}" th:text="#{heading.title}">TaxRate</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/tax.png}" alt="" />
+							<span th:text="#{heading.title}"></span>
+						</h1>
+						<div class="buttons">
+							<a onclick="$('#form').submit();" class="button" th:text="#{button.save}">Save</a>
+							<a th:href="@{/admin/localisation/taxRate}" class="button" th:text="#{button.cancel}">Cancel</a>
+						</div>
+					</div>
+					<div class="content">
+						<form th:action="@{/admin/localisation/taxRate/save}" th:object="${taxRate}" method="post" id="form">
+							<input type="hidden" th:field="*{id}" />
+							<table class="form">
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.name}">Tax Name:</span></td>
+									<td>
+										<input type="text" th:field="*{name}" />
+										<span class="error" th:if="${#fields.hasErrors('name')}" th:text="#{error.name}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.rate}">Tax Rate:</span></td>
+									<td>
+										<input type="text" th:field="*{rate}" />
+										<span class="error" th:if="${#fields.hasErrors('rate')}" th:text="#{error.rate}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.type}">Type:</span></td>
+									<td>
+										<select th:field="*{type}">
+											<option th:value="'F'" th:text="#{text.amount}">Fixed Amount</option>
+											<option th:value="'P'" th:text="#{text.percent}">Percentage</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.customerGroup}">Customer Group:</span></td>
+									<td>
+									<div class="scrollbox">
+										<div th:each="group,stat : ${customerGroups}" th:classappend="${stat.odd?'even':'odd'}">
+											<input type="checkbox" th:name="${'customerGroupIds['+stat.index+']'}" 
+												th:value="${group.id}" th:checked="${taxRate.customerGroupIds!=null and #lists.contains(taxRate.customerGroupIds, group.id)}" />
+											<span th:text="${group.name}">Default</span>
+										</div>
+									</div>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.geoZone}">Geo Zone:</span></td>
+									<td>
+										<select th:field="*{geoZoneId}">
+											<option th:each="geoZone : ${geoZones}" th:value="${geoZone.id}" th:text="${geoZone.name}">UK Shipping</option> 
+										</select>
+									</td>
+								</tr>
+							</table>
+						</form>
+					</div><!-- .content -->
+				</div><!-- .box -->
+			</div><!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
+	</body>
+</html>

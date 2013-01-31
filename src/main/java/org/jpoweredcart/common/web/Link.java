@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.entity;
+package org.jpoweredcart.common.web;
 
 import org.apache.commons.lang3.StringUtils;
 

@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.jpoweredcart.admin.entity.localisation.TaxClass;
+import org.jpoweredcart.admin.entity.localisation.TaxRate;
 import org.jpoweredcart.admin.entity.localisation.TaxRule;
 import org.jpoweredcart.admin.model.localisation.TaxClassAdminModel;
+import org.jpoweredcart.admin.model.localisation.TaxRateAdminModel;
 import org.jpoweredcart.common.BaseController;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
@@ -26,6 +28,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class TaxClassAdminController extends BaseController {
+	
+	@Inject
+	private TaxRateAdminModel taxRateAdminModel;
 	
 	@Inject
 	private TaxClassAdminModel taxClassAdminModel;
@@ -52,6 +57,7 @@ public class TaxClassAdminController extends BaseController {
 		checkModifyPermission();
 		
 		model.addAttribute("taxClass", new TaxClass());
+		addFormAttributes(model);
 		
 		return "/admin/localisation/taxClassForm";
 	}
@@ -63,6 +69,7 @@ public class TaxClassAdminController extends BaseController {
 		
 		TaxClass taxClass = taxClassAdminModel.getTaxClass(id);
 		model.addAttribute("taxClass", taxClass);
+		addFormAttributes(model);
 		
 		return "/admin/localisation/taxClassForm";
 	}
@@ -72,11 +79,6 @@ public class TaxClassAdminController extends BaseController {
 			RedirectAttributes redirect, HttpServletRequest request){
 		
 		checkModifyPermission();
-		
-		if(result.hasErrors()){
-			model.addAttribute("taxClass", taxClass);
-			return "/admin/localisation/taxClassForm";
-		}
 		
 		String taxRateIds[] = request.getParameterValues("taxRules.taxRateId");
 		String baseds[] = request.getParameterValues("taxRules.based");
@@ -93,6 +95,12 @@ public class TaxClassAdminController extends BaseController {
 				taxRule.setPriority(priority);
 				taxClass.getTaxRules().add(taxRule);
 			}
+		}
+		
+		if(result.hasErrors()){
+			model.addAttribute("taxClass", taxClass);
+			addFormAttributes(model);
+			return "/admin/localisation/taxClassForm";
 		}
 		
 		taxClassAdminModel.saveTaxClass(taxClass);
@@ -117,6 +125,13 @@ public class TaxClassAdminController extends BaseController {
 		return "redirect:/admin/localisation/taxClass";
 	}
 	
+	private void addFormAttributes(Model model){
+		
+		List<TaxRate> taxRates = taxRateAdminModel.getTaxRates(PageParam.list());
+		model.addAttribute("taxRates", taxRates);
+		
+		
+	}
 	
 	private void checkModifyPermission(){
 		UserPermissions.checkModify("localisation/tax_class", 

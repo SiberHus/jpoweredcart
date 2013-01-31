@@ -1,0 +1,128 @@
+package org.jpoweredcart.admin.model.sale.jdbc;
+
+import java.util.Date;
+import java.util.List;
+
+import org.jpoweredcart.admin.entity.localisation.Country;
+import org.jpoweredcart.admin.entity.sale.Voucher;
+import org.jpoweredcart.admin.entity.sale.VoucherHistory;
+import org.jpoweredcart.admin.model.localisation.jdbc.CountryRowMapper;
+import org.jpoweredcart.admin.model.sale.VoucherAdminModel;
+import org.jpoweredcart.common.BaseModel;
+import org.jpoweredcart.common.ConfigKey;
+import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.QueryBean;
+import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.EmailService;
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.transaction.annotation.Transactional;
+
+public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminModel {
+	
+	private EmailService emailService;
+	
+	public VoucherAdminModelImpl(ConfigService configService,
+			JdbcOperations jdbcOperations) {
+		super(configService, jdbcOperations);
+	}
+	
+	@Override
+	public void addVoucher(Voucher voucher) {
+		String sql = "INSERT INTO " +quoteTable("voucher")+ "(code, from_name, from_email, " +
+				"to_name, to_email, voucher_theme_id, message, amount, status, date_added) VALUES (?,?,?,?,?,?)";
+		getJdbcOperations().update(sql, voucher.getCode(), voucher.getFromName(), voucher.getFromEmail(),
+				voucher.getToName(), voucher.getToEmail(), voucher.getVoucherThemeId(), voucher.getMessage(),
+				voucher.getAmount(), voucher.getStatus(), new Date());
+	}
+
+	@Override
+	public void updateVoucher(Voucher voucher) {
+		String sql = "UPDATE " +quoteTable("voucher")+ " SET code=?, from_name=?, from_email=?, " +
+				"to_name=?, to_email=?, voucher_theme_id=?, message=?, amount=?, status=?, date_added=? WHERE voucher_id=?";
+		getJdbcOperations().update(sql, voucher.getCode(), voucher.getFromName(), voucher.getFromEmail(),
+				voucher.getToName(), voucher.getToEmail(), voucher.getVoucherThemeId(), voucher.getMessage(),
+				voucher.getAmount(), voucher.getStatus(), voucher.getDateAdded(), voucher.getId());
+	}
+
+	@Override
+	public void saveVoucher(Voucher voucher) {
+		if(voucher.getId()!=null){
+			updateVoucher(voucher);
+		}else{
+			addVoucher(voucher);
+		}
+	}
+	
+	@Transactional
+	@Override
+	public void deleteVoucher(Integer voucherId) {
+		String sql = "DELETE FROM "+quoteTable("voucher")+" WHERE voucher_id=?";
+		getJdbcOperations().update(sql, voucherId);
+		
+		sql = "DELETE FROM "+quoteTable("voucher_history")+" WHERE voucher_id=?";
+		getJdbcOperations().update(sql, voucherId);
+		
+	}
+
+	@Override
+	public Voucher getVoucher(Integer voucherId) {
+		String sql = "SELECT * FROM " +quoteTable("voucher")+ " WHERE voucher_id = ?";
+		return getJdbcOperations().queryForObject(sql, new Object[]{voucherId}, new VoucherRowMapper());
+	}
+
+	@Override
+	public Voucher getVoucherByCode(String code) {
+		String sql = "SELECT DISTINCT * FROM " +quoteTable("voucher")+ " WHERE code = ?";
+		return getJdbcOperations().queryForObject(sql, new Object[]{code}, new VoucherRowMapper());
+	}
+
+	@Override
+	public List<Voucher> getVouchers(PageParam pageParam) {
+		String sql = "SELECT v.voucher_id, v.code, v.from_name, v.from_email, v.to_name, v.to_email, (SELECT vtd.name FROM " 
+				+quoteTable("voucher_theme_description")+ " vtd WHERE vtd.voucher_theme_id = v.voucher_theme_id AND vtd.language_id = ?) AS theme, v.amount, v.status, v.date_added FROM " +quoteTable("voucher")+ " v";
+		Integer languageId = getConfigService().get(ConfigKey.ADMIN_LANGUAGE_ID, Integer.class);
+		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{
+				"v.code", "v.from_name", "v.from_email", "v.to_name", "v.to_email",
+				"v.theme", "v.amount", "v.status", "v.date_added"});
+		query.addParameter(languageId);
+		List< Voucher> vouchers = getJdbcOperations().query(query.getSql(), 
+				query.getParameters(), new VoucherRowMapper());
+		return vouchers;
+	}
+
+	@Override
+	public void sendVoucher(Integer voucherId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getTotalVouchers() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getTotalVouchersByThemeId(Integer voucherThemeId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<VoucherHistory> getVoucherHistories(Integer voucherId,
+			int start, int limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getTotalVoucherHistories(Integer voucherId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void setEmailService(EmailService emailService) {
+		this.emailService = emailService;
+	}
+	
+}

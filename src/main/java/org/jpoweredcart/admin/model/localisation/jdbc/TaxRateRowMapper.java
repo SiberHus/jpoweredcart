@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 public class TaxRateRowMapper implements RowMapper<TaxRate>{
 
+	
 	@Override
 	public TaxRate mapRow(ResultSet rs, int rowNum) throws SQLException {
 		TaxRate taxRate = new TaxRate();

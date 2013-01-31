@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.jpoweredcart.admin.entity.localisation.Country;
 import org.jpoweredcart.admin.entity.localisation.Zone;
 import org.jpoweredcart.admin.model.localisation.CountryAdminModel;
 import org.jpoweredcart.admin.model.localisation.ZoneAdminModel;
@@ -53,8 +54,8 @@ public class ZoneAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		model.addAttribute("countries", countryAdminModel.getAllCountries());
 		model.addAttribute("zone", new Zone());
+		addFormAttributes(model);
 		
 		return "/admin/localisation/zoneForm";
 	}
@@ -64,9 +65,10 @@ public class ZoneAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		model.addAttribute("countries", countryAdminModel.getAllCountries());
 		Zone zone = zoneAdminModel.getZone(id);
 		model.addAttribute("zone", zone);
+		addFormAttributes(model);
+		
 		return "/admin/localisation/zoneForm";
 	}
 	
@@ -78,6 +80,7 @@ public class ZoneAdminController extends BaseController {
 		
 		if(result.hasErrors()){
 			model.addAttribute("zone", zone);
+			addFormAttributes(model);
 			return "/admin/localisation/zoneForm";
 		}
 		
@@ -101,6 +104,11 @@ public class ZoneAdminController extends BaseController {
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");
 		
 		return "redirect:/admin/localisation/zone";
+	}
+	
+	private void addFormAttributes(Model model){
+		List<Country> countries = countryAdminModel.getAllCountries();
+		model.addAttribute("countries", countries);
 	}
 	
 	private void checkModifyPermission(){

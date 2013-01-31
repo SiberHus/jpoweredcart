@@ -6,9 +6,15 @@
 *.war
 *.ear
 
+# Backup file
+*.*~
+
 .settings/
 target/
 .classpath
 .project
 .springBeans
+
+
+src/test/java/Test.java
 

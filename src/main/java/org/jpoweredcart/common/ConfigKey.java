@@ -6,7 +6,6 @@ public class ConfigKey {
 	public static final String ADMIN_LANGUAGE_ID = "admin_language_id";
 	
 	
-	
 	//============================ DB settings ====================================//
 	
 	

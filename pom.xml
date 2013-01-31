@@ -18,6 +18,7 @@
 		<springframework.version>3.1.1.RELEASE</springframework.version>
 		<springframework.security.version>3.1.1.RELEASE</springframework.security.version>
 		<hibernate.validator.version>4.2.0.Final</hibernate.validator.version>
+		<activemq.version>5.5.1</activemq.version>
 		<bonecp.version>0.7.1.RELEASE</bonecp.version>
 		<jackson.version>1.9.9</jackson.version>
 		<slf4j.version>1.7.1</slf4j.version>
@@ -94,6 +95,11 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${springframework.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jms</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -122,6 +128,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-core</artifactId>
+			<version>${activemq.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>com.jolbox</groupId>
 			<artifactId>bonecp-spring</artifactId>
 			<version>${bonecp.version}</version>
@@ -132,7 +144,12 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.1</version>
+			<scope>compile</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-servlet_3.0_spec</artifactId>

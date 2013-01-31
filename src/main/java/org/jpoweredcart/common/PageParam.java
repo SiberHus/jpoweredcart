@@ -18,6 +18,12 @@ public class PageParam {
 		return pageParam;
 	}
 	
+	public static PageParam list(){
+		PageParam pageParam = new PageParam();
+		pageParam.setLimit(-1);//set default limit
+		return pageParam;
+	}
+	
 	public String getSortKey() {
 		return sortKey;
 	}

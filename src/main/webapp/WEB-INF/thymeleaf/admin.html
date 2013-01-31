@@ -92,7 +92,7 @@
 									<ul>
 										<li><a th:href="${customer}" th:text="#{head.text.customer}">Customers</a></li>
 										<li><a th:href="${customerGroup}" th:text="#{head.text.customerGroup}">Customer Groups</a></li>
-										<li><a th:href="${customerBlacklist}" th:text="#{head.text.customerBlacklist}">IP Blacklist</a></li>
+										<li><a th:href="@{/admin/sale/ipBlacklist}" th:text="#{head.text.customerBlacklist}">IP Blacklist</a></li>
 									</ul>
 								</li>
 								<li><a th:href="${affiliate}" th:text="#{head.text.affiliate}">Affiliates</a></li>
@@ -108,7 +108,7 @@
 						</li>
 						<li id="system"><a class="top" th:text="#{head.text.system}">System</a>
 							<ul>
-								<li><a th:href="${setting}" th:text="#{head.text.setting}">Settings</a></li>
+								<li><a th:href="@{/admin/setting/store}" th:text="#{head.text.setting}">Settings</a></li>
 								<li><a class="parent" th:text="#{head.text.design}">Design</a>
 									<ul>
 										<li><a th:href="${layout}" th:text="#{head.text.layout}">Layouts</a></li>
@@ -194,7 +194,9 @@
 					<ul class="right">
 						<li id="store"><a th:onclick="'window.open('+${store}+');'" class="top" th:text="#{head.text.front}">Store Front</a>
 							<ul>
+								<!-- 
 								<li th:each="store : ${stores}"><a th:onclick="window.open('${store.href}');" th:text="${store.name}"></a></li>
+								 -->
 							</ul>
 						</li>
 						<li id="store"><a class="top" th:href="@{/admin/auth/j_spring_security_logout}" th:text="#{head.text.logout}">Logout</a></li>
