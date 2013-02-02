@@ -10,10 +10,10 @@ import org.jpoweredcart.admin.entity.localisation.ReturnActions;
 import org.jpoweredcart.admin.entity.localisation.ReturnActions.ReturnAction;
 import org.jpoweredcart.admin.model.localisation.ReturnActionAdminModel;
 import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.ConfigKey;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingKey;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class ReturnActionAdminModelImpl extends BaseModel implements ReturnActionAdminModel {
 	
-	public ReturnActionAdminModelImpl(ConfigService configService, JdbcOperations jdbcOperations){
+	public ReturnActionAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
 		super(configService, jdbcOperations);
 	}
 	
@@ -74,7 +74,7 @@ public class ReturnActionAdminModelImpl extends BaseModel implements ReturnActio
 	@Override
 	public ReturnAction getReturnAction(Integer returnActionId) {
 		String sql = "SELECT * FROM " +quoteTable("return_action")+ " WHERE return_action_id = ? and language_id = ?";
-		Integer languageId = getConfigService().get(ConfigKey.ADMIN_LANGUAGE_ID, Integer.class);
+		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		return getJdbcOperations().queryForObject(sql, new Object[]{returnActionId, languageId}, 
 				new ReturnActionRowMapper());
 	}
@@ -83,7 +83,7 @@ public class ReturnActionAdminModelImpl extends BaseModel implements ReturnActio
 	public List<ReturnAction> getReturnActions(PageParam pageParam) {
 		String sql = "SELECT * FROM "+quoteTable("return_action")+" WHERE language_id=?";
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{"name"});
-		Integer languageId = getConfigService().get(ConfigKey.ADMIN_LANGUAGE_ID, Integer.class);
+		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		query.addParameter(languageId);
 		List<ReturnAction> returnActionList = getJdbcOperations()
 				.query(query.getSql(), query.getParameters(), new ReturnActionRowMapper());
@@ -104,7 +104,7 @@ public class ReturnActionAdminModelImpl extends BaseModel implements ReturnActio
 	@Override
 	public int getTotalReturnActions() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("return_action")+ " WHERE language_id=?";
-		Integer languageId = getConfigService().get(ConfigKey.ADMIN_LANGUAGE_ID, Integer.class);
+		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		return getJdbcOperations().queryForInt(sql, languageId);
 	}
 	

@@ -6,7 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jpoweredcart.common.i18n.MessageResolver;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingKey;
+import org.jpoweredcart.common.service.SettingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;
@@ -26,7 +27,7 @@ public class BaseController{
 	private ConversionService conversionService;
 	
 	@Inject
-	private ConfigService configService;
+	private SettingService settingService;
 	
 	protected String message(HttpServletRequest request, String key, Object... args){
 		
@@ -46,7 +47,7 @@ public class BaseController{
 		if(!StringUtils.isBlank(pageStr)){
 			page = conversionService.convert(pageStr, Integer.class);
 		}
-		int limit = configService.get(ConfigKey.CFG_ADMIN_LIMIT, Integer.class);
+		int limit = settingService.getConfig(SettingKey.CFG_ADMIN_LIMIT, Integer.class);
 		int start = (page - 1) * limit;
 		
 		PageParam pageParam = new PageParam();
@@ -70,8 +71,8 @@ public class BaseController{
 		return conversionService;
 	}
 	
-	protected ConfigService getConfigService() {
-		return configService;
+	protected SettingService getSettingService() {
+		return settingService;
 	}
 	
 }

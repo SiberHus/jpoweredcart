@@ -12,7 +12,7 @@ import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
 import org.jpoweredcart.common.jdbc.ArrayListResultSetExtractor;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminModel{
 	
-	public LanguageAdminModelImpl(ConfigService configService, JdbcOperations jdbcOperations){
+	public LanguageAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
 		super(configService, jdbcOperations);
 	}
 	

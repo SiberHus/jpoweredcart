@@ -25,9 +25,9 @@ import org.jpoweredcart.admin.model.setting.SettingAdminModel;
 import org.jpoweredcart.admin.model.setting.StoreAdminModel;
 import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.ConfigGroup;
-import org.jpoweredcart.common.ConfigKey;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingKey;
+import org.jpoweredcart.common.service.SettingService;
+import org.jpoweredcart.common.service.SettingGroup;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +44,7 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 	private CurrencyAdminModel currencyModel;
 	
 	
-	public OrderAdminModelImpl(ConfigService configService, JdbcOperations jdbcOperations){
+	public OrderAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
 		super(configService, jdbcOperations);
 	}
 	
@@ -73,11 +73,11 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 		String storeUrl = store.getUrl();
 		
 		String invoicePrefix = null;
-		Map<String, Object> settings = settingModel.getSettings(ConfigGroup.SETTING, order.getStoreId());
-		if(settings.containsKey(ConfigKey.INVOICE_PREFIX)){
-			invoicePrefix = ObjectUtils.toString(settings.get(ConfigKey.INVOICE_PREFIX));
+		Map<String, Object> settings = settingModel.getSettings(SettingGroup.CONFIG, order.getStoreId());
+		if(settings.containsKey(SettingKey.INVOICE_PREFIX)){
+			invoicePrefix = ObjectUtils.toString(settings.get(SettingKey.INVOICE_PREFIX));
 		}else{
-			invoicePrefix = getConfigService().get(ConfigKey.CFG_INVOICE_PREFIX);
+			invoicePrefix = getSettingService().getConfig(SettingKey.CFG_INVOICE_PREFIX);
 		}
 		
 		Country country = countryModel.getCountry(order.getPaymentCountryId());
@@ -94,7 +94,7 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 		zone = zoneModel.getZone(order.getPaymentZoneId());
 		String paymentZone = zone.getName();
 		
-		String currencyCode = getConfigService().get(ConfigKey.CFG_CURRENCY);
+		String currencyCode = getSettingService().getConfig(SettingKey.CFG_CURRENCY);
 		Currency currency = currencyModel.getCurrencyByCode(currencyCode);
 		Integer currencyId = currency.getId();
 		BigDecimal currencyValue = currency.getValue();

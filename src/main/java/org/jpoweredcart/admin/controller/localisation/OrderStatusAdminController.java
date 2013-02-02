@@ -12,10 +12,10 @@ import org.jpoweredcart.admin.entity.localisation.OrderStatuses.OrderStatus;
 import org.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import org.jpoweredcart.admin.model.localisation.OrderStatusAdminModel;
 import org.jpoweredcart.common.BaseController;
-import org.jpoweredcart.common.ConfigKey;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import org.jpoweredcart.common.security.UserPermissions;
+import org.jpoweredcart.common.service.SettingKey;
 import org.jpoweredcart.common.view.Pagination;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +41,7 @@ public class OrderStatusAdminController extends BaseController {
 		List<OrderStatus> orderStatuses = orderStatusAdminModel.getOrderStatuses(pageParam);
 		model.addAttribute("orderStatuses", orderStatuses);
 		
-		Integer defaultOrderStatusId = getConfigService().get(ConfigKey.CFG_STOCK_STATUS_ID, Integer.class);
+		Integer defaultOrderStatusId = getSettingService().getConfig(SettingKey.CFG_STOCK_STATUS_ID, Integer.class);
 		model.addAttribute("defaultOrderStatusId", defaultOrderStatusId);
 		
 		int total = orderStatusAdminModel.getTotalOrderStatuses();
@@ -117,7 +117,7 @@ public class OrderStatusAdminController extends BaseController {
 		boolean error = false;
 		if(ids!=null){
 			for(Integer id: ids){
-				if(getConfigService().get(ConfigKey.CFG_STOCK_STATUS_ID, 
+				if(getSettingService().getConfig(SettingKey.CFG_STOCK_STATUS_ID, 
 						Integer.class) == id){
 					redirect.addFlashAttribute("msg_warning", "error.default");
 					error=true; break;

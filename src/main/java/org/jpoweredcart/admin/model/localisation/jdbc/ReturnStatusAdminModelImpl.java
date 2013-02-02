@@ -10,10 +10,10 @@ import org.jpoweredcart.admin.entity.localisation.ReturnStatuses;
 import org.jpoweredcart.admin.entity.localisation.ReturnStatuses.ReturnStatus;
 import org.jpoweredcart.admin.model.localisation.ReturnStatusAdminModel;
 import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.ConfigKey;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingKey;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class ReturnStatusAdminModelImpl extends BaseModel implements ReturnStatusAdminModel {
 	
-	public ReturnStatusAdminModelImpl(ConfigService configService, JdbcOperations jdbcOperations){
+	public ReturnStatusAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
 		super(configService, jdbcOperations);
 	}
 	
@@ -74,7 +74,7 @@ public class ReturnStatusAdminModelImpl extends BaseModel implements ReturnStatu
 	@Override
 	public ReturnStatus getReturnStatus(Integer returnStatusId) {
 		String sql = "SELECT * FROM " +quoteTable("return_status")+ " WHERE return_status_id = ? and language_id = ?";
-		Integer languageId = getConfigService().get(ConfigKey.ADMIN_LANGUAGE_ID, Integer.class);
+		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		return getJdbcOperations().queryForObject(sql, new Object[]{returnStatusId, languageId}, 
 				new ReturnStatusRowMapper());
 	}
@@ -83,7 +83,7 @@ public class ReturnStatusAdminModelImpl extends BaseModel implements ReturnStatu
 	public List<ReturnStatus> getReturnStatuses(PageParam pageParam) {
 		String sql = "SELECT * FROM "+quoteTable("return_status")+" WHERE language_id=?";
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{"name"});
-		Integer languageId = getConfigService().get(ConfigKey.ADMIN_LANGUAGE_ID, Integer.class);
+		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		query.addParameter(languageId);
 		List<ReturnStatus> returnStatusList = getJdbcOperations()
 				.query(query.getSql(), query.getParameters(), new ReturnStatusRowMapper());
@@ -104,7 +104,7 @@ public class ReturnStatusAdminModelImpl extends BaseModel implements ReturnStatu
 	@Override
 	public int getTotalReturnStatuses() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("return_status")+ " WHERE language_id=?";
-		Integer languageId = getConfigService().get(ConfigKey.ADMIN_LANGUAGE_ID, Integer.class);
+		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		return getJdbcOperations().queryForInt(sql, languageId);
 	}
 	

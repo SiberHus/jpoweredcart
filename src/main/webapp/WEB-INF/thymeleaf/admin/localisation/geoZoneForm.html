@@ -72,9 +72,9 @@
 								<tr th:each="ztgz, rowStat : ${geoZone.zoneToGeoZones}" th:id="'tr_'+${rowStat.index}">
 									<td class="left">
 										<select name="zoneToGeoZones.countryId" class="country">
-											<option th:attr="selected=${country.id==ztgz.countryId?'selected':''}" 
-												th:each="country : ${countries}" th:value="${country.id}" 
-												th:text="${country.name}">Thailand</option>
+											<option th:each="country : ${countries}"
+												th:attr="selected=${country.id==ztgz.countryId?'selected':''}" 
+												th:value="${country.id}" th:text="${country.name}">Thailand</option>
 										</select>
 									</td>
 									<td class="left">
@@ -117,6 +117,9 @@
 				</div><!-- .box -->
 			</div><!-- #content -->
 		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
 		<script th:inline="javascript">
 		/*<![CDATA[*/
 			$(function(){
@@ -136,8 +139,6 @@
 			});
 		/*]]>*/
 		</script> 
-		
-		<div id="footer" th:include="/admin :: footer"></div>
 		
 	</body>
 </html>

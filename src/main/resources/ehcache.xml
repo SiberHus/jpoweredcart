@@ -12,7 +12,7 @@
 	<cache name="messageCache" maxElementsInMemory="200" eternal="false"
 		timeToIdleSeconds="600" timeToLiveSeconds="3600" overflowToDisk="true" />
 		
-	<cache name="configCache" maxElementsInMemory="200" eternal="false"
+	<cache name="settingCache" maxElementsInMemory="200" eternal="false"
 		timeToIdleSeconds="600" timeToLiveSeconds="3600" overflowToDisk="true" />
 	
 </ehcache>

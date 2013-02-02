@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/setting/store}" th:text="#{heading.title}">Settings</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/setting.png}" alt="" />
+							<span th:text="#{heading.title}"></span>
+						</h1>
+						<div class="buttons">
+							<a onclick="$('#form').submit();" class="button" th:text="#{button.save}">Save</a>
+							<a th:href="@{/admin/setting/store}" class="button" th:text="#{button.cancel}">Cancel</a>
+						</div>
+					</div>
+					<div class="content">
+						<div id="tabs" class="htabs">
+							<a href="#tab-general" th:text="#{tab.general}">General</a>
+							<a href="#tab-store" th:text="#{tab.store}">Store</a>
+							<a href="#tab-local" th:text="#{tab.local}">Local</a>
+							<a href="#tab-option" th:text="#{tab.option}">Option</a>
+							<a href="#tab-image" th:text="#{tab.image}">Image</a>
+							<a href="#tab-server" th:text="#{tab.server}">Server</a>
+						</div>
+						<form th:action="@{/admin/setting/store/save}" method="post" id="form">
+							<div id="tab-general">
+								<table class="form">
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.url}">URL</span></td>
+										<td>
+											<input type="text" name="config_url" th:value="${setting['config_url']}" size="40" />
+											<span class="error" th:if="${#sets.contains(errors,'url')}" th:text="#{error.url}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.ssl}">SSL</td>
+										<td><input type="text" name="config_ssl" th:value="${setting['config_ssl']}" size="40" /></td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.name}">Name</span></td>
+										<td>
+											<input type="text" name="config_name" th:value="${setting['config_name']}" size="40" />
+											<span class="error" th:if="${#sets.contains(errors,'name')}" th:text="#{error.name}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.owner}">Owner</span></td>
+										<td>
+											<input type="text" name="config_owner" th:value="${setting['config_owner']}" size="40" />
+											<span class="error" th:if="${#sets.contains(errors,'owner')}" th:text="#{error.owner}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.address}">Address</span></td>
+										<td>
+											<textarea name="config_address" cols="40" rows="5" th:value="${setting['config_address']}"></textarea>
+											<span class="error" th:if="${#sets.contains(errors,'address')}" th:text="#{error.address}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.email}">Email</span></td>
+										<td>
+											<input type="text" name="config_email" th:value="${setting['config_email']}" size="40" />
+											<span class="error" th:if="${#sets.contains(errors,'email')}" th:text="#{error.email}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.telephone}">Telephone</span></td>
+										<td>
+											<input type="text" name="config_telephone" th:value="${setting['config_telephone']}" />
+											<span class="error" th:if="${#sets.contains(errors,'telephone')}" th:text="#{error.telephone}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.fax}">Fax</td>
+										<td><input type="text" name="config_fax" th:value="${setting['config_fax']}" /></td>
+									</tr>
+								</table>
+							</div><!-- #tab-general -->
+							
+							<div id="tab-store">
+								<table class="form">
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.title}">Title</span></td>
+										<td>
+											<input type="text" name="config_title" th:value="${setting['config_title']}" />
+											<span class="error" th:if="${#sets.contains(errors,'title')}" th:text="#{error.title}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.metaDescription}">Meta Tag Description</td>
+										<td><textarea name="config_meta_description" cols="40" rows="5" th:text="${setting['config_meta_description']}"></textarea></td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.template}">Template</td>
+										<td>
+											<select id="configTemplate" name="config_template">
+												<option th:each="template : ${templates}"
+													th:attr="selected=${template==setting['config_template']?'selected':''}" 
+													th:value="${template}" th:text="${template}">default</option> 
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td></td>
+										<td id="template"></td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.layout}">Layout</td>
+										<td>
+											<select name="config_layout_id">
+												<option th:each="layout : ${layouts}"
+													th:attr="selected=${layout==setting['config_layout_id']?'selected':''}" 
+													th:value="${layout.id}" th:text="${layout.name}">default</option> 
+											</select>
+										</td>
+									</tr>
+								</table>
+							</div><!-- #tab-store -->
+							
+							<div id="tab-local">
+								<table class="form">
+									<tr>
+										<td th:utext="#{entry.country}">Country</td>
+										<td>
+											<select name="config_country_id">
+												<option th:each="country : ${countries}"
+													th:attr="selected=${country.id==setting['config_country_id']?'selected':''}" 
+													th:value="${country.id}" th:text="${country.name}">Thailand</option> 
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.zone}">Zone</td>
+										<td>
+											<select name="config_zone_id"></select>
+										</td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.language}">Language</td>
+										<td>
+											<select name="config_language">
+												<option th:each="language : ${languages}" 
+													th:attr="selected=${language.id==setting['config_language']?'selected':''}"
+													th:value="${language.code}" th:text="${language.name}">Thai</option> 
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.currency}">Currency</td>
+										<td>
+											<select name="config_currency">
+												<option th:each="currency : ${currencies}" 
+													th:attr="selected=${currency.id==setting['config_currency']?'selected':''}"
+													th:value="${currency.code}" th:text="${currency.title}">Baht</option> 
+											</select>
+										</td>
+									</tr>
+								</table>
+							</div><!-- #tab-local -->
+							
+							<div id="tab-option">
+								<h2 th:text="#{text.items}">ITEMS</h2>
+								<table class="form">
+									<tr>
+										<td>
+											<span class="required">*</span><span th:utext="#{entry.catalogLimit}">Default Items Per Page (Catalog):</span>
+										</td>
+										<td>
+											<input type="text" name="config_catalog_limit" th:value="${setting['config_catalog_limit']}" size="3" />
+											<span class="error" th:if="${#sets.contains(errors,'catalogLimit')}" th:text="#{error.limit}"></span>
+										</td>
+									</tr>
+								</table>
+								<h2 th:text="#{text.tax}">TAXES</h2>
+								<table class="form">
+									<tr>
+										<td th:utext="#{entry.tax}">Display Prices With Tax:</td>
+										<td>
+											<input id="configTaxYes" type="radio" name="config_tax" value="1" th:attr="checked=${setting['config_tax']=='1'?'checked':''}" />
+											<label for="configTaxYes" th:text="#{text.yes}">Yes</label>
+											<input id="configTaxNo" type="radio" name="config_tax" value="0" th:attr="checked=${setting['config_tax']=='0'?'checked':''}" />
+											<label for="configTaxNo" th:text="#{text.no}">Yes</label>
+										</td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.taxDefault}">Use Store Tax Address:</td>
+										<td>
+											<select name="config_tax_default">
+												<option value="" th:text="#{text.none}">--None--</option>
+												<option value="shipping" th:text="#{text.shipping}" 
+													th:attr="checked=${setting['config_tax_default']=='shipping'?'checked':''}">Shipping Address</option>
+												<option value="payment" th:text="#{text.payment}" 
+													th:attr="checked=${setting['config_tax_default']=='payment'?'checked':''}">Payment Address</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.taxCustomer}">Use Customer Tax Address:</td>
+										<td>
+											<select name="config_tax_customer">
+												<option value="" th:text="#{text.none}">--None--</option>
+												<option value="shipping" th:text="#{text.shipping}" 
+													th:attr="checked=${setting['config_tax_customer']=='shipping'?'checked':''}">Shipping Address</option>
+												<option value="payment" th:text="#{text.payment}" 
+													th:attr="checked=${setting['config_tax_customer']=='payment'?'checked':''}">Payment Address</option>
+											</select>
+										</td>
+									</tr>
+								</table>
+								<h2 th:text="#{text.account}">ACCOUNT</h2>
+								<table class="form">
+									<tr>
+										<td th:utext="#{entry.customerGroup}">Customer Group:</td>
+										<td>
+											<select name="config_customer_group_id">
+												<option th:each="group : ${customerGroups}" 
+													th:attr="selected=${group.id==setting['config_customer_group_id']?'selected':''}"
+													th:value="${group.id}" th:text="${group.name}">Default</option> 
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.customerGroupDisplay}">Customer Groups:</td>
+										<td>
+											<div class="scrollbox">
+												<div th:each="group : ${customerGroups}" th:class="${groupStat.odd?'odd':'even'}">
+													<input id="${'customerGroupDisplay_'+groupStat.count}" type="checkbox" name="config_customer_group_display[]" th:value="${group.id}" 
+														th:attr="checked=${#arrays.contains(config_customer_group_display, group.id)?'checked':''}" />
+													<label for="${'customerGroupDisplay_'+groupStat.count}" th:text="${group.name}">Default</label> 
+												</div>
+											</div>
+											<span class="error" th:if="${#sets.contains(errors,'customerGroupDisplay')}" th:text="#{error.customerGroupDisplay}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.customerPrice}">Login Display Prices:</td>
+										<td>
+											<input type="radio" id="customerPriceYes" name="config_customer_price" value="1" 
+												th:attr="checked=${setting['config_customer_price']=='1'?'checked':''}" />
+											<label for="customerPriceYes" th:text="#{text.yes}">Yes</label>
+											<input type="radio" id="customerPriceNo" name="config_customer_price" value="0" 
+												th:attr="checked=${setting['config_customer_price']=='0'?'checked':''}" />
+											<label for="customerPriceNo" th:text="#{text.no}">No</label>
+										</td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.account}">Account Terms:</td>
+										<td>
+											<select name="config_account_id">
+												<option value="0" th:text="#{text.none}">--None--</option>
+												<option th:each="info : ${informations}" 
+													th:attr="selected=${info.id==setting['config_account_id']?'selected':''}"
+													th:value="${info.id}" th:text="${info.title}">Default</option> 
+											</select>
+										</td>
+									</tr>
+								</table>
+								<h2 th:text="#{text.checkout}">CHECKOUT</h2>
+								<table class="form">
+									<tr>
+										<td th:utext="#{entry.cartWeight}">Display Weight on Cart Page:</td>
+										<td>
+											<input type="radio" id="cartWeightYes" name="config_cart_weight" value="1" 
+												th:attr="checked=${setting['config_cart_weight']=='1'?'checked':''}" />
+											<label for="cartWeightYes" th:text="#{text.yes}">Yes</label>
+											<input type="radio" id="cartWeightNo" name="config_cart_weight" value="0" 
+												th:attr="checked=${setting['config_cart_weight']=='0'?'checked':''}" />
+											<label for="cartWeightNo" th:text="#{text.no}">No</label>
+										</td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.questCheckout}">Guest Checkout:</td>
+										<td>
+											<input type="radio" id="questCheckoutYes" name="config_guest_checkout" value="1" 
+												th:attr="checked=${setting['config_guest_checkout']=='1'?'checked':''}" />
+											<label for="questCheckoutYes" th:text="#{text.yes}">Yes</label>
+											<input type="radio" id="questCheckoutNo" name="config_guest_checkout" value="0" 
+												th:attr="checked=${setting['config_guest_checkout']=='0'?'checked':''}" />
+											<label for="questCheckoutNo" th:text="#{text.no}">No</label>
+										</td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.checkout}">Checkout Terms:</td>
+										<td>
+											<select name="config_checkout_id">
+												<option value="0" th:text="#{text.none}">--None--</option>
+												<option th:each="info : ${informations}" 
+													th:attr="selected=${info.id==setting['config_account_id']?'selected':''}"
+													th:value="${info.id}" th:text="${info.title}">Default</option> 
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.orderStatus}">Order Status:</td>
+										<td>
+											<select name="config_order_status_id">
+												<option th:each="orderStatus : ${orderStatuses}" 
+													th:attr="selected=${orderStatus.id==setting['config_order_status_id']?'selected':''}"
+													th:value="${orderStatus.id}" th:text="${orderStatus.name}">Pending</option> 
+											</select>
+										</td>
+									</tr>
+								</table>
+								<h2 th:text="#{text.stock}">STOCK</h2>
+								<table class="form">
+									<tr>
+										<td th:utext="#{entry.stockDisplay}">Display Stock:</td>
+										<td>
+											<input type="radio" id="stockDisplayYes" name="config_stock_display" value="1" 
+												th:attr="checked=${setting['config_stock_display']=='1'?'checked':''}" />
+											<label for="stockDisplayYes" th:text="#{text.yes}">Yes</label>
+											<input type="radio" id="stockDisplayNo" name="config_stock_display" value="0" 
+												th:attr="checked=${setting['config_stock_display']=='0'?'checked':''}" />
+											<label for="stockDisplayNo" th:text="#{text.no}">No</label>
+										</td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.stockCheckout}">Stock Checkout:</td>
+										<td>
+											<input type="radio" id="stockCheckoutYes" name="config_stock_checkout" value="1" 
+												th:attr="checked=${setting['config_stock_checkout']=='1'?'checked':''}" />
+											<label for="stockCheckoutYes" th:text="#{text.yes}">Yes</label>
+											<input type="radio" id="stockCheckoutNo" name="config_stock_checkout" value="0" 
+												th:attr="checked=${setting['config_stock_checkout']=='0'?'checked':''}" />
+											<label for="stockCheckoutNo" th:text="#{text.no}">No</label>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div id="tab-image">
+								<table class="form">
+									<tr>
+										<td th:utext="#{entry.logo}">Store Logo:</td>
+										<td>
+											<div class="image">
+												<img th:src="${logo}" alt="" id="thumb-logo" />
+												<input type="hidden" name="config_logo" th:value="${setting['config_logo']}" id="logo" />
+												<br />
+												<a onclick="image_upload('logo', 'thumb-logo');" th:text="#{text.browse}">
+													Browse Files
+												</a>
+												&nbsp;&nbsp;|&nbsp;&nbsp;
+												<a th:onclick="'$(\'#thumb-logo\').attr(\'src\', \''+${noImage}+'\';\'); $(\'#logo\').attr(\'value\', \'\');'" th:text="#{text.clear}">
+													Clear Image
+												</a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td th:utext="#{entry.icon}">Icon:</td>
+										<td>
+											<div class="image">
+												<img th:src="${icon}" alt="" id="thumb-icon" />
+												<input type="hidden" name="config_icon" th:value="${setting['config_icon']}" id="icon" />
+												<br />
+												<a onclick="image_upload('icon', 'thumb-icon');" th:text="#{text.browse}">
+													Browse Files
+												</a>
+												&nbsp;&nbsp;|&nbsp;&nbsp;
+												<a th:onclick="'$(\'#thumb-icon\').attr(\'src\', \''+${noImage}+'\';\'); $(\'#icon\').attr(\'value\', \'\');'" th:text="#{text.clear}">
+													Clear Image
+												</a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.imageCategory}">Category Image Size:</span></td>
+										<td>
+											<input type="text" name="config_image_category_width" th:value="${setting['config_image_category_width']}" size="3" />
+											x
+											<input type="text" name="config_image_category_height" th:value="${setting['config_image_category_height']}" size="3" />
+											<span class="error" th:if="${#sets.contains(errors,'imageCategory')}" th:text="#{error.imageCategory}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.imageThumb}">Product Image Thumb Size:</span></td>
+										<td>
+											<input type="text" name="config_image_thumb_width" th:value="${setting['config_image_thumb_width']}" size="3" />
+											x
+											<input type="text" name="config_image_thumb_height" th:value="${setting['config_image_thumb_height']}" size="3" />
+											<span class="error" th:if="${#sets.contains(errors,'imageThumb')}" th:text="#{error.imageThumb}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.imagePopup}">Product Image Popup Size:</span></td>
+										<td>
+											<input type="text" name="config_image_popup_width" th:value="${setting['config_image_popup_width']}" size="3" />
+											x
+											<input type="text" name="config_image_popup_height" th:value="${setting['config_image_popup_height']}" size="3" />
+											<span class="error" th:if="${#sets.contains(errors,'imagePopup')}" th:text="#{error.imagePopup}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.imageProduct}">Product Image List Size:</span></td>
+										<td>
+											<input type="text" name="config_image_product_width" th:value="${setting['config_image_product_width']}" size="3" />
+											x
+											<input type="text" name="config_image_product_height" th:value="${setting['config_image_product_height']}" size="3" />
+											<span class="error" th:if="${#sets.contains(errors,'imageProduct')}" th:text="#{error.imageProduct}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.imageAdditional}">Additional Product Image Size:</span></td>
+										<td>
+											<input type="text" name="config_image_additional_width" th:value="${setting['config_image_additional_width']}" size="3" />
+											x
+											<input type="text" name="config_image_additional_height" th:value="${setting['config_image_additional_height']}" size="3" />
+											<span class="error" th:if="${#sets.contains(errors,'imageProduct')}" th:text="#{error.imageProduct}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.imageRelated}">Related Product Image Size:</span></td>
+										<td>
+											<input type="text" name="config_image_related_width" th:value="${setting['config_image_related_width']}" size="3" />
+											x
+											<input type="text" name="config_image_related_height" th:value="${setting['config_image_related_height']}" size="3" />
+											<span class="error" th:if="${#sets.contains(errors,'imageRelated')}" th:text="#{error.imageRelated}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.imageCompare}">Compare Image Size:</span></td>
+										<td>
+											<input type="text" name="config_image_compare_width" th:value="${setting['config_image_compare_width']}" size="3" />
+											x
+											<input type="text" name="config_image_compare_height" th:value="${setting['config_image_compare_height']}" size="3" />
+											<span class="error" th:if="${#sets.contains(errors,'imageCompare')}" th:text="#{error.imageCompare}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.imageWishlist}">Wish List Image Size:</span></td>
+										<td>
+											<input type="text" name="config_image_wishlist_width" th:value="${setting['config_image_wishlist_width']}" size="3" />
+											x
+											<input type="text" name="config_image_wishlist_height" th:value="${setting['config_image_wishlist_height']}" size="3" />
+											<span class="error" th:if="${#sets.contains(errors,'imageWishlist')}" th:text="#{error.imageWishlist}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.imageCart}">Cart Image Size:</span></td>
+										<td>
+											<input type="text" name="config_image_cart_width" th:value="${setting['config_image_cart_width']}" size="3" />
+											x
+											<input type="text" name="config_image_cart_height" th:value="${setting['config_image_cart_height']}" size="3" />
+											<span class="error" th:if="${#sets.contains(errors,'imageCart')}" th:text="#{error.imageCart}"></span>
+										</td>
+									</tr>
+								</table>
+							</div><!-- #tab-image -->
+							<div id="tab-server">
+								<table class="form">
+									<tr>
+										<td th:utext="#{entry.secure}">Use SSL:</td>
+										<td>
+											<input type="radio" id="secureYes" name="config_secure" value="1" 
+												th:attr="checked=${setting['config_secure']=='1'?'checked':''}" />
+											<label for="secureYes" th:text="#{text.yes}">Yes</label>
+											<input type="radio" id="secureNo" name="config_secure" value="0" 
+												th:attr="checked=${setting['config_secure']=='0'?'checked':''}" />
+											<label for="secureNo" th:text="#{text.no}">No</label>
+										</td>
+									</tr>
+								</table>
+							</div><!-- #tab-server -->
+						</form>
+					</div><!-- .content -->
+				</div><!-- .box -->
+			</div><!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
+		<script th:inline="javascript">
+			/*<![CDATA[ */
+			$(function(){
+				$('#tabs a').tabs();
+				
+				var templateUrl = /*[[@{/admin/setting/store/getTemplate.html}]]*/ '';
+				$('#configTemplate').change(function(){
+					$('#template').load(templateUrl+'?template='+encodeURIComponent($(this).value));
+				});
+			});
+			/*]]>*/
+		</script>
+	</body>
+</html>

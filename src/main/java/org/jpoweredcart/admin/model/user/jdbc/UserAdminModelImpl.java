@@ -10,14 +10,14 @@ import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
 import org.jpoweredcart.common.security.Password;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 
 
 public class UserAdminModelImpl extends BaseModel implements UserAdminModel {
 	
 	
-	public UserAdminModelImpl(ConfigService configService, JdbcOperations jdbcOperations){
+	public UserAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
 		super(configService, jdbcOperations);
 	}
 	

@@ -12,8 +12,8 @@ import org.jpoweredcart.admin.model.localisation.LengthClassAdminModel;
 import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.ConfigKey;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingKey;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class LengthClassAdminModelImpl extends BaseModel implements LengthClassAdminModel {
 
-	public LengthClassAdminModelImpl(ConfigService configService, JdbcOperations jdbcOperations){
+	public LengthClassAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
 		super(configService, jdbcOperations);
 	}
 	
@@ -97,7 +97,7 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 	@Override
 	public List<LengthClass> getLengthClasses(PageParam pageParam) {
 		
-		Integer languageId = getConfigService().get(ConfigKey.ADMIN_LANGUAGE_ID, Integer.class);
+		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		String sql = "SELECT * FROM " +quoteTable("length_class")+ " wc LEFT JOIN " +quoteTable("length_class_description")+ " wcd ON (wc.length_class_id = wcd.length_class_id) WHERE wcd.language_id = ?";
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
 				new String[]{"title", "unit", "value"});
@@ -110,7 +110,7 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 	@Override
 	public List<LengthClassDesc> getLengthClassDescsByUnit(String unit) {
 		
-		Integer languageId = getConfigService().get(ConfigKey.ADMIN_LANGUAGE_ID, Integer.class);
+		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		String sql = "SELECT * FROM " +quoteTable("length_class_description")+ " WHERE unit = ? AND language_id = ?";
 		List<LengthClassDesc> lengthClassDescList = getJdbcOperations().query(sql, 
 				new Object[]{languageId}, new LengthClassRowMapper.Desc());

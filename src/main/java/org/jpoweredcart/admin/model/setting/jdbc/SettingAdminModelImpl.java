@@ -4,12 +4,12 @@ import java.util.Map;
 
 import org.jpoweredcart.admin.model.setting.SettingAdminModel;
 import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 
 public class SettingAdminModelImpl extends BaseModel implements SettingAdminModel{
 	
-	public SettingAdminModelImpl(ConfigService configService, JdbcOperations jdbcOperations){
+	public SettingAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
 		super(configService, jdbcOperations);
 	}
 	

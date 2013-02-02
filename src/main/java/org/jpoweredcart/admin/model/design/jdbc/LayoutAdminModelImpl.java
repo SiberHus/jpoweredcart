@@ -12,7 +12,7 @@ import org.jpoweredcart.admin.model.design.LayoutAdminModel;
 import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class LayoutAdminModelImpl extends BaseModel implements LayoutAdminModel {
 
-	public LayoutAdminModelImpl(ConfigService configService, JdbcOperations jdbcOperations){
+	public LayoutAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
 		super(configService, jdbcOperations);
 	}
 	

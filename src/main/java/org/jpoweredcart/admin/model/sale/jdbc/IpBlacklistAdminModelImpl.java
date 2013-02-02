@@ -9,13 +9,13 @@ import org.jpoweredcart.admin.model.sale.IpBlacklistAdminModel;
 import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 
 public class IpBlacklistAdminModelImpl extends BaseModel implements IpBlacklistAdminModel {
 
 	
-	public IpBlacklistAdminModelImpl(ConfigService configService,
+	public IpBlacklistAdminModelImpl(SettingService configService,
 			JdbcOperations jdbcOperations) {
 		super(configService, jdbcOperations);
 	}

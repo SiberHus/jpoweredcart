@@ -3,17 +3,15 @@ package org.jpoweredcart.admin.model.sale.jdbc;
 import java.util.Date;
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.localisation.Country;
 import org.jpoweredcart.admin.entity.sale.Voucher;
 import org.jpoweredcart.admin.entity.sale.VoucherHistory;
-import org.jpoweredcart.admin.model.localisation.jdbc.CountryRowMapper;
 import org.jpoweredcart.admin.model.sale.VoucherAdminModel;
 import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.ConfigKey;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.service.ConfigService;
 import org.jpoweredcart.common.service.EmailService;
+import org.jpoweredcart.common.service.SettingKey;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +19,7 @@ public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminMode
 	
 	private EmailService emailService;
 	
-	public VoucherAdminModelImpl(ConfigService configService,
+	public VoucherAdminModelImpl(SettingService configService,
 			JdbcOperations jdbcOperations) {
 		super(configService, jdbcOperations);
 	}
@@ -80,7 +78,7 @@ public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminMode
 	public List<Voucher> getVouchers(PageParam pageParam) {
 		String sql = "SELECT v.voucher_id, v.code, v.from_name, v.from_email, v.to_name, v.to_email, (SELECT vtd.name FROM " 
 				+quoteTable("voucher_theme_description")+ " vtd WHERE vtd.voucher_theme_id = v.voucher_theme_id AND vtd.language_id = ?) AS theme, v.amount, v.status, v.date_added FROM " +quoteTable("voucher")+ " v";
-		Integer languageId = getConfigService().get(ConfigKey.ADMIN_LANGUAGE_ID, Integer.class);
+		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{
 				"v.code", "v.from_name", "v.from_email", "v.to_name", "v.to_email",
 				"v.theme", "v.amount", "v.status", "v.date_added"});

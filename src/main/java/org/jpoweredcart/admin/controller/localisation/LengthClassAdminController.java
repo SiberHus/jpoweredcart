@@ -14,10 +14,10 @@ import org.jpoweredcart.admin.model.catalog.ProductAdminModel;
 import org.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import org.jpoweredcart.admin.model.localisation.LengthClassAdminModel;
 import org.jpoweredcart.common.BaseController;
-import org.jpoweredcart.common.ConfigKey;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import org.jpoweredcart.common.security.UserPermissions;
+import org.jpoweredcart.common.service.SettingKey;
 import org.jpoweredcart.common.view.Pagination;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -117,7 +117,7 @@ public class LengthClassAdminController extends BaseController {
 		boolean error = false;
 		if(ids!=null){
 			for(Integer id: ids){
-				if(id.equals(getConfigService().get(ConfigKey.CFG_LENGTH_CLASS_ID, Integer.class))){
+				if(id.equals(getSettingService().getConfig(SettingKey.CFG_LENGTH_CLASS_ID, Integer.class))){
 					redirect.addFlashAttribute("msg_warning", "error.default");
 					error = true; break;
 				}

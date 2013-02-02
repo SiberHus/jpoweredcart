@@ -7,12 +7,12 @@ import org.jpoweredcart.admin.entity.catalog.CategoryToLayout;
 import org.jpoweredcart.admin.entity.catalog.CategoryToStore;
 import org.jpoweredcart.admin.model.catalog.CategoryAdminModel;
 import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 
 public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminModel{
 
-	public CategoryAdminModelImpl(ConfigService configService, JdbcOperations jdbcOperations){
+	public CategoryAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
 		super(configService, jdbcOperations);
 	}
 	

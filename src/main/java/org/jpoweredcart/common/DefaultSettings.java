@@ -1,6 +1,6 @@
 package org.jpoweredcart.common;
 
-public class Default {
+public class DefaultSettings {
 
 	public static final Integer STORE_ID = 0;
 	

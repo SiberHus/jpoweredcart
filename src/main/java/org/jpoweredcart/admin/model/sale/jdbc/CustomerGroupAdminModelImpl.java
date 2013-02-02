@@ -7,15 +7,15 @@ import java.util.List;
 import org.jpoweredcart.admin.entity.sale.CustomerGroup;
 import org.jpoweredcart.admin.model.sale.CustomerGroupAdminModel;
 import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.ConfigKey;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingKey;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 
 public class CustomerGroupAdminModelImpl extends BaseModel implements CustomerGroupAdminModel {
 
-	public CustomerGroupAdminModelImpl(ConfigService configService, JdbcOperations jdbcOperations){
+	public CustomerGroupAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
 		super(configService, jdbcOperations);
 	}
 	
@@ -44,7 +44,7 @@ public class CustomerGroupAdminModelImpl extends BaseModel implements CustomerGr
 
 	@Override
 	public List<CustomerGroup> getCustomerGroups(PageParam pageParam) {
-		Integer languageId = getConfigService().get(ConfigKey.ADMIN_LANGUAGE_ID, Integer.class);
+		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		String sql = "SELECT * FROM " +quoteTable("customer_group")+ " cg LEFT JOIN " +quoteTable("customer_group_description")
 				+ " cgd ON (cg.customer_group_id = cgd.customer_group_id) WHERE cgd.language_id = ?";
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 

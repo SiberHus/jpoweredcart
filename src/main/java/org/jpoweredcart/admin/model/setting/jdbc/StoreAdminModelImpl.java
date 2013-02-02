@@ -5,14 +5,14 @@ import java.util.List;
 import org.jpoweredcart.admin.entity.setting.Store;
 import org.jpoweredcart.admin.model.setting.StoreAdminModel;
 import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.ConfigKey;
-import org.jpoweredcart.common.Default;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.DefaultSettings;
+import org.jpoweredcart.common.service.SettingKey;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 
 public class StoreAdminModelImpl extends BaseModel implements StoreAdminModel {
 
-	public StoreAdminModelImpl(ConfigService configService, JdbcOperations jdbcOperations){
+	public StoreAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
 		super(configService, jdbcOperations);
 	}
 	
@@ -46,7 +46,8 @@ public class StoreAdminModelImpl extends BaseModel implements StoreAdminModel {
 		List<Store> storeList = getJdbcOperations().query(sql, new StoreRowMapper());
 		Store defaultStore = new Store();
 		defaultStore.setId(0);
-		String defaultStoreName = getConfigService().get(Default.STORE_ID, ConfigKey.CFG_STORE_NAME);
+		String defaultStoreName = getSettingService()
+				.getConfig(DefaultSettings.STORE_ID, SettingKey.CFG_STORE_NAME);
 		defaultStore.setName(defaultStoreName);
 		String defaultStoreUrl = getEnvironment().getProperty("app.http.catalog");
 		defaultStore.setUrl(defaultStoreUrl);

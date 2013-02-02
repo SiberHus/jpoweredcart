@@ -11,7 +11,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingService;
 import org.jpoweredcart.common.service.EmailMessage;
 import org.jpoweredcart.common.service.EmailService;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -22,7 +22,7 @@ public class DefaultEmailService implements EmailService {
 	
 	private Map<Integer, JavaMailSender> mailSenders = new ConcurrentHashMap<Integer, JavaMailSender>();
 	
-	private ConfigService configService;
+	private SettingService settingService;
 	
 	@Override
 	public void send(EmailMessage message) {
@@ -80,11 +80,11 @@ public class DefaultEmailService implements EmailService {
 		}
 		
 		JavaMailSenderImpl mailSenderImpl = new JavaMailSenderImpl();
-		String host = configService.get(storeId, "config_smtp_host");
-		int port = configService.get(storeId, "config_smtp_port", Integer.class);
-		String username = configService.get(storeId, "config_smtp_username");
-		String password = configService.get(storeId, "config_smtp_password");
-		String parameters = configService.get(storeId, "config_mail_parameter");
+		String host = settingService.getConfig(storeId, "config_smtp_host");
+		int port = settingService.getConfig(storeId, "config_smtp_port", Integer.class);
+		String username = settingService.getConfig(storeId, "config_smtp_username");
+		String password = settingService.getConfig(storeId, "config_smtp_password");
+		String parameters = settingService.getConfig(storeId, "config_mail_parameter");
 		Properties props = null;
 		if(StringUtils.isNotBlank(parameters)){
 			props = new Properties();
@@ -118,12 +118,12 @@ public class DefaultEmailService implements EmailService {
 		return false;
 	}
 	
-	public ConfigService getConfigService() {
-		return configService;
+	public SettingService getSettingService() {
+		return settingService;
 	}
 
-	public void setConfigService(ConfigService configService) {
-		this.configService = configService;
+	public void setSettingService(SettingService settingService) {
+		this.settingService = settingService;
 	}
 	
 	

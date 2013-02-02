@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jpoweredcart.common.Default;
+import org.jpoweredcart.common.DefaultSettings;
 
 public class EmailMessage implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	protected Integer storeId = Default.STORE_ID;
+	protected Integer storeId = DefaultSettings.STORE_ID;
 	
 	protected String to;
 	

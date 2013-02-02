@@ -12,10 +12,10 @@ import org.jpoweredcart.admin.entity.localisation.ReturnActions.ReturnAction;
 import org.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import org.jpoweredcart.admin.model.localisation.ReturnActionAdminModel;
 import org.jpoweredcart.common.BaseController;
-import org.jpoweredcart.common.ConfigKey;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import org.jpoweredcart.common.security.UserPermissions;
+import org.jpoweredcart.common.service.SettingKey;
 import org.jpoweredcart.common.view.Pagination;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +41,7 @@ public class ReturnActionAdminController extends BaseController {
 		List<ReturnAction> returnActions = returnActionAdminModel.getReturnActions(pageParam);
 		model.addAttribute("returnActions", returnActions);
 		
-		Integer defaultReturnActionId = getConfigService().get(ConfigKey.CFG_RETURN_STATUS_ID, Integer.class);
+		Integer defaultReturnActionId = getSettingService().getConfig(SettingKey.CFG_RETURN_STATUS_ID, Integer.class);
 		model.addAttribute("defaultReturnActionId", defaultReturnActionId);
 		
 		int total = returnActionAdminModel.getTotalReturnActions();
@@ -117,7 +117,7 @@ public class ReturnActionAdminController extends BaseController {
 		boolean error = false;
 		if(ids!=null){
 			for(Integer id: ids){
-				if(getConfigService().get(ConfigKey.CFG_RETURN_STATUS_ID, 
+				if(getSettingService().getConfig(SettingKey.CFG_RETURN_STATUS_ID, 
 						Integer.class) == id){
 					redirect.addFlashAttribute("msg_warning", "error.default");
 					error=true; break;

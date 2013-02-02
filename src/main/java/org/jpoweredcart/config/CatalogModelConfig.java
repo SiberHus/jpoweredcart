@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import org.jpoweredcart.catalog.model.catalog.jdbc.ProductModelImpl;
 import org.jpoweredcart.catalog.model.catalog.ProductModel;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -13,7 +13,7 @@ import org.springframework.jdbc.core.JdbcOperations;
 public class CatalogModelConfig {
 	
 	@Inject
-	private ConfigService configService;
+	private SettingService settingService;
 	
 	@Inject
 	private JdbcOperations jdbcOperations;
@@ -21,7 +21,7 @@ public class CatalogModelConfig {
 	//================= Catalog ========================//
 	
 	@Bean
-	public ProductModel productModel(){ return new ProductModelImpl(configService, jdbcOperations); }
+	public ProductModel productModel(){ return new ProductModelImpl(settingService, jdbcOperations); }
 	
 	
 }

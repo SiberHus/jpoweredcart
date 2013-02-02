@@ -7,13 +7,13 @@ import org.jpoweredcart.admin.model.localisation.ZoneAdminModel;
 import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 
 
 public class ZoneAdminModelImpl extends BaseModel implements ZoneAdminModel {
 	
-	public ZoneAdminModelImpl(ConfigService configService, JdbcOperations jdbcOperations){
+	public ZoneAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
 		super(configService, jdbcOperations);
 	}
 	

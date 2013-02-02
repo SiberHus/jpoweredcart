@@ -15,9 +15,9 @@ import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.apache.activemq.store.PersistenceAdapter;
 import org.apache.activemq.store.kahadb.KahaDBPersistenceAdapter;
 import org.apache.commons.lang3.StringUtils;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingService;
 import org.jpoweredcart.common.service.EmailService;
-import org.jpoweredcart.common.service.impl.DefaultConfigService;
+import org.jpoweredcart.common.service.impl.DefaultSettingService;
 import org.jpoweredcart.common.service.impl.DefaultEmailService;
 import org.jpoweredcart.common.service.impl.JmsEmailService;
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
@@ -142,28 +142,28 @@ public class MainConfig {
 	//================================= SERVICES ==========================================//
 	
 	@Bean
-	public ConfigService configService(){
+	public SettingService settingService(){
 		
-		DefaultConfigService configService = new DefaultConfigService();
-		configService.setJdbcOperations(jdbcOperations());
-		configService.setEnvironment(env);
+		DefaultSettingService settingService = new DefaultSettingService();
+		settingService.setJdbcOperations(jdbcOperations());
+		settingService.setEnvironment(env);
 		
-		if(env.getProperty("config.cacheable", Boolean.class, Boolean.FALSE)){
+		if(env.getProperty("setting.cacheable", Boolean.class, Boolean.FALSE)){
 			EhCacheFactoryBean cacheFactory = new EhCacheFactoryBean();
 			//use default cache manager CacheManager.getInstance();
-			cacheFactory.setCacheName("configCache");
+			cacheFactory.setCacheName("settingCache");
 			try{
 				cacheFactory.afterPropertiesSet();
 			}catch(Exception e){
 				//TODO: do something
 				e.printStackTrace();
 			}
-			Ehcache configCache = cacheFactory.getObject();
+			Ehcache settingCache = cacheFactory.getObject();
 			
-			configService.setConfigCache(configCache);
+			settingService.setSettingCache(settingCache);
 		}
 		
-		return configService;
+		return settingService;
 	}
 	
 	
@@ -180,7 +180,7 @@ public class MainConfig {
 		}else{
 			emailService = new DefaultEmailService();
 		}
-		emailService.setConfigService(configService());
+		emailService.setSettingService(settingService());
 		
 		return emailService;
 	}

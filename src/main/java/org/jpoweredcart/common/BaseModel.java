@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcOperations;
 
@@ -13,14 +13,14 @@ public class BaseModel {
 	
 	private Environment env;
 	
-	private ConfigService configService;
+	private SettingService settingService;
 	
 	private JdbcOperations jdbcOperations;
 	
 	public BaseModel(){}
 	
-	public BaseModel(ConfigService configService, JdbcOperations jdbcOperations){
-		setConfigService(configService);
+	public BaseModel(SettingService settingService, JdbcOperations jdbcOperations){
+		setSettingService(settingService);
 		setJdbcOperations(jdbcOperations);
 	}
 	
@@ -28,13 +28,13 @@ public class BaseModel {
 		return this.env;
 	}
 	
-	public ConfigService getConfigService() {
-		return configService;
+	public SettingService getSettingService() {
+		return settingService;
 	}
 	
-	public void setConfigService(ConfigService configService) {
-		this.configService = configService;
-		this.env = configService.getEnvironment();
+	public void setSettingService(SettingService settingService) {
+		this.settingService = settingService;
+		this.env = settingService.getEnvironment();
 	}
 
 	public JdbcOperations getJdbcOperations() {
@@ -104,7 +104,7 @@ public class BaseModel {
 			sql += " ASC";
 		}
 		int start = pageParam.getStart()>0?pageParam.getStart():0;
-		int limit = pageParam.getLimit()>1?pageParam.getLimit():Default.SQL_RESULT_LIMIT;
+		int limit = pageParam.getLimit()>1?pageParam.getLimit():DefaultSettings.SQL_RESULT_LIMIT;
 		sql += " LIMIT  ?, ? ";
 		
 		return new QueryBean(sql, null, start, limit);

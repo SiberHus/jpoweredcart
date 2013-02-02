@@ -1,6 +1,6 @@
-package org.jpoweredcart.common;
+package org.jpoweredcart.common.service;
 
-public class ConfigKey {
+public class SettingKey {
 	
 	//============================ Derived settings ===============================//
 	public static final String ADMIN_LANGUAGE_ID = "admin_language_id";

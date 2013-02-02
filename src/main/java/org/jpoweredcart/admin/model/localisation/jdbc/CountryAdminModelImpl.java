@@ -7,12 +7,12 @@ import org.jpoweredcart.admin.model.localisation.CountryAdminModel;
 import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 
 public class CountryAdminModelImpl extends BaseModel implements CountryAdminModel {
 	
-	public CountryAdminModelImpl(ConfigService configService, JdbcOperations jdbcOperations){
+	public CountryAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
 		super(configService, jdbcOperations);
 	}
 	

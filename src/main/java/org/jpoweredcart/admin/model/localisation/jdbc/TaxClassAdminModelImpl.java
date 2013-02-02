@@ -14,7 +14,7 @@ import org.jpoweredcart.admin.model.localisation.TaxClassAdminModel;
 import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class TaxClassAdminModelImpl extends BaseModel implements TaxClassAdminModel {
 
-	public TaxClassAdminModelImpl(ConfigService configService, JdbcOperations jdbcOperations){
+	public TaxClassAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
 		super(configService, jdbcOperations);
 	}
 	

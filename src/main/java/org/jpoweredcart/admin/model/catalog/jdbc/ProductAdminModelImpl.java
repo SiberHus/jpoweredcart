@@ -22,14 +22,14 @@ import org.jpoweredcart.admin.model.catalog.ProductAdminModel;
 import org.jpoweredcart.admin.model.catalog.TotalProductsFilter;
 import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.ConfigKey;
-import org.jpoweredcart.common.service.ConfigService;
+import org.jpoweredcart.common.service.SettingKey;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 
 public class ProductAdminModelImpl extends BaseModel implements ProductAdminModel {
 
 	
-	public ProductAdminModelImpl(ConfigService configService, JdbcOperations jdbcOperations){
+	public ProductAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
 		super(configService, jdbcOperations);
 	}
 	
@@ -161,7 +161,7 @@ public class ProductAdminModelImpl extends BaseModel implements ProductAdminMode
 			sql += " LEFT JOIN " +quoteTable("product_to_category")+ " p2c ON (p.product_id = p2c.product_id)";
 		}
 		List<Object> params = new ArrayList<Object>();
-		Integer languageId = getConfigService().get(ConfigKey.ADMIN_LANGUAGE_ID, Integer.class);
+		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		params.add(languageId);
 		sql += " WHERE pd.language_id = ?";
 		
