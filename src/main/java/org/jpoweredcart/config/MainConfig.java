@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 import javax.jms.ConnectionFactory;
+import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
 import net.sf.ehcache.Ehcache;
@@ -15,10 +16,13 @@ import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.apache.activemq.store.PersistenceAdapter;
 import org.apache.activemq.store.kahadb.KahaDBPersistenceAdapter;
 import org.apache.commons.lang3.StringUtils;
-import org.jpoweredcart.common.service.SettingService;
 import org.jpoweredcart.common.service.EmailService;
-import org.jpoweredcart.common.service.impl.DefaultSettingService;
+import org.jpoweredcart.common.service.ImageService;
+import org.jpoweredcart.common.service.SettingService;
+import org.jpoweredcart.common.service.impl.AbstractImageService;
 import org.jpoweredcart.common.service.impl.DefaultEmailService;
+import org.jpoweredcart.common.service.impl.DefaultSettingService;
+import org.jpoweredcart.common.service.impl.FileSystemImageService;
 import org.jpoweredcart.common.service.impl.JmsEmailService;
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
 import org.springframework.context.annotation.Bean;
@@ -52,6 +56,9 @@ import com.jolbox.bonecp.BoneCPDataSource;
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement
 public class MainConfig {
+	
+	@Inject
+	private ServletContext servletContext;
 	
 	@Inject
 	private Environment env;
@@ -183,6 +190,30 @@ public class MainConfig {
 		emailService.setSettingService(settingService());
 		
 		return emailService;
+	}
+	
+	@Bean
+	public ImageService imageService(){
+		
+		AbstractImageService imageService = null;
+		String imgBaseDir = env.getProperty("image.baseDir");
+		String imgBaseUrl = env.getProperty("image.baseUrl");
+		
+		FileSystemImageService fsImageService = new FileSystemImageService();
+		if(StringUtils.isBlank(imgBaseUrl)){
+			throw new IllegalArgumentException("image.baseUrl cannot be blank");
+		}else if(imgBaseUrl.startsWith("/")){
+			if(StringUtils.isBlank(imgBaseDir)){
+				fsImageService.setBaseDir(servletContext.getRealPath(imgBaseUrl));
+			}
+			fsImageService.setBaseUrl(servletContext.getContextPath()+imgBaseUrl);
+		}else{
+			fsImageService.setBaseDir(imgBaseDir);
+			fsImageService.setBaseUrl(imgBaseUrl);
+		}
+		imageService = fsImageService;
+		
+		return imageService;
 	}
 }
 

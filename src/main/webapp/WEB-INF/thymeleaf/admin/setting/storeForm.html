@@ -118,7 +118,7 @@
 										<td>
 											<select name="config_layout_id">
 												<option th:each="layout : ${layouts}"
-													th:attr="selected=${layout==setting['config_layout_id']?'selected':''}" 
+													th:attr="selected=${layout.id+''==setting['config_layout_id']?'selected':''}" 
 													th:value="${layout.id}" th:text="${layout.name}">default</option> 
 											</select>
 										</td>
@@ -133,7 +133,7 @@
 										<td>
 											<select name="config_country_id">
 												<option th:each="country : ${countries}"
-													th:attr="selected=${country.id==setting['config_country_id']?'selected':''}" 
+													th:attr="selected=${country.id+''==setting['config_country_id']?'selected':''}" 
 													th:value="${country.id}" th:text="${country.name}">Thailand</option> 
 											</select>
 										</td>
@@ -149,7 +149,7 @@
 										<td>
 											<select name="config_language">
 												<option th:each="language : ${languages}" 
-													th:attr="selected=${language.id==setting['config_language']?'selected':''}"
+													th:attr="selected=${language.id+''==setting['config_language']?'selected':''}"
 													th:value="${language.code}" th:text="${language.name}">Thai</option> 
 											</select>
 										</td>
@@ -159,7 +159,7 @@
 										<td>
 											<select name="config_currency">
 												<option th:each="currency : ${currencies}" 
-													th:attr="selected=${currency.id==setting['config_currency']?'selected':''}"
+													th:attr="selected=${currency.id+''==setting['config_currency']?'selected':''}"
 													th:value="${currency.code}" th:text="${currency.title}">Baht</option> 
 											</select>
 										</td>
@@ -278,7 +278,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td th:utext="#{entry.questCheckout}">Guest Checkout:</td>
+										<td th:utext="#{entry.guestCheckout}">Guest Checkout:</td>
 										<td>
 											<input type="radio" id="questCheckoutYes" name="config_guest_checkout" value="1" 
 												th:attr="checked=${setting['config_guest_checkout']=='1'?'checked':''}" />

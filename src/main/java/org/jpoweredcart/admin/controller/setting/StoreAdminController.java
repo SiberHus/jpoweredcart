@@ -1,6 +1,6 @@
 package org.jpoweredcart.admin.controller.setting;
 
-import java.util.HashMap;
+import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -10,14 +10,22 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.jpoweredcart.admin.entity.design.Layout;
 import org.jpoweredcart.admin.entity.localisation.Country;
+import org.jpoweredcart.admin.entity.localisation.Currency;
+import org.jpoweredcart.admin.entity.localisation.Language;
 import org.jpoweredcart.admin.entity.setting.Store;
+import org.jpoweredcart.admin.model.design.LayoutAdminModel;
+import org.jpoweredcart.admin.model.localisation.CountryAdminModel;
+import org.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
+import org.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import org.jpoweredcart.admin.model.setting.StoreAdminModel;
 import org.jpoweredcart.common.BaseController;
-import org.jpoweredcart.common.DefaultSettings;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import org.jpoweredcart.common.security.UserPermissions;
+import org.jpoweredcart.common.service.DefaultSettings;
+import org.jpoweredcart.common.service.ImageService;
 import org.jpoweredcart.common.service.SettingGroup;
 import org.jpoweredcart.common.view.Pagination;
 import org.springframework.stereotype.Controller;
@@ -34,6 +42,21 @@ public class StoreAdminController extends BaseController {
 	
 	@Inject
 	private StoreAdminModel storeAdminModel;
+	
+	@Inject
+	private LayoutAdminModel layoutAdminModel;
+	
+	@Inject
+	private CountryAdminModel countryAdminModel;
+	
+	@Inject
+	private LanguageAdminModel languageAdminModel;
+	
+	@Inject
+	private CurrencyAdminModel currencyAdminModel;
+	
+	@Inject
+	private ImageService imageService;
 	
 	@RequestMapping(value={"", "/"})
 	public String index(Model model, HttpServletRequest request){
@@ -52,12 +75,35 @@ public class StoreAdminController extends BaseController {
 	}
 	
 	@RequestMapping(value="/create")
-	public String create(Model model){
+	public String create(Model model, HttpServletRequest request){
 		
 		checkModifyPermission();
 		
 		Map<String, Object> config = getSettingService().getAll(DefaultSettings.STORE_ID, SettingGroup.CONFIG);
 		model.addAttribute("setting", config);
+		
+		List<Layout> layoutList = layoutAdminModel.getLayouts(PageParam.list());
+		model.addAttribute("layouts", layoutList);
+		
+		List<Country> countryList = countryAdminModel.getAllCountries();
+		model.addAttribute("countries", countryList);
+		
+		List<Language> languageList = languageAdminModel.getLanguages(PageParam.list());
+		model.addAttribute("languages", languageList);
+		
+		List<Currency> currencyList = currencyAdminModel.getCurrencies(PageParam.list());
+		model.addAttribute("currencies", currencyList);
+		
+		String templateBaseDir = getSettingService().getEnvironment()
+				.getProperty("template.baseDir")+"/catalog";
+		templateBaseDir = request.getServletContext().getRealPath(templateBaseDir);
+		String templates[] = new File(templateBaseDir).list();
+		model.addAttribute("templates", templates);
+		
+		String noImageUrl = imageService.getImageUrl("no_image.jpg");
+		model.addAttribute("logo", noImageUrl);
+		model.addAttribute("icon", noImageUrl);
+		model.addAttribute("noImage", noImageUrl);
 		
 		Set<String> errors = new HashSet<String>();
 		model.addAttribute("errors", errors);

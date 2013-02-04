@@ -9,7 +9,7 @@ import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 
 import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.DefaultSettings;
+import org.jpoweredcart.common.service.DefaultSettings;
 import org.jpoweredcart.common.service.SettingGroup;
 import org.jpoweredcart.common.service.SettingKey;
 import org.jpoweredcart.common.service.SettingService;

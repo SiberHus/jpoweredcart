@@ -1,4 +1,4 @@
-package org.jpoweredcart.common;
+package org.jpoweredcart.common.service;
 
 public class DefaultSettings {
 

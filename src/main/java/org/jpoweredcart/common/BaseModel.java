@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jpoweredcart.common.service.DefaultSettings;
 import org.jpoweredcart.common.service.SettingService;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcOperations;

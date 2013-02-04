@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jpoweredcart.common.DefaultSettings;
 
 public class EmailMessage implements Serializable {
 	
