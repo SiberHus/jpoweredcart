@@ -3,7 +3,7 @@ package org.jpoweredcart.admin.model.sale.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.admin.entity.sale.VoucherHistory;
+import org.jpoweredcart.common.entity.sale.VoucherHistory;
 import org.springframework.jdbc.core.RowMapper;
 
 public class VoucherHistoryRowMapper implements RowMapper<VoucherHistory>{

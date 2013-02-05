@@ -3,11 +3,11 @@ package org.jpoweredcart.admin.model.localisation.jdbc;
 import java.util.Date;
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.localisation.Currency;
 import org.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
 import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
+import org.jpoweredcart.common.entity.localisation.Currency;
 import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 

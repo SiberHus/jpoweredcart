@@ -4,8 +4,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import org.jpoweredcart.admin.entity.localisation.LengthClass;
-import org.jpoweredcart.admin.entity.localisation.LengthClassDesc;
+import org.jpoweredcart.common.entity.localisation.LengthClass;
+import org.jpoweredcart.common.entity.localisation.LengthClassDesc;
 import org.springframework.jdbc.core.RowMapper;
 
 public class LengthClassRowMapper implements RowMapper<LengthClass> {

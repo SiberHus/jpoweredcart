@@ -3,7 +3,7 @@ package org.jpoweredcart.admin.model.localisation.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.admin.entity.localisation.Language;
+import org.jpoweredcart.common.entity.localisation.Language;
 import org.springframework.jdbc.core.RowMapper;
 
 

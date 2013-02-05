@@ -2,9 +2,9 @@ package org.jpoweredcart.admin.model.sale;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.sale.Voucher;
-import org.jpoweredcart.admin.entity.sale.VoucherHistory;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.sale.Voucher;
+import org.jpoweredcart.common.entity.sale.VoucherHistory;
 
 public interface VoucherAdminModel {
 	

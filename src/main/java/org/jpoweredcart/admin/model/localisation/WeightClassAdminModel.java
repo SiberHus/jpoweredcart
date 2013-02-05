@@ -2,9 +2,9 @@ package org.jpoweredcart.admin.model.localisation;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.localisation.WeightClass;
-import org.jpoweredcart.admin.entity.localisation.WeightClassDesc;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.localisation.WeightClass;
+import org.jpoweredcart.common.entity.localisation.WeightClassDesc;
 
 public interface WeightClassAdminModel {
 

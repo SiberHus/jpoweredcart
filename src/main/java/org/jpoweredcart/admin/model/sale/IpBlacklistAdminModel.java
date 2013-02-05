@@ -2,8 +2,8 @@ package org.jpoweredcart.admin.model.sale;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.sale.IpBlacklist;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.sale.IpBlacklist;
 
 public interface IpBlacklistAdminModel {
 	

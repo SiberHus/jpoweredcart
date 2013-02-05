@@ -2,8 +2,8 @@ package org.jpoweredcart.admin.model.user;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.user.User;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.user.User;
 
 
 public interface UserAdminModel {

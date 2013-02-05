@@ -6,13 +6,13 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import org.jpoweredcart.admin.entity.localisation.Language;
-import org.jpoweredcart.admin.entity.localisation.StockStatuses;
-import org.jpoweredcart.admin.entity.localisation.StockStatuses.StockStatus;
 import org.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import org.jpoweredcart.admin.model.localisation.StockStatusAdminModel;
 import org.jpoweredcart.common.BaseController;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.localisation.Language;
+import org.jpoweredcart.common.entity.localisation.StockStatuses;
+import org.jpoweredcart.common.entity.localisation.StockStatuses.StockStatus;
 import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import org.jpoweredcart.common.security.UserPermissions;
 import org.jpoweredcart.common.service.SettingKey;

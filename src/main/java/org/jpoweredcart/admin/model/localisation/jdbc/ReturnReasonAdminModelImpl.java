@@ -6,12 +6,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.localisation.ReturnReasons;
-import org.jpoweredcart.admin.entity.localisation.ReturnReasons.ReturnReason;
 import org.jpoweredcart.admin.model.localisation.ReturnReasonAdminModel;
 import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
+import org.jpoweredcart.common.entity.localisation.ReturnReasons;
+import org.jpoweredcart.common.entity.localisation.ReturnReasons.ReturnReason;
 import org.jpoweredcart.common.service.SettingKey;
 import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;

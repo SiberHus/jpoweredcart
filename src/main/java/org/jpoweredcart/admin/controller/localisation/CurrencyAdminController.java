@@ -6,10 +6,10 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.jpoweredcart.admin.entity.localisation.Currency;
 import org.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
 import org.jpoweredcart.common.BaseController;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.localisation.Currency;
 import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import org.jpoweredcart.common.security.UserPermissions;
 import org.jpoweredcart.common.view.Pagination;

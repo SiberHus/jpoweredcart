@@ -3,7 +3,7 @@ package org.jpoweredcart.admin.model.user.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.admin.entity.user.UserGroup;
+import org.jpoweredcart.common.entity.user.UserGroup;
 import org.springframework.jdbc.core.RowMapper;
 
 

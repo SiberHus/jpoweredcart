@@ -3,7 +3,7 @@ package org.jpoweredcart.admin.model.setting.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.admin.entity.setting.Store;
+import org.jpoweredcart.common.entity.setting.Store;
 import org.springframework.jdbc.core.RowMapper;
 
 public class StoreRowMapper implements RowMapper<Store>{

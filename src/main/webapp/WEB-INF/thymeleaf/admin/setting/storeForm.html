@@ -223,7 +223,7 @@
 										<td>
 											<select name="config_customer_group_id">
 												<option th:each="group : ${customerGroups}" 
-													th:attr="selected=${group.id==setting['config_customer_group_id']?'selected':''}"
+													th:attr="selected=${group.id+''==setting['config_customer_group_id']?'selected':''}"
 													th:value="${group.id}" th:text="${group.name}">Default</option> 
 											</select>
 										</td>
@@ -234,7 +234,7 @@
 											<div class="scrollbox">
 												<div th:each="group : ${customerGroups}" th:class="${groupStat.odd?'odd':'even'}">
 													<input id="${'customerGroupDisplay_'+groupStat.count}" type="checkbox" name="config_customer_group_display[]" th:value="${group.id}" 
-														th:attr="checked=${#arrays.contains(config_customer_group_display, group.id)?'checked':''}" />
+														th:attr="checked=${setting['config_customer_group_display']!=null and #arrays.contains(setting['config_customer_group_display'], group.id)?'checked':''}" />
 													<label for="${'customerGroupDisplay_'+groupStat.count}" th:text="${group.name}">Default</label> 
 												</div>
 											</div>
@@ -258,7 +258,7 @@
 											<select name="config_account_id">
 												<option value="0" th:text="#{text.none}">--None--</option>
 												<option th:each="info : ${informations}" 
-													th:attr="selected=${info.id==setting['config_account_id']?'selected':''}"
+													th:attr="selected=${info.id+''==setting['config_account_id']?'selected':''}"
 													th:value="${info.id}" th:text="${info.title}">Default</option> 
 											</select>
 										</td>
@@ -294,7 +294,7 @@
 											<select name="config_checkout_id">
 												<option value="0" th:text="#{text.none}">--None--</option>
 												<option th:each="info : ${informations}" 
-													th:attr="selected=${info.id==setting['config_account_id']?'selected':''}"
+													th:attr="selected=${info.id+''==setting['config_account_id']?'selected':''}"
 													th:value="${info.id}" th:text="${info.title}">Default</option> 
 											</select>
 										</td>
@@ -304,7 +304,7 @@
 										<td>
 											<select name="config_order_status_id">
 												<option th:each="orderStatus : ${orderStatuses}" 
-													th:attr="selected=${orderStatus.id==setting['config_order_status_id']?'selected':''}"
+													th:attr="selected=${orderStatus.id+''==setting['config_order_status_id']?'selected':''}"
 													th:value="${orderStatus.id}" th:text="${orderStatus.name}">Pending</option> 
 											</select>
 										</td>

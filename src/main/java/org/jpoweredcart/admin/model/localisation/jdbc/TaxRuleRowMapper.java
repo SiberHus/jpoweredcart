@@ -3,7 +3,7 @@ package org.jpoweredcart.admin.model.localisation.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.admin.entity.localisation.TaxRule;
+import org.jpoweredcart.common.entity.localisation.TaxRule;
 import org.springframework.jdbc.core.RowMapper;
 
 public class TaxRuleRowMapper implements RowMapper<TaxRule>{

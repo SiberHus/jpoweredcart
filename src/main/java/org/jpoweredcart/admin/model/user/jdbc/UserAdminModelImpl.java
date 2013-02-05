@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jpoweredcart.admin.entity.user.User;
 import org.jpoweredcart.admin.model.user.UserAdminModel;
 import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
+import org.jpoweredcart.common.entity.user.User;
 import org.jpoweredcart.common.security.Password;
 import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;

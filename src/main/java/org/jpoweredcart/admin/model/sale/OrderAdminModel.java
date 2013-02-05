@@ -2,14 +2,14 @@ package org.jpoweredcart.admin.model.sale;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.sale.Order;
-import org.jpoweredcart.admin.entity.sale.OrderDownload;
-import org.jpoweredcart.admin.entity.sale.OrderHistory;
-import org.jpoweredcart.admin.entity.sale.OrderOption;
-import org.jpoweredcart.admin.entity.sale.OrderProduct;
-import org.jpoweredcart.admin.entity.sale.OrderTotal;
-import org.jpoweredcart.admin.entity.sale.OrderVoucher;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.sale.Order;
+import org.jpoweredcart.common.entity.sale.OrderDownload;
+import org.jpoweredcart.common.entity.sale.OrderHistory;
+import org.jpoweredcart.common.entity.sale.OrderOption;
+import org.jpoweredcart.common.entity.sale.OrderProduct;
+import org.jpoweredcart.common.entity.sale.OrderTotal;
+import org.jpoweredcart.common.entity.sale.OrderVoucher;
 
 public interface OrderAdminModel {
 

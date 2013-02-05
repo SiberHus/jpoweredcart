@@ -6,12 +6,12 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.jpoweredcart.admin.entity.localisation.Country;
-import org.jpoweredcart.admin.entity.localisation.Zone;
 import org.jpoweredcart.admin.model.localisation.CountryAdminModel;
 import org.jpoweredcart.admin.model.localisation.ZoneAdminModel;
 import org.jpoweredcart.common.BaseController;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.localisation.Country;
+import org.jpoweredcart.common.entity.localisation.Zone;
 import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import org.jpoweredcart.common.security.UserPermissions;
 import org.jpoweredcart.common.view.Pagination;

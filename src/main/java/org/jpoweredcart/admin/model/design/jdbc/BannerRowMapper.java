@@ -3,7 +3,7 @@ package org.jpoweredcart.admin.model.design.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.admin.entity.design.Banner;
+import org.jpoweredcart.common.entity.design.Banner;
 import org.springframework.jdbc.core.RowMapper;
 
 public class BannerRowMapper implements RowMapper<Banner>{

@@ -3,7 +3,7 @@ package org.jpoweredcart.admin.model.sale.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.admin.entity.sale.OrderProduct;
+import org.jpoweredcart.common.entity.sale.OrderProduct;
 import org.springframework.jdbc.core.RowMapper;
 
 public class OrderProductRowMapper implements RowMapper<OrderProduct>{

@@ -7,14 +7,14 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.jpoweredcart.admin.entity.localisation.Language;
-import org.jpoweredcart.admin.entity.localisation.LengthClass;
-import org.jpoweredcart.admin.entity.localisation.LengthClassDesc;
 import org.jpoweredcart.admin.model.catalog.ProductAdminModel;
 import org.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import org.jpoweredcart.admin.model.localisation.LengthClassAdminModel;
 import org.jpoweredcart.common.BaseController;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.localisation.Language;
+import org.jpoweredcart.common.entity.localisation.LengthClass;
+import org.jpoweredcart.common.entity.localisation.LengthClassDesc;
 import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import org.jpoweredcart.common.security.UserPermissions;
 import org.jpoweredcart.common.service.SettingKey;

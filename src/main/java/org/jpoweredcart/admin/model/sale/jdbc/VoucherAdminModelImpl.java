@@ -3,12 +3,12 @@ package org.jpoweredcart.admin.model.sale.jdbc;
 import java.util.Date;
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.sale.Voucher;
-import org.jpoweredcart.admin.entity.sale.VoucherHistory;
 import org.jpoweredcart.admin.model.sale.VoucherAdminModel;
 import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
+import org.jpoweredcart.common.entity.sale.Voucher;
+import org.jpoweredcart.common.entity.sale.VoucherHistory;
 import org.jpoweredcart.common.service.EmailService;
 import org.jpoweredcart.common.service.SettingKey;
 import org.jpoweredcart.common.service.SettingService;

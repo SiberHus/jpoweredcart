@@ -2,9 +2,9 @@ package org.jpoweredcart.admin.model.design;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.design.Layout;
-import org.jpoweredcart.admin.entity.design.LayoutRoute;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.design.Layout;
+import org.jpoweredcart.common.entity.design.LayoutRoute;
 
 public interface LayoutAdminModel {
 	

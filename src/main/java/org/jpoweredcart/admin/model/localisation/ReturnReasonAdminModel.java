@@ -2,9 +2,9 @@ package org.jpoweredcart.admin.model.localisation;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.localisation.ReturnReasons;
-import org.jpoweredcart.admin.entity.localisation.ReturnReasons.ReturnReason;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.localisation.ReturnReasons;
+import org.jpoweredcart.common.entity.localisation.ReturnReasons.ReturnReason;
 
 public interface ReturnReasonAdminModel {
 

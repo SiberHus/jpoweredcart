@@ -6,13 +6,13 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.jpoweredcart.admin.entity.localisation.TaxClass;
-import org.jpoweredcart.admin.entity.localisation.TaxRate;
-import org.jpoweredcart.admin.entity.localisation.TaxRule;
 import org.jpoweredcart.admin.model.localisation.TaxClassAdminModel;
 import org.jpoweredcart.admin.model.localisation.TaxRateAdminModel;
 import org.jpoweredcart.common.BaseController;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.localisation.TaxClass;
+import org.jpoweredcart.common.entity.localisation.TaxRate;
+import org.jpoweredcart.common.entity.localisation.TaxRule;
 import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import org.jpoweredcart.common.security.UserPermissions;
 import org.jpoweredcart.common.view.Pagination;

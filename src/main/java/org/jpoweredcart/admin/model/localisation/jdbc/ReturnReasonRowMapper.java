@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import org.jpoweredcart.admin.entity.localisation.ReturnReasons.ReturnReason;
+import org.jpoweredcart.common.entity.localisation.ReturnReasons.ReturnReason;
 import org.springframework.jdbc.core.RowMapper;
 
 public class ReturnReasonRowMapper implements RowMapper<ReturnReason> {

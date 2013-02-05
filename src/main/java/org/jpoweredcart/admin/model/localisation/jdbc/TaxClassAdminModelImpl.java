@@ -8,12 +8,12 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.localisation.TaxClass;
-import org.jpoweredcart.admin.entity.localisation.TaxRule;
 import org.jpoweredcart.admin.model.localisation.TaxClassAdminModel;
 import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
+import org.jpoweredcart.common.entity.localisation.TaxClass;
+import org.jpoweredcart.common.entity.localisation.TaxRule;
 import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;

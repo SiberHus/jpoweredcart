@@ -2,9 +2,9 @@ package org.jpoweredcart.admin.model.localisation;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.localisation.StockStatuses;
-import org.jpoweredcart.admin.entity.localisation.StockStatuses.StockStatus;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.localisation.StockStatuses;
+import org.jpoweredcart.common.entity.localisation.StockStatuses.StockStatus;
 
 public interface StockStatusAdminModel {
 

@@ -2,9 +2,9 @@ package org.jpoweredcart.admin.model.catalog;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.catalog.Category;
-import org.jpoweredcart.admin.entity.catalog.CategoryToLayout;
-import org.jpoweredcart.admin.entity.catalog.CategoryToStore;
+import org.jpoweredcart.common.entity.catalog.Category;
+import org.jpoweredcart.common.entity.catalog.CategoryToLayout;
+import org.jpoweredcart.common.entity.catalog.CategoryToStore;
 
 public interface CategoryAdminModel {
 

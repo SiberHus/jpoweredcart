@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import org.jpoweredcart.admin.entity.localisation.StockStatuses.StockStatus;
+import org.jpoweredcart.common.entity.localisation.StockStatuses.StockStatus;
 import org.springframework.jdbc.core.RowMapper;
 
 public class StockStatusRowMapper implements RowMapper<StockStatus> {

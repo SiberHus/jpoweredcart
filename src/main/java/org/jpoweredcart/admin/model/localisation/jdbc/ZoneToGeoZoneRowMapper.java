@@ -3,7 +3,7 @@ package org.jpoweredcart.admin.model.localisation.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.admin.entity.localisation.ZoneToGeoZone;
+import org.jpoweredcart.common.entity.localisation.ZoneToGeoZone;
 import org.springframework.jdbc.core.RowMapper;
 
 public class ZoneToGeoZoneRowMapper implements RowMapper<ZoneToGeoZone> {

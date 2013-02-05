@@ -6,12 +6,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.localisation.LengthClass;
-import org.jpoweredcart.admin.entity.localisation.LengthClassDesc;
 import org.jpoweredcart.admin.model.localisation.LengthClassAdminModel;
 import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
+import org.jpoweredcart.common.entity.localisation.LengthClass;
+import org.jpoweredcart.common.entity.localisation.LengthClassDesc;
 import org.jpoweredcart.common.service.SettingKey;
 import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -22,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class LengthClassAdminModelImpl extends BaseModel implements LengthClassAdminModel {
 
-	public LengthClassAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public LengthClassAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Transactional
@@ -43,6 +43,7 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 		}, keyHolder);
 		Integer lengthClassId = keyHolder.getKey().intValue();
 		addDescsToLengthClass(lengthClassId, lengthClass.getDescs());
+		lengthClass.setId(lengthClassId);
 	}
 
 	@Transactional
@@ -58,7 +59,7 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 		addDescsToLengthClass(lengthClass.getId(), lengthClass.getDescs());
 	}
 	
-	private void addDescsToLengthClass(Integer lengthClassId, List<LengthClassDesc> descs){
+	protected void addDescsToLengthClass(Integer lengthClassId, List<LengthClassDesc> descs){
 		for(LengthClassDesc desc: descs){
 			String sql = "INSERT INTO " +quoteTable("length_class_description")
 					+ "(length_class_id, language_id, title, unit) VALUES(?,?,?,?)";

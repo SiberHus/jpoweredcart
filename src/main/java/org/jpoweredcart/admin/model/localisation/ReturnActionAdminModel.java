@@ -2,9 +2,9 @@ package org.jpoweredcart.admin.model.localisation;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.localisation.ReturnActions;
-import org.jpoweredcart.admin.entity.localisation.ReturnActions.ReturnAction;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.localisation.ReturnActions;
+import org.jpoweredcart.common.entity.localisation.ReturnActions.ReturnAction;
 
 public interface ReturnActionAdminModel {
 

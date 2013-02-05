@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import org.jpoweredcart.admin.entity.localisation.OrderStatuses.OrderStatus;
+import org.jpoweredcart.common.entity.localisation.OrderStatuses.OrderStatus;
 import org.springframework.jdbc.core.RowMapper;
 
 public class OrderStatusRowMapper implements RowMapper<OrderStatus> {

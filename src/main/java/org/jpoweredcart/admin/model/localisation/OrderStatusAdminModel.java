@@ -2,9 +2,9 @@ package org.jpoweredcart.admin.model.localisation;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.localisation.OrderStatuses;
-import org.jpoweredcart.admin.entity.localisation.OrderStatuses.OrderStatus;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.localisation.OrderStatuses;
+import org.jpoweredcart.common.entity.localisation.OrderStatuses.OrderStatus;
 
 public interface OrderStatusAdminModel {
 

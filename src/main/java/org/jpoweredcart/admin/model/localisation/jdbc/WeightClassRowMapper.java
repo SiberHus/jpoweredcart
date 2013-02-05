@@ -4,8 +4,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import org.jpoweredcart.admin.entity.localisation.WeightClass;
-import org.jpoweredcart.admin.entity.localisation.WeightClassDesc;
+import org.jpoweredcart.common.entity.localisation.WeightClass;
+import org.jpoweredcart.common.entity.localisation.WeightClassDesc;
 import org.springframework.jdbc.core.RowMapper;
 
 public class WeightClassRowMapper implements RowMapper<WeightClass> {

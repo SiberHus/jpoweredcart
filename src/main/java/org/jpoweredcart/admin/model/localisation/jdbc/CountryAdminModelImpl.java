@@ -2,11 +2,11 @@ package org.jpoweredcart.admin.model.localisation.jdbc;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.localisation.Country;
 import org.jpoweredcart.admin.model.localisation.CountryAdminModel;
 import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
+import org.jpoweredcart.common.entity.localisation.Country;
 import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 

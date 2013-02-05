@@ -3,7 +3,7 @@ package org.jpoweredcart.admin.model.sale.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.admin.entity.sale.IpBlacklist;
+import org.jpoweredcart.common.entity.sale.IpBlacklist;
 import org.springframework.jdbc.core.RowMapper;
 
 public class IpBlacklistRowMapper implements RowMapper<IpBlacklist>{

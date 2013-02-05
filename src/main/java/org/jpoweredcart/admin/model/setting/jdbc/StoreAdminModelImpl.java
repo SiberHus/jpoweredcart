@@ -2,9 +2,9 @@ package org.jpoweredcart.admin.model.setting.jdbc;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.setting.Store;
 import org.jpoweredcart.admin.model.setting.StoreAdminModel;
 import org.jpoweredcart.common.BaseModel;
+import org.jpoweredcart.common.entity.setting.Store;
 import org.jpoweredcart.common.service.DefaultSettings;
 import org.jpoweredcart.common.service.SettingKey;
 import org.jpoweredcart.common.service.SettingService;

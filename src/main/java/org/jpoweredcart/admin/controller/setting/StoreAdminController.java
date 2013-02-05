@@ -10,18 +10,20 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.jpoweredcart.admin.entity.design.Layout;
-import org.jpoweredcart.admin.entity.localisation.Country;
-import org.jpoweredcart.admin.entity.localisation.Currency;
-import org.jpoweredcart.admin.entity.localisation.Language;
-import org.jpoweredcart.admin.entity.setting.Store;
 import org.jpoweredcart.admin.model.design.LayoutAdminModel;
 import org.jpoweredcart.admin.model.localisation.CountryAdminModel;
 import org.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
 import org.jpoweredcart.admin.model.localisation.LanguageAdminModel;
+import org.jpoweredcart.admin.model.sale.CustomerGroupAdminModel;
 import org.jpoweredcart.admin.model.setting.StoreAdminModel;
 import org.jpoweredcart.common.BaseController;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.design.Layout;
+import org.jpoweredcart.common.entity.localisation.Country;
+import org.jpoweredcart.common.entity.localisation.Currency;
+import org.jpoweredcart.common.entity.localisation.Language;
+import org.jpoweredcart.common.entity.sale.CustomerGroup;
+import org.jpoweredcart.common.entity.setting.Store;
 import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import org.jpoweredcart.common.security.UserPermissions;
 import org.jpoweredcart.common.service.DefaultSettings;
@@ -54,6 +56,9 @@ public class StoreAdminController extends BaseController {
 	
 	@Inject
 	private CurrencyAdminModel currencyAdminModel;
+	
+	@Inject
+	private CustomerGroupAdminModel customerGroupAdminModel;
 	
 	@Inject
 	private ImageService imageService;
@@ -93,6 +98,11 @@ public class StoreAdminController extends BaseController {
 		
 		List<Currency> currencyList = currencyAdminModel.getCurrencies(PageParam.list());
 		model.addAttribute("currencies", currencyList);
+		
+		List<CustomerGroup> customerGroupList = customerGroupAdminModel.getCustomerGroups(PageParam.list());
+		model.addAttribute("customerGroups", customerGroupList);
+		
+		
 		
 		String templateBaseDir = getSettingService().getEnvironment()
 				.getProperty("template.baseDir")+"/catalog";

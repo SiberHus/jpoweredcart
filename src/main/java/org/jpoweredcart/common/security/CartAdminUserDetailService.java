@@ -2,10 +2,10 @@ package org.jpoweredcart.common.security;
 
 import javax.inject.Inject;
 
-import org.jpoweredcart.admin.entity.user.User;
-import org.jpoweredcart.admin.entity.user.UserGroup;
-import org.jpoweredcart.admin.model.user.UserGroupAdminModel;
 import org.jpoweredcart.admin.model.user.UserAdminModel;
+import org.jpoweredcart.admin.model.user.UserGroupAdminModel;
+import org.jpoweredcart.common.entity.user.User;
+import org.jpoweredcart.common.entity.user.UserGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;

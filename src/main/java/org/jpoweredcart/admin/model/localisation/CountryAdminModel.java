@@ -2,8 +2,8 @@ package org.jpoweredcart.admin.model.localisation;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.localisation.Country;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.localisation.Country;
 
 
 public interface CountryAdminModel {

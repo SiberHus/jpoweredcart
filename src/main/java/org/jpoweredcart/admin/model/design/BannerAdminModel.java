@@ -2,9 +2,9 @@ package org.jpoweredcart.admin.model.design;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.design.Banner;
-import org.jpoweredcart.admin.entity.design.BannerImage;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.design.Banner;
+import org.jpoweredcart.common.entity.design.BannerImage;
 
 public interface BannerAdminModel {
 

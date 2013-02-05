@@ -2,21 +2,21 @@ package org.jpoweredcart.admin.model.catalog;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.entity.catalog.Product;
-import org.jpoweredcart.admin.entity.catalog.ProductAttribute;
-import org.jpoweredcart.admin.entity.catalog.ProductDescription;
-import org.jpoweredcart.admin.entity.catalog.ProductDiscount;
-import org.jpoweredcart.admin.entity.catalog.ProductFilter;
-import org.jpoweredcart.admin.entity.catalog.ProductImage;
-import org.jpoweredcart.admin.entity.catalog.ProductOption;
-import org.jpoweredcart.admin.entity.catalog.ProductRelated;
-import org.jpoweredcart.admin.entity.catalog.ProductReward;
-import org.jpoweredcart.admin.entity.catalog.ProductSpecial;
-import org.jpoweredcart.admin.entity.catalog.ProductToCategory;
-import org.jpoweredcart.admin.entity.catalog.ProductToDownload;
-import org.jpoweredcart.admin.entity.catalog.ProductToLayout;
-import org.jpoweredcart.admin.entity.catalog.ProductToStore;
 import org.jpoweredcart.common.PageParam;
+import org.jpoweredcart.common.entity.catalog.Product;
+import org.jpoweredcart.common.entity.catalog.ProductAttribute;
+import org.jpoweredcart.common.entity.catalog.ProductDescription;
+import org.jpoweredcart.common.entity.catalog.ProductDiscount;
+import org.jpoweredcart.common.entity.catalog.ProductFilter;
+import org.jpoweredcart.common.entity.catalog.ProductImage;
+import org.jpoweredcart.common.entity.catalog.ProductOption;
+import org.jpoweredcart.common.entity.catalog.ProductRelated;
+import org.jpoweredcart.common.entity.catalog.ProductReward;
+import org.jpoweredcart.common.entity.catalog.ProductSpecial;
+import org.jpoweredcart.common.entity.catalog.ProductToCategory;
+import org.jpoweredcart.common.entity.catalog.ProductToDownload;
+import org.jpoweredcart.common.entity.catalog.ProductToLayout;
+import org.jpoweredcart.common.entity.catalog.ProductToStore;
 
 public interface ProductAdminModel {
 	
