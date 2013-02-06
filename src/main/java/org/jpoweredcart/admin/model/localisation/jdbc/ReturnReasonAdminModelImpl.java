@@ -22,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class ReturnReasonAdminModelImpl extends BaseModel implements ReturnReasonAdminModel {
 	
-	public ReturnReasonAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public ReturnReasonAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Transactional

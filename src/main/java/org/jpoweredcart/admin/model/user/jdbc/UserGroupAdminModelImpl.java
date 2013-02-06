@@ -14,8 +14,8 @@ import org.springframework.jdbc.core.JdbcOperations;
 public class UserGroupAdminModelImpl extends BaseModel implements UserGroupAdminModel {
 	
 	
-	public UserGroupAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public UserGroupAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Override

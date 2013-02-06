@@ -13,8 +13,8 @@ import org.springframework.jdbc.core.JdbcOperations;
 
 public class ZoneAdminModelImpl extends BaseModel implements ZoneAdminModel {
 	
-	public ZoneAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public ZoneAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Override

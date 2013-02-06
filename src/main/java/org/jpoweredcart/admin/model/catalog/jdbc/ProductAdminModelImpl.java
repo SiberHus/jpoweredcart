@@ -29,8 +29,8 @@ import org.springframework.jdbc.core.JdbcOperations;
 public class ProductAdminModelImpl extends BaseModel implements ProductAdminModel {
 
 	
-	public ProductAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public ProductAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Override

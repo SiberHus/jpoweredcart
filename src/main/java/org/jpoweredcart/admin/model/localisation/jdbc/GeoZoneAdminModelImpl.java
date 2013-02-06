@@ -24,8 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminModel{
 	
-	public GeoZoneAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public GeoZoneAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Transactional

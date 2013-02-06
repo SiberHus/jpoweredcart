@@ -17,8 +17,8 @@ import org.springframework.jdbc.core.JdbcOperations;
 public class UserAdminModelImpl extends BaseModel implements UserAdminModel {
 	
 	
-	public UserAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public UserAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Override

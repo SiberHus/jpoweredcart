@@ -9,6 +9,7 @@ public class InformationToStore implements Serializable {
 	protected Integer informationId;
 	
 	protected Integer storeId;
+	
 
 	public Integer getInformationId() {
 		return informationId;

@@ -23,7 +23,7 @@ public class ScalarResultSetExtractor<T> implements ResultSetExtractor<T>{
 	public T extractData(ResultSet rs)
 			throws SQLException, DataAccessException {
 		if(rs.next()){
-			return (T)rs.getObject(0);
+			return (T)rs.getObject(1);
 		}
 		return null;
 	}

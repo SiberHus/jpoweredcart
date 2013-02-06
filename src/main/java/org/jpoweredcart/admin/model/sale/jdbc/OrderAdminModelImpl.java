@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.apache.commons.lang3.ObjectUtils;
 import org.jpoweredcart.admin.model.localisation.CountryAdminModel;
 import org.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
@@ -33,69 +35,74 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 	
-	private StoreAdminModel storeModel;
+	@Inject
+	private StoreAdminModel storeAdminModel;
 	
-	private SettingAdminModel settingModel;
+	@Inject
+	private SettingAdminModel settingAdminModel;
 	
-	private CountryAdminModel countryModel;
+	@Inject
+	private CountryAdminModel countryAdminModel;
 	
-	private ZoneAdminModel zoneModel;
+	@Inject
+	private ZoneAdminModel zoneAdminModel;
 	
-	private CurrencyAdminModel currencyModel;
+	@Inject
+	private CurrencyAdminModel currencyAdminModel;
 	
 	
-	public OrderAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public OrderAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	public void setStoreModel(StoreAdminModel storeModel){
-		this.storeModel = storeModel;
+		this.storeAdminModel = storeModel;
 	}
 	
 	public void setSettingModel(SettingAdminModel settingModel){
-		this.settingModel = settingModel;
+		this.settingAdminModel = settingModel;
 	}
 	
 	public void setCountryModel(CountryAdminModel countryModel) {
-		this.countryModel = countryModel;
+		this.countryAdminModel = countryModel;
 	}
 
 	public void setZoneModel(ZoneAdminModel zoneModel) {
-		this.zoneModel = zoneModel;
+		this.zoneAdminModel = zoneModel;
 	}
 
 	@Transactional
 	@Override
 	public void addOrder(Order order) {
 		
-		Store store = storeModel.getStore(order.getStoreId());
+		Store store = storeAdminModel.getStore(order.getStoreId());
 		String storeName = store.getName();
 		String storeUrl = store.getUrl();
 		
 		String invoicePrefix = null;
-		Map<String, Object> settings = settingModel.getSettings(SettingGroup.CONFIG, order.getStoreId());
+		Map<String, Object> settings = settingAdminModel.getSettings(SettingGroup.CONFIG, order.getStoreId());
 		if(settings.containsKey(SettingKey.INVOICE_PREFIX)){
 			invoicePrefix = ObjectUtils.toString(settings.get(SettingKey.INVOICE_PREFIX));
 		}else{
 			invoicePrefix = getSettingService().getConfig(SettingKey.CFG_INVOICE_PREFIX);
 		}
 		
-		Country country = countryModel.getCountry(order.getPaymentCountryId());
+		Country country = countryAdminModel.getCountry(order.getPaymentCountryId());
 		String shippingCountry = country.getName();
 		String shippingAddrFmt = country.getAddressFormat();
 		
-		Zone zone = zoneModel.getZone(order.getShippingZoneId());
+		Zone zone = zoneAdminModel.getZone(order.getShippingZoneId());
 		String shippingZone = zone.getName();
 		
-		country = countryModel.getCountry(order.getPaymentCountryId());
+		country = countryAdminModel.getCountry(order.getPaymentCountryId());
 		String paymentCountry = country.getName();
 		String paymentAddrFmt = country.getAddressFormat();
 		
-		zone = zoneModel.getZone(order.getPaymentZoneId());
+		zone = zoneAdminModel.getZone(order.getPaymentZoneId());
 		String paymentZone = zone.getName();
 		
 		String currencyCode = getSettingService().getConfig(SettingKey.CFG_CURRENCY);
-		Currency currency = currencyModel.getCurrencyByCode(currencyCode);
+		Currency currency = currencyAdminModel.getCurrencyByCode(currencyCode);
 		Integer currencyId = currency.getId();
 		BigDecimal currencyValue = currency.getValue();
 		

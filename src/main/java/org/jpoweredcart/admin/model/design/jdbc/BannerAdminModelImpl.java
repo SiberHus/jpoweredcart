@@ -22,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class BannerAdminModelImpl extends BaseModel implements BannerAdminModel {
 
-	public BannerAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public BannerAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Transactional

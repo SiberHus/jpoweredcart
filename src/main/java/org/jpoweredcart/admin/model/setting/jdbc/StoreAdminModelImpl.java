@@ -12,8 +12,8 @@ import org.springframework.jdbc.core.JdbcOperations;
 
 public class StoreAdminModelImpl extends BaseModel implements StoreAdminModel {
 
-	public StoreAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public StoreAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Override

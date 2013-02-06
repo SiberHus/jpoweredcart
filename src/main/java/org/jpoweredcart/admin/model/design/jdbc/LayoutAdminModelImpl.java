@@ -21,8 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class LayoutAdminModelImpl extends BaseModel implements LayoutAdminModel {
 
-	public LayoutAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public LayoutAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Transactional

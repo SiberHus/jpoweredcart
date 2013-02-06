@@ -19,9 +19,9 @@ public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminMode
 	
 	private EmailService emailService;
 	
-	public VoucherAdminModelImpl(SettingService configService,
+	public VoucherAdminModelImpl(SettingService settingService,
 			JdbcOperations jdbcOperations) {
-		super(configService, jdbcOperations);
+		super(settingService, jdbcOperations);
 	}
 	
 	@Override

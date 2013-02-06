@@ -5,10 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.commons.lang3.StringUtils;
+import org.jpoweredcart.admin.form.catalog.InformationForm;
 import org.jpoweredcart.admin.model.catalog.InformationAdminModel;
+import org.jpoweredcart.admin.model.setting.StoreAdminModel;
 import org.jpoweredcart.common.BaseModel;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.QueryBean;
@@ -16,7 +21,8 @@ import org.jpoweredcart.common.entity.catalog.Information;
 import org.jpoweredcart.common.entity.catalog.InformationDesc;
 import org.jpoweredcart.common.entity.catalog.InformationToLayout;
 import org.jpoweredcart.common.entity.catalog.InformationToStore;
-import org.jpoweredcart.common.entity.catalog.form.InformationForm;
+import org.jpoweredcart.common.entity.setting.Store;
+import org.jpoweredcart.common.jdbc.ScalarResultSetExtractor;
 import org.jpoweredcart.common.service.SettingKey;
 import org.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -27,13 +33,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class InformationAdminModelImpl extends BaseModel implements InformationAdminModel {
 	
+	@Inject
+	private StoreAdminModel storeAdminModel;
+	
 	public InformationAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
 		super(settingService, jdbcOperations);
 	}
 	
 	@Transactional
 	@Override
-	public void addInformation(final InformationForm info) {
+	public void addInformation(InformationForm informationForm) {
+		final Information information = informationForm.getData();
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcOperations().update(new PreparedStatementCreator() {
 			@Override
@@ -41,98 +51,105 @@ public class InformationAdminModelImpl extends BaseModel implements InformationA
 					throws SQLException {
 				String sql = "INSERT INTO " +quoteTable("information")+ "(sort_order, bottom, status) VALUES(?,?,?) ";
 				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-				ps.setInt(1, info.getSortOrder());
-				ps.setInt(2, info.getBottom());
-				ps.setShort(3, info.getStatus());
+				ps.setInt(1, information.getSortOrder());
+				ps.setInt(2, information.getBottom());
+				ps.setShort(3, information.getStatus());
 				return ps;
 			}
 		}, keyHolder);
 		Integer infoId = keyHolder.getKey().intValue();
-		addDescsToInformation(infoId, info.getDescs());
-		addStoresToInformation(infoId, info.getStores());
-		addLayoutsToInformation(infoId, info.getLayouts());
-		setKeyword(infoId, info.getKeyword());
-		info.setId(infoId);
+		addDescsToInformation(infoId, informationForm.getDescs());
+		addStoresToInformation(infoId, informationForm.getStores());
+		addLayoutsToInformation(infoId, informationForm.getLayouts());
+		setKeyword(infoId, information.getKeyword());
+		information.setId(infoId);
 	}
 	
 	@Transactional
 	@Override
-	public void updateInformation(InformationForm info) {
+	public void updateInformation(InformationForm informationForm) {
+		
+		Information information = informationForm.getData();
 		
 		String sql = "UPDATE " +quoteTable("information")+ " SET sort_order=?, bottom=?, status=? WHERE information_id=?";
-		getJdbcOperations().update(sql, info.getSortOrder(), info.getBottom(), info.getStatus(), info.getId());
+		getJdbcOperations().update(sql, information.getSortOrder(), information.getBottom(), 
+				information.getStatus(), information.getId());
 		
 		sql = "DELETE FROM " +quoteTable("information_description")+ " WHERE information_id=?";
-		getJdbcOperations().update(sql, info.getId());
-		addDescsToInformation(info.getId(), info.getDescs());
+		getJdbcOperations().update(sql, information.getId());
+		addDescsToInformation(information.getId(), informationForm.getDescs());
 		
 		sql = "DELETE FROM " +quoteTable("information_to_store")+ " WHERE information_id=?";
-		getJdbcOperations().update(sql, info.getId());
-		addStoresToInformation(info.getId(), info.getStores());
+		getJdbcOperations().update(sql, information.getId());
+		addStoresToInformation(information.getId(), informationForm.getStores());
 		
 		sql = "DELETE FROM " +quoteTable("information_to_layout")+ " WHERE information_id=?";
-		getJdbcOperations().update(sql, info.getId());
-		addLayoutsToInformation(info.getId(), info.getLayouts());
+		getJdbcOperations().update(sql, information.getId());
+		addLayoutsToInformation(information.getId(), informationForm.getLayouts());
 		
 		sql = "DELETE FROM " +quoteTable("url_alias")+ " WHERE query=?";
-		getJdbcOperations().update(sql, "information_id="+info.getId());
-		setKeyword(info.getId(), info.getKeyword());
+		getJdbcOperations().update(sql, "information_id="+information.getId());
+		setKeyword(information.getId(), information.getKeyword());
 	}
 	
-	protected void setKeyword(Integer infoId, String keyword){
+	protected void setKeyword(Integer informationId, String keyword){
 		if(StringUtils.isNotBlank(keyword)){
 			String sql = "INSERT INTO " +quoteTable("url_alias") + "(query, keyword) VALUES(?,?)";
-			getJdbcOperations().update(sql, "information_id="+infoId, keyword);
+			getJdbcOperations().update(sql, "information_id="+informationId, keyword);
 		}
 	}
 	
-	protected void addDescsToInformation(Integer infoId, List<InformationDesc> descs){
+	protected void addDescsToInformation(Integer informationId, List<InformationDesc> descs){
 		for(InformationDesc desc: descs){
 			String sql = "INSERT INTO " +quoteTable("information_description")
 					+ "(information_id, language_id, title, description) VALUES(?,?,?,?)";
-			getJdbcOperations().update(sql, infoId, desc.getLanguageId(),
+			getJdbcOperations().update(sql, informationId, desc.getLanguageId(),
 					desc.getTitle(), desc.getDescription());
 		}
 	}
 	
-	protected void addStoresToInformation(Integer infoId, List<InformationToStore> stores){
+	protected void addStoresToInformation(Integer informationId, List<InformationToStore> stores){
 		for(InformationToStore store: stores){
-			String sql = "INSERT INTO " +quoteTable("information_to_store")
+			if(store.getStoreId()!=null){
+				String sql = "INSERT INTO " +quoteTable("information_to_store")
 					+ "(information_id, store_id) VALUES(?,?)";
-			getJdbcOperations().update(sql, infoId, store.getStoreId());
+				getJdbcOperations().update(sql, informationId, store.getStoreId());
+			}
 		}
 	}
 	
-	protected void addLayoutsToInformation(Integer infoId, List<InformationToLayout> layouts){
+	protected void addLayoutsToInformation(Integer informationId, List<InformationToLayout> layouts){
 		for(InformationToLayout layout: layouts){
-			String sql = "INSERT INTO " +quoteTable("information_to_layout")
+			if(layout.getLayoutId()!=null){
+				String sql = "INSERT INTO " +quoteTable("information_to_layout")
 					+ "(information_id, store_id, layout_id) VALUES(?,?,?)";
-			getJdbcOperations().update(sql, infoId, layout.getStoreId(), layout.getLayoutId());
+				getJdbcOperations().update(sql, informationId, layout.getStoreId(), layout.getLayoutId());
+			}
 		}
 	}
 	
 	@Transactional
 	@Override
-	public void deleteInformation(Integer infoId) {
+	public void deleteInformation(Integer informationId) {
 		
 		String sql = "DELETE FROM " +quoteTable("url_alias")+ " WHERE query=?";
-		getJdbcOperations().update(sql, "information_id="+infoId);
+		getJdbcOperations().update(sql, "information_id="+informationId);
 		
 		String tables[] = new String[]{"information_description", "information_to_store", 
 				"information_to_layout", "information"};
 		for(String table: tables){
 			sql = "DELETE FROM " +quoteTable(table)+ " WHERE information_id=?";
-			getJdbcOperations().update(sql, infoId);
+			getJdbcOperations().update(sql, informationId);
 		}
 	}
 	
 	@Override
-	public Information getInformation(Integer infoId) {
+	public Information getInformation(Integer informationId) {
 		
 		String sql = "SELECT DISTINCT *, (SELECT keyword FROM " +quoteTable("url_alias")+ " WHERE query = ?) AS keyword FROM " 
 				+ quoteTable("information")+" WHERE information_id = ?";
 		Information info = getJdbcOperations().queryForObject(sql, 
-				new Object[]{infoId}, new InformationRowMapper(){
+				new Object[]{"information_id="+informationId, informationId}, new InformationRowMapper(){
 					@Override
 					public Information mapRow(ResultSet rs, int rowNum)
 							throws SQLException {
@@ -151,38 +168,51 @@ public class InformationAdminModelImpl extends BaseModel implements InformationA
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
 				new String[]{"id.title", "i.sort_order"});
 		query.addParameter(languageId);
-		List<Information> infoList = getJdbcOperations().query(query.getSql(), 
+		List<Information> informationList = getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new InformationRowMapper(){
 			@Override
 			public Information mapRow(ResultSet rs, int rowNum)
 					throws SQLException {
-				Information info = super.mapRow(rs, rowNum);
-				info.setTitle(rs.getString("title"));
-				return info;
+				Information information = super.mapRow(rs, rowNum);
+				information.setTitle(rs.getString("title"));
+				return information;
 			}
 		});
-		return infoList;
+		return informationList;
 	}
 	
 	@Override
-	public List<InformationDesc> getInformationDescriptions(Integer infoId){
-		String sql = "SELECT * FROM "+quoteTable("information_description")+" WHERE information_id =?"; 
-		return getJdbcOperations().query(sql, new Object[]{infoId}, 
+	public List<InformationDesc> getInformationDescriptions(Integer informationId){
+		String sql = "SELECT id.information_id, id.language_id, l.name AS language_name, l.image AS language_image, id.title, id.description FROM " +
+				quoteTable("information_description")+" id INNER JOIN "+quoteTable("language")+" l ON id.language_id=l.language_id WHERE id.information_id=?";
+		return getJdbcOperations().query(sql, new Object[]{informationId}, 
 				new InformationRowMapper.Desc());
 	}
 	
 	@Override
-	public List<InformationToStore> getInformationStores(Integer infoId) {
+	public List<InformationToStore> getInformationStores(Integer informationId) {
 		String sql = "SELECT * FROM "+quoteTable("information_to_store")+" WHERE information_id =?"; 
-		return getJdbcOperations().query(sql, new Object[]{infoId}, 
+		return getJdbcOperations().query(sql, new Object[]{informationId}, 
 				new InformationRowMapper.Store());
 	}
 
 	@Override
-	public List<InformationToLayout> getInformationLayouts(Integer infoId) {
-		String sql = "SELECT * FROM "+quoteTable("information_to_layout")+" WHERE information_id =?"; 
-		return getJdbcOperations().query(sql, new Object[]{infoId}, 
-				new InformationRowMapper.Layout());
+	public List<InformationToLayout> getInformationLayouts(Integer informationId) {
+		List<InformationToLayout> itlList = new ArrayList<InformationToLayout>();
+		for(Store store: storeAdminModel.getAllStores()){
+			InformationToLayout itl = new InformationToLayout();
+			itl.setInformationId(informationId);
+			itl.setStoreId(store.getId());
+			itl.setStoreName(store.getName());
+			String sql = "SELECT layout_id FROM "+quoteTable("information_to_layout")
+					+" WHERE information_id=? AND store_id=?";
+			Integer layoutId = getJdbcOperations().query(sql, 
+					new Object[]{informationId, store.getId()}, 
+					new ScalarResultSetExtractor<Integer>());
+			itl.setLayoutId(layoutId);
+			itlList.add(itl);
+		}
+		return itlList;
 	}
 	
 	@Override

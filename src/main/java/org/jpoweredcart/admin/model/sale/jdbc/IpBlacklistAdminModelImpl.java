@@ -15,9 +15,9 @@ import org.springframework.jdbc.core.JdbcOperations;
 public class IpBlacklistAdminModelImpl extends BaseModel implements IpBlacklistAdminModel {
 
 	
-	public IpBlacklistAdminModelImpl(SettingService configService,
+	public IpBlacklistAdminModelImpl(SettingService settingService,
 			JdbcOperations jdbcOperations) {
-		super(configService, jdbcOperations);
+		super(settingService, jdbcOperations);
 	}
 
 	@Override

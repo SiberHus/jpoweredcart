@@ -23,8 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class TaxRateAdminModelImpl extends BaseModel implements TaxRateAdminModel {
 
-	public TaxRateAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public TaxRateAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Transactional

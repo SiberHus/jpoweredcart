@@ -3,8 +3,10 @@ package org.jpoweredcart.config;
 import javax.inject.Inject;
 
 import org.jpoweredcart.admin.model.catalog.CategoryAdminModel;
+import org.jpoweredcart.admin.model.catalog.InformationAdminModel;
 import org.jpoweredcart.admin.model.catalog.ProductAdminModel;
 import org.jpoweredcart.admin.model.catalog.jdbc.CategoryAdminModelImpl;
+import org.jpoweredcart.admin.model.catalog.jdbc.InformationAdminModelImpl;
 import org.jpoweredcart.admin.model.catalog.jdbc.ProductAdminModelImpl;
 import org.jpoweredcart.admin.model.design.BannerAdminModel;
 import org.jpoweredcart.admin.model.design.LayoutAdminModel;
@@ -46,14 +48,16 @@ import org.jpoweredcart.admin.model.sale.jdbc.CustomerGroupAdminModelImpl;
 import org.jpoweredcart.admin.model.sale.jdbc.IpBlacklistAdminModelImpl;
 import org.jpoweredcart.admin.model.sale.jdbc.OrderAdminModelImpl;
 import org.jpoweredcart.admin.model.sale.jdbc.VoucherAdminModelImpl;
+import org.jpoweredcart.admin.model.setting.SettingAdminModel;
 import org.jpoweredcart.admin.model.setting.StoreAdminModel;
+import org.jpoweredcart.admin.model.setting.jdbc.SettingAdminModelImpl;
 import org.jpoweredcart.admin.model.setting.jdbc.StoreAdminModelImpl;
 import org.jpoweredcart.admin.model.user.UserAdminModel;
 import org.jpoweredcart.admin.model.user.UserGroupAdminModel;
 import org.jpoweredcart.admin.model.user.jdbc.UserAdminModelImpl;
 import org.jpoweredcart.admin.model.user.jdbc.UserGroupAdminModelImpl;
-import org.jpoweredcart.common.service.SettingService;
 import org.jpoweredcart.common.service.EmailService;
+import org.jpoweredcart.common.service.SettingService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -77,6 +81,8 @@ public class AdminModelConfig {
 	public CategoryAdminModel categoryAdminModel(){ return new CategoryAdminModelImpl(settingService, jdbcOperations); }
 	@Bean
 	public ProductAdminModel productAdminModel(){ return new ProductAdminModelImpl(settingService, jdbcOperations); }
+	@Bean
+	public InformationAdminModel informationAdminModel(){ return new InformationAdminModelImpl(settingService, jdbcOperations); }
 	
 	//================= Design ========================//
 	@Bean
@@ -135,6 +141,8 @@ public class AdminModelConfig {
 	
 	
 	//================= Setting ========================//
+	@Bean
+	public SettingAdminModel settingAdminModel(){ return new SettingAdminModelImpl(settingService, jdbcOperations); }
 	@Bean
 	public StoreAdminModel storeAdminModel(){ return new StoreAdminModelImpl(settingService, jdbcOperations); }
 	

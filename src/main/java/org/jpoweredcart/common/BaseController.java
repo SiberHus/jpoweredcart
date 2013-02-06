@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;
 
 
-public class BaseController{
+public abstract class BaseController{
 	
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 	

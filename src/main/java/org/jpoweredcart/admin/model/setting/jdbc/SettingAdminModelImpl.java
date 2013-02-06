@@ -9,8 +9,8 @@ import org.springframework.jdbc.core.JdbcOperations;
 
 public class SettingAdminModelImpl extends BaseModel implements SettingAdminModel{
 	
-	public SettingAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public SettingAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Override

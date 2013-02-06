@@ -22,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class WeightClassAdminModelImpl extends BaseModel implements WeightClassAdminModel {
 
-	public WeightClassAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public WeightClassAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Transactional

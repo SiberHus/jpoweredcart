@@ -71,7 +71,7 @@
 								<li><a th:href="${manufacturer}" th:text="#{head.text.manufacturer}">Manufacturers</a></li>
 								<li><a th:href="${download}" th:text="#{head.text.download}">Downloads</a></li>
 								<li><a th:href="${review}" th:text="#{head.text.review}"></a></li>
-								 <li><a th:href="${information}" th:text="#{head.text.information}">Information</a></li>
+								 <li><a th:href="@{/admin/catalog/information}" th:text="#{head.text.information}">Information</a></li>
 							</ul>
 						</li>
 						<li id="extension"><a class="top" th:text="#{head.text.extension}">Extensions</a>

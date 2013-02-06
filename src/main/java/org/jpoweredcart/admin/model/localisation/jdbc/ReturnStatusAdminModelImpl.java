@@ -22,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class ReturnStatusAdminModelImpl extends BaseModel implements ReturnStatusAdminModel {
 	
-	public ReturnStatusAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public ReturnStatusAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Transactional

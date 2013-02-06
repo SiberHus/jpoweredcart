@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/catalog/information}" th:text="#{heading.title}">Information</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/information.png}" alt="" />
+							<span th:text="#{heading.title}"></span>
+						</h1>
+						<div class="buttons">
+							<a onclick="$('#form').submit();" class="button" th:text="#{button.save}">Save</a>
+							<a th:href="@{/admin/catalog/information}" class="button" th:text="#{button.cancel}">Cancel</a>
+						</div>
+					</div>
+					<div class="content">
+						<div id="tabs" class="htabs">
+							<a href="#tab-general" th:text="#{tab.general}">General</a>
+							<a href="#tab-data" th:text="#{tab.data}">Data</a>
+							<a href="#tab-design" th:text="#{tab.design}">Design</a>
+						</div>
+						<form th:action="@{/admin/catalog/information/save}" th:object="${informationForm}" method="post" id="form">
+						<input type="hidden" th:field="*{data.id}" />
+						<div id="tab-general">
+							<div id="languages" class="htabs" >
+								<a th:each="desc, rowStat : *{descs}" th:href="'#language'+${desc.languageId}">
+									<img th:src="@{'/resources/admin/image/flags/'}+${desc.languageImage}" th:title="${desc.languageName}" />
+									<span th:text="${desc.languageName}">Thai</span>
+								</a>
+							</div>
+							<div th:each="desc, rowStat : *{descs}" th:id="'language'+${desc.languageId}">
+								<input type="hidden" th:name="${'descs['+rowStat.index+'].languageId'}" th:value="${desc.languageId}" />
+								<input type="hidden" th:name="${'descs['+rowStat.index+'].languageName'}" th:value="${desc.languageName}" />
+								<input type="hidden" th:name="${'descs['+rowStat.index+'].languageImage'}" th:value="${desc.languageImage}" />
+								<input type="hidden" th:name="${'descs['+rowStat.index+'].informationId'}" th:value="${desc.informationId}" />
+								<table class="form">
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.title}">Information Title:</span></td>
+										<td>
+											<input type="text" th:name="${'descs['+rowStat.index+'].title'}" th:value="${desc.title}"/>
+											<span class="error" th:if="${#fields.hasErrors('descs['+rowStat.index+'].title')}" th:text="#{error.title}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.description}">Description:</span></td>
+										<td>
+											<textarea th:name="${'descs['+rowStat.index+'].description'}" 
+												th:id="'description'+${desc.languageId}" th:text="${desc.description}"></textarea>
+											<span class="error" th:if="${#fields.hasErrors('descs['+rowStat.index+'].description')}" th:text="#{error.description}"></span>
+										</td>
+									</tr>
+								</table>
+							</div><!-- ${each desc} -->
+						</div><!-- #tab-general -->
+						
+						<div id="tab-data">
+							<table class="form">
+								<tr>
+									<td th:utext="#{entry.store}">Stores:</td>
+									<td>
+										<div class="scrollbox">
+											<div th:each="store,rowStat : ${stores}" th:class="${rowStat.odd?'odd':'even'}">
+												<input type="hidden" th:name="${'stores['+rowStat.index+'].informationId'}" th:value="${informationForm.data.id}" />
+												<input th:id="${'infoStore_'+rowStat.count}" type="checkbox" th:name="${'stores['+rowStat.index+'].storeId'}" th:value="${store.id}" 
+													th:attr="checked=${#lists.contains(informationForm.selectedStoreIds, store.id)?'checked':''}" />
+												<label th:for="${'infoStore_'+rowStat.count}" th:text="${store.name}">Default</label>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td th:utext="#{entry.keyword}">SEO Keyword:</td>
+									<td>
+										<input type="text" th:field="*{data.keyword}" />
+									</td>
+								</tr>
+								<tr>
+									<td th:utext="#{entry.bottom}">Bottom:</td>
+									<td>
+										<input type="checkbox" name="data.bottom" value="1" 
+											th:attr="checked=${informationForm.data.bottom==1?'selected':''}"/>
+									</td>
+								</tr>
+								<tr>
+									<td th:utext="#{entry.status}">Status:</td>
+									<td>
+										<select name="data.status">
+											<option value="1" th:text="#{text.enabled}" 
+												th:attr="selected=${informationForm.data.status==1?'selected':''}">Enabled</option>
+											<option value="0" th:text="#{text.disabled}" 
+												th:attr="selected=${informationForm.data.status==0?'selected':''}">Disabled</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td th:utext="#{entry.sortOrder}">Sort Order:</td>
+									<td>
+										<input type="text" th:field="*{data.sortOrder}" size="1" />
+									</td>
+								</tr>
+							</table>
+						</div><!-- #tab-data -->
+						<div id="tab-design">
+							<table class="list">
+							<thead>
+								<tr>
+									<td class="left" th:utext="#{entry.store}">Stores:</td>
+									<td class="left" th:utext="#{entry.layout}">Layout Override:</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="itl, rowStat : ${informationForm.layouts}">
+									<td class="left" th:text="${itl.storeName}">Default</td>
+									<td class="left">
+										<input type="hidden" th:name="'layouts['+${rowStat.index}+'].storeId'" th:value="${itl.storeId}" />
+										<select th:name="'layouts['+${rowStat.index}+'].layoutId'">
+											<option value=""></option>
+											<option th:each="layout: ${layouts}" th:value="${layout.id}" th:text="${layout.name}"
+												th:attr="selected=${itl.layoutId==layout.id?'selected':''}">Account</option>
+										</select>
+									</td>
+								</tr>
+							</tbody>
+							</table>
+						</div><!-- #tab-design -->
+						</form>
+					</div><!-- .content -->
+				</div><!-- .box -->
+			</div><!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		<script type="text/javascript" th:src="@{/resources/admin/javascript/ckeditor/ckeditor.js}"></script>
+		<script th:each="desc: ${informationForm.descs}" th:inline="javascript">
+			var descEditorId = /*[[${'description'+desc.languageId}]]*/ '';
+			CKEDITOR.replace(descEditorId, {
+				filebrowserBrowseUrl: 'index.php?route=common/filemanager',
+				filebrowserImageBrowseUrl: 'index.php?route=common/filemanager',
+				filebrowserFlashBrowseUrl: 'index.php?route=common/filemanager',
+				filebrowserUploadUrl: 'index.php?route=common/filemanager',
+				filebrowserImageUploadUrl: 'index.php?route=common/filemanager',
+				filebrowserFlashUploadUrl: 'index.php?route=common/filemanager'
+			});
+		</script>
+		<script th:inline="javascript">
+			/*<![CDATA[ */
+			$(function(){
+				$('#tabs a').tabs(); 
+				$('#languages a').tabs(); 
+			});
+			/*]]>*/
+		</script>
+		
+	</body>
+</html>

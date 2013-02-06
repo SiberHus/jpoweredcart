@@ -12,8 +12,8 @@ import org.springframework.jdbc.core.JdbcOperations;
 
 public class CountryAdminModelImpl extends BaseModel implements CountryAdminModel {
 	
-	public CountryAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public CountryAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Override

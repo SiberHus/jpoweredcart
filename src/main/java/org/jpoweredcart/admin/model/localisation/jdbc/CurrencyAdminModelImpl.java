@@ -14,8 +14,8 @@ import org.springframework.jdbc.core.JdbcOperations;
 
 public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminModel {
 	
-	public CurrencyAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public CurrencyAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Override

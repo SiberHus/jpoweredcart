@@ -12,8 +12,8 @@ import org.springframework.jdbc.core.JdbcOperations;
 
 public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminModel{
 
-	public CategoryAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public CategoryAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Override

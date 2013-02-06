@@ -22,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class OrderStatusAdminModelImpl extends BaseModel implements OrderStatusAdminModel {
 	
-	public OrderStatusAdminModelImpl(SettingService configService, JdbcOperations jdbcOperations){
-		super(configService, jdbcOperations);
+	public OrderStatusAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
+		super(settingService, jdbcOperations);
 	}
 	
 	@Transactional
