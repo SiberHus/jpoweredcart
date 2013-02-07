@@ -1,6 +1,5 @@
 package org.jpoweredcart.admin.form.catalog;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +12,11 @@ import org.jpoweredcart.common.entity.catalog.InformationToStore;
 import org.springframework.util.AutoPopulatingList;
 
 
-public class InformationForm implements Serializable {
+public class InformationForm extends Information {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Valid
-	protected Information data = new Information();
+	protected String keyword;
 	
 	@Valid
 	protected List<InformationDesc> descs = new AutoPopulatingList<InformationDesc>(InformationDesc.class);
@@ -38,15 +36,15 @@ public class InformationForm implements Serializable {
 		}
 		return idList;
 	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
 	
-	public Information getData() {
-		return data;
-	}
-
-	public void setData(Information data) {
-		this.data = data;
-	}
-
 	public List<InformationDesc> getDescs() {
 		return descs;
 	}

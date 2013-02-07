@@ -93,7 +93,9 @@ public class BaseModel {
 		
 		//TODO: Add database specific pagination query
 		List<String> sortKeys = Arrays.asList(sortFields);
-		
+		if(pageParam==null){
+			pageParam = PageParam.list(-1);//use the default limit
+		}
 		if(pageParam.getSortKey()!=null && sortKeys.contains(pageParam.getSortKey())){
 			sql += " ORDER BY "+pageParam.getSortKey();
 		}else{

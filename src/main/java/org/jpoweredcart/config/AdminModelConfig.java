@@ -5,9 +5,11 @@ import javax.inject.Inject;
 import org.jpoweredcart.admin.model.catalog.CategoryAdminModel;
 import org.jpoweredcart.admin.model.catalog.InformationAdminModel;
 import org.jpoweredcart.admin.model.catalog.ProductAdminModel;
+import org.jpoweredcart.admin.model.catalog.ReviewAdminModel;
 import org.jpoweredcart.admin.model.catalog.jdbc.CategoryAdminModelImpl;
 import org.jpoweredcart.admin.model.catalog.jdbc.InformationAdminModelImpl;
 import org.jpoweredcart.admin.model.catalog.jdbc.ProductAdminModelImpl;
+import org.jpoweredcart.admin.model.catalog.jdbc.ReviewAdminModelImpl;
 import org.jpoweredcart.admin.model.design.BannerAdminModel;
 import org.jpoweredcart.admin.model.design.LayoutAdminModel;
 import org.jpoweredcart.admin.model.design.jdbc.BannerAdminModelImpl;
@@ -83,6 +85,8 @@ public class AdminModelConfig {
 	public ProductAdminModel productAdminModel(){ return new ProductAdminModelImpl(settingService, jdbcOperations); }
 	@Bean
 	public InformationAdminModel informationAdminModel(){ return new InformationAdminModelImpl(settingService, jdbcOperations); }
+	@Bean
+	public ReviewAdminModel reviewAdminModel(){ return new ReviewAdminModelImpl(settingService, jdbcOperations); }
 	
 	//================= Design ========================//
 	@Bean

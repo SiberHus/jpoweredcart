@@ -14,8 +14,6 @@ public class Information implements Serializable {
 	
 	protected short status;
 	
-	protected String keyword;
-	
 	protected String title;//title for default language
 	
 	public Integer getId() {
@@ -48,14 +46,6 @@ public class Information implements Serializable {
 
 	public void setStatus(short status) {
 		this.status = status;
-	}
-	
-	public String getKeyword() {
-		return keyword;
-	}
-
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
 	}
 	
 	public String getTitle() {

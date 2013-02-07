@@ -16,7 +16,6 @@ import org.jpoweredcart.common.BaseController;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.entity.catalog.Information;
 import org.jpoweredcart.common.entity.catalog.InformationDesc;
-import org.jpoweredcart.common.entity.catalog.InformationToStore;
 import org.jpoweredcart.common.entity.localisation.Language;
 import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import org.jpoweredcart.common.security.UserPermissions;
@@ -49,10 +48,10 @@ public class InformationAdminController extends BaseController {
 	@RequestMapping(value={"", "/"})
 	public String index(Model model, HttpServletRequest request){
 		PageParam pageParam = createPageParam(request);
-		List<Information> infoList = informationAdminModel.getInformations(pageParam);
+		List<Information> infoList = informationAdminModel.getList(pageParam);
 		model.addAttribute("informations", infoList);
 		
-		int total = informationAdminModel.getTotalInformations();
+		int total = informationAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
 			.setText(message(request, "text.pagination"))
@@ -66,7 +65,7 @@ public class InformationAdminController extends BaseController {
 	public String create(Model model){
 		
 		checkModifyPermission();
-		InformationForm informationForm = new InformationForm();
+		InformationForm infoForm = new InformationForm();
 		List<InformationDesc> descs = new ArrayList<InformationDesc>();
 		for(Language language: languageAdminModel.getLanguages(PageParam.list())){
 			InformationDesc desc = new InformationDesc();
@@ -75,8 +74,8 @@ public class InformationAdminController extends BaseController {
 			desc.setLanguageImage(language.getImage());
 			descs.add(desc);
 		}
-		informationForm.setDescs(descs);
-		model.addAttribute("informationForm", informationForm);
+		infoForm.setDescs(descs);
+		model.addAttribute("informationForm", infoForm);
 		addFormAttributes(model);
 		
 		return "/admin/catalog/informationForm";
@@ -86,15 +85,8 @@ public class InformationAdminController extends BaseController {
 	public String edit(@PathVariable("id") Integer id, Model model){
 		
 		checkModifyPermission();
-		InformationForm informationForm = new InformationForm();
-		Information information = informationAdminModel.getInformation(id);
-		informationForm.setData(information);
-		informationForm.setDescs(informationAdminModel.getInformationDescriptions(information.getId()));
-		
-		informationForm.setStores(informationAdminModel.getInformationStores(information.getId()));
-		informationForm.setLayouts(informationAdminModel.getInformationLayouts(information.getId()));
-		
-		model.addAttribute("informationForm", informationForm);
+		InformationForm infoForm = informationAdminModel.getForm(id);
+		model.addAttribute("informationForm", infoForm);
 		
 		addFormAttributes(model);
 		
@@ -102,27 +94,23 @@ public class InformationAdminController extends BaseController {
 	}
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public String save(@Valid InformationForm informationForm, BindingResult result, Model model, 
+	public String save(@Valid InformationForm infoForm, BindingResult result, Model model, 
 			RedirectAttributes redirect){
 		
 		checkModifyPermission();
 		
-		for(InformationToStore its : informationForm.getStores()){
-			logger.info(its.getInformationId()+"=>"+its.getStoreId());
-		}
-		
 		if(result.hasErrors()){
-			model.addAttribute("informationForm", informationForm);
+			model.addAttribute("informationForm", infoForm);
 			model.addAttribute("msg_warning", "error.warning");
 			addFormAttributes(model);
 			return "/admin/catalog/informationForm";
 		}
 		
 		
-		if(informationForm.getData().getId()!=null){
-			informationAdminModel.updateInformation(informationForm);
+		if(infoForm.getId()!=null){
+			informationAdminModel.update(infoForm);
 		}else{
-			informationAdminModel.addInformation(informationForm);
+			informationAdminModel.create(infoForm);
 		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
@@ -137,7 +125,7 @@ public class InformationAdminController extends BaseController {
 		boolean error = false;
 		if(ids!=null){
 			if(!error) for(Integer id: ids){
-				informationAdminModel.deleteInformation(id);
+				informationAdminModel.delete(id);
 			}
 		}
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");

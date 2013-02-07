@@ -10,25 +10,27 @@ import org.jpoweredcart.common.entity.catalog.InformationToLayout;
 import org.jpoweredcart.common.entity.catalog.InformationToStore;
 
 public interface InformationAdminModel {
-
-	public void addInformation(InformationForm informationForm);
 	
-	public void updateInformation(InformationForm informationForm);
+	public void create(InformationForm infoForm);
 	
-	public void deleteInformation(Integer informationId);
+	public void update(InformationForm infoForm);
 	
-	public Information getInformation(Integer informationId);
+	public void delete(Integer infoId);
 	
-	public List<Information> getInformations(PageParam pageParam);
+	public InformationForm getForm(Integer infoId);
 	
-	public List<InformationDesc> getInformationDescriptions(Integer informationId);
+	public Information get(Integer infoId);
 	
-	public List<InformationToStore> getInformationStores(Integer informationId);
+	public List<Information> getList(PageParam pageParam);
 	
-	public List<InformationToLayout> getInformationLayouts(Integer informationId);
+	public List<InformationDesc> getInfoDescs(Integer infoId);
 	
-	public int getTotalInformations();
+	public List<InformationToStore> getInfoStores(Integer infoId);
 	
-	public int getTotalInformationsByLayoutId(Integer layoutId);
+	public List<InformationToLayout> getInfoLayouts(Integer infoId);
+	
+	public int getTotal();
+	
+	public int getTotalByLayoutId(Integer layoutId);
 	
 }
