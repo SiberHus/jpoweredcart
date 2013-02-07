@@ -29,7 +29,7 @@ public class CartAdminUserDetailService implements UserDetailsService {
 			throws UsernameNotFoundException {
 		
 		try{
-			User user = userModel.getUserByUsername(username);
+			User user = userModel.getOneByUsername(username);
 			if(user==null) throw new EmptyResultDataAccessException(1);
 			
 			CartUserDetails userDetails = new CartUserDetails();

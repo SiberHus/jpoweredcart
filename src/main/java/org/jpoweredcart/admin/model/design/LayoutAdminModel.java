@@ -8,18 +8,18 @@ import org.jpoweredcart.common.entity.design.LayoutRoute;
 
 public interface LayoutAdminModel {
 	
-	public void addLayout(Layout layout);
+	public void create(Layout layout);
 	
-	public void updateLayout(Layout layout);
+	public void update(Layout layout);
 	
-	public void deleteLayout(Integer layoutId);
+	public void delete(Integer layoutId);
 		
-	public Layout getLayout(Integer layoutId);
+	public Layout get(Integer layoutId);
 	
-	public List<Layout> getLayouts(PageParam pageParam);
+	public List<Layout> getList(PageParam pageParam);
 	
 	public List<LayoutRoute> getLayoutRoutes(Integer layoutId);
 	
-	public int getTotalLayouts();
+	public int getTotal();
 	
 }

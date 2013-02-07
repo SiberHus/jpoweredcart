@@ -43,9 +43,9 @@ public class TaxRateAdminController extends BaseController {
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<TaxRate> currencies = taxRateAdminModel.getTaxRates(pageParam);
+		List<TaxRate> currencies = taxRateAdminModel.getList(pageParam);
 		model.addAttribute("taxRates", currencies);
-		int total = taxRateAdminModel.getTotalTaxRates();
+		int total = taxRateAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
 			.setText(message(request, "text.pagination"))
@@ -71,7 +71,7 @@ public class TaxRateAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		TaxRate taxRate = taxRateAdminModel.getTaxRate(id);
+		TaxRate taxRate = taxRateAdminModel.get(id);
 		model.addAttribute("taxRate", taxRate);
 		addFormAttributes(model);
 		
@@ -90,7 +90,11 @@ public class TaxRateAdminController extends BaseController {
 			return "/admin/localisation/taxRateForm";
 		}
 		
-		taxRateAdminModel.saveTaxRate(taxRate);
+		if(taxRate.getId()!=null){
+			taxRateAdminModel.create(taxRate);
+		}else{
+			taxRateAdminModel.update(taxRate);
+		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
 		
@@ -104,7 +108,7 @@ public class TaxRateAdminController extends BaseController {
 		boolean error = false;
 		if(ids!=null){
 			if(!error) for(Integer id: ids){
-				taxRateAdminModel.deleteTaxRate(id);
+				taxRateAdminModel.delete(id);
 			}
 		}
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");
@@ -114,10 +118,10 @@ public class TaxRateAdminController extends BaseController {
 	
 	private void addFormAttributes(Model model){
 		
-		List<GeoZone> geoZones = geoZoneAdminModel.getGeoZones(PageParam.list());
+		List<GeoZone> geoZones = geoZoneAdminModel.getList(PageParam.list());
 		model.addAttribute("geoZones", geoZones);
 		
-		List<CustomerGroup> customerGroups = customerGroupAdminModel.getCustomerGroups(PageParam.list());
+		List<CustomerGroup> customerGroups = customerGroupAdminModel.getList(PageParam.list());
 		model.addAttribute("customerGroups", customerGroups);
 	}
 	

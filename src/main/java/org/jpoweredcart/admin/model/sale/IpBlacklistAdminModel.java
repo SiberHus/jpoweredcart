@@ -7,18 +7,16 @@ import org.jpoweredcart.common.entity.sale.IpBlacklist;
 
 public interface IpBlacklistAdminModel {
 	
-	public void addIpBlacklist(IpBlacklist blacklist);
+	public void create(IpBlacklist blacklist);
 	
-	public void updateIpBlacklist(IpBlacklist blacklist);
-
-	public void saveIpBlacklist(IpBlacklist blacklist);
+	public void update(IpBlacklist blacklist);
 	
-	public void deleteIpBlacklist(Integer blacklistId);
+	public void delete(Integer blacklistId);
 	
-	public IpBlacklist getIpBlacklist(Integer blacklistId);
+	public IpBlacklist get(Integer blacklistId);
 	
-	public List<IpBlacklist> getIpBlacklists(PageParam pageParam);
+	public List<IpBlacklist> getList(PageParam pageParam);
 	
-	public int getTotalIpBlacklists();
+	public int getTotal();
 	
 }

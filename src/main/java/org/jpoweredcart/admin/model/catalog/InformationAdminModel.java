@@ -23,7 +23,7 @@ public interface InformationAdminModel {
 	
 	public List<Information> getList(PageParam pageParam);
 	
-	public List<InformationDesc> getInfoDescs(Integer infoId);
+	public List<InformationDesc> getInfoDescriptions(Integer infoId);
 	
 	public List<InformationToStore> getInfoStores(Integer infoId);
 	

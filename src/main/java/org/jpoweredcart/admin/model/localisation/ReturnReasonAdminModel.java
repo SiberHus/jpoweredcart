@@ -8,18 +8,18 @@ import org.jpoweredcart.common.entity.localisation.ReturnReasons.ReturnReason;
 
 public interface ReturnReasonAdminModel {
 
-	public void addReturnReason(ReturnReason... returnReasons);
+	public void create(ReturnReason... returnReasons);
 	
-	public void updateReturnReason(ReturnReason... returnReasons);
+	public void update(ReturnReason... returnReasons);
 	
-	public void deleteReturnReason(Integer returnReasonId);
+	public void delete(Integer returnReasonId);
 	
-	public ReturnReason getReturnReason(Integer returnReasonId);
+	public ReturnReason get(Integer returnReasonId);
 	
-	public List<ReturnReason> getReturnReasons(PageParam pageParam);
+	public List<ReturnReason> getList(PageParam pageParam);
 	
 	public ReturnReasons getReturnReasons(Integer returnReasonId);
 	
-	public int getTotalReturnReasons();
+	public int getTotal();
 	
 }

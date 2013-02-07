@@ -27,7 +27,7 @@ public class LayoutAdminModelImpl extends BaseModel implements LayoutAdminModel 
 	
 	@Transactional
 	@Override
-	public void addLayout(final Layout layout) {
+	public void create(final Layout layout) {
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcOperations().update(new PreparedStatementCreator() {
@@ -49,7 +49,7 @@ public class LayoutAdminModelImpl extends BaseModel implements LayoutAdminModel 
 	
 	@Transactional
 	@Override
-	public void updateLayout(Layout layout) {
+	public void update(Layout layout) {
 		
 		String sql = "UPDATE " +quoteTable("layout")+ " SET name = ? WHERE layout_id = ?";
 		int num = getJdbcOperations().update(sql, layout.getName(), layout.getId());
@@ -72,7 +72,7 @@ public class LayoutAdminModelImpl extends BaseModel implements LayoutAdminModel 
 	
 	@Transactional
 	@Override
-	public void deleteLayout(Integer layoutId) {
+	public void delete(Integer layoutId) {
 		String tables[] = new String[]{"layout", "layout_route", 
 				"category_to_layout","product_to_layout","information_to_layout"};
 		for(String table: tables){
@@ -82,7 +82,7 @@ public class LayoutAdminModelImpl extends BaseModel implements LayoutAdminModel 
 	}
 	
 	@Override
-	public Layout getLayout(Integer layoutId) {
+	public Layout get(Integer layoutId) {
 		
 		String sql = "SELECT DISTINCT * FROM " +quoteTable("layout")+ " WHERE layout_id =?";
 		Layout layout = getJdbcOperations().queryForObject(sql, 
@@ -95,7 +95,7 @@ public class LayoutAdminModelImpl extends BaseModel implements LayoutAdminModel 
 	}
 	
 	@Override
-	public List<Layout> getLayouts(PageParam pageParam) {
+	public List<Layout> getList(PageParam pageParam) {
 		QueryBean query = createPaginationQuery("layout", pageParam, 
 				new String[]{"name"});
 		List<Layout> layoutList = getJdbcOperations().query(query.getSql(), 
@@ -110,7 +110,7 @@ public class LayoutAdminModelImpl extends BaseModel implements LayoutAdminModel 
 	}
 
 	@Override
-	public int getTotalLayouts() {
+	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("layout");
 		return getJdbcOperations().queryForInt(sql);
 	}

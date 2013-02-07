@@ -33,10 +33,10 @@ public class LanguageAdminController extends BaseController {
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<Language> languageList = languageAdminModel.getLanguages(pageParam);
+		List<Language> languageList = languageAdminModel.getList(pageParam);
 		model.addAttribute("languages", languageList);
 		
-		int total = languageAdminModel.getTotalLanguages();
+		int total = languageAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
 			.setText(message(request, "text.pagination"))
@@ -61,7 +61,7 @@ public class LanguageAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		Language language = languageAdminModel.getLanguage(id);
+		Language language = languageAdminModel.get(id);
 		model.addAttribute("language", language);
 		
 		return "/admin/localisation/languageForm";
@@ -78,7 +78,12 @@ public class LanguageAdminController extends BaseController {
 			return "/admin/localisation/languageForm";
 		}
 		
-		languageAdminModel.saveLanguage(language);
+		if(language.getId()!=null){
+			languageAdminModel.update(language);
+		}else{
+			languageAdminModel.create(language);
+		}
+		
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
 		
@@ -92,7 +97,7 @@ public class LanguageAdminController extends BaseController {
 		boolean error = false;
 		if(ids!=null){
 			if(!error) for(Integer id: ids){
-				languageAdminModel.deleteLanguage(id);
+				languageAdminModel.delete(id);
 			}
 		}
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");

@@ -7,18 +7,16 @@ import org.jpoweredcart.common.entity.localisation.GeoZone;
 
 public interface GeoZoneAdminModel {
 	
-	public void addGeoZone(GeoZone geoZone);
+	public void create(GeoZone geoZone);
 	
-	public void updateGeoZone(GeoZone geoZone);
+	public void update(GeoZone geoZone);
 	
-	public void saveGeoZone(GeoZone geoZone);
+	public void delete(Integer geoZoneId);
 	
-	public void deleteGeoZone(Integer geoZoneId);
+	public GeoZone get(Integer geoZoneId);
 	
-	public GeoZone getGeoZone(Integer geoZoneId);
+	public List<GeoZone> getList(PageParam pageParam);
 	
-	public List<GeoZone> getGeoZones(PageParam pageParam);
-	
-	public int getTotalGeoZones();
+	public int getTotal();
 	
 }

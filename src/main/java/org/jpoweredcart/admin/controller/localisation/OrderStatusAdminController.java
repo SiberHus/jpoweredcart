@@ -38,13 +38,13 @@ public class OrderStatusAdminController extends BaseController {
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<OrderStatus> orderStatuses = orderStatusAdminModel.getOrderStatuses(pageParam);
+		List<OrderStatus> orderStatuses = orderStatusAdminModel.getList(pageParam);
 		model.addAttribute("orderStatuses", orderStatuses);
 		
 		Integer defaultOrderStatusId = getSettingService().getConfig(SettingKey.CFG_STOCK_STATUS_ID, Integer.class);
 		model.addAttribute("defaultOrderStatusId", defaultOrderStatusId);
 		
-		int total = orderStatusAdminModel.getTotalOrderStatuses();
+		int total = orderStatusAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
 			.setText(message(request, "text.pagination"))
@@ -59,7 +59,7 @@ public class OrderStatusAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		List<Language> languages = languageAdminModel.getLanguages(new PageParam());
+		List<Language> languages = languageAdminModel.getList(new PageParam());
 		List<OrderStatus> list = new ArrayList<OrderStatus>();
 		for(Language language: languages){
 			OrderStatus orderStatus = new OrderStatus();
@@ -100,9 +100,9 @@ public class OrderStatusAdminController extends BaseController {
 		
 		OrderStatus orderStatusList[] = orderStatuses.getList().toArray(new OrderStatus[0]);
 		if(orderStatuses.isNewEntities()){
-			orderStatusAdminModel.addOrderStatus(orderStatusList);
+			orderStatusAdminModel.create(orderStatusList);
 		}else{
-			orderStatusAdminModel.updateOrderStatus(orderStatusList);
+			orderStatusAdminModel.update(orderStatusList);
 		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
@@ -125,7 +125,7 @@ public class OrderStatusAdminController extends BaseController {
 				
 			}
 			if(!error) for(Integer id: ids){
-				orderStatusAdminModel.deleteOrderStatus(id);
+				orderStatusAdminModel.delete(id);
 			}
 		}
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");

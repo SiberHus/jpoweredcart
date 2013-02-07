@@ -1,4 +1,4 @@
-package org.jpoweredcart.admin.model.sale;
+package org.jpoweredcart.admin.form.sale;
 
 import java.io.Serializable;
 import java.util.Date;

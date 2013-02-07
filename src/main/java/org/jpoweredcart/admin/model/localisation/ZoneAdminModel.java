@@ -8,21 +8,19 @@ import org.jpoweredcart.common.entity.localisation.Zone;
 
 public interface ZoneAdminModel {
 	
-	public void addZone(Zone zone);
+	public void create(Zone zone);
 	
-	public void updateZone(Zone zone);
+	public void update(Zone zone);
 	
-	public void saveZone(Zone zone);
+	public void delete(Integer zoneId);
 	
-	public void deleteZone(Integer zoneId);
+	public Zone get(Integer zoneId);
 	
-	public Zone getZone(Integer zoneId);
+	public List<Zone> getAllByCountryId(Integer countryId);
 	
-	public List<Zone> getZonesByCountryId(Integer countryId);
+	public List<Zone> getList(PageParam pageParam);
 	
-	public List<Zone> getZones(PageParam pageParam);
-	
-	public int getTotalZones();
+	public int getTotal();
 	
 	public int getTotalZonesByCountryId(Integer countryId);
 	

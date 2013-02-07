@@ -39,7 +39,7 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
-			User user = userModel.getUserByUsername(auth.getName());
+			User user = userModel.getOneByUsername(auth.getName());
 			if(user.getStatus()==0){
 				log.info("Banned user:{} tried to login", user.getUsername());
 				//invalidate authentication

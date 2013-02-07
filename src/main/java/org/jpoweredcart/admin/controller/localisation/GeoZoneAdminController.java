@@ -44,9 +44,9 @@ public class GeoZoneAdminController extends BaseController {
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<GeoZone> currencies = geoZoneAdminModel.getGeoZones(pageParam);
+		List<GeoZone> currencies = geoZoneAdminModel.getList(pageParam);
 		model.addAttribute("geoZones", currencies);
-		int total = geoZoneAdminModel.getTotalGeoZones();
+		int total = geoZoneAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
 			.setText(message(request, "text.pagination"))
@@ -62,7 +62,7 @@ public class GeoZoneAdminController extends BaseController {
 		checkModifyPermission();
 		
 		model.addAttribute("geoZone", new GeoZone());
-		model.addAttribute("countries", countryAdminModel.getAllCountries());
+		model.addAttribute("countries", countryAdminModel.getAll());
 		
 		return "/admin/localisation/geoZoneForm";
 	}
@@ -72,9 +72,9 @@ public class GeoZoneAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		GeoZone geoZone = geoZoneAdminModel.getGeoZone(id);
+		GeoZone geoZone = geoZoneAdminModel.get(id);
 		model.addAttribute("geoZone", geoZone);
-		model.addAttribute("countries", countryAdminModel.getAllCountries());
+		model.addAttribute("countries", countryAdminModel.getAll());
 		
 		return "/admin/localisation/geoZoneForm";
 	}
@@ -104,7 +104,11 @@ public class GeoZoneAdminController extends BaseController {
 			}
 		}
 		
-		geoZoneAdminModel.saveGeoZone(geoZone);
+		if(geoZone.getId()!=null){
+			geoZoneAdminModel.update(geoZone);
+		}else{
+			geoZoneAdminModel.create(geoZone);
+		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
 		
@@ -118,7 +122,7 @@ public class GeoZoneAdminController extends BaseController {
 		boolean error = false;
 		if(ids!=null){
 			if(!error) for(Integer id: ids){
-				geoZoneAdminModel.deleteGeoZone(id);
+				geoZoneAdminModel.delete(id);
 			}
 		}
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");
@@ -136,7 +140,7 @@ public class GeoZoneAdminController extends BaseController {
 		output.append(message(request, "text.allZones"));
 		output.append("</option>");
 		
-		List<Zone> zoneList = zoneAdminModel.getZonesByCountryId(countryId);
+		List<Zone> zoneList = zoneAdminModel.getAllByCountryId(countryId);
 		for(Zone zone : zoneList){
 			output.append("<option value=\"").append(zone.getId()).append("\"");
 			if(zone.getId().equals(zoneId)){

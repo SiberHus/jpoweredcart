@@ -44,7 +44,7 @@ public class StockStatusAdminController extends BaseController {
 		Integer defaultStockStatusId = getSettingService().getConfig(SettingKey.CFG_STOCK_STATUS_ID, Integer.class);
 		model.addAttribute("defaultStockStatusId", defaultStockStatusId);
 		
-		int total = stockStatusAdminModel.getTotalStockStatuses();
+		int total = stockStatusAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
 			.setText(message(request, "text.pagination"))
@@ -59,7 +59,7 @@ public class StockStatusAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		List<Language> languages = languageAdminModel.getLanguages(new PageParam());
+		List<Language> languages = languageAdminModel.getList(new PageParam());
 		List<StockStatus> list = new ArrayList<StockStatus>();
 		for(Language language: languages){
 			StockStatus stockStatus = new StockStatus();
@@ -100,9 +100,9 @@ public class StockStatusAdminController extends BaseController {
 		
 		StockStatus stockStatusList[] = stockStatuses.getList().toArray(new StockStatus[0]);
 		if(stockStatuses.isNewEntities()){
-			stockStatusAdminModel.addStockStatus(stockStatusList);
+			stockStatusAdminModel.create(stockStatusList);
 		}else{
-			stockStatusAdminModel.updateStockStatus(stockStatusList);
+			stockStatusAdminModel.update(stockStatusList);
 		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
@@ -125,7 +125,7 @@ public class StockStatusAdminController extends BaseController {
 				
 			}
 			if(!error) for(Integer id: ids){
-				stockStatusAdminModel.deleteStockStatus(id);
+				stockStatusAdminModel.delete(id);
 			}
 		}
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");

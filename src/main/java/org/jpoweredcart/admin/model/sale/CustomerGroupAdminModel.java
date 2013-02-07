@@ -7,16 +7,16 @@ import org.jpoweredcart.common.entity.sale.CustomerGroup;
 
 public interface CustomerGroupAdminModel {
 
-	public void addCustomerGroup(CustomerGroup customerGroup);
+	public void create(CustomerGroup customerGroup);
 	
-	public void updateCustomerGroup(CustomerGroup customerGroup);
+	public void update(CustomerGroup customerGroup);
 	
-	public void deleteCustomerGroup(Integer customerGroupId);
+	public void delete(Integer customerGroupId);
 	
-	public CustomerGroup getCustomerGroup(Integer customerGroupId);
+	public CustomerGroup get(Integer customerGroupId);
 	
-	public List<CustomerGroup> getCustomerGroups(PageParam pageParam);
+	public List<CustomerGroup> getList(PageParam pageParam);
 	
-	public int getTotalCustomerGroups();
+	public int getTotal();
 	
 }

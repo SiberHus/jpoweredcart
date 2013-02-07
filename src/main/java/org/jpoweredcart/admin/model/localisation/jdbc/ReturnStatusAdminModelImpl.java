@@ -28,7 +28,7 @@ public class ReturnStatusAdminModelImpl extends BaseModel implements ReturnStatu
 	
 	@Transactional
 	@Override
-	public void addReturnStatus(ReturnStatus... returnStatuses) {
+	public void create(ReturnStatus... returnStatuses) {
 		Integer returnStatusId = null;
 		for(final ReturnStatus returnStatus: returnStatuses){
 			if(returnStatusId!=null){
@@ -55,7 +55,7 @@ public class ReturnStatusAdminModelImpl extends BaseModel implements ReturnStatu
 	
 	@Transactional
 	@Override
-	public void updateReturnStatus(ReturnStatus... returnStatuses) {
+	public void update(ReturnStatus... returnStatuses) {
 		String sql = "UPDATE " +quoteTable("return_status")+ " SET name = ? " +
 				" WHERE return_status_id = ? and language_id = ?";
 		for(ReturnStatus desc: returnStatuses){
@@ -66,13 +66,13 @@ public class ReturnStatusAdminModelImpl extends BaseModel implements ReturnStatu
 	
 	@Transactional
 	@Override
-	public void deleteReturnStatus(Integer returnStatusId) {
+	public void delete(Integer returnStatusId) {
 		String sql = "DELETE FROM " +quoteTable("return_status")+ " WHERE return_status_id = ?";
 		getJdbcOperations().update(sql, returnStatusId);
 	}
 	
 	@Override
-	public ReturnStatus getReturnStatus(Integer returnStatusId) {
+	public ReturnStatus get(Integer returnStatusId) {
 		String sql = "SELECT * FROM " +quoteTable("return_status")+ " WHERE return_status_id = ? and language_id = ?";
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		return getJdbcOperations().queryForObject(sql, new Object[]{returnStatusId, languageId}, 
@@ -80,7 +80,7 @@ public class ReturnStatusAdminModelImpl extends BaseModel implements ReturnStatu
 	}
 	
 	@Override
-	public List<ReturnStatus> getReturnStatuses(PageParam pageParam) {
+	public List<ReturnStatus> getList(PageParam pageParam) {
 		String sql = "SELECT * FROM "+quoteTable("return_status")+" WHERE language_id=?";
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{"name"});
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
@@ -102,7 +102,7 @@ public class ReturnStatusAdminModelImpl extends BaseModel implements ReturnStatu
 	}
 	
 	@Override
-	public int getTotalReturnStatuses() {
+	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("return_status")+ " WHERE language_id=?";
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		return getJdbcOperations().queryForInt(sql, languageId);

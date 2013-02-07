@@ -92,11 +92,9 @@
 								<tr>
 									<td th:utext="#{entry.status}">Status:</td>
 									<td>
-										<select name="status">
-											<option value="1" th:text="#{text.enabled}" 
-												th:attr="selected=${informationForm.status==1?'selected':''}">Enabled</option>
-											<option value="0" th:text="#{text.disabled}" 
-												th:attr="selected=${informationForm.status==0?'selected':''}">Disabled</option>
+										<select th:field="*{status}">
+											<option value="1" th:text="#{text.enabled}">Enabled</option>
+											<option value="0" th:text="#{text.disabled}">Disabled</option>
 										</select>
 									</td>
 								</tr>

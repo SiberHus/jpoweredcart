@@ -28,7 +28,7 @@ public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminMo
 	
 	@Transactional
 	@Override
-	public void addLanguage(final Language lang) {
+	public void create(final Language lang) {
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcOperations().update(new PreparedStatementCreator() {
@@ -224,7 +224,7 @@ public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminMo
 	
 	
 	@Override
-	public void updateLanguage(Language lang) {
+	public void update(Language lang) {
 		
 		String sql = "UPDATE " +quoteTable("language")+ " SET name = ?, code = ?, locale = ?, " +
 				"directory = ?, filename = ?, image = ?, sort_order = ?, status = ? WHERE language_id = ?";
@@ -233,18 +233,9 @@ public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminMo
 				lang.getStatus(), lang.getId());
 	}
 	
-	@Override
-	public void saveLanguage(Language lang){
-		if(lang.getId()!=null){
-			updateLanguage(lang);
-		}else{
-			addLanguage(lang);
-		}
-	}
-	
 	@Transactional
 	@Override
-	public void deleteLanguage(Integer langId) {
+	public void delete(Integer langId) {
 		
 		String tables[] = new String[]{
 			"language", "attribute_description", "attribute_group_description",
@@ -264,13 +255,13 @@ public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminMo
 	}
 
 	@Override
-	public Language getLanguage(Integer langId) {
+	public Language get(Integer langId) {
 		String sql = "SELECT * FROM " +quoteTable("language")+ " WHERE language_id = ?";
 		return getJdbcOperations().queryForObject(sql, new Object[]{langId}, new LanguageRowMapper());
 	}
 	
 	@Override
-	public List<Language> getLanguages(PageParam pageParam) {
+	public List<Language> getList(PageParam pageParam) {
 		QueryBean query = createPaginationQuery("language", pageParam, 
 				new String[]{"name", "code", "sort_order"});
 		List<Language> languageList = getJdbcOperations()
@@ -279,7 +270,7 @@ public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminMo
 	}
 	
 	@Override
-	public int getTotalLanguages() {
+	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("language");
 		return getJdbcOperations().queryForInt(sql);
 	}

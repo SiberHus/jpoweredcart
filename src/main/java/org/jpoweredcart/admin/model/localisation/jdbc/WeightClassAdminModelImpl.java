@@ -28,7 +28,7 @@ public class WeightClassAdminModelImpl extends BaseModel implements WeightClassA
 	
 	@Transactional
 	@Override
-	public void addWeightClass(final WeightClass weightClass) {
+	public void create(final WeightClass weightClass) {
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcOperations().update(new PreparedStatementCreator() {
@@ -47,7 +47,7 @@ public class WeightClassAdminModelImpl extends BaseModel implements WeightClassA
 
 	@Transactional
 	@Override
-	public void updateWeightClass(WeightClass weightClass) {
+	public void update(WeightClass weightClass) {
 		
 		String sql = "UPDATE " +quoteTable("weight_class")+ " SET "+quoteName("value")+"=? WHERE weight_class_id=?";
 		getJdbcOperations().update(sql, weightClass.getValue(), weightClass.getId());
@@ -69,7 +69,7 @@ public class WeightClassAdminModelImpl extends BaseModel implements WeightClassA
 	
 	@Transactional
 	@Override
-	public void deleteWeightClass(Integer weightClassId) {
+	public void delete(Integer weightClassId) {
 		
 		String sql = "DELETE FROM " +quoteTable("weight_class")+ " WHERE weight_class_id=?";
 		getJdbcOperations().update(sql, weightClassId);
@@ -80,7 +80,7 @@ public class WeightClassAdminModelImpl extends BaseModel implements WeightClassA
 
 	
 	@Override
-	public WeightClass getWeightClass(Integer weightClassId) {
+	public WeightClass get(Integer weightClassId) {
 		
 		String sql = "SELECT * FROM "+quoteTable("weight_class")+ " WHERE weight_class_id=?";
 		WeightClass weightClass = getJdbcOperations().queryForObject(sql, 
@@ -95,7 +95,7 @@ public class WeightClassAdminModelImpl extends BaseModel implements WeightClassA
 
 	
 	@Override
-	public List<WeightClass> getWeightClasses(PageParam pageParam) {
+	public List<WeightClass> getList(PageParam pageParam) {
 		
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		String sql = "SELECT * FROM " +quoteTable("weight_class")+ " wc LEFT JOIN " +quoteTable("weight_class_description")+ " wcd ON (wc.weight_class_id = wcd.weight_class_id) WHERE wcd.language_id = ?";
@@ -128,7 +128,7 @@ public class WeightClassAdminModelImpl extends BaseModel implements WeightClassA
 	}
 	
 	@Override
-	public int getTotalWeightClasses() {
+	public int getTotal() {
 		
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("weight_class");
 		return getJdbcOperations().queryForInt(sql);

@@ -67,7 +67,7 @@ public class InformationAdminController extends BaseController {
 		checkModifyPermission();
 		InformationForm infoForm = new InformationForm();
 		List<InformationDesc> descs = new ArrayList<InformationDesc>();
-		for(Language language: languageAdminModel.getLanguages(PageParam.list())){
+		for(Language language: languageAdminModel.getList(null)){
 			InformationDesc desc = new InformationDesc();
 			desc.setLanguageId(language.getId());
 			desc.setLanguageName(language.getName());
@@ -75,6 +75,7 @@ public class InformationAdminController extends BaseController {
 			descs.add(desc);
 		}
 		infoForm.setDescs(descs);
+		infoForm.setLayouts(informationAdminModel.getInfoLayouts(-1));
 		model.addAttribute("informationForm", infoForm);
 		addFormAttributes(model);
 		
@@ -134,8 +135,8 @@ public class InformationAdminController extends BaseController {
 	}
 	
 	private void addFormAttributes(Model model){
-		model.addAttribute("stores", storeAdminModel.getAllStores());
-		model.addAttribute("layouts", layoutAdminModel.getLayouts(PageParam.list()));
+		model.addAttribute("stores", storeAdminModel.getAll());
+		model.addAttribute("layouts", layoutAdminModel.getList(PageParam.list()));
 	}
 	
 	private void checkModifyPermission(){

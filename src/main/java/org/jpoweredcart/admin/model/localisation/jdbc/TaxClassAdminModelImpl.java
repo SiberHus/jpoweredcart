@@ -29,7 +29,7 @@ public class TaxClassAdminModelImpl extends BaseModel implements TaxClassAdminMo
 	
 	@Transactional
 	@Override
-	public void addTaxClass(final TaxClass taxClass) {
+	public void create(final TaxClass taxClass) {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcOperations().update(new PreparedStatementCreator() {
 			@Override
@@ -51,7 +51,7 @@ public class TaxClassAdminModelImpl extends BaseModel implements TaxClassAdminMo
 	
 	@Transactional
 	@Override
-	public void updateTaxClass(TaxClass taxClass) {
+	public void update(TaxClass taxClass) {
 		String sql = "UPDATE " +quoteTable("tax_class")+ " SET title = ?, description = ?, " +
 				"date_modified = ? WHERE tax_class_id = ?";
 		getJdbcOperations().update(sql, taxClass.getTitle(), taxClass.getDescription(),
@@ -75,18 +75,9 @@ public class TaxClassAdminModelImpl extends BaseModel implements TaxClassAdminMo
 		}
 	}
 	
-	@Override
-	public void saveTaxClass(TaxClass taxClass){
-		if(taxClass.getId()!=null){
-			updateTaxClass(taxClass);
-		}else{
-			addTaxClass(taxClass);
-		}
-	}
-	
 	@Transactional
 	@Override
-	public void deleteTaxClass(Integer taxClassId) {
+	public void delete(Integer taxClassId) {
 		
 		String sql = "DELETE FROM " +quoteTable("tax_class")+ " WHERE tax_class_id = ?";
 		getJdbcOperations().update(sql, taxClassId);
@@ -97,7 +88,7 @@ public class TaxClassAdminModelImpl extends BaseModel implements TaxClassAdminMo
 	}
 
 	@Override
-	public TaxClass getTaxClass(Integer taxClassId) {
+	public TaxClass get(Integer taxClassId) {
 		String sql = "SELECT * FROM " +quoteTable("tax_class")+ " WHERE tax_class_id = ?";
 		TaxClass taxClass = getJdbcOperations().queryForObject(sql, 
 				new Object[]{taxClassId}, new TaxClassRowMapper());
@@ -109,7 +100,7 @@ public class TaxClassAdminModelImpl extends BaseModel implements TaxClassAdminMo
 	}
 	
 	@Override
-	public List<TaxClass> getTaxClasses(PageParam pageParam) {
+	public List<TaxClass> getList(PageParam pageParam) {
 		QueryBean query = createPaginationQuery("tax_class", pageParam, 
 				new String[]{"tax_class_id"});
 		List<TaxClass> taxClassList = getJdbcOperations()
@@ -118,7 +109,7 @@ public class TaxClassAdminModelImpl extends BaseModel implements TaxClassAdminMo
 	}
 
 	@Override
-	public int getTotalTaxClasses() {
+	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("tax_class");
 		return getJdbcOperations().queryForInt(sql);
 	}

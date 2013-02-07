@@ -28,7 +28,7 @@ public class OrderStatusAdminModelImpl extends BaseModel implements OrderStatusA
 	
 	@Transactional
 	@Override
-	public void addOrderStatus(OrderStatus... orderStatuses) {
+	public void create(OrderStatus... orderStatuses) {
 		Integer orderStatusId = null;
 		for(final OrderStatus desc: orderStatuses){
 			if(orderStatusId!=null){
@@ -55,7 +55,7 @@ public class OrderStatusAdminModelImpl extends BaseModel implements OrderStatusA
 	
 	@Transactional
 	@Override
-	public void updateOrderStatus(OrderStatus... orderStatuses) {
+	public void update(OrderStatus... orderStatuses) {
 		String sql = "UPDATE " +quoteTable("order_status")+ " SET name = ? " +
 				" WHERE order_status_id = ? and language_id = ?";
 		for(OrderStatus orderStatus: orderStatuses){
@@ -66,13 +66,13 @@ public class OrderStatusAdminModelImpl extends BaseModel implements OrderStatusA
 	
 	@Transactional
 	@Override
-	public void deleteOrderStatus(Integer orderStatusId) {
+	public void delete(Integer orderStatusId) {
 		String sql = "DELETE FROM " +quoteTable("order_status")+ " WHERE order_status_id = ?";
 		getJdbcOperations().update(sql, orderStatusId);
 	}
 	
 	@Override
-	public OrderStatus getOrderStatus(Integer orderStatusId) {
+	public OrderStatus get(Integer orderStatusId) {
 		String sql = "SELECT * FROM " +quoteTable("order_status")+ " WHERE order_status_id = ? and language_id = ?";
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		return getJdbcOperations().queryForObject(sql, new Object[]{orderStatusId, languageId}, 
@@ -80,7 +80,7 @@ public class OrderStatusAdminModelImpl extends BaseModel implements OrderStatusA
 	}
 	
 	@Override
-	public List<OrderStatus> getOrderStatuses(PageParam pageParam) {
+	public List<OrderStatus> getList(PageParam pageParam) {
 		String sql = "SELECT * FROM "+quoteTable("order_status")+" WHERE language_id=?";
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{"name"});
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
@@ -102,7 +102,7 @@ public class OrderStatusAdminModelImpl extends BaseModel implements OrderStatusA
 	}
 	
 	@Override
-	public int getTotalOrderStatuses() {
+	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("order_status")+ " WHERE language_id=?";
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		return getJdbcOperations().queryForInt(sql, languageId);

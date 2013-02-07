@@ -45,10 +45,10 @@ public class LengthClassAdminController extends BaseController {
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<LengthClass> lengthClassList = lengthClassAdminModel.getLengthClasses(pageParam);
+		List<LengthClass> lengthClassList = lengthClassAdminModel.getList(pageParam);
 		model.addAttribute("lengthClasses", lengthClassList);
 		
-		int total = lengthClassAdminModel.getTotalLengthClasses();
+		int total = lengthClassAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
 			.setText(message(request, "text.pagination"))
@@ -64,7 +64,7 @@ public class LengthClassAdminController extends BaseController {
 		checkModifyPermission();
 		
 		LengthClass lengthClass = new LengthClass();
-		List<Language> languages = languageAdminModel.getLanguages(new PageParam());
+		List<Language> languages = languageAdminModel.getList(new PageParam());
 		List<LengthClassDesc> descs = new ArrayList<LengthClassDesc>();
 		for(Language language: languages){
 			LengthClassDesc desc = new LengthClassDesc();
@@ -84,7 +84,7 @@ public class LengthClassAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		LengthClass lengthClass = lengthClassAdminModel.getLengthClass(id);
+		LengthClass lengthClass = lengthClassAdminModel.get(id);
 		model.addAttribute("lengthClass", lengthClass);
 		return "/admin/localisation/lengthClassForm";
 	}
@@ -100,9 +100,9 @@ public class LengthClassAdminController extends BaseController {
 			return "/admin/localisation/lengthClassForm";
 		}
 		if(lengthClass.getId()!=null){
-			lengthClassAdminModel.updateLengthClass(lengthClass);
+			lengthClassAdminModel.update(lengthClass);
 		}else{
-			lengthClassAdminModel.addLengthClass(lengthClass);
+			lengthClassAdminModel.create(lengthClass);
 		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
@@ -121,13 +121,13 @@ public class LengthClassAdminController extends BaseController {
 					redirect.addFlashAttribute("msg_warning", "error.default");
 					error = true; break;
 				}
-				if(productAdminModel.getTotalProductsByLengthClassId(id)>0){
+				if(productAdminModel.getTotalByLengthClassId(id)>0){
 					redirect.addFlashAttribute("msg_warning", "error.product");
 					error = true; break;
 				}
 			}
 			if(!error) for(Integer id: ids){
-				lengthClassAdminModel.deleteLengthClass(id);
+				lengthClassAdminModel.delete(id);
 			}
 		}
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");

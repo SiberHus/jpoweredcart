@@ -7,18 +7,16 @@ import org.jpoweredcart.common.entity.localisation.TaxRate;
 
 public interface TaxRateAdminModel {
 	
-	public void addTaxRate(TaxRate taxRate);
+	public void create(TaxRate taxRate);
 	
-	public void updateTaxRate(TaxRate taxRate);
+	public void update(TaxRate taxRate);
 	
-	public void saveTaxRate(TaxRate taxRate);
+	public void delete(Integer taxRateId);
 	
-	public void deleteTaxRate(Integer taxRateId);
+	public TaxRate get(Integer taxRateId);
 	
-	public TaxRate getTaxRate(Integer taxRateId);
+	public List<TaxRate> getList(PageParam pageParam);
 	
-	public List<TaxRate> getTaxRates(PageParam pageParam);
-	
-	public int getTotalTaxRates();
+	public int getTotal();
 	
 }

@@ -18,7 +18,7 @@ public class ZoneAdminModelImpl extends BaseModel implements ZoneAdminModel {
 	}
 	
 	@Override
-	public void addZone(Zone zone) {
+	public void create(Zone zone) {
 		String sql = "INSERT INTO " +quoteTable("zone")+ "(country_id, name, code, status) " +
 				"VALUES(?, ?, ?, ?)";
 		getJdbcOperations().update(sql, zone.getCountryId(), zone.getName(), 
@@ -26,7 +26,7 @@ public class ZoneAdminModelImpl extends BaseModel implements ZoneAdminModel {
 	}
 	
 	@Override
-	public void updateZone(Zone zone) {
+	public void update(Zone zone) {
 		String sql = "UPDATE " +quoteTable("zone")+ " SET country_id=?, name=?, code=?, status=? " +
 				"WHERE zone_id=?";
 		getJdbcOperations().update(sql, zone.getCountryId(), zone.getName(), 
@@ -35,29 +35,20 @@ public class ZoneAdminModelImpl extends BaseModel implements ZoneAdminModel {
 	}
 	
 	@Override
-	public void saveZone(Zone zone) {
-		if(zone.getId()!=null){
-			updateZone(zone);
-		}else{
-			addZone(zone);
-		}
-	}
-	
-	@Override
-	public void deleteZone(Integer zoneId) {
+	public void delete(Integer zoneId) {
 		String sql = "DELETE FROM "+quoteTable("zone")+" WHERE zone_id=?";
 		getJdbcOperations().update(sql, zoneId);
 		//TODO: delete cache??
 	}
 
 	@Override
-	public Zone getZone(Integer zoneId) {
+	public Zone get(Integer zoneId) {
 		String sql = "SELECT * FROM " +quoteTable("zone")+ " WHERE zone_id = ?";
 		return getJdbcOperations().queryForObject(sql, new Object[]{zoneId}, new ZoneRowMapper());
 	}
 	
 	@Override
-	public List<Zone> getZones(PageParam pageParam) {
+	public List<Zone> getList(PageParam pageParam) {
 		String sql = "SELECT z.zone_id, z.country_id, z.code, z.name, z.status, c.name AS country_name FROM " +quoteTable("zone") + " z LEFT JOIN " +
 				quoteTable("country") + " c ON (z.country_id = c.country_id)";
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
@@ -68,7 +59,7 @@ public class ZoneAdminModelImpl extends BaseModel implements ZoneAdminModel {
 	}
 	
 	@Override
-	public List<Zone> getZonesByCountryId(Integer countryId){
+	public List<Zone> getAllByCountryId(Integer countryId){
 		String sql = "SELECT * FROM " +quoteTable("zone")+ " WHERE country_id = ? ORDER BY name";
 		List<Zone> zoneList = getJdbcOperations().query(sql, 
 				new Object[]{countryId}, new ZoneRowMapper());
@@ -77,7 +68,7 @@ public class ZoneAdminModelImpl extends BaseModel implements ZoneAdminModel {
 	}
 	
 	@Override
-	public int getTotalZones() {
+	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("zone");
 		return getJdbcOperations().queryForInt(sql);
 	}

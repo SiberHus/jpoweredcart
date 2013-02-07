@@ -8,23 +8,21 @@ import org.jpoweredcart.common.entity.localisation.Currency;
 
 public interface CurrencyAdminModel {
 	
-	public void addCurrency(Currency currency);
+	public void create(Currency currency);
 	
-	public void updateCurrency(Currency currency);
+	public void update(Currency currency);
 	
-	public void saveCurrency(Currency currency);
+	public void delete(Integer currencyId);
 	
-	public void deleteCurrency(Integer currencyId);
+	public Currency get(Integer currencyId);
 	
-	public Currency getCurrency(Integer currencyId);
+	public Currency getOneByCode(String code);
 	
-	public Currency getCurrencyByCode(String code);
+	public List<Currency> getList(PageParam pageParam);
 	
-	public List<Currency> getCurrencies(PageParam pageParam);
+	public void updateDatabase(boolean force);
 	
-	public void updateCurrencies(boolean force);
-	
-	public int getTotalCurrencies();
+	public int getTotal();
 	
 	
 }

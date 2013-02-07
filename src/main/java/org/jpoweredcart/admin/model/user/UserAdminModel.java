@@ -8,9 +8,9 @@ import org.jpoweredcart.common.entity.user.User;
 
 public interface UserAdminModel {
 	
-	public void addUser(User user);
+	public void create(User user);
 	
-	public void updateUser(User user);
+	public void update(User user);
 	
 	public void saveUser(User user);
 	
@@ -18,11 +18,11 @@ public interface UserAdminModel {
 	
 	public void updateCode(String email, String code);
 	
-	public void deleteUser(Integer userId);
+	public void delete(Integer userId);
 	
-	public User getUser(Integer userId);
+	public User get(Integer userId);
 	
-	public User getUserByUsername(String username);
+	public User getOneByUsername(String username);
 	
 	public User getUserByCode(String code);
 	

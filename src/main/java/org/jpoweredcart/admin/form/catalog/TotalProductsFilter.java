@@ -1,4 +1,4 @@
-package org.jpoweredcart.admin.model.catalog;
+package org.jpoweredcart.admin.form.catalog;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

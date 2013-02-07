@@ -28,7 +28,7 @@ public class BannerAdminModelImpl extends BaseModel implements BannerAdminModel 
 	
 	@Transactional
 	@Override
-	public void addBanner(final Banner banner) {
+	public void create(final Banner banner) {
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcOperations().update(new PreparedStatementCreator() {
@@ -51,7 +51,7 @@ public class BannerAdminModelImpl extends BaseModel implements BannerAdminModel 
 
 	@Transactional
 	@Override
-	public void updateBanner(Banner banner) {
+	public void update(Banner banner) {
 		
 		String sql = "UPDATE " +quoteTable("banner")+ " SET name = ?, status = ? WHERE banner_id = ?";
 		getJdbcOperations().update(sql, banner.getName(), banner.getStatus(), banner.getId());
@@ -97,7 +97,7 @@ public class BannerAdminModelImpl extends BaseModel implements BannerAdminModel 
 	
 	@Transactional
 	@Override
-	public void deleteBanner(Integer bannerId) {
+	public void delete(Integer bannerId) {
 		String tables[] = new String[]{"banner", "banner_image", "banner_image_description"};
 		for(String table: tables){
 			String sql = "DELETE FROM "+quoteTable(table)+" WHERE banner_id=?";
@@ -106,7 +106,7 @@ public class BannerAdminModelImpl extends BaseModel implements BannerAdminModel 
 	}
 	
 	@Override
-	public Banner getBanner(Integer bannerId) {
+	public Banner get(Integer bannerId) {
 		
 		String sql = "SELECT * FROM " +quoteTable("banner")+ " WHERE banner_id = ?";
 		
@@ -119,7 +119,7 @@ public class BannerAdminModelImpl extends BaseModel implements BannerAdminModel 
 	}
 	
 	@Override
-	public List<Banner> getBanners(PageParam pageParam) {
+	public List<Banner> getList(PageParam pageParam) {
 		QueryBean query = createPaginationQuery("banner", pageParam, 
 				new String[]{"name", "status"});
 		List<Banner> bannerList = getJdbcOperations().query(query.getSql(), 
@@ -144,7 +144,7 @@ public class BannerAdminModelImpl extends BaseModel implements BannerAdminModel 
 	}
 
 	@Override
-	public int getTotalBanners() {
+	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("banner");
 		return getJdbcOperations().queryForInt(sql);
 	}

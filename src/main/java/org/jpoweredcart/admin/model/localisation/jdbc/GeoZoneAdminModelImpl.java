@@ -30,7 +30,7 @@ public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminMode
 	
 	@Transactional
 	@Override
-	public void addGeoZone(final GeoZone geoZone) {
+	public void create(final GeoZone geoZone) {
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcOperations().update(new PreparedStatementCreator() {
@@ -54,7 +54,7 @@ public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminMode
 	
 	@Transactional
 	@Override
-	public void updateGeoZone(GeoZone geoZone) {
+	public void update(GeoZone geoZone) {
 		
 		String sql = "UPDATE " +quoteTable("geo_zone")+ " SET name = ?, description = ?, " +
 				"date_modified = ? WHERE geo_zone_id = ?";
@@ -80,18 +80,9 @@ public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminMode
 		}
 	}
 	
-	@Override
-	public void saveGeoZone(GeoZone geoZone){
-		if(geoZone.getId()!=null){
-			updateGeoZone(geoZone);
-		}else{
-			addGeoZone(geoZone);
-		}
-	}
-	
 	@Transactional
 	@Override
-	public void deleteGeoZone(Integer geoZoneId) {
+	public void delete(Integer geoZoneId) {
 		
 		String sql = "DELETE FROM " +quoteTable("geo_zone")+ " WHERE geo_zone_id = ?";
 		getJdbcOperations().update(sql, geoZoneId);
@@ -102,7 +93,7 @@ public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminMode
 	}
 	
 	@Override
-	public GeoZone getGeoZone(Integer geoZoneId) {
+	public GeoZone get(Integer geoZoneId) {
 		String sql = "SELECT * FROM " +quoteTable("geo_zone")+ " WHERE geo_zone_id = ?";
 		GeoZone geoZone = getJdbcOperations().queryForObject(sql, 
 				new Object[]{geoZoneId}, new GeoZoneRowMapper());
@@ -114,7 +105,7 @@ public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminMode
 	}
 	
 	@Override
-	public List<GeoZone> getGeoZones(PageParam pageParam) {
+	public List<GeoZone> getList(PageParam pageParam) {
 		QueryBean query = createPaginationQuery("geo_zone", pageParam, 
 				new String[]{"name", "description"});
 		List<GeoZone> geoZoneList = getJdbcOperations()
@@ -123,7 +114,7 @@ public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminMode
 	}
 	
 	@Override
-	public int getTotalGeoZones() {
+	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("geo_zone");
 		return getJdbcOperations().queryForInt(sql);
 	}

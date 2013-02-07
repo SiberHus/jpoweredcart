@@ -22,7 +22,7 @@ public class UserAdminModelImpl extends BaseModel implements UserAdminModel {
 	}
 	
 	@Override
-	public void addUser(User user) {
+	public void create(User user) {
 		String sql = "INSERT INTO " + quoteTable("user") + " SET code='', username = ?, salt = ?, password = ?," +
 				"firstname = ?, lastname = ?, email = ?, user_group_id = ?, status = ?, date_added = ?";
 		String salt = Password.generateSalt();
@@ -33,7 +33,7 @@ public class UserAdminModelImpl extends BaseModel implements UserAdminModel {
 	}
 	
 	@Override
-	public void updateUser(User user) {
+	public void update(User user) {
 		String sql = "UPDATE " + quoteTable("user") + " SET username = ?, firstname = ?, lastname = ?, " +
 				"email = ?, user_group_id = ?, status = ? WHERE user_id = ?";
 		getJdbcOperations().update(sql, user.getUsername(), user.getFirstName(), user.getLastName(), 
@@ -47,9 +47,9 @@ public class UserAdminModelImpl extends BaseModel implements UserAdminModel {
 	@Override
 	public void saveUser(User user){
 		if(user.getId()!=null){
-			updateUser(user);
+			update(user);
 		}else{
-			addUser(user);
+			create(user);
 		}
 	}
 	
@@ -68,19 +68,19 @@ public class UserAdminModelImpl extends BaseModel implements UserAdminModel {
 	}
 	
 	@Override
-	public void deleteUser(Integer userId) {
+	public void delete(Integer userId) {
 		String sql = "DELETE FROM " +quoteTable("user")+ " WHERE user_id = ?";
 		getJdbcOperations().update(sql, userId);
 	}
 	
 	@Override
-	public User getUser(Integer userId) {
+	public User get(Integer userId) {
 		String sql = "SELECT * FROM " +quoteTable("user")+ " WHERE user_id = ?";
 		return getJdbcOperations().queryForObject(sql, new Object[]{userId}, new UserRowMapper());
 	}
 	
 	@Override
-	public User getUserByUsername(String username) {
+	public User getOneByUsername(String username) {
 		String sql = "SELECT * FROM " +quoteTable("user")+ " WHERE username = ?";
 		return getJdbcOperations().queryForObject(sql, new Object[]{username}, new UserRowMapper());
 	}

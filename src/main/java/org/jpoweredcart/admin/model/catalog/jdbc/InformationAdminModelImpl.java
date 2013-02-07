@@ -57,8 +57,8 @@ public class InformationAdminModelImpl extends BaseModel implements InformationA
 			}
 		}, keyHolder);
 		Integer infoId = keyHolder.getKey().intValue();
-		setAdditionalFormValues(infoForm);
 		infoForm.setId(infoId);
+		setAdditionalFormValues(infoForm);
 	}
 	
 	@Transactional
@@ -136,7 +136,7 @@ public class InformationAdminModelImpl extends BaseModel implements InformationA
 		InformationForm infoForm = getJdbcOperations().queryForObject(sql, 
 				new Object[]{"information_id="+infoId, infoId}, 
 				new InformationRowMapper.Form());
-		infoForm.setDescs(getInfoDescs(infoId));
+		infoForm.setDescs(getInfoDescriptions(infoId));
 		infoForm.setStores(getInfoStores(infoId));
 		infoForm.setLayouts(getInfoLayouts(infoId));
 		
@@ -174,7 +174,7 @@ public class InformationAdminModelImpl extends BaseModel implements InformationA
 	}
 	
 	@Override
-	public List<InformationDesc> getInfoDescs(Integer infoId){
+	public List<InformationDesc> getInfoDescriptions(Integer infoId){
 		String sql = "SELECT id.information_id, id.language_id, l.name AS language_name, l.image AS language_image, id.title, id.description FROM " +
 				quoteTable("information_description")+" id INNER JOIN "
 				+quoteTable("language")+" l ON id.language_id=l.language_id WHERE id.information_id=?";
@@ -193,9 +193,8 @@ public class InformationAdminModelImpl extends BaseModel implements InformationA
 	@Override
 	public List<InformationToLayout> getInfoLayouts(Integer infoId) {
 		List<InformationToLayout> itlList = new ArrayList<InformationToLayout>();
-		for(Store store: storeAdminModel.getAllStores()){
+		for(Store store: storeAdminModel.getAll()){
 			InformationToLayout itl = new InformationToLayout();
-			itl.setInformationId(infoId);
 			itl.setStoreId(store.getId());
 			itl.setStoreName(store.getName());
 			String sql = "SELECT layout_id FROM "+quoteTable("information_to_layout")

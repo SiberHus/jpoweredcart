@@ -67,9 +67,9 @@ public class StoreAdminController extends BaseController {
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<Store> storeList = storeAdminModel.getAllStores();
+		List<Store> storeList = storeAdminModel.getAll();
 		model.addAttribute("stores", storeList);
-		int total = storeAdminModel.getTotalStores();
+		int total = storeAdminModel.getTotal();
 		System.out.println(total);
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
@@ -87,19 +87,19 @@ public class StoreAdminController extends BaseController {
 		Map<String, Object> config = getSettingService().getAll(DefaultSettings.STORE_ID, SettingGroup.CONFIG);
 		model.addAttribute("setting", config);
 		
-		List<Layout> layoutList = layoutAdminModel.getLayouts(PageParam.list());
+		List<Layout> layoutList = layoutAdminModel.getList(PageParam.list());
 		model.addAttribute("layouts", layoutList);
 		
-		List<Country> countryList = countryAdminModel.getAllCountries();
+		List<Country> countryList = countryAdminModel.getAll();
 		model.addAttribute("countries", countryList);
 		
-		List<Language> languageList = languageAdminModel.getLanguages(PageParam.list());
+		List<Language> languageList = languageAdminModel.getList(PageParam.list());
 		model.addAttribute("languages", languageList);
 		
-		List<Currency> currencyList = currencyAdminModel.getCurrencies(PageParam.list());
+		List<Currency> currencyList = currencyAdminModel.getList(PageParam.list());
 		model.addAttribute("currencies", currencyList);
 		
-		List<CustomerGroup> customerGroupList = customerGroupAdminModel.getCustomerGroups(PageParam.list());
+		List<CustomerGroup> customerGroupList = customerGroupAdminModel.getList(PageParam.list());
 		model.addAttribute("customerGroups", customerGroupList);
 		
 		

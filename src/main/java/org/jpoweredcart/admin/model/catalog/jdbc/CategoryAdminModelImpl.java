@@ -17,30 +17,30 @@ public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminMo
 	}
 	
 	@Override
-	public void addCategory(Category category) {
+	public void create(Category category) {
 		
 	}
 
 	@Override
-	public void updateCategory(Category category) {
+	public void update(Category category) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void deleteCategory(Integer categoryId) {
+	public void delete(Integer categoryId) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Category getCategory(Integer categoryId) {
+	public Category get(Integer categoryId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Category> getCategories(Integer parentId) {
+	public List<Category> getList(Integer parentId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -52,25 +52,25 @@ public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminMo
 	}
 
 	@Override
-	public List<CategoryToStore> getCategoryStores(Integer categoryId) {
+	public List<CategoryToStore> getCatStores(Integer categoryId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public List<CategoryToLayout> getCategoryLayouts(Integer categoryId) {
+	public List<CategoryToLayout> getCatLayouts(Integer categoryId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int getTotalCategories() {
+	public int getTotal() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 	
 	@Override
-	public int getTotalCategoriesByImageId(Integer imageId) {
+	public int getTotalByImageId(Integer imageId) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

@@ -7,11 +7,11 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.jpoweredcart.admin.form.sale.TotalOrdersFilter;
 import org.jpoweredcart.admin.model.localisation.CountryAdminModel;
 import org.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
 import org.jpoweredcart.admin.model.localisation.ZoneAdminModel;
 import org.jpoweredcart.admin.model.sale.OrderAdminModel;
-import org.jpoweredcart.admin.model.sale.TotalOrdersFilter;
 import org.jpoweredcart.admin.model.setting.SettingAdminModel;
 import org.jpoweredcart.admin.model.setting.StoreAdminModel;
 import org.jpoweredcart.common.BaseModel;
@@ -73,9 +73,9 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 
 	@Transactional
 	@Override
-	public void addOrder(Order order) {
+	public void create(Order order) {
 		
-		Store store = storeAdminModel.getStore(order.getStoreId());
+		Store store = storeAdminModel.get(order.getStoreId());
 		String storeName = store.getName();
 		String storeUrl = store.getUrl();
 		
@@ -87,22 +87,22 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 			invoicePrefix = getSettingService().getConfig(SettingKey.CFG_INVOICE_PREFIX);
 		}
 		
-		Country country = countryAdminModel.getCountry(order.getPaymentCountryId());
+		Country country = countryAdminModel.get(order.getPaymentCountryId());
 		String shippingCountry = country.getName();
 		String shippingAddrFmt = country.getAddressFormat();
 		
-		Zone zone = zoneAdminModel.getZone(order.getShippingZoneId());
+		Zone zone = zoneAdminModel.get(order.getShippingZoneId());
 		String shippingZone = zone.getName();
 		
-		country = countryAdminModel.getCountry(order.getPaymentCountryId());
+		country = countryAdminModel.get(order.getPaymentCountryId());
 		String paymentCountry = country.getName();
 		String paymentAddrFmt = country.getAddressFormat();
 		
-		zone = zoneAdminModel.getZone(order.getPaymentZoneId());
+		zone = zoneAdminModel.get(order.getPaymentZoneId());
 		String paymentZone = zone.getName();
 		
 		String currencyCode = getSettingService().getConfig(SettingKey.CFG_CURRENCY);
-		Currency currency = currencyAdminModel.getCurrencyByCode(currencyCode);
+		Currency currency = currencyAdminModel.getOneByCode(currencyCode);
 		Integer currencyId = currency.getId();
 		BigDecimal currencyValue = currency.getValue();
 		
@@ -110,25 +110,25 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 	}
 
 	@Override
-	public void updateOrder(Integer orderId) {
+	public void update(Integer orderId) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void deleteOrder(Integer orderId) {
+	public void delete(Integer orderId) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Order getOrder(Integer orderId) {
+	public Order get(Integer orderId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Order> getOrders(PageParam pageParam) {
+	public List<Order> getList(PageParam pageParam) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -178,31 +178,31 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 	}
 
 	@Override
-	public int getTotalOrders(TotalOrdersFilter filter) {
+	public int getTotal(TotalOrdersFilter filter) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int getTotalOrdersByStoreId(Integer storeId) {
+	public int getTotalByStoreId(Integer storeId) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int getTotalOrdersByOrderStatusId(Integer orderStatusId) {
+	public int getTotalByOrderStatusId(Integer orderStatusId) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int getTotalOrdersByLanguageId(Integer languageId) {
+	public int getTotalByLanguageId(Integer languageId) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int getTotalOrdersByCurrencyId(Integer currencyId) {
+	public int getTotalByCurrencyId(Integer currencyId) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

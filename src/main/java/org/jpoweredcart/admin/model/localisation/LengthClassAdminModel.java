@@ -8,20 +8,20 @@ import org.jpoweredcart.common.entity.localisation.LengthClassDesc;
 
 public interface LengthClassAdminModel {
 
-	public void addLengthClass(LengthClass lengthClass);
+	public void create(LengthClass lengthClass);
 	
-	public void updateLengthClass(LengthClass lengthClass); 
+	public void update(LengthClass lengthClass); 
 	
-	public void deleteLengthClass(Integer lengthClassId);
+	public void delete(Integer lengthClassId);
 	
-	public LengthClass getLengthClass(Integer lengthClassId);
+	public LengthClass get(Integer lengthClassId);
 	
-	public List<LengthClass> getLengthClasses(PageParam pageParam);
+	public List<LengthClass> getList(PageParam pageParam);
 	
 	public List<LengthClassDesc> getLengthClassDescsByUnit(String unit);
 	
 	public List<LengthClassDesc> getLengthClassDescs(Integer lengthClassId);
 	
-	public int getTotalLengthClasses();
+	public int getTotal();
 	
 }

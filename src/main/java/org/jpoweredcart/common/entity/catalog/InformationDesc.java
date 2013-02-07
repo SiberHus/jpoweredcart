@@ -1,20 +1,13 @@
 package org.jpoweredcart.common.entity.catalog;
 
-import java.io.Serializable;
-
 import org.hibernate.validator.constraints.Length;
+import org.jpoweredcart.common.entity.Description;
 
-public class InformationDesc implements Serializable {
+public class InformationDesc extends Description {
 	
 	private static final long serialVersionUID = 1L;
 	
 	protected Integer informationId;
-	
-	protected Integer languageId;
-	
-	protected String languageName;
-	
-	protected String languageImage;
 	
 	@Length(min=3, max=32)
 	protected String title;
@@ -28,30 +21,6 @@ public class InformationDesc implements Serializable {
 
 	public void setInformationId(Integer informationId) {
 		this.informationId = informationId;
-	}
-
-	public Integer getLanguageId() {
-		return languageId;
-	}
-
-	public void setLanguageId(Integer languageId) {
-		this.languageId = languageId;
-	}
-
-	public String getLanguageName() {
-		return languageName;
-	}
-
-	public void setLanguageName(String languageName) {
-		this.languageName = languageName;
-	}
-
-	public String getLanguageImage() {
-		return languageImage;
-	}
-
-	public void setLanguageImage(String languageImage) {
-		this.languageImage = languageImage;
 	}
 
 	public String getTitle() {

@@ -33,10 +33,10 @@ public class CurrencyAdminController extends BaseController {
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<Currency> currencyList = currencyAdminModel.getCurrencies(pageParam);
+		List<Currency> currencyList = currencyAdminModel.getList(pageParam);
 		model.addAttribute("currencies", currencyList);
 		
-		int total = currencyAdminModel.getTotalCurrencies();
+		int total = currencyAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
 			.setText(message(request, "text.pagination"))
@@ -61,7 +61,7 @@ public class CurrencyAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		Currency currency = currencyAdminModel.getCurrency(id);
+		Currency currency = currencyAdminModel.get(id);
 		model.addAttribute("currency", currency);
 		return "/admin/localisation/currencyForm";
 	}
@@ -77,7 +77,11 @@ public class CurrencyAdminController extends BaseController {
 			return "/admin/localisation/currencyForm";
 		}
 		
-		currencyAdminModel.saveCurrency(currency);
+		if(currency.getId()!=null){
+			currencyAdminModel.update(currency);
+		}else{
+			currencyAdminModel.create(currency);
+		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
 		
@@ -91,7 +95,7 @@ public class CurrencyAdminController extends BaseController {
 		boolean error = false;
 		if(ids!=null){
 			if(!error) for(Integer id: ids){
-				currencyAdminModel.deleteCurrency(id);
+				currencyAdminModel.delete(id);
 			}
 		}
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");

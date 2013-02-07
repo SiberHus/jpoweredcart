@@ -8,16 +8,16 @@ import org.jpoweredcart.common.entity.catalog.AttributeGroup;
 
 public interface AttributeGroupAdminModel {
 	
-	public void addAttributeGroup(AttributeGroup attrGrp);
+	public void create(AttributeGroup attrGrp);
 	
-	public void updateAttributeGroup(AttributeGroup attrGrp);
+	public void update(AttributeGroup attrGrp);
 	
-	public void deleteAttributeGroup(Integer attrGrpId);
+	public void delete(Integer attrGrpId);
 	
-	public AttributeGroup getAttributeGroup(Integer attrGrpId);
+	public AttributeGroup get(Integer attrGrpId);
 	
-	public List<AttributeGroup> getAttributeGroups(PageParam pageParam);
+	public List<AttributeGroup> getList(PageParam pageParam);
 	
-	public int getTotalAttributeGroups();
+	public int getTotal();
 	
 }

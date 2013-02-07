@@ -8,18 +8,18 @@ import org.jpoweredcart.common.entity.localisation.ReturnActions.ReturnAction;
 
 public interface ReturnActionAdminModel {
 
-	public void addReturnAction(ReturnAction... returnActions);
+	public void create(ReturnAction... returnActions);
 	
-	public void updateReturnAction(ReturnAction... returnActions);
+	public void update(ReturnAction... returnActions);
 	
-	public void deleteReturnAction(Integer returnActionId);
+	public void delete(Integer returnActionId);
 	
-	public ReturnAction getReturnAction(Integer returnActionId);
+	public ReturnAction get(Integer returnActionId);
 	
-	public List<ReturnAction> getReturnActions(PageParam pageParam);
+	public List<ReturnAction> getList(PageParam pageParam);
 	
 	public ReturnActions getReturnActions(Integer returnActionId);
 	
-	public int getTotalReturnActions();
+	public int getTotal();
 	
 }

@@ -28,7 +28,7 @@ public class StockStatusAdminModelImpl extends BaseModel implements StockStatusA
 	
 	@Transactional
 	@Override
-	public void addStockStatus(StockStatus... stockStatuses) {
+	public void create(StockStatus... stockStatuses) {
 		Integer stockStatusId = null;
 		for(final StockStatus stockStatus: stockStatuses){
 			if(stockStatusId!=null){
@@ -55,7 +55,7 @@ public class StockStatusAdminModelImpl extends BaseModel implements StockStatusA
 	
 	@Transactional
 	@Override
-	public void updateStockStatus(StockStatus... stockStatuses) {
+	public void update(StockStatus... stockStatuses) {
 		String sql = "UPDATE " +quoteTable("stock_status")+ " SET name = ? " +
 				" WHERE stock_status_id = ? and language_id = ?";
 		for(StockStatus desc: stockStatuses){
@@ -66,13 +66,13 @@ public class StockStatusAdminModelImpl extends BaseModel implements StockStatusA
 	
 	@Transactional
 	@Override
-	public void deleteStockStatus(Integer stockStatusId) {
+	public void delete(Integer stockStatusId) {
 		String sql = "DELETE FROM " +quoteTable("stock_status")+ " WHERE stock_status_id = ?";
 		getJdbcOperations().update(sql, stockStatusId);
 	}
 	
 	@Override
-	public StockStatus getStockStatus(Integer stockStatusId) {
+	public StockStatus get(Integer stockStatusId) {
 		String sql = "SELECT * FROM " +quoteTable("stock_status")+ " WHERE stock_status_id = ? and language_id = ?";
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		return getJdbcOperations().queryForObject(sql, new Object[]{stockStatusId, languageId}, 
@@ -102,7 +102,7 @@ public class StockStatusAdminModelImpl extends BaseModel implements StockStatusA
 	}
 	
 	@Override
-	public int getTotalStockStatuses() {
+	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("stock_status")+ " WHERE language_id=?";
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		return getJdbcOperations().queryForInt(sql, languageId);

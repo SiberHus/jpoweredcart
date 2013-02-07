@@ -8,20 +8,18 @@ import org.jpoweredcart.common.entity.localisation.Country;
 
 public interface CountryAdminModel {
 	
-	public void addCountry(Country country);
+	public void create(Country country);
 	
-	public void updateCountry(Country country);
+	public void update(Country country);
 	
-	public void saveCountry(Country country);
+	public void delete(Integer countryId);
 	
-	public void deleteCountry(Integer countryId);
+	public Country get(Integer countryId);
 	
-	public Country getCountry(Integer countryId);
+	public List<Country> getAll();
 	
-	public List<Country> getAllCountries();
+	public List<Country> getList(PageParam pageParam);
 	
-	public List<Country> getCountries(PageParam pageParam);
-	
-	public int getTotalCountries();
+	public int getTotal();
 	
 }

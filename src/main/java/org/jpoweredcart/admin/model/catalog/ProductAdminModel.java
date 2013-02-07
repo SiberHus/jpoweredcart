@@ -2,6 +2,7 @@ package org.jpoweredcart.admin.model.catalog;
 
 import java.util.List;
 
+import org.jpoweredcart.admin.form.catalog.TotalProductsFilter;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.entity.catalog.Product;
 import org.jpoweredcart.common.entity.catalog.ProductAttribute;
@@ -20,19 +21,19 @@ import org.jpoweredcart.common.entity.catalog.ProductToStore;
 
 public interface ProductAdminModel {
 	
-	public void addProduct(Product product);
+	public void create(Product product);
 	
-	public void updateProduct(Product product);
+	public void update(Product product);
 	
-	public void copyProduct(Integer productId);
+	public void copy(Integer productId);
 	
-	public void deleteProduct(Integer productId);
+	public void delete(Integer productId);
 	
-	public Product getProduct(Integer productId);
+	public Product get(Integer productId);
 	
-	public List<Product> getProducts(PageParam pageParam);
+	public List<Product> getList(PageParam pageParam);
 	
-	public List<Product> getProductsByCategoryId(Integer categoryId);
+	public List<Product> getAllByCategoryId(Integer categoryId);
 	
 	public List<ProductDescription> getProductDescriptions(Integer productId);
 	
@@ -60,24 +61,24 @@ public interface ProductAdminModel {
 	
 	public List<ProductRelated> getProductRelated(Integer productId);
 	
-	public int getTotalProducts(TotalProductsFilter filter);
+	public int getTotal(TotalProductsFilter filter);
 	
-	public int getTotalProductsByTaxClassId(Integer taxClassId);
+	public int getTotalByTaxClassId(Integer taxClassId);
 	
-	public int getTotalProductsByStockStatusId(Integer stockStatusId);
+	public int getTotalByStockStatusId(Integer stockStatusId);
 	
-	public int getTotalProductsByWeightClassId(Integer weightClassId);
+	public int getTotalByWeightClassId(Integer weightClassId);
 	
-	public int getTotalProductsByLengthClassId(Integer lengthClassId);
+	public int getTotalByLengthClassId(Integer lengthClassId);
 	
-	public int getTotalProductsByDownloadId(Integer downloadId);
+	public int getTotalByDownloadId(Integer downloadId);
 	
-	public int getTotalProductsByManufacturerId(Integer manufacturerId);
+	public int getTotalByManufacturerId(Integer manufacturerId);
 	
-	public int getTotalProductsByAttributeId(Integer attributeId);
+	public int getTotalByAttributeId(Integer attributeId);
 	
-	public int getTotalProductsByOptionId(Integer optionId);
+	public int getTotalByOptionId(Integer optionId);
 	
-	public int getTotalProductsByLayoutId(Integer layoutId);
+	public int getTotalByLayoutId(Integer layoutId);
 	
 }

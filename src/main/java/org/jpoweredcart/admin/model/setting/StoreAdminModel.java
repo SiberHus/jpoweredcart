@@ -6,32 +6,32 @@ import org.jpoweredcart.common.entity.setting.Store;
 
 public interface StoreAdminModel {
 	
-	public void addStore(Store store);
+	public void create(Store store);
 	
-	public void updateStore(Store store);
+	public void update(Store store);
 	
-	public void deleteStore(Integer storeId);
+	public void delete(Integer storeId);
 	
-	public Store getStore(Integer storeId);
+	public Store get(Integer storeId);
 	
-	public List<Store> getAllStores();
+	public List<Store> getAll();
 	
-	public int getTotalStores();
+	public int getTotal();
 	
-	public int getTotalStoresByLayoutId(Integer layoutId);
+	public int getTotalByLayoutId(Integer layoutId);
 	
-	public int getTotalStoresByLanguageCode(String languageCode);
+	public int getTotalByLanguageCode(String languageCode);
 	
-	public int getTotalStoresByCurrencyCode(String currencyCode);
+	public int getTotalByCurrencyCode(String currencyCode);
 	
-	public int getTotalStoresByCountryId(Integer countryId);
+	public int getTotalByCountryId(Integer countryId);
 	
-	public int getTotalStoresByZoneId(Integer zoneId);
+	public int getTotalByZoneId(Integer zoneId);
 	
-	public int getTotalStoresByCustomerGroupId(Integer customerGroupId);
+	public int getTotalByCustomerGroupId(Integer customerGroupId);
 	
-	public int getTotalStoresByInformationId(Integer informationId);
+	public int getTotalByInformationId(Integer informationId);
 	
-	public int getTotalStoresByOrderStatusId(Integer orderStatusId);
+	public int getTotalByOrderStatusId(Integer orderStatusId);
 	
 }

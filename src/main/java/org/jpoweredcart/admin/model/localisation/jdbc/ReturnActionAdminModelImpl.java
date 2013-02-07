@@ -28,7 +28,7 @@ public class ReturnActionAdminModelImpl extends BaseModel implements ReturnActio
 	
 	@Transactional
 	@Override
-	public void addReturnAction(ReturnAction... returnActions) {
+	public void create(ReturnAction... returnActions) {
 		Integer returnActionId = null;
 		for(final ReturnAction returnAction: returnActions){
 			if(returnActionId!=null){
@@ -55,7 +55,7 @@ public class ReturnActionAdminModelImpl extends BaseModel implements ReturnActio
 	
 	@Transactional
 	@Override
-	public void updateReturnAction(ReturnAction... returnActions) {
+	public void update(ReturnAction... returnActions) {
 		String sql = "UPDATE " +quoteTable("return_action")+ " SET name = ? " +
 				" WHERE return_action_id = ? and language_id = ?";
 		for(ReturnAction desc: returnActions){
@@ -66,13 +66,13 @@ public class ReturnActionAdminModelImpl extends BaseModel implements ReturnActio
 	
 	@Transactional
 	@Override
-	public void deleteReturnAction(Integer returnActionId) {
+	public void delete(Integer returnActionId) {
 		String sql = "DELETE FROM " +quoteTable("return_action")+ " WHERE return_action_id = ?";
 		getJdbcOperations().update(sql, returnActionId);
 	}
 	
 	@Override
-	public ReturnAction getReturnAction(Integer returnActionId) {
+	public ReturnAction get(Integer returnActionId) {
 		String sql = "SELECT * FROM " +quoteTable("return_action")+ " WHERE return_action_id = ? and language_id = ?";
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		return getJdbcOperations().queryForObject(sql, new Object[]{returnActionId, languageId}, 
@@ -80,7 +80,7 @@ public class ReturnActionAdminModelImpl extends BaseModel implements ReturnActio
 	}
 	
 	@Override
-	public List<ReturnAction> getReturnActions(PageParam pageParam) {
+	public List<ReturnAction> getList(PageParam pageParam) {
 		String sql = "SELECT * FROM "+quoteTable("return_action")+" WHERE language_id=?";
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{"name"});
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
@@ -102,7 +102,7 @@ public class ReturnActionAdminModelImpl extends BaseModel implements ReturnActio
 	}
 	
 	@Override
-	public int getTotalReturnActions() {
+	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("return_action")+ " WHERE language_id=?";
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		return getJdbcOperations().queryForInt(sql, languageId);

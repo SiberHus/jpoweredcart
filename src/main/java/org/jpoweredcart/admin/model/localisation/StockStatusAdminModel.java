@@ -8,18 +8,18 @@ import org.jpoweredcart.common.entity.localisation.StockStatuses.StockStatus;
 
 public interface StockStatusAdminModel {
 
-	public void addStockStatus(StockStatus... stockStatuses);
+	public void create(StockStatus... stockStatuses);
 	
-	public void updateStockStatus(StockStatus... stockStatuses);
+	public void update(StockStatus... stockStatuses);
 	
-	public void deleteStockStatus(Integer stockStatusId);
+	public void delete(Integer stockStatusId);
 	
-	public StockStatus getStockStatus(Integer stockStatusId);
+	public StockStatus get(Integer stockStatusId);
 	
 	public List<StockStatus> getStockStatuses(PageParam pageParam);
 	
 	public StockStatuses getStockStatuses(Integer stockStatusId);
 	
-	public int getTotalStockStatuses();
+	public int getTotal();
 	
 }

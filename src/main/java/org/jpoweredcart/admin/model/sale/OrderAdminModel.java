@@ -2,6 +2,7 @@ package org.jpoweredcart.admin.model.sale;
 
 import java.util.List;
 
+import org.jpoweredcart.admin.form.sale.TotalOrdersFilter;
 import org.jpoweredcart.common.PageParam;
 import org.jpoweredcart.common.entity.sale.Order;
 import org.jpoweredcart.common.entity.sale.OrderDownload;
@@ -13,15 +14,15 @@ import org.jpoweredcart.common.entity.sale.OrderVoucher;
 
 public interface OrderAdminModel {
 
-	public void addOrder(Order order);
+	public void create(Order order);
 	
-	public void updateOrder(Integer orderId);
+	public void update(Integer orderId);
 	
-	public void deleteOrder(Integer orderId);
+	public void delete(Integer orderId);
 	
-	public Order getOrder(Integer orderId);
+	public Order get(Integer orderId);
 	
-	public List<Order> getOrders(PageParam pageParam);
+	public List<Order> getList(PageParam pageParam);
 	
 	public List<OrderProduct> getOrderProducts(Integer orderId);
 	
@@ -37,15 +38,15 @@ public interface OrderAdminModel {
 	
 	public List<OrderTotal> getOrderTotals(Integer orderId);
 	
-	public int getTotalOrders(TotalOrdersFilter filter);
+	public int getTotal(TotalOrdersFilter filter);
 	
-	public int getTotalOrdersByStoreId(Integer storeId);
+	public int getTotalByStoreId(Integer storeId);
 	
-	public int getTotalOrdersByOrderStatusId(Integer orderStatusId);
+	public int getTotalByOrderStatusId(Integer orderStatusId);
 	
-	public int getTotalOrdersByLanguageId(Integer languageId);
+	public int getTotalByLanguageId(Integer languageId);
 	
-	public int getTotalOrdersByCurrencyId(Integer currencyId);
+	public int getTotalByCurrencyId(Integer currencyId);
 	
 	public int getTotalSales();
 	

@@ -33,10 +33,10 @@ public class CountryAdminController extends BaseController {
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<Country> countryList = countryAdminModel.getCountries(pageParam);
+		List<Country> countryList = countryAdminModel.getList(pageParam);
 		model.addAttribute("countries", countryList);
 		
-		int total = countryAdminModel.getTotalCountries();
+		int total = countryAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
 			.setText(message(request, "text.pagination"))
@@ -61,7 +61,7 @@ public class CountryAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		Country country = countryAdminModel.getCountry(id);
+		Country country = countryAdminModel.get(id);
 		model.addAttribute("country", country);
 		return "/admin/localisation/countryForm";
 	}
@@ -77,7 +77,12 @@ public class CountryAdminController extends BaseController {
 			return "/admin/localisation/countryForm";
 		}
 		
-		countryAdminModel.saveCountry(country);
+		if(country.getId()!=null){
+			countryAdminModel.update(country);
+		}else{
+			countryAdminModel.create(country);
+		}
+		
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
 		
@@ -91,7 +96,7 @@ public class CountryAdminController extends BaseController {
 		boolean error = false;
 		if(ids!=null){
 			if(!error) for(Integer id: ids){
-				countryAdminModel.deleteCountry(id);
+				countryAdminModel.delete(id);
 			}
 		}
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");

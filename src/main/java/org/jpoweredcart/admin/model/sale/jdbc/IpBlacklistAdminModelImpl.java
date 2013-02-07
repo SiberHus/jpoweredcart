@@ -21,40 +21,32 @@ public class IpBlacklistAdminModelImpl extends BaseModel implements IpBlacklistA
 	}
 
 	@Override
-	public void addIpBlacklist(IpBlacklist blacklist) {
+	public void create(IpBlacklist blacklist) {
 		String sql = "INSERT INTO " +quoteTable("customer_ip_blacklist")+ "(ip) VALUES (?)";
 		getJdbcOperations().update(sql, blacklist.getIp());
 	}
 
 	@Override
-	public void updateIpBlacklist(IpBlacklist blacklist) {
+	public void update(IpBlacklist blacklist) {
 		String sql = "UPDATE " +quoteTable("customer_ip_blacklist")+ " SET ip=? WHERE customer_ip_blacklist_id=?";
 		getJdbcOperations().update(sql, blacklist.getIp(), blacklist.getId());
 	}
-
-	@Override
-	public void saveIpBlacklist(IpBlacklist blacklist) {
-		if(blacklist.getId()!=null){
-			updateIpBlacklist(blacklist);
-		}else{
-			addIpBlacklist(blacklist);
-		}
-	}
+	
 	
 	@Override
-	public void deleteIpBlacklist(Integer blacklistId) {
+	public void delete(Integer blacklistId) {
 		String sql = "DELETE FROM "+quoteTable("customer_ip_blacklist")+" WHERE customer_ip_blacklist_id=?";
 		getJdbcOperations().update(sql, blacklistId);
 	}
 	
 	@Override
-	public IpBlacklist getIpBlacklist(Integer blacklistId) {
+	public IpBlacklist get(Integer blacklistId) {
 		String sql = "SELECT * FROM " +quoteTable("customer_ip_blacklist")+ " WHERE customer_ip_blacklist_id = ?";
 		return getJdbcOperations().queryForObject(sql, new Object[]{blacklistId}, new IpBlacklistRowMapper());
 	}
 	
 	@Override
-	public List<IpBlacklist> getIpBlacklists(PageParam pageParam) {
+	public List<IpBlacklist> getList(PageParam pageParam) {
 		String sql = "SELECT *, (SELECT COUNT(DISTINCT customer_id) FROM " +quoteTable("customer_ip")
 				+ " ci WHERE ci.ip = cib.ip) AS total FROM " +quoteTable("customer_ip_blacklist")+" cib";
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{"ip"});
@@ -72,7 +64,7 @@ public class IpBlacklistAdminModelImpl extends BaseModel implements IpBlacklistA
 	}
 
 	@Override
-	public int getTotalIpBlacklists() {
+	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("customer_ip_blacklist");
 		return getJdbcOperations().queryForInt(sql);
 	}

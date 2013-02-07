@@ -45,10 +45,10 @@ public class WeightClassAdminController extends BaseController {
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<WeightClass> weightClassList = weightClassAdminModel.getWeightClasses(pageParam);
+		List<WeightClass> weightClassList = weightClassAdminModel.getList(pageParam);
 		model.addAttribute("weightClasses", weightClassList);
 		
-		int total = weightClassAdminModel.getTotalWeightClasses();
+		int total = weightClassAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
 			.setText(message(request, "text.pagination"))
@@ -64,7 +64,7 @@ public class WeightClassAdminController extends BaseController {
 		checkModifyPermission();
 		
 		WeightClass weightClass = new WeightClass();
-		List<Language> languages = languageAdminModel.getLanguages(new PageParam());
+		List<Language> languages = languageAdminModel.getList(new PageParam());
 		List<WeightClassDesc> descs = new ArrayList<WeightClassDesc>();
 		for(Language language: languages){
 			WeightClassDesc desc = new WeightClassDesc();
@@ -84,7 +84,7 @@ public class WeightClassAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		WeightClass weightClass = weightClassAdminModel.getWeightClass(id);
+		WeightClass weightClass = weightClassAdminModel.get(id);
 		model.addAttribute("weightClass", weightClass);
 		return "/admin/localisation/weightClassForm";
 	}
@@ -100,9 +100,9 @@ public class WeightClassAdminController extends BaseController {
 			return "/admin/localisation/weightClassForm";
 		}
 		if(weightClass.getId()!=null){
-			weightClassAdminModel.updateWeightClass(weightClass);
+			weightClassAdminModel.update(weightClass);
 		}else{
-			weightClassAdminModel.addWeightClass(weightClass);
+			weightClassAdminModel.create(weightClass);
 		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
@@ -121,13 +121,13 @@ public class WeightClassAdminController extends BaseController {
 					redirect.addFlashAttribute("msg_warning", "error.default");
 					error = true; break;
 				}
-				if(productAdminModel.getTotalProductsByWeightClassId(id)>0){
+				if(productAdminModel.getTotalByWeightClassId(id)>0){
 					redirect.addFlashAttribute("msg_warning", "error.product");
 					error = true; break;
 				}
 			}
 			if(!error) for(Integer id: ids){
-				weightClassAdminModel.deleteWeightClass(id);
+				weightClassAdminModel.delete(id);
 			}
 		}
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");

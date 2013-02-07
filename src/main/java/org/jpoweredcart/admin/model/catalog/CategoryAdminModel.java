@@ -8,25 +8,25 @@ import org.jpoweredcart.common.entity.catalog.CategoryToStore;
 
 public interface CategoryAdminModel {
 
-	public void addCategory(Category category);
+	public void create(Category category);
 	
-	public void updateCategory(Category category);
+	public void update(Category category);
 	
-	public void deleteCategory(Integer categoryId);
+	public void delete(Integer categoryId);
 	
-	public Category getCategory(Integer categoryId);
+	public Category get(Integer categoryId);
 	
-	public List<Category> getCategories(Integer parentId);
+	public List<Category> getList(Integer parentId);
 	
 	public String getPath(Integer categoryId);
 	
-	public List<CategoryToStore> getCategoryStores(Integer categoryId);
+	public List<CategoryToStore> getCatStores(Integer categoryId);
 	
-	public List<CategoryToLayout> getCategoryLayouts(Integer categoryId);
+	public List<CategoryToLayout> getCatLayouts(Integer categoryId);
 	
-	public int getTotalCategories();
+	public int getTotal();
 	
-	public int getTotalCategoriesByImageId(Integer imageId);
+	public int getTotalByImageId(Integer imageId);
 	
 	public int getTotalCategoriesByLayoutId(Integer layoutId);
 	

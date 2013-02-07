@@ -8,18 +8,16 @@ import org.jpoweredcart.common.entity.localisation.TaxClass;
 public interface TaxClassAdminModel {
 
 	
-	public void addTaxClass(TaxClass taxClass);
+	public void create(TaxClass taxClass);
 	
-	public void updateTaxClass(TaxClass taxClass);
+	public void update(TaxClass taxClass);
 	
-	public void saveTaxClass(TaxClass taxClass);
+	public void delete(Integer taxClassId);
 	
-	public void deleteTaxClass(Integer taxClassId);
+	public TaxClass get(Integer taxClassId);
 	
-	public TaxClass getTaxClass(Integer taxClassId);
+	public List<TaxClass> getList(PageParam pageParam);
 	
-	public List<TaxClass> getTaxClasses(PageParam pageParam);
-	
-	public int getTotalTaxClasses();
+	public int getTotal();
 	
 }

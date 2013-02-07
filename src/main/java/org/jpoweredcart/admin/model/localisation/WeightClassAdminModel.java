@@ -8,20 +8,20 @@ import org.jpoweredcart.common.entity.localisation.WeightClassDesc;
 
 public interface WeightClassAdminModel {
 
-	public void addWeightClass(WeightClass weightClass);
+	public void create(WeightClass weightClass);
 	
-	public void updateWeightClass(WeightClass weightClass); 
+	public void update(WeightClass weightClass); 
 	
-	public void deleteWeightClass(Integer weightClassId);
+	public void delete(Integer weightClassId);
 	
-	public WeightClass getWeightClass(Integer weightClassId);
+	public WeightClass get(Integer weightClassId);
 	
-	public List<WeightClass> getWeightClasses(PageParam pageParam);
+	public List<WeightClass> getList(PageParam pageParam);
 	
 	public List<WeightClassDesc> getWeightClassDescsByUnit(String unit);
 	
 	public List<WeightClassDesc> getWeightClassDescs(Integer weightClassId);
 	
-	public int getTotalWeightClasses();
+	public int getTotal();
 	
 }

@@ -38,13 +38,13 @@ public class ReturnStatusAdminController extends BaseController {
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<ReturnStatus> returnStatuses = returnStatusAdminModel.getReturnStatuses(pageParam);
+		List<ReturnStatus> returnStatuses = returnStatusAdminModel.getList(pageParam);
 		model.addAttribute("returnStatuses", returnStatuses);
 		
 		Integer defaultReturnStatusId = getSettingService().getConfig(SettingKey.CFG_RETURN_STATUS_ID, Integer.class);
 		model.addAttribute("defaultReturnStatusId", defaultReturnStatusId);
 		
-		int total = returnStatusAdminModel.getTotalReturnStatuses();
+		int total = returnStatusAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
 			.setText(message(request, "text.pagination"))
@@ -59,7 +59,7 @@ public class ReturnStatusAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		List<Language> languages = languageAdminModel.getLanguages(new PageParam());
+		List<Language> languages = languageAdminModel.getList(new PageParam());
 		List<ReturnStatus> list = new ArrayList<ReturnStatus>();
 		for(Language language: languages){
 			ReturnStatus returnStatus = new ReturnStatus();
@@ -100,9 +100,9 @@ public class ReturnStatusAdminController extends BaseController {
 		
 		ReturnStatus returnStatusList[] = returnStatuses.getList().toArray(new ReturnStatus[0]);
 		if(returnStatuses.isNewEntities()){
-			returnStatusAdminModel.addReturnStatus(returnStatusList);
+			returnStatusAdminModel.create(returnStatusList);
 		}else{
-			returnStatusAdminModel.updateReturnStatus(returnStatusList);
+			returnStatusAdminModel.update(returnStatusList);
 		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
@@ -125,7 +125,7 @@ public class ReturnStatusAdminController extends BaseController {
 				
 			}
 			if(!error) for(Integer id: ids){
-				returnStatusAdminModel.deleteReturnStatus(id);
+				returnStatusAdminModel.delete(id);
 			}
 		}
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");

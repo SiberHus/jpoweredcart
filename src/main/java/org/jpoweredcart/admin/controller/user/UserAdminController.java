@@ -70,7 +70,7 @@ public class UserAdminController extends BaseController {
 		checkModifyPermission();
 		initUserForm(model);
 		
-		User user = userAdminModel.getUser(id);
+		User user = userAdminModel.get(id);
 		model.addAttribute("user", user);
 		
 		return "/admin/user/userForm";
@@ -85,7 +85,7 @@ public class UserAdminController extends BaseController {
 		if(user.getId()==null){
 			//new user
 			try{
-				userAdminModel.getUserByUsername(user.getUsername());
+				userAdminModel.getOneByUsername(user.getUsername());
 				model.addAttribute("msg_warning", "error.exists");
 			}catch(EmptyResultDataAccessException e){}
 			if(StringUtils.isBlank(user.getPassword())){
@@ -127,7 +127,7 @@ public class UserAdminController extends BaseController {
 				}
 			}
 			if(!error) for(Integer id: ids){
-				userAdminModel.deleteUser(id);
+				userAdminModel.delete(id);
 			}
 		}
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");

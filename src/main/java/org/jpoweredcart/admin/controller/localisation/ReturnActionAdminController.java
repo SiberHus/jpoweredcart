@@ -38,13 +38,13 @@ public class ReturnActionAdminController extends BaseController {
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<ReturnAction> returnActions = returnActionAdminModel.getReturnActions(pageParam);
+		List<ReturnAction> returnActions = returnActionAdminModel.getList(pageParam);
 		model.addAttribute("returnActions", returnActions);
 		
 		Integer defaultReturnActionId = getSettingService().getConfig(SettingKey.CFG_RETURN_STATUS_ID, Integer.class);
 		model.addAttribute("defaultReturnActionId", defaultReturnActionId);
 		
-		int total = returnActionAdminModel.getTotalReturnActions();
+		int total = returnActionAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
 			.setText(message(request, "text.pagination"))
@@ -59,7 +59,7 @@ public class ReturnActionAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		List<Language> languages = languageAdminModel.getLanguages(new PageParam());
+		List<Language> languages = languageAdminModel.getList(new PageParam());
 		List<ReturnAction> list = new ArrayList<ReturnAction>();
 		for(Language language: languages){
 			ReturnAction returnAction = new ReturnAction();
@@ -100,9 +100,9 @@ public class ReturnActionAdminController extends BaseController {
 		
 		ReturnAction returnActionList[] = returnActions.getList().toArray(new ReturnAction[0]);
 		if(returnActions.isNewEntities()){
-			returnActionAdminModel.addReturnAction(returnActionList);
+			returnActionAdminModel.create(returnActionList);
 		}else{
-			returnActionAdminModel.updateReturnAction(returnActionList);
+			returnActionAdminModel.update(returnActionList);
 		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
@@ -125,7 +125,7 @@ public class ReturnActionAdminController extends BaseController {
 				
 			}
 			if(!error) for(Integer id: ids){
-				returnActionAdminModel.deleteReturnAction(id);
+				returnActionAdminModel.delete(id);
 			}
 		}
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");

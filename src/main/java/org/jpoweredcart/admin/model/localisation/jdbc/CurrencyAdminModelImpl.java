@@ -19,7 +19,7 @@ public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminMo
 	}
 	
 	@Override
-	public void addCurrency(Currency currency) {
+	public void create(Currency currency) {
 		String sql = "INSERT INTO " +quoteTable("currency")+ "(title, code, symbol_left, symbol_right, " +
 				"decimal_place, value, status, date_modifiled) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 		getJdbcOperations().update(sql, currency.getTitle(), currency.getCode(), currency.getSymbolLeft(),
@@ -28,7 +28,7 @@ public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminMo
 	}
 	
 	@Override
-	public void updateCurrency(Currency currency) {
+	public void update(Currency currency) {
 		String sql = "UPDATE " +quoteTable("currency")+ " SET title=?, code=?, symbol_left=?, symbol_right=?, " +
 				"decimal_place=?, value=?, status=?, date_modified=? WHERE currency_id=?";
 		getJdbcOperations().update(sql, currency.getTitle(), currency.getCode(), currency.getSymbolLeft(),
@@ -37,34 +37,25 @@ public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminMo
 	}
 	
 	@Override
-	public void saveCurrency(Currency currency) {
-		if(currency.getId()!=null){
-			updateCurrency(currency);
-		}else{
-			addCurrency(currency);
-		}
-	}
-	
-	@Override
-	public void deleteCurrency(Integer currencyId) {
+	public void delete(Integer currencyId) {
 		String sql = "DELETE FROM "+quoteTable("currency")+" WHERE currency_id=?";
 		getJdbcOperations().update(sql, currencyId);
 	}
 
 	@Override
-	public Currency getCurrency(Integer currencyId) {
+	public Currency get(Integer currencyId) {
 		String sql = "SELECT * FROM " +quoteTable("currency")+ " WHERE currency_id = ?";
 		return getJdbcOperations().queryForObject(sql, new Object[]{currencyId}, new CurrencyRowMapper());
 	}
 	
 	@Override
-	public Currency getCurrencyByCode(String code) {
+	public Currency getOneByCode(String code) {
 		String sql = "SELECT * FROM " +quoteTable("currency")+ " WHERE code = ?";
 		return getJdbcOperations().queryForObject(sql, new Object[]{code}, new CurrencyRowMapper());
 	}
 	
 	@Override
-	public List<Currency> getCurrencies(PageParam pageParam) {
+	public List<Currency> getList(PageParam pageParam) {
 		QueryBean query = createPaginationQuery("currency", pageParam, 
 				new String[]{"title", "code", "value", "date_modified"});
 		List<Currency> currencyList = getJdbcOperations().query(query.getSql(), 
@@ -74,12 +65,12 @@ public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminMo
 	}
 	
 	@Override
-	public void updateCurrencies(boolean force) {
+	public void updateDatabase(boolean force) {
 		//TODO: Implement this method
 	}
 
 	@Override
-	public int getTotalCurrencies() {
+	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("currency");
 		return getJdbcOperations().queryForInt(sql);
 	}

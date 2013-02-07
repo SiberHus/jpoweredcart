@@ -34,9 +34,9 @@ public class IpBlacklistAdminController extends BaseController {
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<IpBlacklist> ipBlacklistList = ipBlacklistAdminModel.getIpBlacklists(pageParam);
+		List<IpBlacklist> ipBlacklistList = ipBlacklistAdminModel.getList(pageParam);
 		model.addAttribute("ipBlacklists", ipBlacklistList);
-		int total = ipBlacklistAdminModel.getTotalIpBlacklists();
+		int total = ipBlacklistAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
 			.setText(message(request, "text.pagination"))
@@ -60,7 +60,7 @@ public class IpBlacklistAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		IpBlacklist ipBlacklist = ipBlacklistAdminModel.getIpBlacklist(id);
+		IpBlacklist ipBlacklist = ipBlacklistAdminModel.get(id);
 		model.addAttribute("ipBlacklist", ipBlacklist);
 		
 		return "/admin/sale/ipBlacklistForm";
@@ -77,7 +77,11 @@ public class IpBlacklistAdminController extends BaseController {
 			return "/admin/sale/ipBlacklistForm";
 		}
 		
-		ipBlacklistAdminModel.saveIpBlacklist(ipBlacklist);
+		if(ipBlacklist.getId()!=null){
+			ipBlacklistAdminModel.update(ipBlacklist);
+		}else{
+			ipBlacklistAdminModel.create(ipBlacklist);
+		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
 		
@@ -91,7 +95,7 @@ public class IpBlacklistAdminController extends BaseController {
 		boolean error = false;
 		if(ids!=null){
 			if(!error) for(Integer id: ids){
-				ipBlacklistAdminModel.deleteIpBlacklist(id);
+				ipBlacklistAdminModel.delete(id);
 			}
 		}
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");

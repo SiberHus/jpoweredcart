@@ -8,18 +8,18 @@ import org.jpoweredcart.common.entity.localisation.OrderStatuses.OrderStatus;
 
 public interface OrderStatusAdminModel {
 
-	public void addOrderStatus(OrderStatus... orderStatuses);
+	public void create(OrderStatus... orderStatuses);
 	
-	public void updateOrderStatus(OrderStatus... orderStatuses);
+	public void update(OrderStatus... orderStatuses);
 	
-	public void deleteOrderStatus(Integer orderStatusId);
+	public void delete(Integer orderStatusId);
 	
-	public OrderStatus getOrderStatus(Integer orderStatusId);
+	public OrderStatus get(Integer orderStatusId);
 	
-	public List<OrderStatus> getOrderStatuses(PageParam pageParam);
+	public List<OrderStatus> getList(PageParam pageParam);
 	
 	public OrderStatuses getOrderStatuses(Integer orderStatusId);
 	
-	public int getTotalOrderStatuses();
+	public int getTotal();
 	
 }

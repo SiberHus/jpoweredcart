@@ -8,25 +8,23 @@ import org.jpoweredcart.common.entity.sale.VoucherHistory;
 
 public interface VoucherAdminModel {
 	
-	public void addVoucher(Voucher voucher);
+	public void create(Voucher voucher);
 	
-	public void updateVoucher(Voucher voucher);
+	public void update(Voucher voucher);
 	
-	public void saveVoucher(Voucher voucher);
+	public void delete(Integer voucherId);
 	
-	public void deleteVoucher(Integer voucherId);
+	public Voucher get(Integer voucherId);
 	
-	public Voucher getVoucher(Integer voucherId);
+	public Voucher getOneByCode(String code);
 	
-	public Voucher getVoucherByCode(String code);
-	
-	public List<Voucher> getVouchers(PageParam pageParam);
+	public List<Voucher> getList(PageParam pageParam);
 	
 	public void sendVoucher(Integer voucherId);
 	
-	public int getTotalVouchers();
+	public int getTotal();
 	
-	public int getTotalVouchersByThemeId(Integer voucherThemeId);
+	public int getTotalByThemeId(Integer voucherThemeId);
 	
 	public List<VoucherHistory> getVoucherHistories(Integer voucherId, int start, int limit);
 	

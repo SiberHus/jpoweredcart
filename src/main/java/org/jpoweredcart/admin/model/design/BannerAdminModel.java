@@ -8,18 +8,18 @@ import org.jpoweredcart.common.entity.design.BannerImage;
 
 public interface BannerAdminModel {
 
-	public void addBanner(Banner banner);
+	public void create(Banner banner);
 	
-	public void updateBanner(Banner banner);
+	public void update(Banner banner);
 	
-	public void deleteBanner(Integer bannerId);
+	public void delete(Integer bannerId);
 	
-	public Banner getBanner(Integer bannerId);
+	public Banner get(Integer bannerId);
 	
-	public List<Banner> getBanners(PageParam pageParam);
+	public List<Banner> getList(PageParam pageParam);
 	
 	public List<BannerImage> getBannerImages(Integer bannerId);
 	
-	public int getTotalBanners();
+	public int getTotal();
 	
 }

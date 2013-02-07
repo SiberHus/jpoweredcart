@@ -39,9 +39,9 @@ public class TaxClassAdminController extends BaseController {
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<TaxClass> currencies = taxClassAdminModel.getTaxClasses(pageParam);
+		List<TaxClass> currencies = taxClassAdminModel.getList(pageParam);
 		model.addAttribute("taxClasses", currencies);
-		int total = taxClassAdminModel.getTotalTaxClasses();
+		int total = taxClassAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
 			.setText(message(request, "text.pagination"))
@@ -67,7 +67,7 @@ public class TaxClassAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		TaxClass taxClass = taxClassAdminModel.getTaxClass(id);
+		TaxClass taxClass = taxClassAdminModel.get(id);
 		model.addAttribute("taxClass", taxClass);
 		addFormAttributes(model);
 		
@@ -103,7 +103,11 @@ public class TaxClassAdminController extends BaseController {
 			return "/admin/localisation/taxClassForm";
 		}
 		
-		taxClassAdminModel.saveTaxClass(taxClass);
+		if(taxClass.getId()!=null){
+			taxClassAdminModel.update(taxClass);
+		}else{
+			taxClassAdminModel.create(taxClass);
+		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
 		
@@ -117,7 +121,7 @@ public class TaxClassAdminController extends BaseController {
 		boolean error = false;
 		if(ids!=null){
 			if(!error) for(Integer id: ids){
-				taxClassAdminModel.deleteTaxClass(id);
+				taxClassAdminModel.delete(id);
 			}
 		}
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");
@@ -127,7 +131,7 @@ public class TaxClassAdminController extends BaseController {
 	
 	private void addFormAttributes(Model model){
 		
-		List<TaxRate> taxRates = taxRateAdminModel.getTaxRates(PageParam.list());
+		List<TaxRate> taxRates = taxRateAdminModel.getList(PageParam.list());
 		model.addAttribute("taxRates", taxRates);
 		
 		

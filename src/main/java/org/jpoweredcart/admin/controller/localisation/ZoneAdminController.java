@@ -38,9 +38,9 @@ public class ZoneAdminController extends BaseController {
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<Zone> zoneList = zoneAdminModel.getZones(pageParam);
+		List<Zone> zoneList = zoneAdminModel.getList(pageParam);
 		model.addAttribute("zones", zoneList);
-		int total = zoneAdminModel.getTotalZones();
+		int total = zoneAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
 			.setText(message(request, "text.pagination"))
@@ -65,7 +65,7 @@ public class ZoneAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		Zone zone = zoneAdminModel.getZone(id);
+		Zone zone = zoneAdminModel.get(id);
 		model.addAttribute("zone", zone);
 		addFormAttributes(model);
 		
@@ -84,7 +84,11 @@ public class ZoneAdminController extends BaseController {
 			return "/admin/localisation/zoneForm";
 		}
 		
-		zoneAdminModel.saveZone(zone);
+		if(zone.getId()!=null){
+			zoneAdminModel.update(zone);
+		}else{
+			zoneAdminModel.create(zone);
+		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
 		
@@ -98,7 +102,7 @@ public class ZoneAdminController extends BaseController {
 		boolean error = false;
 		if(ids!=null){
 			if(!error) for(Integer id: ids){
-				zoneAdminModel.deleteZone(id);
+				zoneAdminModel.delete(id);
 			}
 		}
 		if(!error) redirect.addFlashAttribute("msg_success", "text.success");
@@ -107,7 +111,7 @@ public class ZoneAdminController extends BaseController {
 	}
 	
 	private void addFormAttributes(Model model){
-		List<Country> countries = countryAdminModel.getAllCountries();
+		List<Country> countries = countryAdminModel.getAll();
 		model.addAttribute("countries", countries);
 	}
 	

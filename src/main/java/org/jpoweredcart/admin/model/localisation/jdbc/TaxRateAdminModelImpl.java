@@ -29,7 +29,7 @@ public class TaxRateAdminModelImpl extends BaseModel implements TaxRateAdminMode
 	
 	@Transactional
 	@Override
-	public void addTaxRate(final TaxRate taxRate) {
+	public void create(final TaxRate taxRate) {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcOperations().update(new PreparedStatementCreator() {
 			@Override
@@ -56,7 +56,7 @@ public class TaxRateAdminModelImpl extends BaseModel implements TaxRateAdminMode
 	
 	@Transactional
 	@Override
-	public void updateTaxRate(TaxRate taxRate) {
+	public void update(TaxRate taxRate) {
 		String sql = "UPDATE " +quoteTable("tax_rate")+ " SET name = ?, rate = ?, type = ?, geo_zone_id = ?," +
 				"date_modified = ? WHERE tax_rate_id = ?";
 		getJdbcOperations().update(sql, taxRate.getName(), taxRate.getRate(), taxRate.getType(), 
@@ -80,19 +80,10 @@ public class TaxRateAdminModelImpl extends BaseModel implements TaxRateAdminMode
 			getJdbcOperations().update(sql, taxRateId, groupId);
 		}
 	}
-	
-	@Override
-	public void saveTaxRate(TaxRate taxRate) {
-		if(taxRate.getId()!=null){
-			updateTaxRate(taxRate);
-		}else{
-			addTaxRate(taxRate);
-		}
-	}
 
 	@Transactional
 	@Override
-	public void deleteTaxRate(Integer taxRateId) {
+	public void delete(Integer taxRateId) {
 		String sql = "DELETE FROM " +quoteTable("tax_rate")+ " WHERE tax_rate_id = ?";
 		getJdbcOperations().update(sql, taxRateId);
 		
@@ -102,7 +93,7 @@ public class TaxRateAdminModelImpl extends BaseModel implements TaxRateAdminMode
 	
 	
 	@Override
-	public TaxRate getTaxRate(Integer taxRateId) {
+	public TaxRate get(Integer taxRateId) {
 		String sql = "SELECT * FROM " +quoteTable("tax_rate")+ " WHERE tax_rate_id = ?";
 		TaxRate taxRate = getJdbcOperations().queryForObject(sql, 
 				new Object[]{taxRateId}, new TaxRateRowMapper());
@@ -116,7 +107,7 @@ public class TaxRateAdminModelImpl extends BaseModel implements TaxRateAdminMode
 	}
 
 	@Override
-	public List<TaxRate> getTaxRates(PageParam pageParam) {
+	public List<TaxRate> getList(PageParam pageParam) {
 		String sql = "SELECT tr.tax_rate_id, tr.name AS name, tr.rate, tr.type, tr.geo_zone_id, gz.name AS geo_zone, tr.date_added, tr.date_modified FROM " 
 				+quoteTable("tax_rate")+ " tr LEFT JOIN " +quoteTable("geo_zone")+ " gz ON (tr.geo_zone_id = gz.geo_zone_id)";
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
@@ -135,7 +126,7 @@ public class TaxRateAdminModelImpl extends BaseModel implements TaxRateAdminMode
 	}
 	
 	@Override
-	public int getTotalTaxRates() {
+	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("tax_rate");
 		return getJdbcOperations().queryForInt(sql);
 	}

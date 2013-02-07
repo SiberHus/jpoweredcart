@@ -20,30 +20,30 @@ public class CustomerGroupAdminModelImpl extends BaseModel implements CustomerGr
 	}
 	
 	@Override
-	public void addCustomerGroup(CustomerGroup customerGroup) {
+	public void create(CustomerGroup customerGroup) {
 		
 	}
 
 	@Override
-	public void updateCustomerGroup(CustomerGroup customerGroup) {
+	public void update(CustomerGroup customerGroup) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void deleteCustomerGroup(Integer customerGroupId) {
+	public void delete(Integer customerGroupId) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public CustomerGroup getCustomerGroup(Integer customerGroupId) {
+	public CustomerGroup get(Integer customerGroupId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<CustomerGroup> getCustomerGroups(PageParam pageParam) {
+	public List<CustomerGroup> getList(PageParam pageParam) {
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		String sql = "SELECT * FROM " +quoteTable("customer_group")+ " cg LEFT JOIN " +quoteTable("customer_group_description")
 				+ " cgd ON (cg.customer_group_id = cgd.customer_group_id) WHERE cgd.language_id = ?";
@@ -64,7 +64,7 @@ public class CustomerGroupAdminModelImpl extends BaseModel implements CustomerGr
 	}
 	
 	@Override
-	public int getTotalCustomerGroups() {
+	public int getTotal() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

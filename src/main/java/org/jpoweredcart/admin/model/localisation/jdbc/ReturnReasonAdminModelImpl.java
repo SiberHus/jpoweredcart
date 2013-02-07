@@ -28,7 +28,7 @@ public class ReturnReasonAdminModelImpl extends BaseModel implements ReturnReaso
 	
 	@Transactional
 	@Override
-	public void addReturnReason(ReturnReason... returnReasons) {
+	public void create(ReturnReason... returnReasons) {
 		Integer returnReasonId = null;
 		for(final ReturnReason returnReason: returnReasons){
 			if(returnReasonId!=null){
@@ -55,7 +55,7 @@ public class ReturnReasonAdminModelImpl extends BaseModel implements ReturnReaso
 	
 	@Transactional
 	@Override
-	public void updateReturnReason(ReturnReason... returnReasons) {
+	public void update(ReturnReason... returnReasons) {
 		String sql = "UPDATE " +quoteTable("return_reason")+ " SET name = ? " +
 				" WHERE return_reason_id = ? and language_id = ?";
 		for(ReturnReason desc: returnReasons){
@@ -66,13 +66,13 @@ public class ReturnReasonAdminModelImpl extends BaseModel implements ReturnReaso
 	
 	@Transactional
 	@Override
-	public void deleteReturnReason(Integer returnReasonId) {
+	public void delete(Integer returnReasonId) {
 		String sql = "DELETE FROM " +quoteTable("return_reason")+ " WHERE return_reason_id = ?";
 		getJdbcOperations().update(sql, returnReasonId);
 	}
 	
 	@Override
-	public ReturnReason getReturnReason(Integer returnReasonId) {
+	public ReturnReason get(Integer returnReasonId) {
 		String sql = "SELECT * FROM " +quoteTable("return_reason")+ " WHERE return_reason_id = ? and language_id = ?";
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		return getJdbcOperations().queryForObject(sql, new Object[]{returnReasonId, languageId}, 
@@ -80,7 +80,7 @@ public class ReturnReasonAdminModelImpl extends BaseModel implements ReturnReaso
 	}
 	
 	@Override
-	public List<ReturnReason> getReturnReasons(PageParam pageParam) {
+	public List<ReturnReason> getList(PageParam pageParam) {
 		String sql = "SELECT * FROM "+quoteTable("return_reason")+" WHERE language_id=?";
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{"name"});
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
@@ -102,7 +102,7 @@ public class ReturnReasonAdminModelImpl extends BaseModel implements ReturnReaso
 	}
 	
 	@Override
-	public int getTotalReturnReasons() {
+	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("return_reason")+ " WHERE language_id=?";
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		return getJdbcOperations().queryForInt(sql, languageId);

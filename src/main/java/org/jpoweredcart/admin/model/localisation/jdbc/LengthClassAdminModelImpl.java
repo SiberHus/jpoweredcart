@@ -28,7 +28,7 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 	
 	@Transactional
 	@Override
-	public void addLengthClass(final LengthClass lengthClass) {
+	public void create(final LengthClass lengthClass) {
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcOperations().update(new PreparedStatementCreator() {
@@ -48,7 +48,7 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 
 	@Transactional
 	@Override
-	public void updateLengthClass(LengthClass lengthClass) {
+	public void update(LengthClass lengthClass) {
 		
 		String sql = "UPDATE " +quoteTable("length_class")+ " SET "+quoteName("value")+"=? WHERE length_class_id=?";
 		getJdbcOperations().update(sql, lengthClass.getValue(), lengthClass.getId());
@@ -70,7 +70,7 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 	
 	@Transactional
 	@Override
-	public void deleteLengthClass(Integer lengthClassId) {
+	public void delete(Integer lengthClassId) {
 		
 		String sql = "DELETE FROM " +quoteTable("length_class")+ " WHERE length_class_id=?";
 		getJdbcOperations().update(sql, lengthClassId);
@@ -81,7 +81,7 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 
 	
 	@Override
-	public LengthClass getLengthClass(Integer lengthClassId) {
+	public LengthClass get(Integer lengthClassId) {
 		
 		String sql = "SELECT * FROM "+quoteTable("length_class")+ " WHERE length_class_id=?";
 		LengthClass lengthClass = getJdbcOperations().queryForObject(sql, 
@@ -96,7 +96,7 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 	
 	
 	@Override
-	public List<LengthClass> getLengthClasses(PageParam pageParam) {
+	public List<LengthClass> getList(PageParam pageParam) {
 		
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		String sql = "SELECT * FROM " +quoteTable("length_class")+ " wc LEFT JOIN " +quoteTable("length_class_description")+ " wcd ON (wc.length_class_id = wcd.length_class_id) WHERE wcd.language_id = ?";
@@ -129,7 +129,7 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 	}
 	
 	@Override
-	public int getTotalLengthClasses() {
+	public int getTotal() {
 		
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("length_class");
 		return getJdbcOperations().queryForInt(sql);
