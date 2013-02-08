@@ -4,20 +4,23 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
-import com.jpoweredcart.common.BaseModel;
-import com.jpoweredcart.common.PageParam;
-import com.jpoweredcart.common.QueryBean;
-import com.jpoweredcart.common.entity.localisation.Language;
-import com.jpoweredcart.common.jdbc.ArrayListResultSetExtractor;
-import com.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
+import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.QueryBean;
+import com.jpoweredcart.common.entity.Description;
+import com.jpoweredcart.common.entity.localisation.Language;
+import com.jpoweredcart.common.jdbc.ArrayListResultSetExtractor;
+import com.jpoweredcart.common.service.SettingService;
 
 
 public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminModel{
@@ -275,4 +278,27 @@ public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminMo
 		return getJdbcOperations().queryForInt(sql);
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T>List<T> createDescriptionList(Class<T> descClass){
+		if(Description.class.isAssignableFrom(descClass)){
+			try{
+				List<T> descs = new ArrayList<T>();
+				for(Language language: getList(null)){
+					Description desc = (Description)descClass.newInstance();
+					desc.setLanguageId(language.getId());
+					desc.setLanguageName(language.getName());
+					desc.setLanguageImage(language.getImage());
+					descs.add((T)desc);
+				}
+				return descs;
+			}catch(Exception e){
+				throw new RuntimeException(e);
+			}
+		}else{
+			throw new IllegalArgumentException("Class must extend Description");
+		}
+		
+	}
 }

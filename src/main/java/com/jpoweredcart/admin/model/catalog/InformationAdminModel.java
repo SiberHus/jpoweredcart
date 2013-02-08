@@ -17,13 +17,15 @@ public interface InformationAdminModel {
 	
 	public void delete(Integer infoId);
 	
+	public InformationForm newForm();
+	
 	public InformationForm getForm(Integer infoId);
 	
 	public Information get(Integer infoId);
 	
 	public List<Information> getList(PageParam pageParam);
 	
-	public List<InformationDesc> getInfoDescriptions(Integer infoId);
+	public List<InformationDesc> getDescriptions(Integer infoId);
 	
 	public List<InformationToStore> getInfoStores(Integer infoId);
 	

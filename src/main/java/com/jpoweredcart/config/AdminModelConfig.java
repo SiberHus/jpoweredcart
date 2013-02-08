@@ -2,10 +2,18 @@ package com.jpoweredcart.config;
 
 import javax.inject.Inject;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcOperations;
+
+import com.jpoweredcart.admin.model.catalog.AttributeAdminModel;
+import com.jpoweredcart.admin.model.catalog.AttributeGroupAdminModel;
 import com.jpoweredcart.admin.model.catalog.CategoryAdminModel;
 import com.jpoweredcart.admin.model.catalog.InformationAdminModel;
 import com.jpoweredcart.admin.model.catalog.ProductAdminModel;
 import com.jpoweredcart.admin.model.catalog.ReviewAdminModel;
+import com.jpoweredcart.admin.model.catalog.jdbc.AttributeAdminModelImpl;
+import com.jpoweredcart.admin.model.catalog.jdbc.AttributeGroupAdminModelImpl;
 import com.jpoweredcart.admin.model.catalog.jdbc.CategoryAdminModelImpl;
 import com.jpoweredcart.admin.model.catalog.jdbc.InformationAdminModelImpl;
 import com.jpoweredcart.admin.model.catalog.jdbc.ProductAdminModelImpl;
@@ -60,9 +68,6 @@ import com.jpoweredcart.admin.model.user.jdbc.UserAdminModelImpl;
 import com.jpoweredcart.admin.model.user.jdbc.UserGroupAdminModelImpl;
 import com.jpoweredcart.common.service.EmailService;
 import com.jpoweredcart.common.service.SettingService;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcOperations;
 
 
 @Configuration
@@ -79,6 +84,10 @@ public class AdminModelConfig {
 	private EmailService emailService;
 	
 	//================= Catalog ========================//
+	@Bean
+	public AttributeAdminModel attributeAdminModel(){ return new AttributeAdminModelImpl(settingService, jdbcOperations); }
+	@Bean
+	public AttributeGroupAdminModel attributeGroupAdminModel(){ return new AttributeGroupAdminModelImpl(settingService, jdbcOperations); }
 	@Bean
 	public CategoryAdminModel categoryAdminModel(){ return new CategoryAdminModelImpl(settingService, jdbcOperations); }
 	@Bean

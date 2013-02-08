@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/catalog/attributeGroup}" th:text="#{heading.title}">Country</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="success" th:if="${msg_success!=null}" th:text="#{${msg_success}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/order.png}" alt="" />
+							<span th:text="#{heading.title}"></span>
+						</h1>
+						<div class="buttons">
+							<a th:href="@{/admin/catalog/attributeGroup/create}" class="button" th:text="#{button.insert}">Insert</a>
+							<a onclick="$('form').submit();" class="button" th:text="#{button.delete}">Delete</a>
+						</div>
+					</div>
+					<div class="content">
+						<form th:action="@{/admin/catalog/attributeGroup/delete}" method="post" id="form">
+							<table class="list">
+								<thead>
+									<tr>
+										<td width="1" style="text-align: center;"><input type="checkbox" onclick="$('input[name*=\'selected\']').attr('checked', this.checked);" /></td>
+										<td class="left">
+											<a th:href="@{/admin/catalog/attributeGroup}+'?sort=agd.name&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='agd.name'?param.order[0]:''}" th:text="#{column.name}">Attribute Group Name</a>
+										</td>
+										<td class="right">
+											<a th:href="@{/admin/catalog/attributeGroup}+'?sort=ag.sort_order&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='ag.sort_order'?param.order[0]:''}" th:text="#{column.sortOrder}">Sort Order</a>
+										</td>
+										<td class="right" th:text="#{column.action}">Action</td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="attrGrp : ${attributeGroups}">
+										<td style="text-align: center;">
+											<input type="checkbox" name="selected" th:value="${attrGrp.id}" />
+										</td>
+										<td class="left" th:text="${attrGrp.name}">Technical</td>
+										<td class="right" th:text="${attrGrp.sortOrder}">1</td>
+										<td class="right">
+											[ <a th:href="@{/admin/catalog/attributeGroup/edit/}+${attrGrp.id}" th:text="#{text.edit}">Edit</a> ]
+										</td>
+									</tr>
+									<tr th:if="${#lists.isEmpty(attributeGroups)}">
+										<td class="center" colspan="5" th:text="#{text.noResults}">No results!</td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+						<div class="pagination" th:utext="${pagination}"></div>
+					</div> <!-- .content -->
+				</div> <!-- .box -->
+			</div>  <!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
+	</body>
+</html>

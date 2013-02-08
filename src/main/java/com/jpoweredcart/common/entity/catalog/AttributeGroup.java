@@ -8,11 +8,9 @@ public class AttributeGroup implements Serializable {
 	
 	protected Integer id;
 	
-	protected Integer sortOrder;
-	
-	protected Integer languageId;
-	
 	protected String name;
+	
+	protected int sortOrder;
 
 	public Integer getId() {
 		return id;
@@ -21,23 +19,7 @@ public class AttributeGroup implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	public Integer getSortOrder() {
-		return sortOrder;
-	}
-
-	public void setSortOrder(Integer sortOrder) {
-		this.sortOrder = sortOrder;
-	}
-
-	public Integer getLanguageId() {
-		return languageId;
-	}
-
-	public void setLanguageId(Integer languageId) {
-		this.languageId = languageId;
-	}
-
+	
 	public String getName() {
 		return name;
 	}
@@ -45,6 +27,13 @@ public class AttributeGroup implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	public int getSortOrder() {
+		return sortOrder;
+	}
+
+	public void setSortOrder(int sortOrder) {
+		this.sortOrder = sortOrder;
+	}
 	
 }

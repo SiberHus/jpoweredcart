@@ -43,8 +43,14 @@ public class QueryBean {
 		return parameterList;
 	}
 	
-	public QueryBean addParameter(Object param){
-		this.parameterList.add(param);
+	public QueryBean addParameters(Object... params){
+		if(params==null){
+			this.parameterList.add(null);
+		}else{
+			for(Object param: params){
+				this.parameterList.add(param);				
+			}
+		}
 		return this;
 	}
 	

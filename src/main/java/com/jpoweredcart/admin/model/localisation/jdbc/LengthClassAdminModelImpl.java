@@ -102,7 +102,7 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 		String sql = "SELECT * FROM " +quoteTable("length_class")+ " wc LEFT JOIN " +quoteTable("length_class_description")+ " wcd ON (wc.length_class_id = wcd.length_class_id) WHERE wcd.language_id = ?";
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
 				new String[]{"title", "unit", "value"});
-		query.addParameter(languageId);
+		query.addParameters(languageId);
 		List<LengthClass> lengthClassList = getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new LengthClassRowMapper());
 		return lengthClassList;

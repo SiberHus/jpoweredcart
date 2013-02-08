@@ -21,9 +21,9 @@ public class InformationRowMapper implements RowMapper<Information>{
 	
 	@Override
 	public Information mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Information info = new Information();
-		setProperties(rs, info);
-		return info;
+		Information entity = new Information();
+		setProperties(rs, entity);
+		return entity;
 	}
 	
 	public static class Form implements RowMapper<InformationForm>{
@@ -31,10 +31,10 @@ public class InformationRowMapper implements RowMapper<Information>{
 		@Override
 		public InformationForm mapRow(ResultSet rs, int rowNum)
 				throws SQLException {
-			InformationForm infoForm = new InformationForm();
-			setProperties(rs, infoForm);
-			infoForm.setKeyword(rs.getString("keyword"));
-			return infoForm;
+			InformationForm form = new InformationForm();
+			setProperties(rs, form);
+			form.setKeyword(rs.getString("keyword"));
+			return form;
 		}
 	}
 	
@@ -43,14 +43,14 @@ public class InformationRowMapper implements RowMapper<Information>{
 		@Override
 		public InformationDesc mapRow(ResultSet rs, int rowNum)
 				throws SQLException {
-			InformationDesc infoDesc = new InformationDesc();
-			infoDesc.setInformationId(rs.getInt("information_id"));
-			infoDesc.setLanguageId(rs.getInt("language_id"));
-			infoDesc.setLanguageName(rs.getString("language_name"));
-			infoDesc.setLanguageImage(rs.getString("language_image"));
-			infoDesc.setTitle(rs.getString("title"));
-			infoDesc.setDescription(rs.getString("description"));
-			return infoDesc;
+			InformationDesc desc = new InformationDesc();
+			desc.setInformationId(rs.getInt("information_id"));
+			desc.setLanguageId(rs.getInt("language_id"));
+			desc.setLanguageName(rs.getString("language_name"));
+			desc.setLanguageImage(rs.getString("language_image"));
+			desc.setTitle(rs.getString("title"));
+			desc.setDescription(rs.getString("description"));
+			return desc;
 		}
 	}
 	

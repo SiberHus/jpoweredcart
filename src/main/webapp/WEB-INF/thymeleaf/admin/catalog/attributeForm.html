@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/catalog/attribute}" th:text="#{heading.title}">Country</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/order.png}" alt="" />
+							<span th:text="#{heading.title}"></span>
+						</h1>
+						<div class="buttons">
+							<a onclick="$('#form').submit();" class="button" th:text="#{button.save}">Save</a>
+							<a th:href="@{/admin/catalog/attribute}" class="button" th:text="#{button.cancel}">Cancel</a>
+						</div>
+					</div>
+					<div class="content">
+						<form th:action="@{/admin/catalog/attribute/save}" th:object="${attributeForm}" method="post" id="form">
+							<input type="hidden" th:field="*{id}" />
+							<table class="form">
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.name}">Attribute Group Name:</span></td>
+									<td>
+										<div th:each="desc, rowStat : *{descs}">
+											<input type="hidden" th:name="${'descs['+rowStat.index+'].languageId'}" th:value="${desc.languageId}" />
+											<input type="hidden" th:name="${'descs['+rowStat.index+'].languageName'}" th:value="${desc.languageName}" />
+											<input type="hidden" th:name="${'descs['+rowStat.index+'].languageImage'}" th:value="${desc.languageImage}" />
+											<input type="hidden" th:name="${'descs['+rowStat.index+'].attributeId'}" th:value="${desc.attributeId}" />
+											<input type="text" th:name="${'descs['+rowStat.index+'].name'}" th:value="${desc.name}"/>
+											<img th:src="@{'/resources/admin/image/flags/'+${desc.languageImage}}" th:title="${desc.languageName}" />
+											<span class="error" th:if="${#fields.hasErrors('descs['+rowStat.index+'].name')}" th:text="#{error.name}"></span>
+											<br />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td th:utext="#{entry.attributeGroup}">Attribute Group:</td>
+									<td>
+										<select th:field="*{attributeGroupId}">
+											<option th:each="grp : ${attributeGroups}" th:value="${grp.id}"
+												th:text="${grp.name}">Memory</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td th:utext="#{entry.sortOrder}">Sort Order:</td>
+									<td>
+										<input type="text" th:field="*{sortOrder}" size="1"/>
+									</td>
+								</tr>
+							</table>
+						</form>
+					</div><!-- .content -->
+				</div><!-- .box -->
+			</div><!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
+	</body>
+</html>

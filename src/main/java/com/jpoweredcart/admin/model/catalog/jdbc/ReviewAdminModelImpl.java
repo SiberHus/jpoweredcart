@@ -45,6 +45,11 @@ public class ReviewAdminModelImpl extends BaseModel implements ReviewAdminModel 
 	}
 
 	@Override
+	public ReviewForm newForm(){
+		return new ReviewForm();
+	}
+	
+	@Override
 	public ReviewForm getForm(Integer reviewId) {
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		return getJdbcOperations().queryForObject(getSqlSelect(), new Object[]{reviewId, languageId}, 
@@ -74,7 +79,7 @@ public class ReviewAdminModelImpl extends BaseModel implements ReviewAdminModel 
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{
 				"pd.name","r.author","r.rating","r.status","r.date_added"});
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
-		query.addParameter(languageId);
+		query.addParameters(languageId);
 		return getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new RowMapper<Review>(){
 					@Override

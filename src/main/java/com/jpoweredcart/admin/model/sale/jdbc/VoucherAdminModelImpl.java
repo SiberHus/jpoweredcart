@@ -73,7 +73,7 @@ public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminMode
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{
 				"v.code", "v.from_name", "v.from_email", "v.to_name", "v.to_email",
 				"v.theme", "v.amount", "v.status", "v.date_added"});
-		query.addParameter(languageId);
+		query.addParameters(languageId);
 		List< Voucher> vouchers = getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new VoucherRowMapper());
 		return vouchers;

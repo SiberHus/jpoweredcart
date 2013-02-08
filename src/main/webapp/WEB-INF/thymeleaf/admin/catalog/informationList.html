@@ -40,14 +40,14 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="information : ${informations}">
+									<tr th:each="info : ${informations}">
 										<td style="text-align: center;">
-											<input type="checkbox" name="selected" th:value="${information.id}" />
+											<input type="checkbox" name="selected" th:value="${info.id}" />
 										</td>
-										<td class="left" th:text="${information.title}">About Us</td>
-										<td class="right" th:text="${information.sortOrder}">Order</td>
+										<td class="left" th:text="${info.title}">About Us</td>
+										<td class="right" th:text="${info.sortOrder}">Order</td>
 										<td class="right">
-											[ <a th:href="@{/admin/catalog/information/edit/}+${information.id}" th:text="#{text.edit}">Edit</a> ]
+											[ <a th:href="@{/admin/catalog/information/edit/}+${info.id}" th:text="#{text.edit}">Edit</a> ]
 										</td>
 									</tr>
 									<tr th:if="${#lists.isEmpty(informations)}">

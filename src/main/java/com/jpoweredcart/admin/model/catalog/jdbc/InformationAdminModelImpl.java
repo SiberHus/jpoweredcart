@@ -11,8 +11,15 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.jpoweredcart.admin.bean.catalog.InformationForm;
 import com.jpoweredcart.admin.model.catalog.InformationAdminModel;
+import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import com.jpoweredcart.admin.model.setting.StoreAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
@@ -25,16 +32,14 @@ import com.jpoweredcart.common.entity.setting.Store;
 import com.jpoweredcart.common.jdbc.ScalarResultSetExtractor;
 import com.jpoweredcart.common.service.SettingKey;
 import com.jpoweredcart.common.service.SettingService;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.transaction.annotation.Transactional;
 
 public class InformationAdminModelImpl extends BaseModel implements InformationAdminModel {
 	
 	@Inject
 	private StoreAdminModel storeAdminModel;
+	
+	@Inject
+	private LanguageAdminModel languageAdminModel;
 	
 	public InformationAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
 		super(settingService, jdbcOperations);
@@ -128,6 +133,25 @@ public class InformationAdminModelImpl extends BaseModel implements InformationA
 	}
 	
 	@Override
+	public InformationForm newForm(){
+		
+		InformationForm infoForm = new InformationForm();
+		List<InformationDesc> descList = languageAdminModel
+				.createDescriptionList(InformationDesc.class);
+		infoForm.setDescs(descList);
+		List<InformationToLayout> itlList = new ArrayList<InformationToLayout>();
+		for(Store store: storeAdminModel.getAll()){
+			InformationToLayout itl = new InformationToLayout();
+			itl.setStoreId(store.getId());
+			itl.setStoreName(store.getName());
+			itlList.add(itl);
+		}
+		infoForm.setLayouts(itlList);
+		
+		return infoForm;
+	}
+	
+	@Override
 	public InformationForm getForm(Integer infoId) {
 		
 		String sql = "SELECT DISTINCT *, (SELECT keyword FROM " +quoteTable("url_alias")
@@ -136,7 +160,7 @@ public class InformationAdminModelImpl extends BaseModel implements InformationA
 		InformationForm infoForm = getJdbcOperations().queryForObject(sql, 
 				new Object[]{"information_id="+infoId, infoId}, 
 				new InformationRowMapper.Form());
-		infoForm.setDescs(getInfoDescriptions(infoId));
+		infoForm.setDescs(getDescriptions(infoId));
 		infoForm.setStores(getInfoStores(infoId));
 		infoForm.setLayouts(getInfoLayouts(infoId));
 		
@@ -159,22 +183,22 @@ public class InformationAdminModelImpl extends BaseModel implements InformationA
 				+ " id ON (i.information_id = id.information_id) WHERE id.language_id = ?";
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
 				new String[]{"id.title", "i.sort_order"});
-		query.addParameter(languageId);
-		List<Information> informationList = getJdbcOperations().query(query.getSql(), 
+		query.addParameters(languageId);
+		List<Information> infoList = getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new InformationRowMapper(){
 			@Override
 			public Information mapRow(ResultSet rs, int rowNum)
 					throws SQLException {
-				Information information = super.mapRow(rs, rowNum);
-				information.setTitle(rs.getString("title"));
-				return information;
+				Information info = super.mapRow(rs, rowNum);
+				info.setTitle(rs.getString("title"));
+				return info;
 			}
 		});
-		return informationList;
+		return infoList;
 	}
 	
 	@Override
-	public List<InformationDesc> getInfoDescriptions(Integer infoId){
+	public List<InformationDesc> getDescriptions(Integer infoId){
 		String sql = "SELECT id.information_id, id.language_id, l.name AS language_name, l.image AS language_image, id.title, id.description FROM " +
 				quoteTable("information_description")+" id INNER JOIN "
 				+quoteTable("language")+" l ON id.language_id=l.language_id WHERE id.information_id=?";

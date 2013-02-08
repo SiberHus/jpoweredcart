@@ -1,25 +1,11 @@
 package com.jpoweredcart.admin.controller.catalog;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.jpoweredcart.admin.bean.catalog.InformationForm;
-import com.jpoweredcart.admin.model.catalog.InformationAdminModel;
-import com.jpoweredcart.admin.model.design.LayoutAdminModel;
-import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
-import com.jpoweredcart.admin.model.setting.StoreAdminModel;
-import com.jpoweredcart.common.BaseController;
-import com.jpoweredcart.common.PageParam;
-import com.jpoweredcart.common.entity.catalog.Information;
-import com.jpoweredcart.common.entity.catalog.InformationDesc;
-import com.jpoweredcart.common.entity.localisation.Language;
-import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
-import com.jpoweredcart.common.security.UserPermissions;
-import com.jpoweredcart.common.view.Pagination;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.jpoweredcart.admin.bean.catalog.InformationForm;
+import com.jpoweredcart.admin.model.catalog.InformationAdminModel;
+import com.jpoweredcart.admin.model.design.LayoutAdminModel;
+import com.jpoweredcart.admin.model.setting.StoreAdminModel;
+import com.jpoweredcart.common.BaseController;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.catalog.Information;
+import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
+import com.jpoweredcart.common.security.UserPermissions;
+import com.jpoweredcart.common.view.Pagination;
 
 @Controller
 @RequestMapping("/admin/catalog/information")
@@ -41,9 +38,6 @@ public class InformationAdminController extends BaseController {
 	
 	@Inject
 	private LayoutAdminModel layoutAdminModel; 
-	
-	@Inject
-	private LanguageAdminModel languageAdminModel;
 	
 	@RequestMapping(value={"", "/"})
 	public String index(Model model, HttpServletRequest request){
@@ -65,18 +59,8 @@ public class InformationAdminController extends BaseController {
 	public String create(Model model){
 		
 		checkModifyPermission();
-		InformationForm infoForm = new InformationForm();
-		List<InformationDesc> descs = new ArrayList<InformationDesc>();
-		for(Language language: languageAdminModel.getList(null)){
-			InformationDesc desc = new InformationDesc();
-			desc.setLanguageId(language.getId());
-			desc.setLanguageName(language.getName());
-			desc.setLanguageImage(language.getImage());
-			descs.add(desc);
-		}
-		infoForm.setDescs(descs);
-		infoForm.setLayouts(informationAdminModel.getInfoLayouts(-1));
-		model.addAttribute("informationForm", infoForm);
+		
+		model.addAttribute("informationForm", informationAdminModel.newForm());
 		addFormAttributes(model);
 		
 		return "/admin/catalog/informationForm";
@@ -120,7 +104,7 @@ public class InformationAdminController extends BaseController {
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
-	public String delete(@RequestParam("selected") Integer[] ids, Model model,
+	public String delete(@RequestParam(value="selected",required=false) Integer[] ids, Model model,
 			RedirectAttributes redirect){
 		checkModifyPermission();
 		boolean error = false;
@@ -128,8 +112,8 @@ public class InformationAdminController extends BaseController {
 			if(!error) for(Integer id: ids){
 				informationAdminModel.delete(id);
 			}
+			if(!error) redirect.addFlashAttribute("msg_success", "text.success");
 		}
-		if(!error) redirect.addFlashAttribute("msg_success", "text.success");
 		
 		return "redirect:/admin/catalog/information";
 	}

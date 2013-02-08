@@ -14,6 +14,8 @@ public interface ReviewAdminModel {
 	
 	public void delete(Integer reviewId);
 	
+	public ReviewForm newForm();
+	
 	public ReviewForm getForm(Integer reviewId);
 	
 	public Review get(Integer reviewId);

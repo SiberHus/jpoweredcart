@@ -84,7 +84,7 @@ public class ReturnActionAdminModelImpl extends BaseModel implements ReturnActio
 		String sql = "SELECT * FROM "+quoteTable("return_action")+" WHERE language_id=?";
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{"name"});
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
-		query.addParameter(languageId);
+		query.addParameters(languageId);
 		List<ReturnAction> returnActionList = getJdbcOperations()
 				.query(query.getSql(), query.getParameters(), new ReturnActionRowMapper());
 		

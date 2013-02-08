@@ -20,4 +20,6 @@ public interface LanguageAdminModel {
 	
 	public int getTotal();
 	
+	public <T>List<T> createDescriptionList(Class<T> descClass);
+	
 }

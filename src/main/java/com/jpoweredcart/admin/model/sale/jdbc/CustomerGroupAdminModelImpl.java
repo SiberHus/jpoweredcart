@@ -49,7 +49,7 @@ public class CustomerGroupAdminModelImpl extends BaseModel implements CustomerGr
 				+ " cgd ON (cg.customer_group_id = cgd.customer_group_id) WHERE cgd.language_id = ?";
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
 				new String[]{"cgd.name", "cg.sort_order"});
-		query.addParameter(languageId);
+		query.addParameters(languageId);
 		List<CustomerGroup> customerGroupList = getJdbcOperations()
 				.query(query.getSql(), query.getParameters(), new CustomerGroupRowMapper(){
 					@Override
