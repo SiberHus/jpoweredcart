@@ -1,9 +1,9 @@
-package org.jpoweredcart.admin.model.catalog.jdbc;
+package com.jpoweredcart.admin.model.catalog.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.common.entity.catalog.AttributeGroup;
+import com.jpoweredcart.common.entity.catalog.AttributeGroup;
 import org.springframework.jdbc.core.RowMapper;
 
 

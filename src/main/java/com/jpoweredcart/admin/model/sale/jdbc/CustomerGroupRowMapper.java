@@ -1,10 +1,10 @@
-package org.jpoweredcart.admin.model.sale.jdbc;
+package com.jpoweredcart.admin.model.sale.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.common.entity.sale.CustomerGroup;
-import org.jpoweredcart.common.entity.sale.CustomerGroupDesc;
+import com.jpoweredcart.common.entity.sale.CustomerGroup;
+import com.jpoweredcart.common.entity.sale.CustomerGroupDesc;
 import org.springframework.jdbc.core.RowMapper;
 
 public class CustomerGroupRowMapper implements RowMapper<CustomerGroup>{

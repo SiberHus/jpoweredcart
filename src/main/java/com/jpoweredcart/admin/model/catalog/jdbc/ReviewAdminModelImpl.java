@@ -1,18 +1,18 @@
-package org.jpoweredcart.admin.model.catalog.jdbc;
+package com.jpoweredcart.admin.model.catalog.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-import org.jpoweredcart.admin.form.catalog.ReviewForm;
-import org.jpoweredcart.admin.model.catalog.ReviewAdminModel;
-import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.entity.catalog.Review;
-import org.jpoweredcart.common.service.SettingKey;
-import org.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.admin.bean.catalog.ReviewForm;
+import com.jpoweredcart.admin.model.catalog.ReviewAdminModel;
+import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.QueryBean;
+import com.jpoweredcart.common.entity.catalog.Review;
+import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 

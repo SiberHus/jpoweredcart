@@ -1,13 +1,13 @@
-package org.jpoweredcart.admin.model.setting.jdbc;
+package com.jpoweredcart.admin.model.setting.jdbc;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.model.setting.StoreAdminModel;
-import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.entity.setting.Store;
-import org.jpoweredcart.common.service.DefaultSettings;
-import org.jpoweredcart.common.service.SettingKey;
-import org.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.admin.model.setting.StoreAdminModel;
+import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.entity.setting.Store;
+import com.jpoweredcart.common.service.DefaultSettings;
+import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 
 public class StoreAdminModelImpl extends BaseModel implements StoreAdminModel {

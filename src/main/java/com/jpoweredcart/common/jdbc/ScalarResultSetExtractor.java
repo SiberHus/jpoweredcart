@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.jdbc;
+package com.jpoweredcart.common.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

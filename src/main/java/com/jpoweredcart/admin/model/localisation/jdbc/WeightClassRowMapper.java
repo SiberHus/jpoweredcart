@@ -1,11 +1,11 @@
-package org.jpoweredcart.admin.model.localisation.jdbc;
+package com.jpoweredcart.admin.model.localisation.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import org.jpoweredcart.common.entity.localisation.WeightClass;
-import org.jpoweredcart.common.entity.localisation.WeightClassDesc;
+import com.jpoweredcart.common.entity.localisation.WeightClass;
+import com.jpoweredcart.common.entity.localisation.WeightClassDesc;
 import org.springframework.jdbc.core.RowMapper;
 
 public class WeightClassRowMapper implements RowMapper<WeightClass> {

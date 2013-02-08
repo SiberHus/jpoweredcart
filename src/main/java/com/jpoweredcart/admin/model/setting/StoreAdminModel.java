@@ -1,8 +1,8 @@
-package org.jpoweredcart.admin.model.setting;
+package com.jpoweredcart.admin.model.setting;
 
 import java.util.List;
 
-import org.jpoweredcart.common.entity.setting.Store;
+import com.jpoweredcart.common.entity.setting.Store;
 
 public interface StoreAdminModel {
 	

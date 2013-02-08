@@ -1,4 +1,4 @@
-package org.jpoweredcart.admin.controller.catalog;
+package com.jpoweredcart.admin.controller.catalog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,19 +7,19 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.jpoweredcart.admin.form.catalog.InformationForm;
-import org.jpoweredcart.admin.model.catalog.InformationAdminModel;
-import org.jpoweredcart.admin.model.design.LayoutAdminModel;
-import org.jpoweredcart.admin.model.localisation.LanguageAdminModel;
-import org.jpoweredcart.admin.model.setting.StoreAdminModel;
-import org.jpoweredcart.common.BaseController;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.entity.catalog.Information;
-import org.jpoweredcart.common.entity.catalog.InformationDesc;
-import org.jpoweredcart.common.entity.localisation.Language;
-import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
-import org.jpoweredcart.common.security.UserPermissions;
-import org.jpoweredcart.common.view.Pagination;
+import com.jpoweredcart.admin.bean.catalog.InformationForm;
+import com.jpoweredcart.admin.model.catalog.InformationAdminModel;
+import com.jpoweredcart.admin.model.design.LayoutAdminModel;
+import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
+import com.jpoweredcart.admin.model.setting.StoreAdminModel;
+import com.jpoweredcart.common.BaseController;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.catalog.Information;
+import com.jpoweredcart.common.entity.catalog.InformationDesc;
+import com.jpoweredcart.common.entity.localisation.Language;
+import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
+import com.jpoweredcart.common.security.UserPermissions;
+import com.jpoweredcart.common.view.Pagination;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

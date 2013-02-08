@@ -1,10 +1,10 @@
-package org.jpoweredcart.admin.model.localisation.jdbc;
+package com.jpoweredcart.admin.model.localisation.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import org.jpoweredcart.common.entity.localisation.OrderStatuses.OrderStatus;
+import com.jpoweredcart.common.entity.localisation.OrderStatuses.OrderStatus;
 import org.springframework.jdbc.core.RowMapper;
 
 public class OrderStatusRowMapper implements RowMapper<OrderStatus> {

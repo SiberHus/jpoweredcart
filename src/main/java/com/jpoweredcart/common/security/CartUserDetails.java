@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.security;
+package com.jpoweredcart.common.security;
 
 import java.util.ArrayList;
 import java.util.Collection;

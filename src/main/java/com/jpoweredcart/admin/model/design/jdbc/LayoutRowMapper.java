@@ -1,9 +1,9 @@
-package org.jpoweredcart.admin.model.design.jdbc;
+package com.jpoweredcart.admin.model.design.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.common.entity.design.Layout;
+import com.jpoweredcart.common.entity.design.Layout;
 import org.springframework.jdbc.core.RowMapper;
 
 public class LayoutRowMapper implements RowMapper<Layout>{

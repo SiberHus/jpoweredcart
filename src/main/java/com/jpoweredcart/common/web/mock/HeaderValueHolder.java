@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.jpoweredcart.common.web.mock;
+package com.jpoweredcart.common.web.mock;
 
 import java.util.ArrayList;
 import java.util.Collection;

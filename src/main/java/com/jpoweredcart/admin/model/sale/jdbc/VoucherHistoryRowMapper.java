@@ -1,9 +1,9 @@
-package org.jpoweredcart.admin.model.sale.jdbc;
+package com.jpoweredcart.admin.model.sale.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.common.entity.sale.VoucherHistory;
+import com.jpoweredcart.common.entity.sale.VoucherHistory;
 import org.springframework.jdbc.core.RowMapper;
 
 public class VoucherHistoryRowMapper implements RowMapper<VoucherHistory>{

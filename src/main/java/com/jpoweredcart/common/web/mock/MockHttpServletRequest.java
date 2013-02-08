@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.jpoweredcart.common.web.mock;
+package com.jpoweredcart.common.web.mock;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

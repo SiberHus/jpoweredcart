@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.service.impl;
+package com.jpoweredcart.common.service.impl;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -11,9 +11,9 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
-import org.jpoweredcart.common.service.SettingService;
-import org.jpoweredcart.common.service.EmailMessage;
-import org.jpoweredcart.common.service.EmailService;
+import com.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.common.service.EmailMessage;
+import com.jpoweredcart.common.service.EmailService;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;

@@ -1,11 +1,11 @@
-package org.jpoweredcart.admin.model.localisation.jdbc;
+package com.jpoweredcart.admin.model.localisation.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import org.jpoweredcart.common.entity.localisation.LengthClass;
-import org.jpoweredcart.common.entity.localisation.LengthClassDesc;
+import com.jpoweredcart.common.entity.localisation.LengthClass;
+import com.jpoweredcart.common.entity.localisation.LengthClassDesc;
 import org.springframework.jdbc.core.RowMapper;
 
 public class LengthClassRowMapper implements RowMapper<LengthClass> {

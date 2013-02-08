@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.utils;
+package com.jpoweredcart.common.utils;
 
 public final class Reflections {
 	

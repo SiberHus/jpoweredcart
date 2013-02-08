@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.service.impl;
+package com.jpoweredcart.common.service.impl;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

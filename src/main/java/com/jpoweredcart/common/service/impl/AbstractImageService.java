@@ -1,11 +1,11 @@
-package org.jpoweredcart.common.service.impl;
+package com.jpoweredcart.common.service.impl;
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
-import org.jpoweredcart.common.service.ImageService;
+import com.jpoweredcart.common.service.ImageService;
 
 public abstract class AbstractImageService implements ImageService {
 	

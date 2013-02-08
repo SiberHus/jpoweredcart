@@ -1,6 +1,6 @@
 import java.util.List;
 
-import org.jpoweredcart.common.entity.catalog.InformationToStore;
+import com.jpoweredcart.common.entity.catalog.InformationToStore;
 import org.springframework.util.AutoPopulatingList;
 
 

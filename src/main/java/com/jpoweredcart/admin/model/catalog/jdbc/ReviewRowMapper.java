@@ -1,10 +1,10 @@
-package org.jpoweredcart.admin.model.catalog.jdbc;
+package com.jpoweredcart.admin.model.catalog.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.admin.form.catalog.ReviewForm;
-import org.jpoweredcart.common.entity.catalog.Review;
+import com.jpoweredcart.admin.bean.catalog.ReviewForm;
+import com.jpoweredcart.common.entity.catalog.Review;
 import org.springframework.jdbc.core.RowMapper;
 
 public class ReviewRowMapper implements RowMapper<Review>{

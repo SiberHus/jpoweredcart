@@ -1,13 +1,13 @@
-package org.jpoweredcart.admin.model.catalog.jdbc;
+package com.jpoweredcart.admin.model.catalog.jdbc;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.model.catalog.CategoryAdminModel;
-import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.entity.catalog.Category;
-import org.jpoweredcart.common.entity.catalog.CategoryToLayout;
-import org.jpoweredcart.common.entity.catalog.CategoryToStore;
-import org.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.admin.model.catalog.CategoryAdminModel;
+import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.entity.catalog.Category;
+import com.jpoweredcart.common.entity.catalog.CategoryToLayout;
+import com.jpoweredcart.common.entity.catalog.CategoryToStore;
+import com.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 
 public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminModel{

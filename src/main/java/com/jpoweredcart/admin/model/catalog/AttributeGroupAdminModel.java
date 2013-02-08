@@ -1,9 +1,9 @@
-package org.jpoweredcart.admin.model.catalog;
+package com.jpoweredcart.admin.model.catalog;
 
 import java.util.List;
 
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.entity.catalog.AttributeGroup;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.catalog.AttributeGroup;
 
 
 public interface AttributeGroupAdminModel {

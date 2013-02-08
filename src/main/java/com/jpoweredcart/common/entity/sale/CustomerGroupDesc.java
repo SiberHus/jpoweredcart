@@ -1,7 +1,7 @@
-package org.jpoweredcart.common.entity.sale;
+package com.jpoweredcart.common.entity.sale;
 
 import org.hibernate.validator.constraints.Length;
-import org.jpoweredcart.common.entity.Description;
+import com.jpoweredcart.common.entity.Description;
 
 public class CustomerGroupDesc extends Description {
 	

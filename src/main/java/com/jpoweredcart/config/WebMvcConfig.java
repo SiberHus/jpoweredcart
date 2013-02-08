@@ -1,4 +1,4 @@
-package org.jpoweredcart.config;
+package com.jpoweredcart.config;
 
 import java.util.Locale;
 import java.util.Properties;
@@ -6,9 +6,9 @@ import java.util.Properties;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jpoweredcart.common.exception.TemplateMappingExceptionResolver;
-import org.jpoweredcart.common.i18n.CustomMessageResolver;
-import org.jpoweredcart.common.i18n.MessageResolver;
+import com.jpoweredcart.common.exception.TemplateMappingExceptionResolver;
+import com.jpoweredcart.common.i18n.CustomMessageResolver;
+import com.jpoweredcart.common.i18n.MessageResolver;
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +35,7 @@ import org.thymeleaf.templateresolver.TemplateResolver;
 
 @Configuration
 @ImportResource({
-	"classpath:org/jpoweredcart/config/security.xml"
+	"classpath:com.jpoweredcart/config/security.xml"
 })
 //@EnableScheduling
 public class WebMvcConfig extends WebMvcConfigurationSupport {
@@ -90,7 +90,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	public HandlerExceptionResolver mappingExceptionResolver(){
 		TemplateMappingExceptionResolver exceptionResolver = new TemplateMappingExceptionResolver();
 		Properties props = new Properties();//exception name = view name
-		props.setProperty("org.jpoweredcart.common.exception.admin.UnauthorizedAdminException", "/admin/error/permission");
+		props.setProperty("com.jpoweredcart.common.exception.admin.UnauthorizedAdminException", "/admin/error/permission");
 		
 		props.setProperty("org.springframework.web.servlet.PageNotFound", "/error/pageNotFound");
 		props.setProperty("org.springframework.dao.DataAccessException", "/error/dataAccessFailure");

@@ -1,10 +1,10 @@
-package org.jpoweredcart.admin.model.localisation;
+package com.jpoweredcart.admin.model.localisation;
 
 import java.util.List;
 
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.entity.localisation.ReturnStatuses;
-import org.jpoweredcart.common.entity.localisation.ReturnStatuses.ReturnStatus;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.localisation.ReturnStatuses;
+import com.jpoweredcart.common.entity.localisation.ReturnStatuses.ReturnStatus;
 
 public interface ReturnStatusAdminModel {
 

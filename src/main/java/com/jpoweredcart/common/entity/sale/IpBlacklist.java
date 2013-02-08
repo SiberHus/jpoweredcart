@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.entity.sale;
+package com.jpoweredcart.common.entity.sale;
 
 import java.io.Serializable;
 

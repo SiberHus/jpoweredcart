@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.exception;
+package com.jpoweredcart.common.exception;
 
 import org.springframework.ui.ModelMap;
 

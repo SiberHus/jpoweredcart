@@ -1,17 +1,17 @@
-package org.jpoweredcart.admin.model.sale.jdbc;
+package com.jpoweredcart.admin.model.sale.jdbc;
 
 import java.util.Date;
 import java.util.List;
 
-import org.jpoweredcart.admin.model.sale.VoucherAdminModel;
-import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.entity.sale.Voucher;
-import org.jpoweredcart.common.entity.sale.VoucherHistory;
-import org.jpoweredcart.common.service.EmailService;
-import org.jpoweredcart.common.service.SettingKey;
-import org.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.admin.model.sale.VoucherAdminModel;
+import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.QueryBean;
+import com.jpoweredcart.common.entity.sale.Voucher;
+import com.jpoweredcart.common.entity.sale.VoucherHistory;
+import com.jpoweredcart.common.service.EmailService;
+import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.transaction.annotation.Transactional;
 

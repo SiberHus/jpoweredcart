@@ -1,13 +1,13 @@
-package org.jpoweredcart.admin.model.catalog.jdbc;
+package com.jpoweredcart.admin.model.catalog.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.admin.form.catalog.InformationForm;
-import org.jpoweredcart.common.entity.catalog.Information;
-import org.jpoweredcart.common.entity.catalog.InformationDesc;
-import org.jpoweredcart.common.entity.catalog.InformationToLayout;
-import org.jpoweredcart.common.entity.catalog.InformationToStore;
+import com.jpoweredcart.admin.bean.catalog.InformationForm;
+import com.jpoweredcart.common.entity.catalog.Information;
+import com.jpoweredcart.common.entity.catalog.InformationDesc;
+import com.jpoweredcart.common.entity.catalog.InformationToLayout;
+import com.jpoweredcart.common.entity.catalog.InformationToStore;
 import org.springframework.jdbc.core.RowMapper;
 
 public class InformationRowMapper implements RowMapper<Information>{

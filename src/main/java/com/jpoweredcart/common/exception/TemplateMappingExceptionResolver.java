@@ -1,6 +1,6 @@
-package org.jpoweredcart.common.exception;
+package com.jpoweredcart.common.exception;
 
-import org.jpoweredcart.common.i18n.ThymeleafMessageResolver;
+import com.jpoweredcart.common.i18n.ThymeleafMessageResolver;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;

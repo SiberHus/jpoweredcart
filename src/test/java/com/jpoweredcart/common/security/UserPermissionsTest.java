@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.security;
+package com.jpoweredcart.common.security;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.Set;
 
 import junit.framework.Assert;
 
-import org.jpoweredcart.common.security.UserPermissions;
+import com.jpoweredcart.common.security.UserPermissions;
 import org.junit.Test;
 
 

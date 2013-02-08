@@ -1,16 +1,16 @@
-package org.jpoweredcart.admin.model.user.jdbc;
+package com.jpoweredcart.admin.model.user.jdbc;
 
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jpoweredcart.admin.model.user.UserAdminModel;
-import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.entity.user.User;
-import org.jpoweredcart.common.security.Password;
-import org.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.admin.model.user.UserAdminModel;
+import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.QueryBean;
+import com.jpoweredcart.common.entity.user.User;
+import com.jpoweredcart.common.security.Password;
+import com.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 
 

@@ -1,4 +1,4 @@
-package org.jpoweredcart.admin.controller.localisation;
+package com.jpoweredcart.admin.controller.localisation;
 
 import java.util.List;
 
@@ -6,17 +6,17 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.jpoweredcart.admin.model.localisation.GeoZoneAdminModel;
-import org.jpoweredcart.admin.model.localisation.TaxRateAdminModel;
-import org.jpoweredcart.admin.model.sale.CustomerGroupAdminModel;
-import org.jpoweredcart.common.BaseController;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.entity.localisation.GeoZone;
-import org.jpoweredcart.common.entity.localisation.TaxRate;
-import org.jpoweredcart.common.entity.sale.CustomerGroup;
-import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
-import org.jpoweredcart.common.security.UserPermissions;
-import org.jpoweredcart.common.view.Pagination;
+import com.jpoweredcart.admin.model.localisation.GeoZoneAdminModel;
+import com.jpoweredcart.admin.model.localisation.TaxRateAdminModel;
+import com.jpoweredcart.admin.model.sale.CustomerGroupAdminModel;
+import com.jpoweredcart.common.BaseController;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.localisation.GeoZone;
+import com.jpoweredcart.common.entity.localisation.TaxRate;
+import com.jpoweredcart.common.entity.sale.CustomerGroup;
+import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
+import com.jpoweredcart.common.security.UserPermissions;
+import com.jpoweredcart.common.view.Pagination;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

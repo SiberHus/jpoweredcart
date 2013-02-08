@@ -1,4 +1,4 @@
-package org.jpoweredcart.admin.model.localisation.jdbc;
+package com.jpoweredcart.admin.model.localisation.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,12 +9,12 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import org.jpoweredcart.admin.model.localisation.TaxRateAdminModel;
-import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.entity.localisation.TaxRate;
-import org.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.admin.model.localisation.TaxRateAdminModel;
+import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.QueryBean;
+import com.jpoweredcart.common.entity.localisation.TaxRate;
+import com.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

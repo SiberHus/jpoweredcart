@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.i18n;
+package com.jpoweredcart.common.i18n;
 
 import java.io.File;
 import java.io.FileInputStream;

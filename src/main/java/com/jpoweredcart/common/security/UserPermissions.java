@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.security;
+package com.jpoweredcart.common.security;
 
 import java.util.HashMap;
 import java.util.HashSet;

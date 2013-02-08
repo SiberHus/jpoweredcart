@@ -1,9 +1,9 @@
-package org.jpoweredcart.admin.model.localisation.jdbc;
+package com.jpoweredcart.admin.model.localisation.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.common.entity.localisation.GeoZone;
+import com.jpoweredcart.common.entity.localisation.GeoZone;
 import org.springframework.jdbc.core.RowMapper;
 
 public class GeoZoneRowMapper implements RowMapper<GeoZone> {

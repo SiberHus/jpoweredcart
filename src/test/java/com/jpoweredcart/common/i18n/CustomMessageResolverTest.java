@@ -1,10 +1,10 @@
-package org.jpoweredcart.common.i18n;
+package com.jpoweredcart.common.i18n;
 
 import java.io.File;
 
 import junit.framework.Assert;
 
-import org.jpoweredcart.common.i18n.CustomMessageResolver;
+import com.jpoweredcart.common.i18n.CustomMessageResolver;
 import org.junit.Test;
 
 public class CustomMessageResolverTest {

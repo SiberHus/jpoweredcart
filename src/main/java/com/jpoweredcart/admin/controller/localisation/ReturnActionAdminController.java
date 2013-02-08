@@ -1,4 +1,4 @@
-package org.jpoweredcart.admin.controller.localisation;
+package com.jpoweredcart.admin.controller.localisation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,17 +6,17 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import org.jpoweredcart.admin.model.localisation.LanguageAdminModel;
-import org.jpoweredcart.admin.model.localisation.ReturnActionAdminModel;
-import org.jpoweredcart.common.BaseController;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.entity.localisation.Language;
-import org.jpoweredcart.common.entity.localisation.ReturnActions;
-import org.jpoweredcart.common.entity.localisation.ReturnActions.ReturnAction;
-import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
-import org.jpoweredcart.common.security.UserPermissions;
-import org.jpoweredcart.common.service.SettingKey;
-import org.jpoweredcart.common.view.Pagination;
+import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
+import com.jpoweredcart.admin.model.localisation.ReturnActionAdminModel;
+import com.jpoweredcart.common.BaseController;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.localisation.Language;
+import com.jpoweredcart.common.entity.localisation.ReturnActions;
+import com.jpoweredcart.common.entity.localisation.ReturnActions.ReturnAction;
+import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
+import com.jpoweredcart.common.security.UserPermissions;
+import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.view.Pagination;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;

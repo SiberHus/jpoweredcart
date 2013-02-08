@@ -1,6 +1,6 @@
-package org.jpoweredcart.common.exception.admin;
+package com.jpoweredcart.common.exception.admin;
 
-import org.jpoweredcart.common.security.UnauthorizedException;
+import com.jpoweredcart.common.security.UnauthorizedException;
 
 public class UnauthorizedAdminException extends UnauthorizedException {
 	

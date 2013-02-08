@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.entity.localisation;
+package com.jpoweredcart.common.entity.localisation;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

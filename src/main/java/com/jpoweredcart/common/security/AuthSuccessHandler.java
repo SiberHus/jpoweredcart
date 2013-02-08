@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.security;
+package com.jpoweredcart.common.security;
 
 import java.io.IOException;
 
@@ -7,8 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jpoweredcart.admin.model.user.UserAdminModel;
-import org.jpoweredcart.common.entity.user.User;
+import com.jpoweredcart.admin.model.user.UserAdminModel;
+import com.jpoweredcart.common.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;

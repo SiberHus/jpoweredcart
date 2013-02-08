@@ -1,7 +1,7 @@
-package org.jpoweredcart.common.entity.localisation;
+package com.jpoweredcart.common.entity.localisation;
 
 import org.hibernate.validator.constraints.Length;
-import org.jpoweredcart.common.entity.Description;
+import com.jpoweredcart.common.entity.Description;
 
 public class LengthClassDesc extends Description {
 	

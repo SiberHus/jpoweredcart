@@ -1,4 +1,4 @@
-package org.jpoweredcart.admin.model.localisation.jdbc;
+package com.jpoweredcart.admin.model.localisation.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,14 +6,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import org.jpoweredcart.admin.model.localisation.OrderStatusAdminModel;
-import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.entity.localisation.OrderStatuses;
-import org.jpoweredcart.common.entity.localisation.OrderStatuses.OrderStatus;
-import org.jpoweredcart.common.service.SettingKey;
-import org.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.admin.model.localisation.OrderStatusAdminModel;
+import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.QueryBean;
+import com.jpoweredcart.common.entity.localisation.OrderStatuses;
+import com.jpoweredcart.common.entity.localisation.OrderStatuses.OrderStatus;
+import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

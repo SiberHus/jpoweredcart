@@ -1,4 +1,4 @@
-package org.jpoweredcart.admin.controller.common;
+package com.jpoweredcart.admin.controller.common;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,9 +8,9 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import org.jpoweredcart.common.web.Link;
-import org.jpoweredcart.common.web.mock.MockHttpServletRequest;
-import org.jpoweredcart.common.web.mock.MockHttpServletResponse;
+import com.jpoweredcart.common.web.Link;
+import com.jpoweredcart.common.web.mock.MockHttpServletRequest;
+import com.jpoweredcart.common.web.mock.MockHttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

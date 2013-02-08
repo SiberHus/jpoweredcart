@@ -1,4 +1,4 @@
-package org.jpoweredcart.config;
+package com.jpoweredcart.config;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,14 +16,14 @@ import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.apache.activemq.store.PersistenceAdapter;
 import org.apache.activemq.store.kahadb.KahaDBPersistenceAdapter;
 import org.apache.commons.lang3.StringUtils;
-import org.jpoweredcart.common.service.EmailService;
-import org.jpoweredcart.common.service.ImageService;
-import org.jpoweredcart.common.service.SettingService;
-import org.jpoweredcart.common.service.impl.AbstractImageService;
-import org.jpoweredcart.common.service.impl.DefaultEmailService;
-import org.jpoweredcart.common.service.impl.DefaultSettingService;
-import org.jpoweredcart.common.service.impl.FileSystemImageService;
-import org.jpoweredcart.common.service.impl.JmsEmailService;
+import com.jpoweredcart.common.service.EmailService;
+import com.jpoweredcart.common.service.ImageService;
+import com.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.common.service.impl.AbstractImageService;
+import com.jpoweredcart.common.service.impl.DefaultEmailService;
+import com.jpoweredcart.common.service.impl.DefaultSettingService;
+import com.jpoweredcart.common.service.impl.FileSystemImageService;
+import com.jpoweredcart.common.service.impl.JmsEmailService;
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -50,7 +50,7 @@ import com.jolbox.bonecp.BoneCPDataSource;
 @Configuration
 @ComponentScan(
 	basePackages = {
-		"org.jpoweredcart.admin.controller"
+		"com.jpoweredcart.admin.controller"
 	}, 
 	excludeFilters = { @Filter(Configuration.class) })
 @PropertySource("classpath:application.properties")

@@ -1,4 +1,4 @@
-package org.jpoweredcart.admin.model.setting;
+package com.jpoweredcart.admin.model.setting;
 
 import java.util.Map;
 

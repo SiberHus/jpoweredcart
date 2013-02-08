@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.view;
+package com.jpoweredcart.common.view;
 
 public class Breadcrumb {
 	

@@ -1,4 +1,4 @@
-package org.jpoweredcart.common;
+package com.jpoweredcart.common;
 
 import java.util.ArrayList;
 import java.util.List;

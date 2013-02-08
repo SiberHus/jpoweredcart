@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.web.mock;
+package com.jpoweredcart.common.web.mock;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

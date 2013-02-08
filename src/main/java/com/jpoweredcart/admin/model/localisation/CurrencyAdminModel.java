@@ -1,9 +1,9 @@
-package org.jpoweredcart.admin.model.localisation;
+package com.jpoweredcart.admin.model.localisation;
 
 import java.util.List;
 
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.entity.localisation.Currency;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.localisation.Currency;
 
 
 public interface CurrencyAdminModel {

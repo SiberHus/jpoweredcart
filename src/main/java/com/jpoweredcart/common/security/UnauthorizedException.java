@@ -1,6 +1,6 @@
-package org.jpoweredcart.common.security;
+package com.jpoweredcart.common.security;
 
-import org.jpoweredcart.common.exception.TemplateAwareException;
+import com.jpoweredcart.common.exception.TemplateAwareException;
 
 public class UnauthorizedException extends TemplateAwareException {
 	

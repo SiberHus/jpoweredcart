@@ -1,13 +1,13 @@
-package org.jpoweredcart.common;
+package com.jpoweredcart.common;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jpoweredcart.common.i18n.MessageResolver;
-import org.jpoweredcart.common.service.SettingKey;
-import org.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.common.i18n.MessageResolver;
+import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.SettingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;

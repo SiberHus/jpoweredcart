@@ -1,13 +1,13 @@
-package org.jpoweredcart.admin.model.catalog;
+package com.jpoweredcart.admin.model.catalog;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.form.catalog.InformationForm;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.entity.catalog.Information;
-import org.jpoweredcart.common.entity.catalog.InformationDesc;
-import org.jpoweredcart.common.entity.catalog.InformationToLayout;
-import org.jpoweredcart.common.entity.catalog.InformationToStore;
+import com.jpoweredcart.admin.bean.catalog.InformationForm;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.catalog.Information;
+import com.jpoweredcart.common.entity.catalog.InformationDesc;
+import com.jpoweredcart.common.entity.catalog.InformationToLayout;
+import com.jpoweredcart.common.entity.catalog.InformationToStore;
 
 public interface InformationAdminModel {
 	

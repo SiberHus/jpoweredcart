@@ -1,4 +1,4 @@
-package org.jpoweredcart.common;
+package com.jpoweredcart.common;
 
 public class PageParam {
 	

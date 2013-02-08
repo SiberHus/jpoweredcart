@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.security;
+package com.jpoweredcart.common.security;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;

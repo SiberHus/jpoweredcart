@@ -1,6 +1,6 @@
-package org.jpoweredcart.admin.controller.catalog;
+package com.jpoweredcart.admin.controller.catalog;
 
-import org.jpoweredcart.common.BaseController;
+import com.jpoweredcart.common.BaseController;
 import org.springframework.stereotype.Controller;
 
 

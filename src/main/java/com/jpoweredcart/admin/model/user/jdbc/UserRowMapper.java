@@ -1,9 +1,9 @@
-package org.jpoweredcart.admin.model.user.jdbc;
+package com.jpoweredcart.admin.model.user.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.common.entity.user.User;
+import com.jpoweredcart.common.entity.user.User;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 

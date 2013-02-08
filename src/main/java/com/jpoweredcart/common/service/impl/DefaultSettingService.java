@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.service.impl;
+package com.jpoweredcart.common.service.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,11 +8,11 @@ import java.util.Map;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 
-import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.service.DefaultSettings;
-import org.jpoweredcart.common.service.SettingGroup;
-import org.jpoweredcart.common.service.SettingKey;
-import org.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.service.DefaultSettings;
+import com.jpoweredcart.common.service.SettingGroup;
+import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.SettingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;

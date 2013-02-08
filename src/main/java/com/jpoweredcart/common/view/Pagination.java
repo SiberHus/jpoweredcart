@@ -1,10 +1,10 @@
-package org.jpoweredcart.common.view;
+package com.jpoweredcart.common.view;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.text.StrSubstitutor;
-import org.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.PageParam;
 
 public class Pagination {
 	

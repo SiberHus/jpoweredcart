@@ -1,10 +1,10 @@
-package org.jpoweredcart.admin.model.catalog;
+package com.jpoweredcart.admin.model.catalog;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.form.catalog.ReviewForm;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.entity.catalog.Review;
+import com.jpoweredcart.admin.bean.catalog.ReviewForm;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.catalog.Review;
 
 public interface ReviewAdminModel {
 	

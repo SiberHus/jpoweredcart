@@ -1,7 +1,7 @@
-package org.jpoweredcart.common.entity.catalog;
+package com.jpoweredcart.common.entity.catalog;
 
 import org.hibernate.validator.constraints.Length;
-import org.jpoweredcart.common.entity.Description;
+import com.jpoweredcart.common.entity.Description;
 
 public class InformationDesc extends Description {
 	

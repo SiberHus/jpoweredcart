@@ -1,11 +1,11 @@
-package org.jpoweredcart.common;
+package com.jpoweredcart.common;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jpoweredcart.common.service.DefaultSettings;
-import org.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.common.service.DefaultSettings;
+import com.jpoweredcart.common.service.SettingService;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcOperations;
 

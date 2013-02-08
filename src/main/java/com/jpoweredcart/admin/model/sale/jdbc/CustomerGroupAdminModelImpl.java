@@ -1,16 +1,16 @@
-package org.jpoweredcart.admin.model.sale.jdbc;
+package com.jpoweredcart.admin.model.sale.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.jpoweredcart.admin.model.sale.CustomerGroupAdminModel;
-import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.entity.sale.CustomerGroup;
-import org.jpoweredcart.common.service.SettingKey;
-import org.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.admin.model.sale.CustomerGroupAdminModel;
+import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.QueryBean;
+import com.jpoweredcart.common.entity.sale.CustomerGroup;
+import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 
 public class CustomerGroupAdminModelImpl extends BaseModel implements CustomerGroupAdminModel {

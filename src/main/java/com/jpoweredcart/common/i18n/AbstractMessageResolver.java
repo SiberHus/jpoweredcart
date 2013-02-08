@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.i18n;
+package com.jpoweredcart.common.i18n;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 
-import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.jdbc.ArrayListResultSetExtractor;
+import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.jdbc.ArrayListResultSetExtractor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;

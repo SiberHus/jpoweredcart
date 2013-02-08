@@ -1,23 +1,23 @@
-package org.jpoweredcart.admin.model.catalog;
+package com.jpoweredcart.admin.model.catalog;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.form.catalog.TotalProductsFilter;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.entity.catalog.Product;
-import org.jpoweredcart.common.entity.catalog.ProductAttribute;
-import org.jpoweredcart.common.entity.catalog.ProductDescription;
-import org.jpoweredcart.common.entity.catalog.ProductDiscount;
-import org.jpoweredcart.common.entity.catalog.ProductFilter;
-import org.jpoweredcart.common.entity.catalog.ProductImage;
-import org.jpoweredcart.common.entity.catalog.ProductOption;
-import org.jpoweredcart.common.entity.catalog.ProductRelated;
-import org.jpoweredcart.common.entity.catalog.ProductReward;
-import org.jpoweredcart.common.entity.catalog.ProductSpecial;
-import org.jpoweredcart.common.entity.catalog.ProductToCategory;
-import org.jpoweredcart.common.entity.catalog.ProductToDownload;
-import org.jpoweredcart.common.entity.catalog.ProductToLayout;
-import org.jpoweredcart.common.entity.catalog.ProductToStore;
+import com.jpoweredcart.admin.bean.catalog.TotalProductsFilter;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.catalog.Product;
+import com.jpoweredcart.common.entity.catalog.ProductAttribute;
+import com.jpoweredcart.common.entity.catalog.ProductDescription;
+import com.jpoweredcart.common.entity.catalog.ProductDiscount;
+import com.jpoweredcart.common.entity.catalog.ProductFilter;
+import com.jpoweredcart.common.entity.catalog.ProductImage;
+import com.jpoweredcart.common.entity.catalog.ProductOption;
+import com.jpoweredcart.common.entity.catalog.ProductRelated;
+import com.jpoweredcart.common.entity.catalog.ProductReward;
+import com.jpoweredcart.common.entity.catalog.ProductSpecial;
+import com.jpoweredcart.common.entity.catalog.ProductToCategory;
+import com.jpoweredcart.common.entity.catalog.ProductToDownload;
+import com.jpoweredcart.common.entity.catalog.ProductToLayout;
+import com.jpoweredcart.common.entity.catalog.ProductToStore;
 
 public interface ProductAdminModel {
 	

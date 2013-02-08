@@ -1,11 +1,11 @@
-package org.jpoweredcart.common.i18n;
+package com.jpoweredcart.common.i18n;
 
 import java.io.File;
 import java.util.Arrays;
 
 import junit.framework.Assert;
 
-import org.jpoweredcart.common.i18n.UriHierarchyMessageResolver;
+import com.jpoweredcart.common.i18n.UriHierarchyMessageResolver;
 import org.junit.Test;
 
 public class UriHierarchyMessageResolverTest {

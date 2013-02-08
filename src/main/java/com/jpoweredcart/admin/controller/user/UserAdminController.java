@@ -1,4 +1,4 @@
-package org.jpoweredcart.admin.controller.user;
+package com.jpoweredcart.admin.controller.user;
 
 import java.util.List;
 
@@ -7,14 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jpoweredcart.admin.model.user.UserAdminModel;
-import org.jpoweredcart.admin.model.user.UserGroupAdminModel;
-import org.jpoweredcart.common.BaseController;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.entity.user.User;
-import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
-import org.jpoweredcart.common.security.UserPermissions;
-import org.jpoweredcart.common.view.Pagination;
+import com.jpoweredcart.admin.model.user.UserAdminModel;
+import com.jpoweredcart.admin.model.user.UserGroupAdminModel;
+import com.jpoweredcart.common.BaseController;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.user.User;
+import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
+import com.jpoweredcart.common.security.UserPermissions;
+import com.jpoweredcart.common.view.Pagination;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

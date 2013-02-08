@@ -1,4 +1,4 @@
-package org.jpoweredcart.admin.controller.catalog;
+package com.jpoweredcart.admin.controller.catalog;
 
 import java.util.List;
 
@@ -6,14 +6,14 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.jpoweredcart.admin.form.catalog.ReviewForm;
-import org.jpoweredcart.admin.model.catalog.ReviewAdminModel;
-import org.jpoweredcart.common.BaseController;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.entity.catalog.Review;
-import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
-import org.jpoweredcart.common.security.UserPermissions;
-import org.jpoweredcart.common.view.Pagination;
+import com.jpoweredcart.admin.bean.catalog.ReviewForm;
+import com.jpoweredcart.admin.model.catalog.ReviewAdminModel;
+import com.jpoweredcart.common.BaseController;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.catalog.Review;
+import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
+import com.jpoweredcart.common.security.UserPermissions;
+import com.jpoweredcart.common.view.Pagination;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

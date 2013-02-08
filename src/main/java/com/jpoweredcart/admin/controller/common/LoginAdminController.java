@@ -1,4 +1,4 @@
-package org.jpoweredcart.admin.controller.common;
+package com.jpoweredcart.admin.controller.common;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

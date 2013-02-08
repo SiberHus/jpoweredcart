@@ -1,10 +1,10 @@
-package org.jpoweredcart.admin.model.localisation.jdbc;
+package com.jpoweredcart.admin.model.localisation.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import org.jpoweredcart.common.entity.localisation.StockStatuses.StockStatus;
+import com.jpoweredcart.common.entity.localisation.StockStatuses.StockStatus;
 import org.springframework.jdbc.core.RowMapper;
 
 public class StockStatusRowMapper implements RowMapper<StockStatus> {

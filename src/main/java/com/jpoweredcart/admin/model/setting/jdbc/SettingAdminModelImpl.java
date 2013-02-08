@@ -1,10 +1,10 @@
-package org.jpoweredcart.admin.model.setting.jdbc;
+package com.jpoweredcart.admin.model.setting.jdbc;
 
 import java.util.Map;
 
-import org.jpoweredcart.admin.model.setting.SettingAdminModel;
-import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.admin.model.setting.SettingAdminModel;
+import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 
 public class SettingAdminModelImpl extends BaseModel implements SettingAdminModel{

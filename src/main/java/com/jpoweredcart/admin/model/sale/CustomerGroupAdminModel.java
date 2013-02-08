@@ -1,9 +1,9 @@
-package org.jpoweredcart.admin.model.sale;
+package com.jpoweredcart.admin.model.sale;
 
 import java.util.List;
 
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.entity.sale.CustomerGroup;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.sale.CustomerGroup;
 
 public interface CustomerGroupAdminModel {
 

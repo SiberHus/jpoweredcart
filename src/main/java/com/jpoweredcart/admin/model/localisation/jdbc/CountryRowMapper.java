@@ -1,9 +1,9 @@
-package org.jpoweredcart.admin.model.localisation.jdbc;
+package com.jpoweredcart.admin.model.localisation.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.common.entity.localisation.Country;
+import com.jpoweredcart.common.entity.localisation.Country;
 import org.springframework.jdbc.core.RowMapper;
 
 public class CountryRowMapper implements RowMapper<Country> {

@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.entity.catalog;
+package com.jpoweredcart.common.entity.catalog;
 
 import java.io.Serializable;
 import java.util.Date;

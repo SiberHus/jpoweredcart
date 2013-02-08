@@ -1,9 +1,9 @@
-package org.jpoweredcart.admin.model.setting.jdbc;
+package com.jpoweredcart.admin.model.setting.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.common.entity.setting.Store;
+import com.jpoweredcart.common.entity.setting.Store;
 import org.springframework.jdbc.core.RowMapper;
 
 public class StoreRowMapper implements RowMapper<Store>{

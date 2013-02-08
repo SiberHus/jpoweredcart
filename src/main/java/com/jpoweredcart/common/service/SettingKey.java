@@ -1,4 +1,4 @@
-package org.jpoweredcart.common.service;
+package com.jpoweredcart.common.service;
 
 public class SettingKey {
 	

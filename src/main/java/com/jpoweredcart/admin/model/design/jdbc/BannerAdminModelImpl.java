@@ -1,4 +1,4 @@
-package org.jpoweredcart.admin.model.design.jdbc;
+package com.jpoweredcart.admin.model.design.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,14 +6,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import org.jpoweredcart.admin.model.design.BannerAdminModel;
-import org.jpoweredcart.common.BaseModel;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.QueryBean;
-import org.jpoweredcart.common.entity.design.Banner;
-import org.jpoweredcart.common.entity.design.BannerImage;
-import org.jpoweredcart.common.entity.design.BannerImageDesc;
-import org.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.admin.model.design.BannerAdminModel;
+import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.QueryBean;
+import com.jpoweredcart.common.entity.design.Banner;
+import com.jpoweredcart.common.entity.design.BannerImage;
+import com.jpoweredcart.common.entity.design.BannerImageDesc;
+import com.jpoweredcart.common.service.SettingService;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

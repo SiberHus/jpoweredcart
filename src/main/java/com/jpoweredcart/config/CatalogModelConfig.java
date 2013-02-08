@@ -1,10 +1,10 @@
-package org.jpoweredcart.config;
+package com.jpoweredcart.config;
 
 import javax.inject.Inject;
 
-import org.jpoweredcart.catalog.model.catalog.jdbc.ProductModelImpl;
-import org.jpoweredcart.catalog.model.catalog.ProductModel;
-import org.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.catalog.model.catalog.jdbc.ProductModelImpl;
+import com.jpoweredcart.catalog.model.catalog.ProductModel;
+import com.jpoweredcart.common.service.SettingService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcOperations;

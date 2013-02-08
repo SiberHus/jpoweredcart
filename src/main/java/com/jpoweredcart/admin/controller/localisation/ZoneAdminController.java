@@ -1,4 +1,4 @@
-package org.jpoweredcart.admin.controller.localisation;
+package com.jpoweredcart.admin.controller.localisation;
 
 import java.util.List;
 
@@ -6,15 +6,15 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.jpoweredcart.admin.model.localisation.CountryAdminModel;
-import org.jpoweredcart.admin.model.localisation.ZoneAdminModel;
-import org.jpoweredcart.common.BaseController;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.entity.localisation.Country;
-import org.jpoweredcart.common.entity.localisation.Zone;
-import org.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
-import org.jpoweredcart.common.security.UserPermissions;
-import org.jpoweredcart.common.view.Pagination;
+import com.jpoweredcart.admin.model.localisation.CountryAdminModel;
+import com.jpoweredcart.admin.model.localisation.ZoneAdminModel;
+import com.jpoweredcart.common.BaseController;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.localisation.Country;
+import com.jpoweredcart.common.entity.localisation.Zone;
+import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
+import com.jpoweredcart.common.security.UserPermissions;
+import com.jpoweredcart.common.view.Pagination;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

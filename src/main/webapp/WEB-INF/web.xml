@@ -13,7 +13,7 @@
 		that makeup this application -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>org.jpoweredcart.config</param-value>
+		<param-value>com.jpoweredcart.config</param-value>
 	</context-param>
 	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->

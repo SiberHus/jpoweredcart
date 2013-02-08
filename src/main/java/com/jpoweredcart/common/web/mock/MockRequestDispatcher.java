@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.jpoweredcart.common.web.mock;
+package com.jpoweredcart.common.web.mock;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletRequest;

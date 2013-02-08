@@ -15,7 +15,7 @@
 		</beans:property>
 	</beans:bean>
 	
-	<beans:bean id="authSuccessHandler" class="org.jpoweredcart.common.security.AuthSuccessHandler">
+	<beans:bean id="authSuccessHandler" class="com.jpoweredcart.common.security.AuthSuccessHandler">
 		<beans:property name="defaultTargetUrl" value="/admin/common/home"/>
 	</beans:bean>
 	
@@ -51,8 +51,8 @@
 	
 	<global-method-security secured-annotations="enabled" pre-post-annotations="enabled" />
 	
-	<beans:bean id="cartAdminUserDetailsService" class="org.jpoweredcart.common.security.CartAdminUserDetailService" />
-	<beans:bean id="adminAuthenticationProvider" class="org.jpoweredcart.common.security.CartAuthenticationProvider">
+	<beans:bean id="cartAdminUserDetailsService" class="com.jpoweredcart.common.security.CartAdminUserDetailService" />
+	<beans:bean id="adminAuthenticationProvider" class="com.jpoweredcart.common.security.CartAuthenticationProvider">
 		<beans:property name="userDetailsService" ref="cartAdminUserDetailsService"/>
 	</beans:bean>
 	

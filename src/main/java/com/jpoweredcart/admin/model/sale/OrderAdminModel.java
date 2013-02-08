@@ -1,16 +1,16 @@
-package org.jpoweredcart.admin.model.sale;
+package com.jpoweredcart.admin.model.sale;
 
 import java.util.List;
 
-import org.jpoweredcart.admin.form.sale.TotalOrdersFilter;
-import org.jpoweredcart.common.PageParam;
-import org.jpoweredcart.common.entity.sale.Order;
-import org.jpoweredcart.common.entity.sale.OrderDownload;
-import org.jpoweredcart.common.entity.sale.OrderHistory;
-import org.jpoweredcart.common.entity.sale.OrderOption;
-import org.jpoweredcart.common.entity.sale.OrderProduct;
-import org.jpoweredcart.common.entity.sale.OrderTotal;
-import org.jpoweredcart.common.entity.sale.OrderVoucher;
+import com.jpoweredcart.admin.bean.sale.TotalOrdersFilter;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.sale.Order;
+import com.jpoweredcart.common.entity.sale.OrderDownload;
+import com.jpoweredcart.common.entity.sale.OrderHistory;
+import com.jpoweredcart.common.entity.sale.OrderOption;
+import com.jpoweredcart.common.entity.sale.OrderProduct;
+import com.jpoweredcart.common.entity.sale.OrderTotal;
+import com.jpoweredcart.common.entity.sale.OrderVoucher;
 
 public interface OrderAdminModel {
 

@@ -1,9 +1,9 @@
-package org.jpoweredcart.admin.model.sale.jdbc;
+package com.jpoweredcart.admin.model.sale.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jpoweredcart.common.entity.sale.Voucher;
+import com.jpoweredcart.common.entity.sale.Voucher;
 import org.springframework.jdbc.core.RowMapper;
 
 public class VoucherRowMapper implements RowMapper<Voucher>{
