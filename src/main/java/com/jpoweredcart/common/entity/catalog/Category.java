@@ -2,9 +2,6 @@ package com.jpoweredcart.common.entity.catalog;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-
-import org.springframework.util.AutoPopulatingList;
 
 public class Category implements Serializable {
 
@@ -12,33 +9,26 @@ public class Category implements Serializable {
 	
 	protected Integer id;
 	
+	//@Transient
+	protected String name;
+	
 	protected String image;
 	
-	protected String path;
+	protected String path = "";
 	
 	protected Integer parentId;
 	
 	protected boolean top;
 	
-	protected int column;
+	protected int column = 1;
 	
 	protected int sortOrder;
 	
-	protected int status;
+	protected short status = 1;//Enabled by default
 	
 	protected Date dateAdded;
 	
 	protected Date dateModified;
-
-	protected List<CategoryDesc> descs;
-	
-	public Category(){
-		this.descs = new AutoPopulatingList<CategoryDesc>(CategoryDesc.class);
-	}
-	
-	public Category(List<CategoryDesc> descs){
-		this.descs = new AutoPopulatingList<CategoryDesc>(descs, CategoryDesc.class);
-	}
 	
 	public Integer getId() {
 		return id;
@@ -46,6 +36,14 @@ public class Category implements Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getImage() {
@@ -96,11 +94,11 @@ public class Category implements Serializable {
 		this.sortOrder = sortOrder;
 	}
 
-	public int getStatus() {
+	public short getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(short status) {
 		this.status = status;
 	}
 
@@ -118,14 +116,6 @@ public class Category implements Serializable {
 
 	public void setDateModified(Date dateModified) {
 		this.dateModified = dateModified;
-	}
-
-	public List<CategoryDesc> getDescs() {
-		return descs;
-	}
-
-	public void setDescs(List<CategoryDesc> descs) {
-		this.descs = descs;
 	}
 	
 }

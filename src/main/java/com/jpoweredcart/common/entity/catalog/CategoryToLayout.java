@@ -10,6 +10,8 @@ public class CategoryToLayout  implements Serializable {
 	
 	protected Integer storeId;
 	
+	protected String storeName;
+	
 	protected Integer layoutId;
 	
 	public Integer getCategoryId() {
@@ -26,6 +28,14 @@ public class CategoryToLayout  implements Serializable {
 
 	public void setStoreId(Integer storeId) {
 		this.storeId = storeId;
+	}
+	
+	public String getStoreName() {
+		return storeName;
+	}
+
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
 	}
 
 	public Integer getLayoutId() {

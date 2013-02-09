@@ -21,9 +21,9 @@ public class InformationRowMapper implements RowMapper<Information>{
 	
 	@Override
 	public Information mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Information entity = new Information();
-		setProperties(rs, entity);
-		return entity;
+		Information info = new Information();
+		setProperties(rs, info);
+		return info;
 	}
 	
 	public static class Form implements RowMapper<InformationForm>{
@@ -31,10 +31,10 @@ public class InformationRowMapper implements RowMapper<Information>{
 		@Override
 		public InformationForm mapRow(ResultSet rs, int rowNum)
 				throws SQLException {
-			InformationForm form = new InformationForm();
-			setProperties(rs, form);
-			form.setKeyword(rs.getString("keyword"));
-			return form;
+			InformationForm infoForm = new InformationForm();
+			setProperties(rs, infoForm);
+			infoForm.setKeyword(rs.getString("keyword"));
+			return infoForm;
 		}
 	}
 	

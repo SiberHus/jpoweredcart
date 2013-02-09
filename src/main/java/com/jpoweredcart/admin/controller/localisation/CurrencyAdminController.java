@@ -6,13 +6,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
-import com.jpoweredcart.common.BaseController;
-import com.jpoweredcart.common.PageParam;
-import com.jpoweredcart.common.entity.localisation.Currency;
-import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
-import com.jpoweredcart.common.security.UserPermissions;
-import com.jpoweredcart.common.view.Pagination;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,14 +15,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jpoweredcart.admin.bean.localisation.CurrencyForm;
+import com.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
+import com.jpoweredcart.common.BaseController;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.localisation.Currency;
+import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
+import com.jpoweredcart.common.security.UserPermissions;
+import com.jpoweredcart.common.view.Pagination;
+
 
 @Controller
+@RequestMapping(value="/admin/localisation/currency")
 public class CurrencyAdminController extends BaseController {
 	
 	@Inject
 	private CurrencyAdminModel currencyAdminModel;
 	
-	@RequestMapping(value="/admin/localisation/currency")
+	@RequestMapping(value={"", "/"})
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
@@ -46,41 +49,41 @@ public class CurrencyAdminController extends BaseController {
 		return "/admin/localisation/currencyList";
 	}
 	
-	@RequestMapping(value="/admin/localisation/currency/create")
+	@RequestMapping(value="/create")
 	public String create(Model model){
 		
 		checkModifyPermission();
 		
-		model.addAttribute("currency", new Currency());
+		model.addAttribute("currencyForm", currencyAdminModel.newForm());
 		
 		return "/admin/localisation/currencyForm";
 	}
 	
-	@RequestMapping(value="/admin/localisation/currency/edit/{id}")
+	@RequestMapping(value="/edit/{id}")
 	public String edit(@PathVariable("id") Integer id, Model model){
 		
 		checkModifyPermission();
 		
-		Currency currency = currencyAdminModel.get(id);
-		model.addAttribute("currency", currency);
+		CurrencyForm currencyForm = currencyAdminModel.getForm(id);
+		model.addAttribute("currencyForm", currencyForm);
 		return "/admin/localisation/currencyForm";
 	}
 	
-	@RequestMapping(value="/admin/localisation/currency/save", method=RequestMethod.POST)
-	public String save(@Valid Currency currency, BindingResult result, Model model, 
+	@RequestMapping(value="/save", method=RequestMethod.POST)
+	public String save(@Valid CurrencyForm currencyForm, BindingResult result, Model model, 
 			RedirectAttributes redirect){
 		
 		checkModifyPermission();
 		
 		if(result.hasErrors()){
-			model.addAttribute("currency", currency);
+			model.addAttribute("currencyForm", currencyForm);
 			return "/admin/localisation/currencyForm";
 		}
 		
-		if(currency.getId()!=null){
-			currencyAdminModel.update(currency);
+		if(currencyForm.getId()!=null){
+			currencyAdminModel.update(currencyForm);
 		}else{
-			currencyAdminModel.create(currency);
+			currencyAdminModel.create(currencyForm);
 		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
@@ -88,8 +91,8 @@ public class CurrencyAdminController extends BaseController {
 		return "redirect:/admin/localisation/currency";
 	}
 	
-	@RequestMapping(value="/admin/localisation/currency/delete", method=RequestMethod.POST)
-	public String delete(@RequestParam("selected") Integer[] ids, Model model,
+	@RequestMapping(value="/delete", method=RequestMethod.POST)
+	public String delete(@RequestParam(value="selected", required=false) Integer[] ids, Model model,
 			RedirectAttributes redirect){
 		checkModifyPermission();
 		boolean error = false;
@@ -97,8 +100,8 @@ public class CurrencyAdminController extends BaseController {
 			if(!error) for(Integer id: ids){
 				currencyAdminModel.delete(id);
 			}
+			if(!error) redirect.addFlashAttribute("msg_success", "text.success");
 		}
-		if(!error) redirect.addFlashAttribute("msg_success", "text.success");
 		
 		return "redirect:/admin/localisation/currency";
 	}

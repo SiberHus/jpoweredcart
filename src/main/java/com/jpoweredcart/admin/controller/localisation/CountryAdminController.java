@@ -6,13 +6,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.jpoweredcart.admin.model.localisation.CountryAdminModel;
-import com.jpoweredcart.common.BaseController;
-import com.jpoweredcart.common.PageParam;
-import com.jpoweredcart.common.entity.localisation.Country;
-import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
-import com.jpoweredcart.common.security.UserPermissions;
-import com.jpoweredcart.common.view.Pagination;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,14 +15,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jpoweredcart.admin.bean.localisation.CountryForm;
+import com.jpoweredcart.admin.model.localisation.CountryAdminModel;
+import com.jpoweredcart.common.BaseController;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.localisation.Country;
+import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
+import com.jpoweredcart.common.security.UserPermissions;
+import com.jpoweredcart.common.view.Pagination;
+
 
 @Controller
+@RequestMapping("/admin/localisation/country")
 public class CountryAdminController extends BaseController {
 	
 	@Inject
 	private CountryAdminModel countryAdminModel;
 	
-	@RequestMapping(value="/admin/localisation/country")
+	@RequestMapping(value={"", "/"})
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
@@ -46,41 +49,41 @@ public class CountryAdminController extends BaseController {
 		return "/admin/localisation/countryList";
 	}
 	
-	@RequestMapping(value="/admin/localisation/country/create")
+	@RequestMapping(value="/create")
 	public String create(Model model){
 		
 		checkModifyPermission();
 		
-		model.addAttribute("country", new Country());
+		model.addAttribute("countryForm", countryAdminModel.newForm());
 		
 		return "/admin/localisation/countryForm";
 	}
 	
-	@RequestMapping(value="/admin/localisation/country/edit/{id}")
+	@RequestMapping(value="/edit/{id}")
 	public String edit(@PathVariable("id") Integer id, Model model){
 		
 		checkModifyPermission();
 		
-		Country country = countryAdminModel.get(id);
-		model.addAttribute("country", country);
+		CountryForm countryForm = countryAdminModel.getForm(id);
+		model.addAttribute("countryForm", countryForm);
 		return "/admin/localisation/countryForm";
 	}
 	
-	@RequestMapping(value="/admin/localisation/country/save", method=RequestMethod.POST)
-	public String save(@Valid Country country, BindingResult result, Model model, 
+	@RequestMapping(value="/save", method=RequestMethod.POST)
+	public String save(@Valid CountryForm countryForm, BindingResult result, Model model, 
 			RedirectAttributes redirect){
 		
 		checkModifyPermission();
 		
 		if(result.hasErrors()){
-			model.addAttribute("country", country);
+			model.addAttribute("countryForm", countryForm);
 			return "/admin/localisation/countryForm";
 		}
 		
-		if(country.getId()!=null){
-			countryAdminModel.update(country);
+		if(countryForm.getId()!=null){
+			countryAdminModel.update(countryForm);
 		}else{
-			countryAdminModel.create(country);
+			countryAdminModel.create(countryForm);
 		}
 		
 		
@@ -89,8 +92,8 @@ public class CountryAdminController extends BaseController {
 		return "redirect:/admin/localisation/country";
 	}
 	
-	@RequestMapping(value="/admin/localisation/country/delete", method=RequestMethod.POST)
-	public String delete(@RequestParam("selected") Integer[] ids, Model model,
+	@RequestMapping(value="/delete", method=RequestMethod.POST)
+	public String delete(@RequestParam(value="selected",required=false) Integer[] ids, Model model,
 			RedirectAttributes redirect){
 		checkModifyPermission();
 		boolean error = false;
@@ -98,8 +101,8 @@ public class CountryAdminController extends BaseController {
 			if(!error) for(Integer id: ids){
 				countryAdminModel.delete(id);
 			}
+			if(!error) redirect.addFlashAttribute("msg_success", "text.success");
 		}
-		if(!error) redirect.addFlashAttribute("msg_success", "text.success");
 		
 		return "redirect:/admin/localisation/country";
 	}

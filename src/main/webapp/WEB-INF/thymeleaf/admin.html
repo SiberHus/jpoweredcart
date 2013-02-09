@@ -11,7 +11,7 @@
 		<link th:each="style: ${styles}" th:rel="${style.rel}" th:type="text/css" th:href="${style.href}" th:media="${style.media}" />
 		<script type="text/javascript" th:src="@{/resources/admin/javascript/jquery/jquery-1.7.1.min.js}"></script>
 		<script type="text/javascript" th:src="@{/resources/admin/javascript/jquery/ui/jquery-ui-1.8.16.custom.min.js}"></script>
-		<link type="text/css" th:src="@{/resources/admin/javascript/jquery/ui/themes/ui-lightness/jquery-ui-1.8.16.custom.css}" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" th:href="@{/resources/admin/javascript/jquery/ui/themes/ui-lightness/jquery-ui-1.8.16.custom.css}" />
 		<script type="text/javascript" th:src="@{/resources/admin/javascript/jquery/tabs.js}"></script>
 		<script type="text/javascript" th:src="@{/resources/admin/javascript/jquery/superfish/js/superfish.js}"></script>
 		<script type="text/javascript" th:src="@{/resources/admin/javascript/admin.js}"></script>
@@ -155,30 +155,30 @@
 							<ul>
 								<li><a class="parent" th:text="#{head.text.sale}">Sales</a>
 									<ul>
-										<li><a th:href="@{/admin/report/reportSaleOrder}" th:text="#{head.text.reportSaleOrder}">Orders</a></li>
-										<li><a th:href="@{/admin/report/reportSaleTax}" th:text="#{head.text.reportSaleTax}">Tax</a></li>
-										<li><a th:href="@{/admin/report/reportSaleShipping}" th:text="#{head.text.reportSaleShipping}">Shipping</a></li>
-										<li><a th:href="@{/admin/report/reportSaleReturn}" th:text="#{head.text.reportSaleReturn}">Returns</a></li>
-										<li><a th:href="@{/admin/report/reportSaleCoupon}" th:text="#{head.text.reportSaleCoupon}">Coupons</a></li>
+										<li><a th:href="@{/admin/report/salesOrder}" th:text="#{head.text.reportSaleOrder}">Orders</a></li>
+										<li><a th:href="@{/admin/report/salesTax}" th:text="#{head.text.reportSaleTax}">Tax</a></li>
+										<li><a th:href="@{/admin/report/salesShipping}" th:text="#{head.text.reportSaleShipping}">Shipping</a></li>
+										<li><a th:href="@{/admin/report/salesReturn}" th:text="#{head.text.reportSaleReturn}">Returns</a></li>
+										<li><a th:href="@{/admin/report/salesCoupon}" th:text="#{head.text.reportSaleCoupon}">Coupons</a></li>
 									</ul>
 								</li>
 								<li><a class="parent" th:text="#{head.text.product}">Products</a>
 									<ul>
-										<li><a th:href="@{/admin/report/reportProductViewed}" th:text="#{head.text.reportProductViewed}">Viewed</a></li>
-										<li><a th:href="@{/admin/report/reportProductPurchased}" th:text="#{head.text.reportProductPurchased}">Purchased</a></li>
+										<li><a th:href="@{/admin/report/productViewed}" th:text="#{head.text.reportProductViewed}">Viewed</a></li>
+										<li><a th:href="@{/admin/report/productPurchased}" th:text="#{head.text.reportProductPurchased}">Purchased</a></li>
 									</ul>
 								</li>
 								<li><a class="parent" th:text="#{head.text.customer}">Customers</a>
 									<ul>
-										<li><a th:href="@{/admin/report/reportCustomerOnline}" th:text="#{head.text.reportCustomerOnline}">Customers Online</a></li>
-										<li><a th:href="@{/admin/report/reportCustomerOrder}" th:text="#{head.text.reportCustomerOrder}">Orders</a></li>
-										<li><a th:href="@{/admin/report/reportCustomerReward}" th:text="#{head.text.reportCustomerReward}">Reward Points</a></li>
-										<li><a th:href="@{/admin/report/reportCustomerCredit}" th:text="#{head.text.reportCustomerCredit}">Credit</a></li>
+										<li><a th:href="@{/admin/report/customerOnline}" th:text="#{head.text.reportCustomerOnline}">Customers Online</a></li>
+										<li><a th:href="@{/admin/report/customerOrder}" th:text="#{head.text.reportCustomerOrder}">Orders</a></li>
+										<li><a th:href="@{/admin/report/customerReward}" th:text="#{head.text.reportCustomerReward}">Reward Points</a></li>
+										<li><a th:href="@{/admin/report/customerCredit}" th:text="#{head.text.reportCustomerCredit}">Credit</a></li>
 									</ul>
 								</li>
 								<li><a class="parent" th:text="#{head.text.affiliate}">Affiliates</a>
 									<ul>
-										<li><a th:href="@{/admin/report/reportAffiliateCommission}" th:text="#{head.text.reportAffiliateCommission}">Commission</a></li>
+										<li><a th:href="@{/admin/report/affiliateCommission}" th:text="#{head.text.reportAffiliateCommission}">Commission</a></li>
 									</ul>
 								</li>
 							</ul>

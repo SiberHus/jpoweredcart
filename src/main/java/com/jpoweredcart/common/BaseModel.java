@@ -82,30 +82,33 @@ public class BaseModel {
 		return BaseModel.quoteName(env, name);
 	}
 	
-	protected QueryBean createPaginationQuery(String table, PageParam pageParam, String[] sortFields){
+	protected QueryBean createPaginationQuery(String table, PageParam pageParam, String... sortFields){
 		
 		String sql = "SELECT * FROM "+quoteTable(table);
 		
 		return createPaginationQueryFromSql(sql, pageParam, sortFields);
 	}
 	
-	protected QueryBean createPaginationQueryFromSql(String sql, PageParam pageParam, String[] sortFields){
+	protected QueryBean createPaginationQueryFromSql(String sql, PageParam pageParam, String... sortFields){
 		
 		//TODO: Add database specific pagination query
-		List<String> sortKeys = Arrays.asList(sortFields);
-		if(pageParam==null){
-			pageParam = PageParam.list(-1);//use the default limit
+		if(sortFields!=null && sortFields.length>0){
+			List<String> sortKeys = Arrays.asList(sortFields);
+			if(pageParam==null){
+				pageParam = PageParam.list(-1);//use the default limit
+			}
+			if(pageParam.getSortKey()!=null && sortKeys.contains(pageParam.getSortKey())){
+				sql += " ORDER BY "+pageParam.getSortKey();
+			}else{
+				sql += " ORDER BY "+sortFields[0];
+			}
+			if(pageParam.getOrderDir()!=null && "desc".equals(pageParam.getOrderDir())){
+				sql += " DESC";
+			}else{
+				sql += " ASC";
+			}
 		}
-		if(pageParam.getSortKey()!=null && sortKeys.contains(pageParam.getSortKey())){
-			sql += " ORDER BY "+pageParam.getSortKey();
-		}else{
-			sql += " ORDER BY "+sortFields[0];
-		}
-		if(pageParam.getOrderDir()!=null && "desc".equals(pageParam.getOrderDir())){
-			sql += " DESC";
-		}else{
-			sql += " ASC";
-		}
+		
 		int start = pageParam.getStart()>0?pageParam.getStart():0;
 		int limit = pageParam.getLimit()>1?pageParam.getLimit():DefaultSettings.SQL_RESULT_LIMIT;
 		sql += " LIMIT  ?, ? ";

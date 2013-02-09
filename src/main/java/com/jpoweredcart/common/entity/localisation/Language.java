@@ -34,7 +34,7 @@ public class Language implements Serializable{
 	
 	protected int sortOrder = 0;
 	
-	protected int status = 1;
+	protected short status = 1;
 	
 	public Integer getId() {
 		return id;
@@ -84,10 +84,10 @@ public class Language implements Serializable{
 	public void setSortOrder(int sortOrder) {
 		this.sortOrder = sortOrder;
 	}
-	public int getStatus() {
+	public short getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(short status) {
 		this.status = status;
 	}
 	

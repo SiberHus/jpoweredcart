@@ -1,24 +1,11 @@
 package com.jpoweredcart.admin.controller.localisation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.jpoweredcart.admin.model.catalog.ProductAdminModel;
-import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
-import com.jpoweredcart.admin.model.localisation.LengthClassAdminModel;
-import com.jpoweredcart.common.BaseController;
-import com.jpoweredcart.common.PageParam;
-import com.jpoweredcart.common.entity.localisation.Language;
-import com.jpoweredcart.common.entity.localisation.LengthClass;
-import com.jpoweredcart.common.entity.localisation.LengthClassDesc;
-import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
-import com.jpoweredcart.common.security.UserPermissions;
-import com.jpoweredcart.common.service.SettingKey;
-import com.jpoweredcart.common.view.Pagination;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,12 +15,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jpoweredcart.admin.bean.localisation.LengthClassForm;
+import com.jpoweredcart.admin.model.catalog.ProductAdminModel;
+import com.jpoweredcart.admin.model.localisation.LengthClassAdminModel;
+import com.jpoweredcart.common.BaseController;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.localisation.LengthClass;
+import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
+import com.jpoweredcart.common.security.UserPermissions;
+import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.view.Pagination;
+
 
 @Controller
+@RequestMapping(value="/admin/localisation/lengthClass")
 public class LengthClassAdminController extends BaseController {
-	
-	@Inject
-	private LanguageAdminModel languageAdminModel;
 	
 	@Inject
 	private ProductAdminModel productAdminModel;
@@ -41,7 +37,7 @@ public class LengthClassAdminController extends BaseController {
 	@Inject
 	private LengthClassAdminModel lengthClassAdminModel;
 	
-	@RequestMapping(value="/admin/localisation/lengthClass")
+	@RequestMapping(value={"", "/"})
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
@@ -58,51 +54,40 @@ public class LengthClassAdminController extends BaseController {
 		return "/admin/localisation/lengthClassList";
 	}
 	
-	@RequestMapping(value="/admin/localisation/lengthClass/create")
+	@RequestMapping(value="/create")
 	public String create(Model model){
 		
 		checkModifyPermission();
 		
-		LengthClass lengthClass = new LengthClass();
-		List<Language> languages = languageAdminModel.getList(new PageParam());
-		List<LengthClassDesc> descs = new ArrayList<LengthClassDesc>();
-		for(Language language: languages){
-			LengthClassDesc desc = new LengthClassDesc();
-			desc.setLanguageId(language.getId());
-			desc.setLanguageName(language.getName());
-			desc.setLanguageImage(language.getImage());
-			descs.add(desc);
-		}
-		lengthClass.setDescs(descs);
-		model.addAttribute("lengthClass", lengthClass);
+		model.addAttribute("lengthClassForm", lengthClassAdminModel.newForm());
 		
 		return "/admin/localisation/lengthClassForm";
 	}
 	
-	@RequestMapping(value="/admin/localisation/lengthClass/edit/{id}")
+	@RequestMapping(value="/edit/{id}")
 	public String edit(@PathVariable("id") Integer id, Model model){
 		
 		checkModifyPermission();
 		
-		LengthClass lengthClass = lengthClassAdminModel.get(id);
-		model.addAttribute("lengthClass", lengthClass);
+		LengthClass lcForm = lengthClassAdminModel.getForm(id);
+		model.addAttribute("lengthClassForm", lcForm);
 		return "/admin/localisation/lengthClassForm";
 	}
 	
-	@RequestMapping(value="/admin/localisation/lengthClass/save", method=RequestMethod.POST)
-	public String save(@Valid LengthClass lengthClass, BindingResult result, Model model, 
+	@RequestMapping(value="/save", method=RequestMethod.POST)
+	public String save(@Valid LengthClassForm lcForm, BindingResult result, Model model, 
 			RedirectAttributes redirect){
 		
 		checkModifyPermission();
 		
 		if(result.hasErrors()){
-			model.addAttribute("lengthClass", lengthClass);
+			model.addAttribute("lengthClassForm", lcForm);
 			return "/admin/localisation/lengthClassForm";
 		}
-		if(lengthClass.getId()!=null){
-			lengthClassAdminModel.update(lengthClass);
+		if(lcForm.getId()!=null){
+			lengthClassAdminModel.update(lcForm);
 		}else{
-			lengthClassAdminModel.create(lengthClass);
+			lengthClassAdminModel.create(lcForm);
 		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
@@ -110,8 +95,8 @@ public class LengthClassAdminController extends BaseController {
 		return "redirect:/admin/localisation/lengthClass";
 	}
 	
-	@RequestMapping(value="/admin/localisation/lengthClass/delete", method=RequestMethod.POST)
-	public String delete(@RequestParam("selected") Integer[] ids, Model model,
+	@RequestMapping(value="/delete", method=RequestMethod.POST)
+	public String delete(@RequestParam(value="selected",required=false) Integer[] ids, Model model,
 			RedirectAttributes redirect){
 		checkModifyPermission();
 		boolean error = false;
@@ -129,8 +114,8 @@ public class LengthClassAdminController extends BaseController {
 			if(!error) for(Integer id: ids){
 				lengthClassAdminModel.delete(id);
 			}
+			if(!error) redirect.addFlashAttribute("msg_success", "text.success");
 		}
-		if(!error) redirect.addFlashAttribute("msg_success", "text.success");
 		
 		return "redirect:/admin/localisation/lengthClass";
 	}

@@ -41,7 +41,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td th:utext="#{entry.attributeGroup}">Attribute Group:</td>
+									<td><span th:utext="#{entry.attributeGroup}">Attribute Group:</span></td>
 									<td>
 										<select th:field="*{attributeGroupId}">
 											<option th:each="grp : ${attributeGroups}" th:value="${grp.id}"
@@ -50,7 +50,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td th:utext="#{entry.sortOrder}">Sort Order:</td>
+									<td><span th:utext="#{entry.sortOrder}">Sort Order:</span></td>
 									<td>
 										<input type="text" th:field="*{sortOrder}" size="1"/>
 									</td>

@@ -14,7 +14,7 @@ public class SalesOrderReportFilter implements Serializable{
 	protected String group;
 	
 	protected Integer orderStatusId;
-
+	
 	public Date getDateStart() {
 		return dateStart;
 	}

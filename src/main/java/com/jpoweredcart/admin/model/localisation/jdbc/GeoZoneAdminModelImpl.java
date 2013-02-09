@@ -8,6 +8,13 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.jpoweredcart.admin.bean.localisation.GeoZoneForm;
 import com.jpoweredcart.admin.model.localisation.GeoZoneAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
@@ -15,11 +22,6 @@ import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.GeoZone;
 import com.jpoweredcart.common.entity.localisation.ZoneToGeoZone;
 import com.jpoweredcart.common.service.SettingService;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.transaction.annotation.Transactional;
 
 
 public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminModel{
@@ -30,7 +32,7 @@ public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminMode
 	
 	@Transactional
 	@Override
-	public void create(final GeoZone geoZone) {
+	public void create(final GeoZoneForm geoZone) {
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcOperations().update(new PreparedStatementCreator() {
@@ -54,7 +56,7 @@ public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminMode
 	
 	@Transactional
 	@Override
-	public void update(GeoZone geoZone) {
+	public void update(GeoZoneForm geoZone) {
 		
 		String sql = "UPDATE " +quoteTable("geo_zone")+ " SET name = ?, description = ?, " +
 				"date_modified = ? WHERE geo_zone_id = ?";
@@ -93,14 +95,27 @@ public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminMode
 	}
 	
 	@Override
+	public GeoZoneForm newForm(){
+		return new GeoZoneForm();
+	}
+	
+	@Override
+	public GeoZoneForm getForm(Integer geoZoneId){
+		String sql = "SELECT * FROM " +quoteTable("geo_zone")+ " WHERE geo_zone_id = ?";
+		GeoZoneForm geoZoneForm = getJdbcOperations().queryForObject(sql, 
+				new Object[]{geoZoneId}, new GeoZoneRowMapper.Form());
+		sql = "SELECT * FROM "+quoteTable("zone_to_geo_zone")+ " WHERE geo_zone_id =?";
+		List<ZoneToGeoZone> zoneToGeoZones = getJdbcOperations()
+				.query(sql, new Object[]{geoZoneId}, new ZoneToGeoZoneRowMapper());
+		geoZoneForm.setZoneToGeoZones(zoneToGeoZones);
+		return geoZoneForm;
+	}
+	
+	@Override
 	public GeoZone get(Integer geoZoneId) {
 		String sql = "SELECT * FROM " +quoteTable("geo_zone")+ " WHERE geo_zone_id = ?";
 		GeoZone geoZone = getJdbcOperations().queryForObject(sql, 
 				new Object[]{geoZoneId}, new GeoZoneRowMapper());
-		sql = "SELECT * FROM "+quoteTable("zone_to_geo_zone")+ " WHERE geo_zone_id =?";
-		List<ZoneToGeoZone> zoneToGeoZones = getJdbcOperations()
-				.query(sql, new Object[]{geoZoneId}, new ZoneToGeoZoneRowMapper());
-		geoZone.setZoneToGeoZones(zoneToGeoZones);
 		return geoZone;
 	}
 	

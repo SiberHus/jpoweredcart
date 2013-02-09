@@ -15,11 +15,11 @@ public class AttributeRowMapper implements RowMapper<Attribute>{
 	@Override
 	public Attribute mapRow(ResultSet rs, int rowNum) throws SQLException {
 		
-		Attribute entity = new Attribute();
-		entity.setId(rs.getInt("attribute_id"));
-		entity.setAttributeGroupId(rs.getInt("attribute_group_id"));
-		entity.setSortOrder(rs.getInt("sort_order"));
-		return entity;
+		Attribute attr = new Attribute();
+		attr.setId(rs.getInt("attribute_id"));
+		attr.setAttributeGroupId(rs.getInt("attribute_group_id"));
+		attr.setSortOrder(rs.getInt("sort_order"));
+		return attr;
 	}
 
 	public static class Form implements RowMapper<AttributeForm>{
@@ -27,11 +27,11 @@ public class AttributeRowMapper implements RowMapper<Attribute>{
 		@Override
 		public AttributeForm mapRow(ResultSet rs, int rowNum)
 				throws SQLException {
-			AttributeForm form = new AttributeForm();
-			form.setId(rs.getInt("attribute_id"));
-			form.setAttributeGroupId(rs.getInt("attribute_group_id"));
-			form.setSortOrder(rs.getInt("sort_order"));
-			return form;
+			AttributeForm attrForm = new AttributeForm();
+			attrForm.setId(rs.getInt("attribute_id"));
+			attrForm.setAttributeGroupId(rs.getInt("attribute_group_id"));
+			attrForm.setSortOrder(rs.getInt("sort_order"));
+			return attrForm;
 		}
 	}
 	

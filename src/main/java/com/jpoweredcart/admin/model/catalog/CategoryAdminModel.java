@@ -2,32 +2,46 @@ package com.jpoweredcart.admin.model.catalog;
 
 import java.util.List;
 
+import com.jpoweredcart.admin.bean.catalog.CategoryForm;
 import com.jpoweredcart.common.entity.catalog.Category;
+import com.jpoweredcart.common.entity.catalog.CategoryDesc;
 import com.jpoweredcart.common.entity.catalog.CategoryToLayout;
 import com.jpoweredcart.common.entity.catalog.CategoryToStore;
 
 public interface CategoryAdminModel {
 
-	public void create(Category category);
+	public void create(CategoryForm catForm);
 	
-	public void update(Category category);
+	public void update(CategoryForm catForm);
 	
-	public void delete(Integer categoryId);
+	public void delete(Integer catId);
 	
-	public Category get(Integer categoryId);
+	public CategoryForm newForm();
 	
-	public List<Category> getList(Integer parentId);
+	public CategoryForm getForm(Integer catId);
 	
-	public String getPath(Integer categoryId);
+	public Category get(Integer catId);
 	
-	public List<CategoryToStore> getCatStores(Integer categoryId);
+	public List<Category> getList(String separator);
 	
-	public List<CategoryToLayout> getCatLayouts(Integer categoryId);
+	/**
+	 * 
+	 * @param catId
+	 * @param separator this value should be from #{text.separator} in language file
+	 * @return
+	 */
+	public String getPath(Integer catId, String separator);
+	
+	public List<CategoryDesc> getDescriptions(Integer catId);
+	
+	public List<CategoryToStore> getCatStores(Integer catId);
+	
+	public List<CategoryToLayout> getCatLayouts(Integer catId);
 	
 	public int getTotal();
 	
 	public int getTotalByImageId(Integer imageId);
 	
-	public int getTotalCategoriesByLayoutId(Integer layoutId);
+	public int getTotalByLayoutId(Integer layoutId);
 	
 }

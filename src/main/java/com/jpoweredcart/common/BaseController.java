@@ -1,16 +1,25 @@
 package com.jpoweredcart.common;
 
+import java.beans.PropertyEditorSupport;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import com.jpoweredcart.common.i18n.MessageResolver;
-import com.jpoweredcart.common.service.SettingKey;
-import com.jpoweredcart.common.service.SettingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+
+import com.jpoweredcart.common.i18n.MessageResolver;
+import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.SettingService;
 
 
 public abstract class BaseController{
@@ -73,6 +82,28 @@ public abstract class BaseController{
 	
 	protected SettingService getSettingService() {
 		return settingService;
+	}
+	
+	@InitBinder
+	protected void initBinder(WebDataBinder binder, final HttpServletRequest request) {
+		
+		binder.registerCustomEditor(Date.class, new PropertyEditorSupport(){
+			@Override
+			public String getAsText() {
+				return createDateFormat().format(getValue());
+			}
+			@Override
+			public void setAsText(String text) throws IllegalArgumentException {
+				try{
+					setValue(createDateFormat().parse(text));
+				}catch(ParseException e){
+					setValue(null);
+				}
+			}
+			public DateFormat createDateFormat(){
+				return new SimpleDateFormat(message(request, "date.formatShort"));
+			}
+		});
 	}
 	
 }

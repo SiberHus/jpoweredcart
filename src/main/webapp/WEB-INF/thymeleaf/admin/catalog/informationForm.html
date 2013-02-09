@@ -64,7 +64,7 @@
 						<div id="tab-data">
 							<table class="form">
 								<tr>
-									<td th:utext="#{entry.store}">Stores:</td>
+									<td><span th:utext="#{entry.store}">Stores:</span></td>
 									<td>
 										<div class="scrollbox">
 											<div th:each="store,rowStat : ${stores}" th:class="${rowStat.odd?'odd':'even'}">
@@ -77,20 +77,20 @@
 									</td>
 								</tr>
 								<tr>
-									<td th:utext="#{entry.keyword}">SEO Keyword:</td>
+									<td><span th:utext="#{entry.keyword}">SEO Keyword:</span></td>
 									<td>
 										<input type="text" th:field="*{keyword}" />
 									</td>
 								</tr>
 								<tr>
-									<td th:utext="#{entry.bottom}">Bottom:</td>
+									<td><span th:utext="#{entry.bottom}">Bottom:</span></td>
 									<td>
 										<input type="checkbox" name="bottom" value="1" 
 											th:attr="checked=${informationForm.bottom==1?'selected':''}"/>
 									</td>
 								</tr>
 								<tr>
-									<td th:utext="#{entry.status}">Status:</td>
+									<td><span th:utext="#{entry.status}">Status:</span></td>
 									<td>
 										<select th:field="*{status}">
 											<option value="1" th:text="#{text.enabled}">Enabled</option>
@@ -99,7 +99,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td th:utext="#{entry.sortOrder}">Sort Order:</td>
+									<td><span th:utext="#{entry.sortOrder}">Sort Order:</span></td>
 									<td>
 										<input type="text" th:field="*{sortOrder}" size="1" />
 									</td>

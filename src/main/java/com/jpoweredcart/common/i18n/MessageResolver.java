@@ -8,6 +8,6 @@ import org.thymeleaf.messageresolver.IMessageResolver;
 public interface MessageResolver extends IMessageResolver {
 	
 	public String resolveMessage(HttpServletRequest httpRequest, String key,
-			Object[] messageParameters);
+			Object... messageParameters);
 	
 }

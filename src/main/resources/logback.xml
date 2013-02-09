@@ -6,7 +6,8 @@
 		</layout>
 	</appender>
 	<logger name="com.jpoweredcart" level="DEBUG" />
-	<root level="info">
+	<logger name="org.springframework.web.servlet.mvc.method.annotation" level="WARN" />
+	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 	</root>
 </configuration>

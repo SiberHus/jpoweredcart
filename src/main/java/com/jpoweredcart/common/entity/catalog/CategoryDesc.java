@@ -1,15 +1,16 @@
 package com.jpoweredcart.common.entity.catalog;
 
-import java.io.Serializable;
+import javax.validation.constraints.Size;
 
-public class CategoryDesc implements Serializable {
+import com.jpoweredcart.common.entity.Description;
+
+public class CategoryDesc extends Description {
 
 	private static final long serialVersionUID = 1L;
 	
 	protected Integer categoryId;
 	
-	protected Integer languageId;
-	
+	@Size(min=2, max=255)
 	protected String name;
 	
 	protected String description;
@@ -24,14 +25,6 @@ public class CategoryDesc implements Serializable {
 
 	public void setCategoryId(Integer categoryId) {
 		this.categoryId = categoryId;
-	}
-
-	public Integer getLanguageId() {
-		return languageId;
-	}
-
-	public void setLanguageId(Integer languageId) {
-		this.languageId = languageId;
 	}
 
 	public String getName() {

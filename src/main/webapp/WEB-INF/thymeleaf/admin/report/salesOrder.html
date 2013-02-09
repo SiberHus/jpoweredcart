@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/report/saleOrder}" th:text="#{heading.title}">Sales Report</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="success" th:if="${msg_success!=null}" th:text="#{${msg_success}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/report.png}" alt="" />
+							<span th:text="#{heading.title}">Sales Report</span>
+						</h1>
+					</div>
+					<div class="content">
+						<form th:action="@{/admin/report/salesOrder}" method="get" th:object="${filter}" id="form">
+						<table class="form">
+							<tr>
+								<td>
+									<span th:text="#{entry.dateStart}">Date Start:</span>
+									<input type="text" id="dateStart" name="dateStart" size="12"
+										th:value="${#dates.format(filter.dateStart,  #messages.msg('date.formatShort'))}" />
+								</td>
+								<td>
+									<span th:text="#{entry.dateEnd}">Date End:</span>
+									<input type="text" id="dateEnd" name="dateEnd" size="12"
+										th:value="${#dates.format(filter.dateEnd,  #messages.msg('date.formatShort'))}" />
+								</td>
+								<td>
+									<span th:text="#{entry.group}">Group By:</span>
+									<select th:field="*{group}">
+										<option value="year" th:text="#{text.year}">Years</option>
+										<option value="month" th:text="#{text.month}">Months</option>
+										<option value="week" th:text="#{text.week}">Weeks</option>
+										<option value="day" th:text="#{text.day}">Days</option>
+									</select>
+								</td>
+								<td>
+									<span th:text="#{entry.status}">Order Status:</span>
+									<select th:field="*{orderStatusId}">
+										<option value="0" th:text="#{text.allStatus}">All Statuses</option>
+										<option th:each="os: ${orderStatuses}" th:value="${os.id}" 
+											th:text="${os.name}">Pending</option>
+									</select>
+								</td>
+								<td style="text-align: right;">
+									<a onclick="$('form').submit();" class="button" th:text="#{button.filter}">Filter</a>
+								</td>
+							</tr>
+						</table>
+						</form>
+						<table class="list">
+							<thead>
+								<tr>
+									<td class="left" th:text="#{column.dateStart}">Date Start</td>
+									<td class="left" th:text="#{column.dateEnd}">Date End</td>
+									<td class="right" th:text="#{column.orders}">Orders</td>
+									<td class="right" th:text="#{column.products}">Products</td>
+									<td class="right" th:text="#{column.tax}">Tax</td>
+									<td class="right" th:text="#{column.total}">Total</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="order : ${orders}">
+									<td class="left" th:text="${order.dateStart}"></td>
+									<td class="left" th:text="${order.dateEnd}"></td>
+									<td class="right" th:text="${order.orders}"></td>
+									<td class="right" th:text="${order.products}"></td>
+									<td class="right" th:text="${order.tax}"></td>
+									<td class="right" th:text="${order.total}"></td>
+								</tr>
+								<tr th:if="${#lists.isEmpty(orders)}">
+									<td class="center" colspan="5" th:text="#{text.noResults}">No results!</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="pagination" th:utext="${pagination}"></div>
+					</div> <!-- .content -->
+				</div> <!-- .box -->
+			</div>  <!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		<script th:inline="javascript">
+			/*<![CDATA[ */
+			$(function(){
+				var dateFormat = /*[[${jsDateFormat}]]*/;
+				$('#dateStart').datepicker({dateFormat: dateFormat});
+				$('#dateEnd').datepicker({dateFormat: dateFormat});
+			});
+			/*]]>*/
+		</script>
+	</body>
+</html>

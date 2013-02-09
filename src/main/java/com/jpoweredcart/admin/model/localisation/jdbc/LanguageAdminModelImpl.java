@@ -13,6 +13,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jpoweredcart.admin.bean.localisation.LanguageForm;
 import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
@@ -31,7 +32,7 @@ public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminMo
 	
 	@Transactional
 	@Override
-	public void create(final Language lang) {
+	public void create(final LanguageForm lang) {
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcOperations().update(new PreparedStatementCreator() {
@@ -227,7 +228,7 @@ public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminMo
 	
 	
 	@Override
-	public void update(Language lang) {
+	public void update(LanguageForm lang) {
 		
 		String sql = "UPDATE " +quoteTable("language")+ " SET name = ?, code = ?, locale = ?, " +
 				"directory = ?, filename = ?, image = ?, sort_order = ?, status = ? WHERE language_id = ?";
@@ -256,11 +257,21 @@ public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminMo
 		}
 		
 	}
-
+	
+	@Override
+	public LanguageForm newForm(){
+		return new LanguageForm();
+	}
+	
+	@Override
+	public LanguageForm getForm(Integer langId) {
+		String sql = "SELECT * FROM " +quoteTable("language")+ " WHERE language_id = ?";
+		return getJdbcOperations().queryForObject(sql, new Object[]{langId}, new LanguageRowMapper.Form());
+	}
+	
 	@Override
 	public Language get(Integer langId) {
-		String sql = "SELECT * FROM " +quoteTable("language")+ " WHERE language_id = ?";
-		return getJdbcOperations().queryForObject(sql, new Object[]{langId}, new LanguageRowMapper());
+		return getForm(langId);
 	}
 	
 	@Override

@@ -33,7 +33,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td th:utext="#{entry.product}">Product</td>
+									<td><span th:utext="#{entry.product}">Product</span></td>
 									<td>
 										<input type="hidden" th:field="*{productId}" />
 										<input type="text" th:field="*{productName}" />
@@ -48,7 +48,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td th:utext="#{entry.rating}">Rating:</td>
+									<td><span th:utext="#{entry.rating}">Rating:</span></td>
 									<td>
 										<b class="rating" th:text="#{entry.bad}">Bad</b>&nbsp;
 										<span  th:each="choice : ${reviewForm.ratingChoices}">
@@ -60,7 +60,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td th:utext="#{entry.status}">Status:</td>
+									<td><span th:utext="#{entry.status}">Status:</span></td>
 									<td>
 										<select th:field="*{status}">
 											<option value="0" th:text="#{text.disabled}">Disabled</option>

@@ -22,7 +22,7 @@
 						</div>
 					</div>
 					<div class="content">
-						<form th:action="@{/admin/localisation/country/save}" th:object="${country}" method="post" id="form">
+						<form th:action="@{/admin/localisation/country/save}" th:object="${countryForm}" method="post" id="form">
 							<input type="hidden" th:field="*{id}" />
 							<table class="form">
 								<tr>

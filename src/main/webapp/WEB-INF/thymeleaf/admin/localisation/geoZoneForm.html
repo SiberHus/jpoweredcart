@@ -22,7 +22,7 @@
 						</div>
 					</div>
 					<div class="content">
-						<form th:action="@{/admin/localisation/geoZone/save}" th:object="${geoZone}" method="post" id="form">
+						<form th:action="@{/admin/localisation/geoZone/save}" th:object="${geoZoneForm}" method="post" id="form">
 							<input type="hidden" th:field="*{id}" />
 							<table class="form">
 								<tr>
@@ -47,7 +47,7 @@
 								<tr>
 									<td class="left" th:text="#{entry.country}">Country:</td>
 									<td class="left" th:text="#{entry.zone}">Zone:</td>
-									<td></td>
+									<td>&nbsp;</td>
 								</tr>
 							</thead>
 							<tbody>

@@ -1,9 +1,7 @@
 package com.jpoweredcart.common.entity.localisation;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.validation.constraints.Size;
 
@@ -25,7 +23,6 @@ public class GeoZone implements Serializable{
 	
 	protected Date dateAdded;
 	
-	protected List<ZoneToGeoZone> zoneToGeoZones = new ArrayList<ZoneToGeoZone>();
 	
 	public Integer getId() {
 		return id;
@@ -67,12 +64,4 @@ public class GeoZone implements Serializable{
 		this.dateAdded = dateAdded;
 	}
 
-	public List<ZoneToGeoZone> getZoneToGeoZones() {
-		return zoneToGeoZones;
-	}
-
-	public void setZoneToGeoZones(List<ZoneToGeoZone> zoneToGeoZones) {
-		this.zoneToGeoZones = zoneToGeoZones;
-	}
-	
 }

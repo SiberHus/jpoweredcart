@@ -2,17 +2,22 @@ package com.jpoweredcart.admin.model.localisation;
 
 import java.util.List;
 
+import com.jpoweredcart.admin.bean.localisation.CurrencyForm;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.localisation.Currency;
 
 
 public interface CurrencyAdminModel {
 	
-	public void create(Currency currency);
+	public void create(CurrencyForm currencyForm);
 	
-	public void update(Currency currency);
+	public void update(CurrencyForm currencyForm);
 	
 	public void delete(Integer currencyId);
+	
+	public CurrencyForm newForm();
+	
+	public CurrencyForm getForm(Integer currencyId);
 	
 	public Currency get(Integer currencyId);
 	

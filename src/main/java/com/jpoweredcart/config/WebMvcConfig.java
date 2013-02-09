@@ -71,6 +71,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 			formattingConversionService.addConverter(new Converter<String, String>() {
 				public String convert(String source) { return StringUtils.trimToNull(source); }});
 		}
+		
 		return formattingConversionService;
 	}
 	

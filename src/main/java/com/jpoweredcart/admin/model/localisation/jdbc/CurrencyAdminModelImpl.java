@@ -3,13 +3,15 @@ package com.jpoweredcart.admin.model.localisation.jdbc;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.jdbc.core.JdbcOperations;
+
+import com.jpoweredcart.admin.bean.localisation.CurrencyForm;
 import com.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.Currency;
 import com.jpoweredcart.common.service.SettingService;
-import org.springframework.jdbc.core.JdbcOperations;
 
 
 public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminModel {
@@ -19,21 +21,21 @@ public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminMo
 	}
 	
 	@Override
-	public void create(Currency currency) {
+	public void create(CurrencyForm currencyForm) {
 		String sql = "INSERT INTO " +quoteTable("currency")+ "(title, code, symbol_left, symbol_right, " +
 				"decimal_place, value, status, date_modifiled) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
-		getJdbcOperations().update(sql, currency.getTitle(), currency.getCode(), currency.getSymbolLeft(),
-				currency.getSymbolRight(), currency.getDecimalPlace(), currency.getValue(), 
-				currency.getStatus(), new Date());
+		getJdbcOperations().update(sql, currencyForm.getTitle(), currencyForm.getCode(), currencyForm.getSymbolLeft(),
+				currencyForm.getSymbolRight(), currencyForm.getDecimalPlace(), currencyForm.getValue(), 
+				currencyForm.getStatus(), new Date());
 	}
 	
 	@Override
-	public void update(Currency currency) {
+	public void update(CurrencyForm currencyForm) {
 		String sql = "UPDATE " +quoteTable("currency")+ " SET title=?, code=?, symbol_left=?, symbol_right=?, " +
 				"decimal_place=?, value=?, status=?, date_modified=? WHERE currency_id=?";
-		getJdbcOperations().update(sql, currency.getTitle(), currency.getCode(), currency.getSymbolLeft(),
-				currency.getSymbolRight(), currency.getDecimalPlace(), currency.getValue(), 
-				currency.getStatus(), new Date(), currency.getId());
+		getJdbcOperations().update(sql, currencyForm.getTitle(), currencyForm.getCode(), currencyForm.getSymbolLeft(),
+				currencyForm.getSymbolRight(), currencyForm.getDecimalPlace(), currencyForm.getValue(), 
+				currencyForm.getStatus(), new Date(), currencyForm.getId());
 	}
 	
 	@Override
@@ -41,11 +43,22 @@ public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminMo
 		String sql = "DELETE FROM "+quoteTable("currency")+" WHERE currency_id=?";
 		getJdbcOperations().update(sql, currencyId);
 	}
+	
+	@Override
+	public CurrencyForm newForm() {
+		
+		return new CurrencyForm();
+	}
 
 	@Override
-	public Currency get(Integer currencyId) {
+	public CurrencyForm getForm(Integer currencyId) {
 		String sql = "SELECT * FROM " +quoteTable("currency")+ " WHERE currency_id = ?";
-		return getJdbcOperations().queryForObject(sql, new Object[]{currencyId}, new CurrencyRowMapper());
+		return getJdbcOperations().queryForObject(sql, new Object[]{currencyId}, new CurrencyRowMapper.Form());
+	}
+	
+	@Override
+	public Currency get(Integer currencyId) {
+		return getForm(currencyId);
 	}
 	
 	@Override

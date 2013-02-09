@@ -23,7 +23,7 @@ public class Country implements Serializable{
 	
 	protected boolean postcodeRequired;
 	
-	protected int status = 1;
+	protected short status = 1;
 	
 	public Integer getId() {
 		return id;
@@ -73,11 +73,11 @@ public class Country implements Serializable{
 		this.postcodeRequired = postcodeRequired;
 	}
 
-	public int getStatus() {
+	public short getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(short status) {
 		this.status = status;
 	}
 	

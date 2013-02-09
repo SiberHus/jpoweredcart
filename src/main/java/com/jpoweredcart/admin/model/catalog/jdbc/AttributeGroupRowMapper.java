@@ -15,10 +15,10 @@ public class AttributeGroupRowMapper implements RowMapper<AttributeGroup>{
 	@Override
 	public AttributeGroup mapRow(ResultSet rs, int rowNum) throws SQLException {
 		
-		AttributeGroup entity = new AttributeGroup();
-		entity.setId(rs.getInt("attribute_group_id"));
-		entity.setSortOrder(rs.getInt("sort_order"));
-		return entity;
+		AttributeGroup attrGrp = new AttributeGroup();
+		attrGrp.setId(rs.getInt("attribute_group_id"));
+		attrGrp.setSortOrder(rs.getInt("sort_order"));
+		return attrGrp;
 	}
 
 	public static class Form implements RowMapper<AttributeGroupForm>{
@@ -26,10 +26,10 @@ public class AttributeGroupRowMapper implements RowMapper<AttributeGroup>{
 		@Override
 		public AttributeGroupForm mapRow(ResultSet rs, int rowNum)
 				throws SQLException {
-			AttributeGroupForm form = new AttributeGroupForm();
-			form.setId(rs.getInt("attribute_group_id"));
-			form.setSortOrder(rs.getInt("sort_order"));
-			return form;
+			AttributeGroupForm attrGrpform = new AttributeGroupForm();
+			attrGrpform.setId(rs.getInt("attribute_group_id"));
+			attrGrpform.setSortOrder(rs.getInt("sort_order"));
+			return attrGrpform;
 		}
 	}
 	

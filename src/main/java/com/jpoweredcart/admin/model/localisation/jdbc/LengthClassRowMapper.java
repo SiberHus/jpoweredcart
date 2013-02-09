@@ -1,43 +1,39 @@
 package com.jpoweredcart.admin.model.localisation.jdbc;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import org.springframework.jdbc.core.RowMapper;
+
+import com.jpoweredcart.admin.bean.localisation.LengthClassForm;
 import com.jpoweredcart.common.entity.localisation.LengthClass;
 import com.jpoweredcart.common.entity.localisation.LengthClassDesc;
-import org.springframework.jdbc.core.RowMapper;
 
 public class LengthClassRowMapper implements RowMapper<LengthClass> {
 	
-	private boolean init = false;
-	
-	private boolean hasExtraColumns = false;
+	private static void setProperties(ResultSet rs, LengthClass lc) throws SQLException{
+		lc.setId(rs.getInt("length_class_id"));
+		lc.setValue(rs.getBigDecimal("value"));
+	}
 	
 	@Override
 	public LengthClass mapRow(ResultSet rs, int rowNum) throws SQLException {
-		
-		if(!this.init){
-			this.init = true;
-			ResultSetMetaData rsmd = rs.getMetaData();
-			for(int i=1;i<=rsmd.getColumnCount();i++){
-				String columnName = rsmd.getColumnLabel(i);
-				if("title".equals(columnName)){
-					hasExtraColumns = true;
-					break;
-				}
-			}
+		LengthClass lc = new LengthClass();
+		setProperties(rs, lc);
+		lc.setTitle(rs.getString("title"));
+		lc.setUnit(rs.getString("unit"));
+		return lc;
+	}
+	
+	public static class Form implements RowMapper<LengthClassForm>{
+
+		@Override
+		public LengthClassForm mapRow(ResultSet rs, int rowNum)
+				throws SQLException {
+			LengthClassForm lcForm = new LengthClassForm();
+			setProperties(rs, lcForm);
+			return lcForm;
 		}
-		
-		LengthClass wc = new LengthClass();
-		wc.setId(rs.getInt("length_class_id"));
-		wc.setValue(rs.getBigDecimal("value"));
-		if(hasExtraColumns){
-			wc.setTitle(rs.getString("title"));
-			wc.setUnit(rs.getString("unit"));
-		}
-		
-		return wc;
 	}
 	
 	public static class Desc implements RowMapper<LengthClassDesc>{

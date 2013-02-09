@@ -2,25 +2,30 @@ package com.jpoweredcart.admin.model.localisation;
 
 import java.util.List;
 
+import com.jpoweredcart.admin.bean.localisation.LengthClassForm;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.localisation.LengthClass;
 import com.jpoweredcart.common.entity.localisation.LengthClassDesc;
 
 public interface LengthClassAdminModel {
 
-	public void create(LengthClass lengthClass);
+	public void create(LengthClassForm lcForm);
 	
-	public void update(LengthClass lengthClass); 
+	public void update(LengthClassForm lcForm); 
 	
-	public void delete(Integer lengthClassId);
+	public void delete(Integer lcId);
 	
-	public LengthClass get(Integer lengthClassId);
+	public LengthClassForm newForm();
+	
+	public LengthClassForm getForm(Integer lcId);
+	
+	public LengthClass get(Integer lcId);
 	
 	public List<LengthClass> getList(PageParam pageParam);
 	
-	public List<LengthClassDesc> getLengthClassDescsByUnit(String unit);
+	public List<LengthClassDesc> getDescriptionsByUnit(String unit);
 	
-	public List<LengthClassDesc> getLengthClassDescs(Integer lengthClassId);
+	public List<LengthClassDesc> getDescriptions(Integer lcId);
 	
 	public int getTotal();
 	

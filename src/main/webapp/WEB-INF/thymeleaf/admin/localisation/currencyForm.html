@@ -22,7 +22,7 @@
 						</div>
 					</div>
 					<div class="content">
-						<form th:action="@{/admin/localisation/currency/save}" th:object="${currency}" method="post" id="form">
+						<form th:action="@{/admin/localisation/currency/save}" th:object="${currencyForm}" method="post" id="form">
 							<input type="hidden" th:field="*{id}" />
 							<table class="form">
 								<tr>

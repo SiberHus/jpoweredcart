@@ -4,31 +4,42 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.jpoweredcart.admin.model.localisation.LengthClassAdminModel;
-import com.jpoweredcart.common.BaseModel;
-import com.jpoweredcart.common.PageParam;
-import com.jpoweredcart.common.QueryBean;
-import com.jpoweredcart.common.entity.localisation.LengthClass;
-import com.jpoweredcart.common.entity.localisation.LengthClassDesc;
-import com.jpoweredcart.common.service.SettingKey;
-import com.jpoweredcart.common.service.SettingService;
+import javax.inject.Inject;
+
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jpoweredcart.admin.bean.localisation.LengthClassForm;
+import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
+import com.jpoweredcart.admin.model.localisation.LengthClassAdminModel;
+import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.QueryBean;
+import com.jpoweredcart.common.entity.localisation.Language;
+import com.jpoweredcart.common.entity.localisation.LengthClass;
+import com.jpoweredcart.common.entity.localisation.LengthClassDesc;
+import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.SettingService;
+
 public class LengthClassAdminModelImpl extends BaseModel implements LengthClassAdminModel {
 
+	@Inject
+	private LanguageAdminModel languageAdminModel;
+	
+	
 	public LengthClassAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
 		super(settingService, jdbcOperations);
 	}
 	
 	@Transactional
 	@Override
-	public void create(final LengthClass lengthClass) {
+	public void create(final LengthClassForm lc) {
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcOperations().update(new PreparedStatementCreator() {
@@ -37,60 +48,86 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 					throws SQLException {
 				String sql = "INSERT INTO " +quoteTable("length_class")+ "(value) VALUES(?) ";
 				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-				ps.setBigDecimal(1, lengthClass.getValue());
+				ps.setBigDecimal(1, lc.getValue());
 				return ps;
 			}
 		}, keyHolder);
-		Integer lengthClassId = keyHolder.getKey().intValue();
-		addDescsToLengthClass(lengthClassId, lengthClass.getDescs());
-		lengthClass.setId(lengthClassId);
+		Integer lcId = keyHolder.getKey().intValue();
+		addDescsToLengthClass(lcId, lc.getDescs());
+		lc.setId(lcId);
 	}
 
 	@Transactional
 	@Override
-	public void update(LengthClass lengthClass) {
+	public void update(LengthClassForm lc) {
 		
 		String sql = "UPDATE " +quoteTable("length_class")+ " SET "+quoteName("value")+"=? WHERE length_class_id=?";
-		getJdbcOperations().update(sql, lengthClass.getValue(), lengthClass.getId());
+		getJdbcOperations().update(sql, lc.getValue(), lc.getId());
 		
 		sql = "DELETE FROM " +quoteTable("length_class_description")+ " WHERE length_class_id=?";
-		getJdbcOperations().update(sql, lengthClass.getId());
+		getJdbcOperations().update(sql, lc.getId());
 		
-		addDescsToLengthClass(lengthClass.getId(), lengthClass.getDescs());
+		addDescsToLengthClass(lc.getId(), lc.getDescs());
 	}
 	
-	protected void addDescsToLengthClass(Integer lengthClassId, List<LengthClassDesc> descs){
+	protected void addDescsToLengthClass(Integer lcId, List<LengthClassDesc> descs){
 		for(LengthClassDesc desc: descs){
 			String sql = "INSERT INTO " +quoteTable("length_class_description")
 					+ "(length_class_id, language_id, title, unit) VALUES(?,?,?,?)";
-			getJdbcOperations().update(sql, lengthClassId, desc.getLanguageId(),
+			getJdbcOperations().update(sql, lcId, desc.getLanguageId(),
 					desc.getTitle(), desc.getUnit());
 		}
 	}
 	
 	@Transactional
 	@Override
-	public void delete(Integer lengthClassId) {
+	public void delete(Integer lcId) {
 		
 		String sql = "DELETE FROM " +quoteTable("length_class")+ " WHERE length_class_id=?";
-		getJdbcOperations().update(sql, lengthClassId);
+		getJdbcOperations().update(sql, lcId);
 		
 		sql = "DELETE FROM " +quoteTable("length_class_description")+ " WHERE length_class_id=?";
-		getJdbcOperations().update(sql, lengthClassId);
+		getJdbcOperations().update(sql, lcId);
 	}
 
+	@Override
+	public LengthClassForm newForm(){
+		LengthClassForm lcForm = new LengthClassForm();
+		List<Language> languages = languageAdminModel.getList(new PageParam());
+		List<LengthClassDesc> descs = new ArrayList<LengthClassDesc>();
+		for(Language language: languages){
+			LengthClassDesc desc = new LengthClassDesc();
+			desc.setLanguageId(language.getId());
+			desc.setLanguageName(language.getName());
+			desc.setLanguageImage(language.getImage());
+			descs.add(desc);
+		}
+		lcForm.setDescs(descs);
+		return lcForm;
+	}
 	
 	@Override
-	public LengthClass get(Integer lengthClassId) {
+	public LengthClassForm getForm(Integer lcId) {
+		
+		String sql = "SELECT * FROM "+quoteTable("length_class")+ " WHERE length_class_id=?";
+		LengthClassForm lcForm = getJdbcOperations().queryForObject(sql, 
+				new Object[]{lcId}, new LengthClassRowMapper.Form());
+		
+		List<LengthClassDesc> desc = getDescriptions(lcId);
+		if(desc!=null){
+			lcForm.setDescs(desc);
+		}
+		
+		return lcForm;
+	}
+	
+	@Override
+	public LengthClass get(Integer lcId) {
 		
 		String sql = "SELECT * FROM "+quoteTable("length_class")+ " WHERE length_class_id=?";
 		LengthClass lengthClass = getJdbcOperations().queryForObject(sql, 
-				new Object[]{lengthClassId}, new LengthClassRowMapper());
+				new Object[]{lcId}, new LengthClassRowMapper());
 		
-		List<LengthClassDesc> lengthClassDescs = getLengthClassDescs(lengthClassId);
-		if(lengthClassDescs!=null){
-			lengthClass.setDescs(lengthClassDescs);
-		}
 		return lengthClass;
 	}
 	
@@ -109,17 +146,17 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 	}
 	
 	@Override
-	public List<LengthClassDesc> getLengthClassDescsByUnit(String unit) {
+	public List<LengthClassDesc> getDescriptionsByUnit(String unit) {
 		
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		String sql = "SELECT * FROM " +quoteTable("length_class_description")+ " WHERE unit = ? AND language_id = ?";
-		List<LengthClassDesc> lengthClassDescList = getJdbcOperations().query(sql, 
+		List<LengthClassDesc> descs = getJdbcOperations().query(sql, 
 				new Object[]{languageId}, new LengthClassRowMapper.Desc());
-		return lengthClassDescList;
+		return descs;
 	}
 	
 	@Override
-	public List<LengthClassDesc> getLengthClassDescs(Integer lengthClassId) {
+	public List<LengthClassDesc> getDescriptions(Integer lengthClassId) {
 		
 		String sql = "SELECT wc.length_class_id, wc.language_id, l.name AS language_name, l.image AS language_image, wc.title, wc.unit FROM " +
 				quoteTable("length_class_description")+" wc INNER JOIN "+quoteTable("language")+" l ON wc.language_id=l.language_id WHERE length_class_id=?";

@@ -106,7 +106,7 @@ public abstract class AbstractMessageResolver implements MessageResolver {
 	
 	@Override
 	public String resolveMessage(HttpServletRequest httpRequest, String key,
-			Object[] messageParameters) {
+			Object... messageParameters) {
 		
 		Locale locale = localeResolver.resolveLocale(httpRequest);
 		ServletContext servletContext = httpRequest.getSession().getServletContext();
