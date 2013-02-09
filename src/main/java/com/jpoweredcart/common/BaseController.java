@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 
 import com.jpoweredcart.common.i18n.MessageResolver;
 import com.jpoweredcart.common.service.SettingKey;
@@ -38,16 +37,35 @@ public abstract class BaseController{
 	@Inject
 	private SettingService settingService;
 	
+	/**
+	 * Shorthand method for messageResolver.resolveMessage(request, key, args);
+	 * 
+	 * @param request
+	 * @param key
+	 * @param args
+	 * @return
+	 */
 	protected String message(HttpServletRequest request, String key, Object... args){
 		
 		return messageResolver.resolveMessage(request, key, args);
 	}
 	
+	/**
+	 * 
+	 * @param page
+	 * @return
+	 */
 	protected String uri(String page){
 		
 		return servletContext.getContextPath()+page;
 	}
 	
+	/**
+	 * Create PageParam object from HttpServletRequest
+	 * 
+	 * @param request
+	 * @return
+	 */
 	protected PageParam createPageParam(HttpServletRequest request){
 		String sortKey = request.getParameter("sort");
 		String orderDir = request.getParameter("order");
@@ -84,7 +102,17 @@ public abstract class BaseController{
 		return settingService;
 	}
 	
-	@InitBinder
+	/**
+	 * The default data binder setup.
+	 * Don't activate @InitBinder in the base class
+	 * Some controllers may not need it. So, it's not necessary to load it every time.
+	 * If some controllers want to use custom data binder, those controllers may override
+	 * this method and annotate it with @InitBinder annotation.
+	 * 
+	 * @param binder
+	 * @param request
+	 */
+//	@InitBinder
 	protected void initBinder(WebDataBinder binder, final HttpServletRequest request) {
 		
 		binder.registerCustomEditor(Date.class, new PropertyEditorSupport(){

@@ -9,10 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.jpoweredcart.admin.bean.report.DateRangeFilter;
 import com.jpoweredcart.admin.bean.report.SalesOrderReport;
-import com.jpoweredcart.admin.bean.report.SalesOrderReportFilter;
+import com.jpoweredcart.admin.bean.report.SalesReportFilter;
+import com.jpoweredcart.admin.bean.report.SalesOrderTitleReport;
 import com.jpoweredcart.admin.model.localisation.OrderStatusAdminModel;
 import com.jpoweredcart.admin.model.report.SalesReportAdminModel;
 import com.jpoweredcart.common.BaseController;
@@ -30,18 +34,10 @@ public class SalesReportAdminController extends BaseController {
 	private OrderStatusAdminModel orderStatusAdminModel;
 	
 	@RequestMapping(value="/admin/report/salesOrder")
-	public String getOrders(SalesOrderReportFilter filter, Model model, HttpServletRequest request){
-		if(filter.getDateStart()==null){
-			Calendar current = Calendar.getInstance();
-			current.set(Calendar.DAY_OF_MONTH, 1);
-			filter.setDateStart(current.getTime());
-		}
-		if(filter.getDateEnd()==null){
-			filter.setDateEnd(new Date());
-		}
+	public String getOrders(SalesReportFilter filter, Model model, HttpServletRequest request){
+		
+		initDateFilter(filter, model, request);
 		model.addAttribute("filter", filter);
-		String jsDateFormat = JQueryDateFormatTranslator.INSTANCE.translate(message(request, "date.formatShort"));
-		model.addAttribute("jsDateFormat", jsDateFormat);
 		
 		model.addAttribute("orderStatuses", orderStatusAdminModel.getList(null));
 		
@@ -58,5 +54,67 @@ public class SalesReportAdminController extends BaseController {
 		return "/admin/report/salesOrder";
 	}
 	
+	@RequestMapping(value="/admin/report/salesTax")
+	public String getTaxes(SalesReportFilter filter, Model model, HttpServletRequest request){
+		
+		initDateFilter(filter, model, request);
+		model.addAttribute("filter", filter);
+		
+		model.addAttribute("orderStatuses", orderStatusAdminModel.getList(null));
+		
+		PageParam pageParam = createPageParam(request);
+		List<SalesOrderTitleReport> taxList = salesReportAdminModel.getTaxes(filter, pageParam);
+		model.addAttribute("taxes", taxList);
+		int total = salesReportAdminModel.getTotalTaxes(filter);
+		Pagination pagination = new Pagination();
+		pagination.setTotal(total).setPageParam(pageParam)
+			.setText(message(request, "text.pagination"))
+			.setUrl(uri("/admin/report/salesTax"));
+		model.addAttribute("pagination", pagination.render());
+		
+		return "/admin/report/salesTax";
+	}
+	
+	@RequestMapping(value="/admin/report/salesShipping")
+	public String getShippings(SalesReportFilter filter, Model model, HttpServletRequest request){
+		
+		initDateFilter(filter, model, request);
+		model.addAttribute("filter", filter);
+		
+		model.addAttribute("orderStatuses", orderStatusAdminModel.getList(null));
+		
+		PageParam pageParam = createPageParam(request);
+		List<SalesOrderTitleReport> shippingList = salesReportAdminModel.getShippings(filter, pageParam);
+		model.addAttribute("shippings", shippingList);
+		int total = salesReportAdminModel.getTotalShippings(filter);
+		Pagination pagination = new Pagination();
+		pagination.setTotal(total).setPageParam(pageParam)
+			.setText(message(request, "text.pagination"))
+			.setUrl(uri("/admin/report/salesShipping"));
+		model.addAttribute("pagination", pagination.render());
+		
+		return "/admin/report/salesShipping";
+	}
+	
+	protected void initDateFilter(DateRangeFilter filter, Model model, HttpServletRequest request){
+		if(filter.getDateStart()==null){
+			Calendar current = Calendar.getInstance();
+			current.set(Calendar.DAY_OF_MONTH, 1);
+			filter.setDateStart(current.getTime());
+		}
+		if(filter.getDateEnd()==null){
+			filter.setDateEnd(new Date());
+		}
+		
+		String jsDateFormat = JQueryDateFormatTranslator.INSTANCE
+				.translate(message(request, "date.formatShort"));
+		model.addAttribute("jsDateFormat", jsDateFormat);
+	}
+
+	@InitBinder
+	@Override
+	protected void initBinder(WebDataBinder binder, HttpServletRequest request) {
+		super.initBinder(binder, request);
+	}
 	
 }

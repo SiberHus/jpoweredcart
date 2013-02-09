@@ -7,7 +7,7 @@
 			<div id="content">
 				<div class="breadcrumb">
 					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
-					<a th:href="@{/admin/report/saleOrder}" th:text="#{heading.title}">Sales Report</a>
+					<a th:href="@{/admin/report/saleOrder}" th:text="#{heading.title}">Tax Report</a>
 				</div>
 				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
 				<div class="success" th:if="${msg_success!=null}" th:text="#{${msg_success}}"></div>
@@ -15,11 +15,11 @@
 					<div class="heading">
 						<h1>
 							<img th:src="@{/resources/admin/image/report.png}" alt="" />
-							<span th:text="#{heading.title}">Sales Report</span>
+							<span th:text="#{heading.title}">Tax Report</span>
 						</h1>
 					</div>
 					<div class="content">
-						<form th:action="@{/admin/report/salesOrder}" method="get" th:object="${filter}" id="form">
+						<form th:action="@{/admin/report/salesTax}" method="get" th:object="${filter}" id="form">
 						<table class="form">
 							<tr>
 								<td>
@@ -60,22 +60,20 @@
 								<tr>
 									<td class="left" th:text="#{column.dateStart}">Date Start</td>
 									<td class="left" th:text="#{column.dateEnd}">Date End</td>
-									<td class="right" th:text="#{column.orders}">Orders</td>
-									<td class="right" th:text="#{column.products}">Products</td>
-									<td class="right" th:text="#{column.tax}">Tax</td>
+									<td class="left" th:text="#{column.title}">Tax Title</td>
+									<td class="right" th:text="#{column.orders}">No. Orders</td>
 									<td class="right" th:text="#{column.total}">Total</td>
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="order : ${orders}">
-									<td class="left" th:text="${order.dateStart}"></td>
-									<td class="left" th:text="${order.dateEnd}"></td>
-									<td class="right" th:text="${order.orders}"></td>
-									<td class="right" th:text="${order.products}"></td>
-									<td class="right" th:text="${order.tax}"></td>
-									<td class="right" th:text="${order.total}"></td>
+								<tr th:each="tax : ${taxes}">
+									<td class="left" th:text="${#dates.format(tax.dateStart,  #messages.msg('date.formatShort'))}"></td>
+									<td class="left" th:text="${#dates.format(tax.dateStart,  #messages.msg('date.formatShort'))}"></td>
+									<td class="left" th:text="${tax.title}"></td>
+									<td class="right" th:text="${tax.orders}"></td>
+									<td class="right" th:text="${tax.total}"></td>
 								</tr>
-								<tr th:if="${#lists.isEmpty(orders)}">
+								<tr th:if="${#lists.isEmpty(taxes)}">
 									<td class="center" colspan="5" th:text="#{text.noResults}">No results!</td>
 								</tr>
 							</tbody>

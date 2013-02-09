@@ -7,7 +7,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcOperations;
 
 import com.jpoweredcart.admin.bean.report.SalesOrderReport;
-import com.jpoweredcart.admin.bean.report.SalesOrderReportFilter;
+import com.jpoweredcart.admin.bean.report.SalesOrderTitleReport;
+import com.jpoweredcart.admin.bean.report.SalesReportFilter;
 import com.jpoweredcart.admin.model.report.SalesReportAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
@@ -23,7 +24,7 @@ public class SalesReportAdminModelImpl extends BaseModel implements SalesReportA
 	}
 	
 	@Override
-	public List<SalesOrderReport> getOrders(SalesOrderReportFilter filter, PageParam pageParam) {
+	public List<SalesOrderReport> getOrders(SalesReportFilter filter, PageParam pageParam) {
 		List<Object> params = new ArrayList<Object>();
 		String sql = "SELECT MIN(tmp.date_added) AS date_start, MAX(tmp.date_added) AS date_end, " +
 			"COUNT(tmp.order_id) AS orders, SUM(tmp.products) AS products, SUM(tmp.tax) AS tax, " +
@@ -31,9 +32,9 @@ public class SalesReportAdminModelImpl extends BaseModel implements SalesReportA
 			quoteTable("order_product")+" op WHERE op.order_id = o.order_id GROUP BY op.order_id) AS products, " +
 			"(SELECT SUM(ot.value) FROM "+quoteTable("order_total")+" ot WHERE ot.order_id = o.order_id " +
 			"AND ot.code = 'tax' GROUP BY ot.order_id) AS tax, o.total, o.date_added FROM " +quoteTable("order")+ " o";
-		if(filter.getOrderStatusId()!=null && filter.getOrderStatusId()>0){
+		if(filter.getStatusId()!=null && filter.getStatusId()>0){
 			sql += " WHERE o.order_status_id = ?";
-			params.add(filter.getOrderStatusId());
+			params.add(filter.getStatusId());
 		}else{
 			sql +=" WHERE o.order_status_id > ?";
 			params.add(0);
@@ -48,12 +49,7 @@ public class SalesReportAdminModelImpl extends BaseModel implements SalesReportA
 		}
 		sql += " GROUP BY o.order_id) tmp";
 		
-		String group = null;
-		if(StringUtils.isNotBlank(filter.getGroup())){
-			group = filter.getGroup();
-		}else{
-			group = "week";
-		}
+		String group = getFilterGroup(filter);
 		if(group.equals("day")){
 			sql += " GROUP BY DAY(tmp.date_added)";
 		}else if(group.equals("week")){
@@ -74,15 +70,10 @@ public class SalesReportAdminModelImpl extends BaseModel implements SalesReportA
 	}
 	
 	@Override
-	public int getTotalOrders(SalesOrderReportFilter filter) {
+	public int getTotalOrders(SalesReportFilter filter) {
 		List<Object> params = new ArrayList<Object>();
 		String sql = null;
-		String group = null;
-		if(StringUtils.isNotBlank(filter.getGroup())){
-			group = filter.getGroup();
-		}else{
-			group = "week";
-		}
+		String group = getFilterGroup(filter);
 		if(group.equals("day")){
 			sql = "SELECT COUNT(DISTINCT DAY(date_added)) AS total FROM "+quoteTable("order")+ " o";
 		}else if(group.equals("week")){
@@ -93,9 +84,9 @@ public class SalesReportAdminModelImpl extends BaseModel implements SalesReportA
 			sql = "SELECT COUNT(DISTINCT YEAR(date_added)) AS total FROM "+quoteTable("order")+ " o";
 		}
 		
-		if(filter.getOrderStatusId()!=null && filter.getOrderStatusId()>0){
+		if(filter.getStatusId()!=null && filter.getStatusId()>0){
 			sql += " WHERE o.order_status_id = ?";
-			params.add(filter.getOrderStatusId());
+			params.add(filter.getStatusId());
 		}else{
 			sql +=" WHERE o.order_status_id > ?";
 			params.add(0);
@@ -111,6 +102,117 @@ public class SalesReportAdminModelImpl extends BaseModel implements SalesReportA
 		
 		return getJdbcOperations().queryForInt(sql, params.toArray());
 	}
+
+	@Override
+	public List<SalesOrderTitleReport> getTaxes(SalesReportFilter filter,
+			PageParam pageParam) {
+		
+		return getSalesOrderTitles(filter, "tax", pageParam);
+	}
+
+	@Override
+	public int getTotalTaxes(SalesReportFilter filter) {
+		
+		return getTotalSalesOrderTitles(filter, "tax");
+	}
 	
+	
+	@Override
+	public List<SalesOrderTitleReport> getShippings(SalesReportFilter filter,
+			PageParam pageParam) {
+		
+		return getSalesOrderTitles(filter, "shipping", pageParam);
+	}
+	
+	@Override
+	public int getTotalShippings(SalesReportFilter filter) {
+		
+		return getTotalSalesOrderTitles(filter, "shipping");
+	}
+	
+	protected List<SalesOrderTitleReport> getSalesOrderTitles(SalesReportFilter filter, String code,
+			PageParam pageParam) {
+		List<Object> params = new ArrayList<Object>();
+		String sql = "SELECT MIN(o.date_added) AS date_start, MAX(o.date_added) AS date_end, ot.title, " +
+			"SUM(ot.value) AS total, COUNT(o.order_id) AS orders FROM "+quoteTable("order_total")+ 
+			" ot LEFT JOIN "+quoteTable("order")+" o ON (ot.order_id = o.order_id) WHERE ot.code = ?";
+		params.add(code);
+		if(filter.getStatusId()!=null && filter.getStatusId()>0){
+			sql += " AND o.order_status_id = ?";
+			params.add(filter.getStatusId());
+		}else{
+			sql +=" AND o.order_status_id > ?";
+			params.add(0);
+		}
+		if(filter.getDateStart()!=null){
+			sql += " AND o.date_added >= ?";
+			params.add(filter.getDateStart());
+		}
+		if(filter.getDateEnd()!=null){
+			sql += " AND o.date_added <= ?";
+			params.add(filter.getDateEnd());
+		}
+		String group = getFilterGroup(filter);
+		if(group.equals("day")){
+			sql += " GROUP BY ot.title, DAY(o.date_added)";
+		}else if(group.equals("week")){
+			sql += " GROUP BY ot.title, WEEK(o.date_added)";
+		}else if(group.equals("month")){
+			sql += " GROUP BY ot.title, MONTH(o.date_added)";
+		}else if(group.equals("year")){
+			sql += " GROUP BY ot.title, YEAR(o.date_added)";
+		}
+		QueryBean query = createPaginationQueryFromSql(sql, pageParam);
+		params.add(query.getStart());
+		params.add(query.getLimit());
+		
+		return getJdbcOperations().query(query.getSql(), 
+				params.toArray(), new SalesOrderTitleReportRowMapper());
+	}
+	
+	protected int getTotalSalesOrderTitles(SalesReportFilter filter, String code) {
+		List<Object> params = new ArrayList<Object>();
+		String sql = "SELECT COUNT(*) AS total FROM (SELECT COUNT(*) AS total FROM "+
+					quoteTable("order_total")+" ot LEFT JOIN "+quoteTable("order")+
+					" o ON (ot.order_id = o.order_id) WHERE ot.code = ?";
+		params.add(code);
+		if(filter.getStatusId()!=null && filter.getStatusId()>0){
+			sql += " AND o.order_status_id = ?";
+			params.add(filter.getStatusId());
+		}else{
+			sql +=" AND o.order_status_id > ?";
+			params.add(0);
+		}
+		if(filter.getDateStart()!=null){
+			sql += " AND o.date_added >= ?";
+			params.add(filter.getDateStart());
+		}
+		if(filter.getDateEnd()!=null){
+			sql += " AND o.date_added <= ?";
+			params.add(filter.getDateEnd());
+		}
+		String group = getFilterGroup(filter);
+		if(group.equals("day")){
+			sql += " GROUP BY DAY(o.date_added), ot.title";
+		}else if(group.equals("week")){
+			sql += " GROUP BY WEEK(o.date_added), ot.title";
+		}else if(group.equals("month")){
+			sql += " GROUP BY MONTH(o.date_added), ot.title";
+		}else if(group.equals("year")){
+			sql += " GROUP BY YEAR(o.date_added), ot.title";
+		}
+		sql += ") tmp";
+		
+		return getJdbcOperations().queryForInt(sql, params.toArray());
+	}
+	
+	private String getFilterGroup(SalesReportFilter filter){
+		
+		if(StringUtils.isNotBlank(filter.getGroup())){
+			return filter.getGroup();
+		}else{
+			return "week";
+		}
+	}
 	
 }

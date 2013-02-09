@@ -6,11 +6,16 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import com.jpoweredcart.common.service.DefaultSettings;
 import com.jpoweredcart.common.service.SettingService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcOperations;
 
 
 public class BaseModel {
+	
+	protected Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private Environment env;
 	
