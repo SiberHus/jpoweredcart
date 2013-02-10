@@ -7,7 +7,7 @@
 			<div id="content">
 				<div class="breadcrumb">
 					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
-					<a th:href="@{/admin/report/saleOrder}" th:text="#{heading.title}">Returns Report</a>
+					<a th:href="@{/admin/report/salesReturn}" th:text="#{heading.title}">Returns Report</a>
 				</div>
 				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
 				<div class="success" th:if="${msg_success!=null}" th:text="#{${msg_success}}"></div>
@@ -60,17 +60,17 @@
 								<tr>
 									<td class="left" th:text="#{column.dateStart}">Date Start</td>
 									<td class="left" th:text="#{column.dateEnd}">Date End</td>
-									<td class="right" th:text="#{column.orders}">No. Returns</td>
+									<td class="right" th:text="#{column.returns}">No. Returns</td>
 								</tr>
 							</thead>
 							<tbody>
 								<tr th:each="ret : ${returns}">
-									<td class="left" th:text="${ret.dateStart}"></td>
-									<td class="left" th:text="${ret.dateEnd}"></td>
+									<td class="left" th:text="${#dates.format(ret.dateStart,  #messages.msg('date.formatShort'))}"></td>
+									<td class="left" th:text="${#dates.format(ret.dateStart,  #messages.msg('date.formatShort'))}"></td>
 									<td class="right" th:text="${ret.returns}"></td>
 								</tr>
 								<tr th:if="${#lists.isEmpty(returns)}">
-									<td class="center" colspan="5" th:text="#{text.noResults}">No results!</td>
+									<td class="center" colspan="3" th:text="#{text.noResults}">No results!</td>
 								</tr>
 							</tbody>
 						</table>

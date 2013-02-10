@@ -3,7 +3,7 @@ package com.jpoweredcart.admin.bean.report;
 import java.io.Serializable;
 import java.util.Date;
 
-public class SalesOrderReport implements Serializable{
+public class SalesOrder implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 

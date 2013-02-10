@@ -1,4 +1,4 @@
-package com.jpoweredcart.admin.bean.catalog;
+package com.jpoweredcart.admin.bean.catalog.filter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

@@ -5,14 +5,14 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.jpoweredcart.admin.bean.report.SalesOrderReport;
+import com.jpoweredcart.admin.bean.report.SalesOrder;
 
-public class SalesOrderReportRowMapper implements RowMapper<SalesOrderReport>{
+public class SalesOrderRowMapper implements RowMapper<SalesOrder>{
 
 	@Override
-	public SalesOrderReport mapRow(ResultSet rs, int rowNum)
+	public SalesOrder mapRow(ResultSet rs, int rowNum)
 			throws SQLException {
-		SalesOrderReport so = new SalesOrderReport();
+		SalesOrder so = new SalesOrder();
 		so.setDateStart(rs.getDate("date_start"));
 		so.setDateEnd(rs.getDate("date_end"));
 		so.setOrders(rs.getInt("orders"));

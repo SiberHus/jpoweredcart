@@ -50,7 +50,9 @@ import com.jpoweredcart.admin.model.localisation.jdbc.TaxClassAdminModelImpl;
 import com.jpoweredcart.admin.model.localisation.jdbc.TaxRateAdminModelImpl;
 import com.jpoweredcart.admin.model.localisation.jdbc.WeightClassAdminModelImpl;
 import com.jpoweredcart.admin.model.localisation.jdbc.ZoneAdminModelImpl;
+import com.jpoweredcart.admin.model.report.ProductsReportAdminModel;
 import com.jpoweredcart.admin.model.report.SalesReportAdminModel;
+import com.jpoweredcart.admin.model.report.jdbc.ProductsReportAdminModelImpl;
 import com.jpoweredcart.admin.model.report.jdbc.SalesReportAdminModelImpl;
 import com.jpoweredcart.admin.model.sale.CustomerGroupAdminModel;
 import com.jpoweredcart.admin.model.sale.IpBlacklistAdminModel;
@@ -164,6 +166,8 @@ public class AdminModelConfig {
 	//================= Report ========================//
 	@Bean
 	public SalesReportAdminModel salesReportAdminModel(){ return new SalesReportAdminModelImpl(settingService, jdbcOperations); }
+	@Bean
+	public ProductsReportAdminModel productsReportAdminModel(){ return new ProductsReportAdminModelImpl(settingService, jdbcOperations); }
 	
 	/*
 	 * We can switch to 

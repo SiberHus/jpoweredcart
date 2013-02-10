@@ -7,7 +7,7 @@
 			<div id="content">
 				<div class="breadcrumb">
 					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
-					<a th:href="@{/admin/report/salesShipping}" th:text="#{heading.title}">Shipping Report</a>
+					<a th:href="@{/admin/report/salesCoupon}" th:text="#{heading.title}">Coupon Report</a>
 				</div>
 				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
 				<div class="success" th:if="${msg_success!=null}" th:text="#{${msg_success}}"></div>
@@ -15,11 +15,11 @@
 					<div class="heading">
 						<h1>
 							<img th:src="@{/resources/admin/image/report.png}" alt="" />
-							<span th:text="#{heading.title}">Shipping Report</span>
+							<span th:text="#{heading.title}">Coupon Report</span>
 						</h1>
 					</div>
 					<div class="content">
-						<form th:action="@{/admin/report/salesShipping}" method="get" th:object="${filter}" id="form">
+						<form th:action="@{/admin/report/salesCoupon}" method="get" th:object="${filter}" id="form">
 						<table class="form">
 							<tr>
 								<td>
@@ -32,23 +32,6 @@
 									<input type="text" id="dateEnd" name="dateEnd" size="12"
 										th:value="${#dates.format(filter.dateEnd,  #messages.msg('date.formatShort'))}" />
 								</td>
-								<td>
-									<span th:text="#{entry.group}">Group By:</span>
-									<select th:field="*{group}">
-										<option value="year" th:text="#{text.year}">Years</option>
-										<option value="month" th:text="#{text.month}">Months</option>
-										<option value="week" th:text="#{text.week}">Weeks</option>
-										<option value="day" th:text="#{text.day}">Days</option>
-									</select>
-								</td>
-								<td>
-									<span th:text="#{entry.status}">Order Status:</span>
-									<select th:field="*{statusId}">
-										<option value="0" th:text="#{text.allStatus}">All Statuses</option>
-										<option th:each="os: ${orderStatuses}" th:value="${os.id}" 
-											th:text="${os.name}">Pending</option>
-									</select>
-								</td>
 								<td style="text-align: right;">
 									<a onclick="$('form').submit();" class="button" th:text="#{button.filter}">Filter</a>
 								</td>
@@ -58,22 +41,25 @@
 						<table class="list">
 							<thead>
 								<tr>
-									<td class="left" th:text="#{column.dateStart}">Date Start</td>
-									<td class="left" th:text="#{column.dateEnd}">Date End</td>
-									<td class="left" th:text="#{column.title}">Tax Title</td>
-									<td class="right" th:text="#{column.orders}">No. Orders</td>
+									<td class="left" th:text="#{column.name}">Coupon Name</td>
+									<td class="left" th:text="#{column.code}">Code</td>
+									<td class="right" th:text="#{column.orders}">Orders</td>
 									<td class="right" th:text="#{column.total}">Total</td>
+									<td class="right" th:text="#{column.action}">Action</td>
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="shipping : ${shippings}">
-									<td class="left" th:text="${#dates.format(shipping.dateStart,  #messages.msg('date.formatShort'))}"></td>
-									<td class="left" th:text="${#dates.format(shipping.dateStart,  #messages.msg('date.formatShort'))}"></td>
-									<td class="left" th:text="${shipping.title}"></td>
-									<td class="right" th:text="${shipping.orders}"></td>
-									<td class="right" th:text="${shipping.total}"></td>
+								<tr th:each="coupon : ${coupons}">
+									<td class="left" th:text="${coupon.name}">Coupon Name</td>
+									<td class="left" th:text="${coupon.code}">1234</td>
+									<td class="right" th:text="${coupon.orders}">12</td>
+									<td class="right" th:text="${coupon.total}">1</td>
+									<td class="right" th:text="${coupon.couponId}">
+										<a th:href="@{/admin/sale/coupon/edit/}+${coupon.couponId}" 
+											th:text="#{text.edit}">Edit</a>
+									</td>
 								</tr>
-								<tr th:if="${#lists.isEmpty(shippings)}">
+								<tr th:if="${#lists.isEmpty(coupons)}">
 									<td class="center" colspan="5" th:text="#{text.noResults}">No results!</td>
 								</tr>
 							</tbody>

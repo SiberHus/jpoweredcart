@@ -7,7 +7,7 @@
 			<div id="content">
 				<div class="breadcrumb">
 					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
-					<a th:href="@{/admin/report/saleOrder}" th:text="#{heading.title}">Sales Report</a>
+					<a th:href="@{/admin/report/salesOrder}" th:text="#{heading.title}">Sales Report</a>
 				</div>
 				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
 				<div class="success" th:if="${msg_success!=null}" th:text="#{${msg_success}}"></div>
@@ -68,15 +68,15 @@
 							</thead>
 							<tbody>
 								<tr th:each="order : ${orders}">
-									<td class="left" th:text="${order.dateStart}"></td>
-									<td class="left" th:text="${order.dateEnd}"></td>
+									<td class="left" th:text="${#dates.format(order.dateStart,  #messages.msg('date.formatShort'))}"></td>
+									<td class="left" th:text="${#dates.format(order.dateStart,  #messages.msg('date.formatShort'))}"></td>
 									<td class="right" th:text="${order.orders}"></td>
 									<td class="right" th:text="${order.products}"></td>
 									<td class="right" th:text="${order.tax}"></td>
 									<td class="right" th:text="${order.total}"></td>
 								</tr>
 								<tr th:if="${#lists.isEmpty(orders)}">
-									<td class="center" colspan="5" th:text="#{text.noResults}">No results!</td>
+									<td class="center" colspan="6" th:text="#{text.noResults}">No results!</td>
 								</tr>
 							</tbody>
 						</table>

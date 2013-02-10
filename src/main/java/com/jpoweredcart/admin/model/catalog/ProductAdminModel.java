@@ -2,7 +2,7 @@ package com.jpoweredcart.admin.model.catalog;
 
 import java.util.List;
 
-import com.jpoweredcart.admin.bean.catalog.TotalProductsFilter;
+import com.jpoweredcart.admin.bean.catalog.filter.TotalProductsFilter;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.catalog.Product;
 import com.jpoweredcart.common.entity.catalog.ProductAttribute;

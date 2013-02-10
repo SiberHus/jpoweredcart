@@ -2,7 +2,7 @@ package com.jpoweredcart.admin.model.sale;
 
 import java.util.List;
 
-import com.jpoweredcart.admin.bean.sale.TotalOrdersFilter;
+import com.jpoweredcart.admin.bean.sale.filter.TotalOrdersFilter;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.sale.Order;
 import com.jpoweredcart.common.entity.sale.OrderDownload;

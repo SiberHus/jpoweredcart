@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import com.jpoweredcart.admin.bean.catalog.TotalProductsFilter;
+
+import com.jpoweredcart.admin.bean.catalog.filter.TotalProductsFilter;
 import com.jpoweredcart.admin.model.catalog.ProductAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;

@@ -14,11 +14,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 
 import com.jpoweredcart.common.i18n.MessageResolver;
 import com.jpoweredcart.common.service.SettingKey;
 import com.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.common.web.bridge.conversion.JQueryDateFormatTranslator;
 
 
 public abstract class BaseController{
@@ -102,6 +104,12 @@ public abstract class BaseController{
 		return settingService;
 	}
 	
+	protected void addJsDateFormatAttribute(Model model, HttpServletRequest request){
+		String jsDateFormat = JQueryDateFormatTranslator.INSTANCE
+				.translate(message(request, "date.formatShort"));
+		model.addAttribute("jsDateFormat", jsDateFormat);
+	}
+	
 	/**
 	 * The default data binder setup.
 	 * Don't activate @InitBinder in the base class
@@ -123,7 +131,9 @@ public abstract class BaseController{
 			@Override
 			public void setAsText(String text) throws IllegalArgumentException {
 				try{
-					setValue(createDateFormat().parse(text));
+					if(StringUtils.isNotBlank(text)){
+						setValue(createDateFormat().parse(text));
+					}
 				}catch(ParseException e){
 					setValue(null);
 				}
@@ -133,5 +143,7 @@ public abstract class BaseController{
 			}
 		});
 	}
+	
+	
 	
 }

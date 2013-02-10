@@ -7,7 +7,8 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.ObjectUtils;
-import com.jpoweredcart.admin.bean.sale.TotalOrdersFilter;
+
+import com.jpoweredcart.admin.bean.sale.filter.TotalOrdersFilter;
 import com.jpoweredcart.admin.model.localisation.CountryAdminModel;
 import com.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
 import com.jpoweredcart.admin.model.localisation.ZoneAdminModel;

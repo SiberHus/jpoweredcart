@@ -1,4 +1,4 @@
-package com.jpoweredcart.admin.bean.report;
+package com.jpoweredcart.admin.bean.report.filter;
 
 import java.io.Serializable;
 import java.util.Date;
