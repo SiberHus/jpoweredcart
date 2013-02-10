@@ -5,13 +5,13 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.jpoweredcart.admin.bean.report.SalesOrderTitleReport;
+import com.jpoweredcart.admin.bean.report.SalesOrderByTitleReport;
 
-public class SalesOrderTitleReportRowMapper implements RowMapper<SalesOrderTitleReport>{
+public class SalesOrderTitleReportRowMapper implements RowMapper<SalesOrderByTitleReport>{
 
 	@Override
-	public SalesOrderTitleReport mapRow(ResultSet rs, int rowNum) throws SQLException {
-		SalesOrderTitleReport sotr = new SalesOrderTitleReport();
+	public SalesOrderByTitleReport mapRow(ResultSet rs, int rowNum) throws SQLException {
+		SalesOrderByTitleReport sotr = new SalesOrderByTitleReport();
 		sotr.setDateStart(rs.getDate("date_start"));
 		sotr.setDateEnd(rs.getDate("date_end"));
 		sotr.setTitle(rs.getString("title"));

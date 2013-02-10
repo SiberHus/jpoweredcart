@@ -7,8 +7,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcOperations;
 
 import com.jpoweredcart.admin.bean.report.SalesOrderReport;
-import com.jpoweredcart.admin.bean.report.SalesOrderTitleReport;
+import com.jpoweredcart.admin.bean.report.SalesOrderByTitleReport;
 import com.jpoweredcart.admin.bean.report.SalesReportFilter;
+import com.jpoweredcart.admin.bean.report.SalesReturnReport;
 import com.jpoweredcart.admin.model.report.SalesReportAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
@@ -104,7 +105,7 @@ public class SalesReportAdminModelImpl extends BaseModel implements SalesReportA
 	}
 
 	@Override
-	public List<SalesOrderTitleReport> getTaxes(SalesReportFilter filter,
+	public List<SalesOrderByTitleReport> getTaxes(SalesReportFilter filter,
 			PageParam pageParam) {
 		
 		return getSalesOrderTitles(filter, "tax", pageParam);
@@ -118,7 +119,7 @@ public class SalesReportAdminModelImpl extends BaseModel implements SalesReportA
 	
 	
 	@Override
-	public List<SalesOrderTitleReport> getShippings(SalesReportFilter filter,
+	public List<SalesOrderByTitleReport> getShippings(SalesReportFilter filter,
 			PageParam pageParam) {
 		
 		return getSalesOrderTitles(filter, "shipping", pageParam);
@@ -130,7 +131,7 @@ public class SalesReportAdminModelImpl extends BaseModel implements SalesReportA
 		return getTotalSalesOrderTitles(filter, "shipping");
 	}
 	
-	protected List<SalesOrderTitleReport> getSalesOrderTitles(SalesReportFilter filter, String code,
+	protected List<SalesOrderByTitleReport> getSalesOrderTitles(SalesReportFilter filter, String code,
 			PageParam pageParam) {
 		List<Object> params = new ArrayList<Object>();
 		String sql = "SELECT MIN(o.date_added) AS date_start, MAX(o.date_added) AS date_end, ot.title, " +
@@ -202,6 +203,80 @@ public class SalesReportAdminModelImpl extends BaseModel implements SalesReportA
 			sql += " GROUP BY YEAR(o.date_added), ot.title";
 		}
 		sql += ") tmp";
+		
+		return getJdbcOperations().queryForInt(sql, params.toArray());
+	}
+	
+	@Override
+	public List<SalesReturnReport> getReturns(SalesReportFilter filter,
+			PageParam pageParam) {
+		List<Object> params = new ArrayList<Object>();
+		String sql = "SELECT MIN(r.date_added) AS date_start, MAX(r.date_added) AS date_end, " +
+				"COUNT(r.return_id) AS returns FROM "+quoteTable("return")+" r";
+		if(filter.getStatusId()!=null && filter.getStatusId()>0){
+			sql += " WHERE r.return_status_id = ?";
+			params.add(filter.getStatusId());
+		}else{
+			sql += " WHERE r.return_status_id > ?";
+			params.add(0);
+		}
+		if(filter.getDateStart()!=null){
+			sql += " AND r.date_added >= ?";
+			params.add(filter.getDateStart());
+		}
+		if(filter.getDateEnd()!=null){
+			sql += " AND r.date_added <= ?";
+			params.add(filter.getDateEnd());
+		}
+		String group = getFilterGroup(filter);
+		if(group.equals("day")){
+			sql += " GROUP BY DAY(r.date_added)";
+		}else if(group.equals("week")){
+			sql += " GROUP BY WEEK(r.date_added)";
+		}else if(group.equals("month")){
+			sql += " GROUP BY MONTH(r.date_added)";
+		}else if(group.equals("year")){
+			sql += " GROUP BY YEAR(r.date_added)";
+		}
+		
+		QueryBean query = createPaginationQueryFromSql(sql, pageParam);
+		params.add(query.getStart());
+		params.add(query.getLimit());
+		
+		return getJdbcOperations().query(query.getSql(), 
+				params.toArray(), new SalesReturnReportRowMapper());
+	}
+	
+	@Override
+	public int getTotalReturns(SalesReportFilter filter) {
+		List<Object> params = new ArrayList<Object>();
+		String sql = null;
+		String group = getFilterGroup(filter);
+		if(group.equals("day")){
+			sql = "SELECT COUNT(DISTINCT DAY(date_added)) AS total FROM "+quoteTable("return");
+		}else if(group.equals("week")){
+			sql = "SELECT COUNT(DISTINCT WEEK(date_added)) AS total FROM "+quoteTable("return");
+		}else if(group.equals("month")){
+			sql = "SELECT COUNT(DISTINCT MONTH(date_added)) AS total FROM "+quoteTable("return");
+		}else if(group.equals("year")){
+			sql = "SELECT COUNT(DISTINCT YEAR(date_added)) AS total FROM "+quoteTable("return");
+		}
+		
+		if(filter.getStatusId()!=null && filter.getStatusId()>0){
+			sql += " WHERE return_status_id = ?";
+			params.add(filter.getStatusId());
+		}else{
+			sql += " WHERE return_status_id > ?";
+			params.add(0);
+		}
+		if(filter.getDateStart()!=null){
+			sql += " AND date_added >= ?";
+			params.add(filter.getDateStart());
+		}
+		if(filter.getDateEnd()!=null){
+			sql += " AND date_added <= ?";
+			params.add(filter.getDateEnd());
+		}
 		
 		return getJdbcOperations().queryForInt(sql, params.toArray());
 	}
