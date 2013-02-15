@@ -3,7 +3,7 @@ package com.jpoweredcart.admin.bean.report;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class ProductPurchased implements Serializable{
+public class ProductPurchasedRpt implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	

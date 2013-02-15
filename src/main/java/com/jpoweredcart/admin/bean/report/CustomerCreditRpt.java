@@ -2,7 +2,7 @@ package com.jpoweredcart.admin.bean.report;
 
 import java.math.BigDecimal;
 
-public class CustomerCredit extends AbstractCustomerRpt {
+public class CustomerCreditRpt extends AbstractCustomerRpt {
 	
 	private static final long serialVersionUID = 1L;
 	

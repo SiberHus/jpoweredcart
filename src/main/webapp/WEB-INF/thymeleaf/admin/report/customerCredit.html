@@ -51,8 +51,8 @@
 							</thead>
 							<tbody>
 								<tr th:each="credit : ${credits}">
-									<td class="left" th:text="${credit.customerName}">Hussachai Puripunpinyo</td>
-									<td class="left" th:text="${credit.email}">hussachai@jpoweredcart.com</td>
+									<td class="left" th:text="${credit.customerName}">Customer Name</td>
+									<td class="left" th:text="${credit.email}">nobody@yourdomain</td>
 									<td class="left" th:text="${credit.customerGroup}">Default</td>
 									<td class="left" th:text="${credit.status==1?#messages.msg('text.enabled'):#messages.msg('text.disabled')}">Enabled</td>
 									<td class="right" th:text="${#numbers.formatDecimal(credit.total,0,2)}">$170.00</td>

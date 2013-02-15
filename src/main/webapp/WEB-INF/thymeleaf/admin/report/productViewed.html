@@ -35,10 +35,10 @@
 							</thead>
 							<tbody>
 								<tr th:each="pv : ${productsViewed}">
-									<td class="left" th:text="${pv.name}"></td>
-									<td class="left" th:text="${pv.model}"></td>
-									<td class="right" th:text="${pv.viewed}"></td>
-									<td class="right" th:text="${#numbers.formatDecimal(pv.percent,0,2)+'%'}"></td>
+									<td class="left" th:text="${pv.name}">Apple iPhone X</td>
+									<td class="left" th:text="${pv.model}">XXX</td>
+									<td class="right" th:text="${pv.viewed}">3</td>
+									<td class="right" th:text="${#numbers.formatDecimal(pv.percent,0,2)+'%'}">33%</td>
 								</tr>
 								<tr th:if="${#lists.isEmpty(productsViewed)}">
 									<td class="center" colspan="4" th:text="#{text.noResults}">No results!</td>

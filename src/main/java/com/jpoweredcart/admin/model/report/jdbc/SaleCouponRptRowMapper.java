@@ -5,14 +5,14 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.jpoweredcart.admin.bean.report.SaleCoupon;
+import com.jpoweredcart.admin.bean.report.SaleCouponRpt;
 
-public class SaleCouponRowMapper implements RowMapper<SaleCoupon>{
+public class SaleCouponRptRowMapper implements RowMapper<SaleCouponRpt>{
 
 	@Override
-	public SaleCoupon mapRow(ResultSet rs, int rowNum)
+	public SaleCouponRpt mapRow(ResultSet rs, int rowNum)
 			throws SQLException {
-		SaleCoupon scr = new SaleCoupon();
+		SaleCouponRpt scr = new SaleCouponRpt();
 		scr.setCouponId(rs.getInt("coupon_id"));
 		scr.setName(rs.getString("name"));
 		scr.setCode(rs.getString("code"));

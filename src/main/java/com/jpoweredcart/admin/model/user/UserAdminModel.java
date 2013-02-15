@@ -2,17 +2,16 @@ package com.jpoweredcart.admin.model.user;
 
 import java.util.List;
 
+import com.jpoweredcart.admin.bean.user.UserForm;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.user.User;
 
 
 public interface UserAdminModel {
 	
-	public void create(User user);
+	public void create(UserForm userForm);
 	
-	public void update(User user);
-	
-	public void saveUser(User user);
+	public void update(UserForm userForm);
 	
 	public void updatePassword(Integer userId, String password);
 	
@@ -20,18 +19,20 @@ public interface UserAdminModel {
 	
 	public void delete(Integer userId);
 	
+	public UserForm getForm(Integer userId);
+	
 	public User get(Integer userId);
 	
 	public User getOneByUsername(String username);
 	
 	public User getUserByCode(String code);
 	
-	public List<User> getUsers(PageParam pageParam);
+	public List<User> getList(PageParam pageParam);
 	
-	public int getTotalUsers();
+	public int getTotal();
 	
-	public int getTotalUsersByGroupId(Integer userGroupId);
+	public int getTotalByGroupId(Integer userGroupId);
 	
-	public int getTotalUsersByEmail(String email);
+	public int getTotalByEmail(String email);
 	
 }

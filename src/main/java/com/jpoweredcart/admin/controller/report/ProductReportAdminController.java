@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.jpoweredcart.admin.bean.report.ProductPurchased;
-import com.jpoweredcart.admin.bean.report.ProductViewed;
+import com.jpoweredcart.admin.bean.report.ProductPurchasedRpt;
+import com.jpoweredcart.admin.bean.report.ProductViewedRpt;
 import com.jpoweredcart.admin.bean.report.filter.DateRangeWithStatusFilter;
 import com.jpoweredcart.admin.model.localisation.OrderStatusAdminModel;
 import com.jpoweredcart.admin.model.report.ProductReportAdminModel;
@@ -36,7 +36,7 @@ public class ProductReportAdminController extends BaseController {
 		addJsDateFormatAttribute(model, request);
 		
 		PageParam pageParam = createPageParam(request);
-		List<ProductViewed> viewedList = productReportAdminModel.getProductsViewed(pageParam);
+		List<ProductViewedRpt> viewedList = productReportAdminModel.getProductsViewed(pageParam);
 		model.addAttribute("productsViewed", viewedList);
 		int total = productReportAdminModel.getTotalProductsViewed();
 		Pagination pagination = new Pagination();
@@ -65,7 +65,7 @@ public class ProductReportAdminController extends BaseController {
 		model.addAttribute("orderStatuses", orderStatusAdminModel.getList(null));
 		
 		PageParam pageParam = createPageParam(request);
-		List<ProductPurchased> purchasedList = productReportAdminModel.getProductsPurchased(filter, pageParam);
+		List<ProductPurchasedRpt> purchasedList = productReportAdminModel.getProductsPurchased(filter, pageParam);
 		model.addAttribute("productsPurchased", purchasedList);
 		int total = productReportAdminModel.getTotalProductsViewed();
 		Pagination pagination = new Pagination();

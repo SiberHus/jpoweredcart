@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.jpoweredcart.admin.bean.report.SaleCoupon;
-import com.jpoweredcart.admin.bean.report.SaleOrder;
-import com.jpoweredcart.admin.bean.report.SaleOrderByTitle;
-import com.jpoweredcart.admin.bean.report.SaleReturn;
+import com.jpoweredcart.admin.bean.report.SaleCouponRpt;
+import com.jpoweredcart.admin.bean.report.SaleOrderRpt;
+import com.jpoweredcart.admin.bean.report.SaleOrderByTitleRpt;
+import com.jpoweredcart.admin.bean.report.SaleReturnRpt;
 import com.jpoweredcart.admin.bean.report.filter.DateRangeFilter;
 import com.jpoweredcart.admin.bean.report.filter.SaleReportFilter;
 import com.jpoweredcart.admin.model.report.SaleReportAdminModel;
@@ -20,7 +20,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 	
 	
 	@Override
-	public List<SaleOrder> getOrders(SaleReportFilter filter, PageParam pageParam) {
+	public List<SaleOrderRpt> getOrders(SaleReportFilter filter, PageParam pageParam) {
 		List<Object> params = new ArrayList<Object>();
 		String sql = "SELECT MIN(tmp.date_added) AS date_start, MAX(tmp.date_added) AS date_end, " +
 			"COUNT(tmp.order_id) AS orders, SUM(tmp.products) AS products, SUM(tmp.tax) AS tax, " +
@@ -62,7 +62,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 		params.add(query.getLimit());
 		
 		return getJdbcOperations().query(query.getSql(), 
-				params.toArray(), new SaleOrderRowMapper());
+				params.toArray(), new SaleOrderRptRowMapper());
 	}
 	
 	@Override
@@ -100,7 +100,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 	}
 
 	@Override
-	public List<SaleOrderByTitle> getTaxes(SaleReportFilter filter,
+	public List<SaleOrderByTitleRpt> getTaxes(SaleReportFilter filter,
 			PageParam pageParam) {
 		
 		return getSalesOrderTitles(filter, "tax", pageParam);
@@ -114,7 +114,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 	
 	
 	@Override
-	public List<SaleOrderByTitle> getShippings(SaleReportFilter filter,
+	public List<SaleOrderByTitleRpt> getShippings(SaleReportFilter filter,
 			PageParam pageParam) {
 		
 		return getSalesOrderTitles(filter, "shipping", pageParam);
@@ -126,7 +126,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 		return getTotalSalesOrderTitles(filter, "shipping");
 	}
 	
-	protected List<SaleOrderByTitle> getSalesOrderTitles(SaleReportFilter filter, String code,
+	protected List<SaleOrderByTitleRpt> getSalesOrderTitles(SaleReportFilter filter, String code,
 			PageParam pageParam) {
 		List<Object> params = new ArrayList<Object>();
 		String sql = "SELECT MIN(o.date_added) AS date_start, MAX(o.date_added) AS date_end, ot.title, " +
@@ -163,7 +163,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 		params.add(query.getLimit());
 		
 		return getJdbcOperations().query(query.getSql(), 
-				params.toArray(), new SaleOrderByTitleRowMapper());
+				params.toArray(), new SaleOrderByTitleRptRowMapper());
 	}
 	
 	protected int getTotalSalesOrderTitles(SaleReportFilter filter, String code) {
@@ -203,7 +203,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 	}
 	
 	@Override
-	public List<SaleReturn> getReturns(SaleReportFilter filter,
+	public List<SaleReturnRpt> getReturns(SaleReportFilter filter,
 			PageParam pageParam) {
 		List<Object> params = new ArrayList<Object>();
 		String sql = "SELECT MIN(r.date_added) AS date_start, MAX(r.date_added) AS date_end, " +
@@ -239,7 +239,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 		params.add(query.getLimit());
 		
 		return getJdbcOperations().query(query.getSql(), 
-				params.toArray(), new SaleReturnRowMapper());
+				params.toArray(), new SaleReturnRptRowMapper());
 	}
 	
 	@Override
@@ -277,7 +277,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 	}
 	
 	@Override
-	public List<SaleCoupon> getCoupons(DateRangeFilter filter,
+	public List<SaleCouponRpt> getCoupons(DateRangeFilter filter,
 			PageParam pageParam) {
 		List<Object> params = new ArrayList<Object>();
 		String sql = "SELECT ch.coupon_id, c.name, c.code, COUNT(DISTINCT ch.order_id) AS `orders`, SUM(ch.amount) AS total FROM "+
@@ -297,7 +297,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 		params.add(query.getLimit());
 		
 		return getJdbcOperations().query(query.getSql(), 
-				params.toArray(), new SaleCouponRowMapper());
+				params.toArray(), new SaleCouponRptRowMapper());
 	}
 
 	@Override

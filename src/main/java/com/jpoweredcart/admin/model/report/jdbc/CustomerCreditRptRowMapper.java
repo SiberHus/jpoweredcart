@@ -5,14 +5,14 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.jpoweredcart.admin.bean.report.CustomerCredit;
+import com.jpoweredcart.admin.bean.report.CustomerCreditRpt;
 
-public class CustomerCreditRowMapper implements RowMapper<CustomerCredit> {
+public class CustomerCreditRptRowMapper implements RowMapper<CustomerCreditRpt> {
 
 	@Override
-	public CustomerCredit mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public CustomerCreditRpt mapRow(ResultSet rs, int rowNum) throws SQLException {
 		
-		CustomerCredit credit = new CustomerCredit();
+		CustomerCreditRpt credit = new CustomerCreditRpt();
 		
 		credit.setCustomerId(rs.getInt("customer_id"));
 		String customerName = rs.getString("firstname")+" "+

@@ -5,20 +5,20 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.jpoweredcart.admin.bean.report.ProductViewed;
+import com.jpoweredcart.admin.bean.report.ProductViewedRpt;
 
-public class ProductViewedRowMapper implements RowMapper<ProductViewed>{
+public class ProductViewedRptRowMapper implements RowMapper<ProductViewedRpt>{
 
 	private int totalProductViews;
 	
-	public ProductViewedRowMapper(int totalProductViews){
+	public ProductViewedRptRowMapper(int totalProductViews){
 		this.totalProductViews = totalProductViews;
 	}
 	
 	@Override
-	public ProductViewed mapRow(ResultSet rs, int rowNum)
+	public ProductViewedRpt mapRow(ResultSet rs, int rowNum)
 			throws SQLException {
-		ProductViewed pvr = new ProductViewed();
+		ProductViewedRpt pvr = new ProductViewedRpt();
 		pvr.setName(rs.getString("name"));
 		pvr.setModel(rs.getString("model"));
 		int viewed = rs.getInt("viewed");

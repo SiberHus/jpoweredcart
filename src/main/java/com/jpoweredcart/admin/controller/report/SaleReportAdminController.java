@@ -11,10 +11,10 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.jpoweredcart.admin.bean.report.SaleCoupon;
-import com.jpoweredcart.admin.bean.report.SaleOrder;
-import com.jpoweredcart.admin.bean.report.SaleOrderByTitle;
-import com.jpoweredcart.admin.bean.report.SaleReturn;
+import com.jpoweredcart.admin.bean.report.SaleCouponRpt;
+import com.jpoweredcart.admin.bean.report.SaleOrderRpt;
+import com.jpoweredcart.admin.bean.report.SaleOrderByTitleRpt;
+import com.jpoweredcart.admin.bean.report.SaleReturnRpt;
 import com.jpoweredcart.admin.bean.report.filter.DateRangeFilter;
 import com.jpoweredcart.admin.bean.report.filter.SaleReportFilter;
 import com.jpoweredcart.admin.model.localisation.OrderStatusAdminModel;
@@ -48,7 +48,7 @@ public class SaleReportAdminController extends BaseController {
 		model.addAttribute("orderStatuses", orderStatusAdminModel.getList(null));
 		
 		PageParam pageParam = createPageParam(request);
-		List<SaleOrder> orderList = saleReportAdminModel.getOrders(filter, pageParam);
+		List<SaleOrderRpt> orderList = saleReportAdminModel.getOrders(filter, pageParam);
 		model.addAttribute("orders", orderList);
 		int total = saleReportAdminModel.getTotalOrders(filter);
 		Pagination pagination = new Pagination();
@@ -71,7 +71,7 @@ public class SaleReportAdminController extends BaseController {
 		model.addAttribute("orderStatuses", orderStatusAdminModel.getList(null));
 		
 		PageParam pageParam = createPageParam(request);
-		List<SaleOrderByTitle> taxList = saleReportAdminModel.getTaxes(filter, pageParam);
+		List<SaleOrderByTitleRpt> taxList = saleReportAdminModel.getTaxes(filter, pageParam);
 		model.addAttribute("taxes", taxList);
 		int total = saleReportAdminModel.getTotalTaxes(filter);
 		Pagination pagination = new Pagination();
@@ -94,7 +94,7 @@ public class SaleReportAdminController extends BaseController {
 		model.addAttribute("orderStatuses", orderStatusAdminModel.getList(null));
 		
 		PageParam pageParam = createPageParam(request);
-		List<SaleOrderByTitle> shippingList = saleReportAdminModel.getShippings(filter, pageParam);
+		List<SaleOrderByTitleRpt> shippingList = saleReportAdminModel.getShippings(filter, pageParam);
 		model.addAttribute("shippings", shippingList);
 		int total = saleReportAdminModel.getTotalShippings(filter);
 		Pagination pagination = new Pagination();
@@ -117,7 +117,7 @@ public class SaleReportAdminController extends BaseController {
 		model.addAttribute("returnStatuses", returnStatusAdminModel.getList(null));
 		
 		PageParam pageParam = createPageParam(request);
-		List<SaleReturn> taxList = saleReportAdminModel.getReturns(filter, pageParam);
+		List<SaleReturnRpt> taxList = saleReportAdminModel.getReturns(filter, pageParam);
 		model.addAttribute("returns", taxList);
 		int total = saleReportAdminModel.getTotalReturns(filter);
 		Pagination pagination = new Pagination();
@@ -138,7 +138,7 @@ public class SaleReportAdminController extends BaseController {
 		model.addAttribute("filter", filter);
 		
 		PageParam pageParam = createPageParam(request);
-		List<SaleCoupon> taxList = saleReportAdminModel.getCoupons(filter, pageParam);
+		List<SaleCouponRpt> taxList = saleReportAdminModel.getCoupons(filter, pageParam);
 		model.addAttribute("coupons", taxList);
 		int total = saleReportAdminModel.getTotalCoupons(filter);
 		Pagination pagination = new Pagination();

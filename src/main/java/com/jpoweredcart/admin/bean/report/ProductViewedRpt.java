@@ -2,7 +2,7 @@ package com.jpoweredcart.admin.bean.report;
 
 import java.io.Serializable;
 
-public class ProductViewed implements Serializable{
+public class ProductViewedRpt implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	

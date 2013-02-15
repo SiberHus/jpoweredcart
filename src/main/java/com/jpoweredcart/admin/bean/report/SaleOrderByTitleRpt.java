@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class SaleOrderByTitle implements Serializable{
+public class SaleOrderByTitleRpt implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	

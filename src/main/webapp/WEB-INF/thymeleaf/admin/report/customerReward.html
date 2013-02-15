@@ -53,8 +53,8 @@
 							</thead>
 							<tbody>
 								<tr th:each="reward : ${rewards}">
-									<td class="left" th:text="${reward.customerName}">Hussachai Puripunpinyo</td>
-									<td class="left" th:text="${reward.email}">hussachai@jpoweredcart.com</td>
+									<td class="left" th:text="${reward.customerName}">Customer Name</td>
+									<td class="left" th:text="${reward.email}">nobody@yourdomain</td>
 									<td class="left" th:text="${reward.customerGroup}">Default</td>
 									<td class="left" th:text="${reward.status==1?#messages.msg('text.enabled'):#messages.msg('text.disabled')}">Enabled</td>
 									<td class="right" th:text="${reward.points}">300</td>

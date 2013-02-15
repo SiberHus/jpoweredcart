@@ -1,10 +1,7 @@
 package com.jpoweredcart.config;
 
-import javax.inject.Inject;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcOperations;
 
 import com.jpoweredcart.admin.model.catalog.AttributeAdminModel;
 import com.jpoweredcart.admin.model.catalog.AttributeGroupAdminModel;
@@ -50,9 +47,11 @@ import com.jpoweredcart.admin.model.localisation.jdbc.TaxClassAdminModelImpl;
 import com.jpoweredcart.admin.model.localisation.jdbc.TaxRateAdminModelImpl;
 import com.jpoweredcart.admin.model.localisation.jdbc.WeightClassAdminModelImpl;
 import com.jpoweredcart.admin.model.localisation.jdbc.ZoneAdminModelImpl;
+import com.jpoweredcart.admin.model.report.AffiliateReportAdminModel;
 import com.jpoweredcart.admin.model.report.CustomerReportAdminModel;
 import com.jpoweredcart.admin.model.report.ProductReportAdminModel;
 import com.jpoweredcart.admin.model.report.SaleReportAdminModel;
+import com.jpoweredcart.admin.model.report.jdbc.AffiliateReportAdminModelImpl;
 import com.jpoweredcart.admin.model.report.jdbc.CustomerReportAdminModelImpl;
 import com.jpoweredcart.admin.model.report.jdbc.ProductReportAdminModelImpl;
 import com.jpoweredcart.admin.model.report.jdbc.SaleReportAdminModelImpl;
@@ -72,22 +71,10 @@ import com.jpoweredcart.admin.model.user.UserAdminModel;
 import com.jpoweredcart.admin.model.user.UserGroupAdminModel;
 import com.jpoweredcart.admin.model.user.jdbc.UserAdminModelImpl;
 import com.jpoweredcart.admin.model.user.jdbc.UserGroupAdminModelImpl;
-import com.jpoweredcart.common.service.EmailService;
-import com.jpoweredcart.common.service.SettingService;
 
 
 @Configuration
 public class AdminModelConfig {
-	
-	
-	@Inject
-	private SettingService settingService;
-	
-	@Inject
-	private JdbcOperations jdbcOperations;
-
-	@Inject
-	private EmailService emailService;
 	
 	//================= Catalog ========================//
 	@Bean
@@ -169,6 +156,8 @@ public class AdminModelConfig {
 	public ProductReportAdminModel productReportAdminModel(){ return new ProductReportAdminModelImpl(); }
 	@Bean
 	public CustomerReportAdminModel customerReportAdminModel(){ return new CustomerReportAdminModelImpl(); }
+	@Bean
+	public AffiliateReportAdminModel affiliateReportAdminModel(){ return new AffiliateReportAdminModelImpl(); }
 	
 	/*
 	 * We can switch to 

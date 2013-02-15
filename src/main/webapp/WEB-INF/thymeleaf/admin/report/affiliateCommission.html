@@ -7,7 +7,7 @@
 			<div id="content">
 				<div class="breadcrumb">
 					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
-					<a th:href="@{/admin/report/customerOrder}" th:text="#{heading.title}">Customer Orders Report</a>
+					<a th:href="@{/admin/report/affiliateCommission}" th:text="#{heading.title}">Affiliate Commission Report</a>
 				</div>
 				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
 				<div class="success" th:if="${msg_success!=null}" th:text="#{${msg_success}}"></div>
@@ -15,11 +15,11 @@
 					<div class="heading">
 						<h1>
 							<img th:src="@{/resources/admin/image/report.png}" alt="" />
-							<span th:text="#{heading.title}">Customer Orders Report</span>
+							<span th:text="#{heading.title}">Affiliate Commission Report</span>
 						</h1>
 					</div>
 					<div class="content">
-						<form th:action="@{/admin/report/customerOrder}" method="get" th:object="${filter}" id="form">
+						<form th:action="@{/admin/report/affiliateCommission}" method="get" th:object="${filter}" id="form">
 						<table class="form">
 							<tr>
 								<td>
@@ -32,14 +32,6 @@
 									<input type="text" id="dateEnd" name="dateEnd" size="12"
 										th:value="${filter.dateEnd!=null?#dates.format(filter.dateEnd,  #messages.msg('date.formatShort')):filter.dateEnd}" />
 								</td>
-								<td>
-									<span th:text="#{entry.status}">Order Status:</span>
-									<select th:field="*{statusId}">
-										<option value="0" th:text="#{text.allStatus}">All Statuses</option>
-										<option th:each="os: ${orderStatuses}" th:value="${os.id}" 
-											th:text="${os.name}">Pending</option>
-									</select>
-								</td>
 								<td style="text-align: right;">
 									<a onclick="$('form').submit();" class="button" th:text="#{button.filter}">Filter</a>
 								</td>
@@ -49,32 +41,30 @@
 						<table class="list">
 							<thead>
 								<tr>
-									<td class="left" th:text="#{column.customer}">Customer Name</td>
+									<td class="left" th:text="#{column.affiliate}">Affiliate Name</td>
 									<td class="left" th:text="#{column.email}">E-Mail</td>
-									<td class="left" th:text="#{column.customerGroup}">Customer Group</td>
 									<td class="left" th:text="#{column.status}">Status</td>
+									<td class="right" th:text="#{column.commission}">Commission</td>
 									<td class="right" th:text="#{column.orders}">No. Orders</td>
-									<td class="right" th:text="#{column.products}">No. Products</td>
 									<td class="right" th:text="#{column.total}">Total</td>
 									<td class="right" th:text="#{column.action}">Action</td>
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="order : ${orders}">
-									<td class="left" th:text="${order.customerName}">Customer Name</td>
-									<td class="left" th:text="${order.email}">nobody@yourdomain</td>
-									<td class="left" th:text="${order.customerGroup}">Default</td>
-									<td class="left" th:text="${order.status==1?#messages.msg('text.enabled'):#messages.msg('text.disabled')}">Enabled</td>
-									<td class="right" th:text="${order.orders}">2</td>
-									<td class="right" th:text="${order.products}">2</td>
-									<td class="right" th:text="${#numbers.formatDecimal(order.total,0,2)}">$170.00</td>
+								<tr th:each="com : ${commissions}">
+									<td class="left" th:text="${com.affiliateName}">Affiliate Name</td>
+									<td class="left" th:text="${com.email}">nobody@yourdomain</td>
+									<td class="left" th:text="${com.status==1?#messages.msg('text.enabled'):#messages.msg('text.disabled')}">Enabled</td>
+									<td class="right" th:text="${#numbers.formatDecimal(com.commission,0,2)}">$170.00</td>
+									<td class="right" th:text="${com.orders}">2</td>
+									<td class="right" th:text="${#numbers.formatDecimal(com.total,0,2)}">$170.00</td>
 									<td class="right">
-										[ <a th:href="@{/admin/sales/customer/edit/}+${order.customerId}"
+										[ <a th:href="@{/admin/sales/affiliate/edit/}+${com.affiliateId}"
 											th:text="#{text.edit}">Edit</a> ]
 									</td>
 								</tr>
-								<tr th:if="${#lists.isEmpty(orders)}">
-									<td class="center" colspan="8" th:text="#{text.noResults}">No results!</td>
+								<tr th:if="${#lists.isEmpty(commissions)}">
+									<td class="center" colspan="7" th:text="#{text.noResults}">No results!</td>
 								</tr>
 							</tbody>
 						</table>

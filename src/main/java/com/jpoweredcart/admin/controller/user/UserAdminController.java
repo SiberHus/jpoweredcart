@@ -7,14 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
-import com.jpoweredcart.admin.model.user.UserAdminModel;
-import com.jpoweredcart.admin.model.user.UserGroupAdminModel;
-import com.jpoweredcart.common.BaseController;
-import com.jpoweredcart.common.PageParam;
-import com.jpoweredcart.common.entity.user.User;
-import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
-import com.jpoweredcart.common.security.UserPermissions;
-import com.jpoweredcart.common.view.Pagination;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +17,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jpoweredcart.admin.bean.user.UserForm;
+import com.jpoweredcart.admin.model.user.UserAdminModel;
+import com.jpoweredcart.admin.model.user.UserGroupAdminModel;
+import com.jpoweredcart.common.BaseController;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.user.User;
+import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
+import com.jpoweredcart.common.security.UserPermissions;
+import com.jpoweredcart.common.view.Pagination;
+
 @Controller
+@RequestMapping("/admin/user/user")
 public class UserAdminController extends BaseController {
 	
 	@Inject
@@ -34,14 +37,14 @@ public class UserAdminController extends BaseController {
 	@Inject
 	private UserGroupAdminModel userGroupAdminModel;
 	
-	@RequestMapping(value="/admin/user/user")
+	@RequestMapping(value={"", "/"})
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<User> userList = userAdminModel.getUsers(pageParam);
+		List<User> userList = userAdminModel.getList(pageParam);
 		model.addAttribute("users", userList);
 		
-		int total = userAdminModel.getTotalUsers();
+		int total = userAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPage(pageParam.getPage())
 			.setLimit(pageParam.getLimit()).setText(message(request, "text.pagination"))
@@ -52,50 +55,50 @@ public class UserAdminController extends BaseController {
 	}
 	
 	
-	@RequestMapping(value="/admin/user/user/create")
+	@RequestMapping(value="/create")
 	public String create(Model model){
 		
 		UserPermissions.checkModify("user/user", 
 				new UnauthorizedAdminException());
 		initUserForm(model);
 		
-		model.addAttribute("user", new User());
+		model.addAttribute("userForm", new UserForm());
 		
 		return "/admin/user/userForm";
 	}
 	
-	@RequestMapping(value="/admin/user/user/edit/{id}")
+	@RequestMapping(value="/edit/{id}")
 	public String edit(@PathVariable("id") Integer id, Model model){
 		
 		checkModifyPermission();
 		initUserForm(model);
 		
-		User user = userAdminModel.get(id);
-		model.addAttribute("user", user);
+		UserForm userForm = userAdminModel.getForm(id);
+		model.addAttribute("userForm", userForm);
 		
 		return "/admin/user/userForm";
 	}
 	
-	@RequestMapping(value="/admin/user/user/save", method=RequestMethod.POST)
-	public String save(@Valid User user, BindingResult result, Model model, 
+	@RequestMapping(value="/save", method=RequestMethod.POST)
+	public String save(@Valid UserForm userForm, BindingResult result, Model model, 
 			RedirectAttributes redirect){
 		
 		checkModifyPermission();
 		
-		if(user.getId()==null){
+		if(userForm.getId()==null){
 			//new user
 			try{
-				userAdminModel.getOneByUsername(user.getUsername());
+				userAdminModel.getOneByUsername(userForm.getUsername());
 				model.addAttribute("msg_warning", "error.exists");
 			}catch(EmptyResultDataAccessException e){}
-			if(StringUtils.isBlank(user.getPassword())){
+			if(StringUtils.isBlank(userForm.getPassword())){
 				result.rejectValue("password", "error.password");
-			}else if(!user.getPassword().equals(user.getConfirm())){
+			}else if(!userForm.getPassword().equals(userForm.getConfirm())){
 				result.rejectValue("confirm", "error.confirm");
 			}
 		}else{
-			if(!StringUtils.isBlank(user.getPassword())){
-				if(!user.getPassword().equals(user.getConfirm())){
+			if(!StringUtils.isBlank(userForm.getPassword())){
+				if(!userForm.getPassword().equals(userForm.getConfirm())){
 					result.rejectValue("confirm", "error.confirm");
 				}
 			}
@@ -103,19 +106,24 @@ public class UserAdminController extends BaseController {
 		
 		if(result.hasErrors()){
 			initUserForm(model);
-			model.addAttribute("user", user);
+			model.addAttribute("userForm", userForm);
 			return "/admin/user/userForm";
 		}
 		
-		userAdminModel.saveUser(user);
+		if(userForm.getId()!=null){
+			userAdminModel.update(userForm);
+		}else{
+			userAdminModel.create(userForm);
+		}
+		
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
 		
 		return "redirect:/admin/user/user";
 	}
 	
-	@RequestMapping(value="/admin/user/user/delete", method=RequestMethod.POST)
-	public String delete(@RequestParam("selected") Integer[] ids, Model model,
+	@RequestMapping(value="/delete", method=RequestMethod.POST)
+	public String delete(@RequestParam(value="selected", required=false) Integer[] ids, Model model,
 			RedirectAttributes redirect){
 		checkModifyPermission();
 		boolean error = false;
@@ -129,8 +137,8 @@ public class UserAdminController extends BaseController {
 			if(!error) for(Integer id: ids){
 				userAdminModel.delete(id);
 			}
+			if(!error) redirect.addFlashAttribute("msg_success", "text.success");
 		}
-		if(!error) redirect.addFlashAttribute("msg_success", "text.success");
 		
 		return "redirect:/admin/user/user";
 	}

@@ -5,15 +5,15 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.jpoweredcart.admin.bean.report.CustomerOrder;
+import com.jpoweredcart.admin.bean.report.CustomerOrderRpt;
 
-public class CustomerOrderRowMapper implements RowMapper<CustomerOrder>{
+public class CustomerOrderRptRowMapper implements RowMapper<CustomerOrderRpt>{
 	
 	@Override
-	public CustomerOrder mapRow(ResultSet rs, int rowNum)
+	public CustomerOrderRpt mapRow(ResultSet rs, int rowNum)
 			throws SQLException {
 		
-		CustomerOrder order = new CustomerOrder();
+		CustomerOrderRpt order = new CustomerOrderRpt();
 		
 		order.setCustomerId(rs.getInt("customer_id"));
 		String customerName = rs.getString("firstname")+" "+

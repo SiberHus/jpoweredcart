@@ -3,9 +3,13 @@ package com.jpoweredcart.admin.model.report.jdbc;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jpoweredcart.admin.bean.report.CustomerCredit;
-import com.jpoweredcart.admin.bean.report.CustomerOrder;
-import com.jpoweredcart.admin.bean.report.CustomerReward;
+import org.apache.commons.lang3.StringUtils;
+
+import com.jpoweredcart.admin.bean.report.CustomerCreditRpt;
+import com.jpoweredcart.admin.bean.report.CustomerOnlineRpt;
+import com.jpoweredcart.admin.bean.report.CustomerOrderRpt;
+import com.jpoweredcart.admin.bean.report.CustomerRewardRpt;
+import com.jpoweredcart.admin.bean.report.filter.CustomerOnlineFilter;
 import com.jpoweredcart.admin.bean.report.filter.DateRangeFilter;
 import com.jpoweredcart.admin.bean.report.filter.DateRangeWithStatusFilter;
 import com.jpoweredcart.admin.model.report.CustomerReportAdminModel;
@@ -17,7 +21,7 @@ import com.jpoweredcart.common.service.SettingKey;
 public class CustomerReportAdminModelImpl extends BaseModel implements CustomerReportAdminModel {
 
 	@Override
-	public List<CustomerOrder> getOrders(DateRangeWithStatusFilter filter,
+	public List<CustomerOrderRpt> getOrders(DateRangeWithStatusFilter filter,
 			PageParam pageParam) {
 		List<Object> params = new ArrayList<Object>();
 		String sql = "SELECT c.customer_id, c.firstname, c.lastname, c.email, cgd.name AS customer_group, c.status, " +
@@ -49,7 +53,7 @@ public class CustomerReportAdminModelImpl extends BaseModel implements CustomerR
 		params.add(query.getLimit());
 		
 		return getJdbcOperations().query(query.getSql(), 
-				params.toArray(), new CustomerOrderRowMapper());
+				params.toArray(), new CustomerOrderRptRowMapper());
 	}
 	
 	@Override
@@ -77,7 +81,7 @@ public class CustomerReportAdminModelImpl extends BaseModel implements CustomerR
 	}
 
 	@Override
-	public List<CustomerReward> getRewardPoints(DateRangeFilter filter,
+	public List<CustomerRewardRpt> getRewardPoints(DateRangeFilter filter,
 			PageParam pageParam) {
 		List<Object> params = new ArrayList<Object>();
 		String sql = "SELECT cr.customer_id, c.firstname, c.lastname, c.email, cgd.name AS customer_group, " +
@@ -103,7 +107,7 @@ public class CustomerReportAdminModelImpl extends BaseModel implements CustomerR
 		params.add(query.getLimit());
 		
 		return getJdbcOperations().query(query.getSql(), 
-				params.toArray(), new CustomerRewardRowMapper());
+				params.toArray(), new CustomerRewardRptRowMapper());
 	}
 	
 	@Override
@@ -124,7 +128,7 @@ public class CustomerReportAdminModelImpl extends BaseModel implements CustomerR
 	}
 
 	@Override
-	public List<CustomerCredit> getCredits(DateRangeFilter filter, PageParam pageParam) {
+	public List<CustomerCreditRpt> getCredits(DateRangeFilter filter, PageParam pageParam) {
 		List<Object> params = new ArrayList<Object>();
 		String sql = "SELECT ct.customer_id, c.firstname, c.lastname, c.email, cgd.name AS customer_group, c.status, " +
 				"SUM(ct.amount) AS total FROM "+quoteTable("customer_transaction")+" ct LEFT JOIN "+quoteTable("customer")+
@@ -147,7 +151,7 @@ public class CustomerReportAdminModelImpl extends BaseModel implements CustomerR
 		params.add(query.getLimit());
 		
 		return getJdbcOperations().query(query.getSql(), 
-				params.toArray(), new CustomerCreditRowMapper());
+				params.toArray(), new CustomerCreditRptRowMapper());
 	}
 
 	@Override
@@ -162,6 +166,47 @@ public class CustomerReportAdminModelImpl extends BaseModel implements CustomerR
 		if(filter.getDateEnd()!=null){
 			sql += " AND date_added <= ?";
 			params.add(filter.getDateEnd());
+		}
+		
+		return getJdbcOperations().queryForInt(sql, params.toArray());
+	}
+
+	@Override
+	public List<CustomerOnlineRpt> getOnlines(CustomerOnlineFilter filter,
+			PageParam pageParam) {
+		List<Object> params = new ArrayList<Object>();
+		String sql = "SELECT co.ip, co.customer_id, c.firstname, c.lastname, co.url, co.referer, co.date_added FROM "+
+				quoteTable("customer_online")+" co LEFT JOIN "+quoteTable("customer")+" c ON (co.customer_id = c.customer_id) WHERE 1=1 ";
+		if(StringUtils.isNotBlank(filter.getIp())){
+			sql += " AND co.ip LIKE ?";
+			params.add("%"+filter.getIp()+"%");
+		}
+		if(StringUtils.isNotBlank(filter.getCustomerName())){
+			sql += " AND co.customer_id > 0 AND CONCAT(c.firstname, ' ', c.lastname) LIKE ?";
+			params.add("%"+filter.getCustomerName()+"%");
+		}
+		sql += " ORDER BY co.date_added DESC";
+		
+		QueryBean query = createPaginationQueryFromSql(sql, pageParam);
+		params.add(query.getStart());
+		params.add(query.getLimit());
+		
+		return getJdbcOperations().query(query.getSql(), 
+				params.toArray(), new CustomerOnlineRptRowMapper());
+	}
+
+	@Override
+	public int getTotalOnlines(CustomerOnlineFilter filter) {
+		List<Object> params = new ArrayList<Object>();
+		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("customer_online")+" co LEFT JOIN "+
+				quoteTable("customer")+" c ON (co.customer_id = c.customer_id)";
+		if(StringUtils.isNotBlank(filter.getIp())){
+			sql += " AND co.ip LIKE ?";
+			params.add("%"+filter.getIp()+"%");
+		}
+		if(StringUtils.isNotBlank(filter.getCustomerName())){
+			sql += " AND co.customer_id > 0 AND CONCAT(c.firstname, ' ', c.lastname) LIKE ?";
+			params.add("%"+filter.getCustomerName()+"%");
 		}
 		
 		return getJdbcOperations().queryForInt(sql, params.toArray());

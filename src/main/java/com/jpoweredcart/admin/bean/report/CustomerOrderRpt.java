@@ -2,30 +2,30 @@ package com.jpoweredcart.admin.bean.report;
 
 import java.math.BigDecimal;
 
-public class CustomerReward extends AbstractCustomerRpt {
+public class CustomerOrderRpt extends AbstractCustomerRpt {
 	
 	private static final long serialVersionUID = 1L;
 	
-	protected int points;
+	protected int orders;//number of orders
 	
-	protected int orders;
+	protected int products;//quantity of products
 	
-	protected BigDecimal total;
-
-	public int getPoints() {
-		return points;
-	}
-
-	public void setPoints(int points) {
-		this.points = points;
-	}
+	protected BigDecimal total; //total price
 
 	public int getOrders() {
 		return orders;
 	}
-	
+
 	public void setOrders(int orders) {
 		this.orders = orders;
+	}
+
+	public int getProducts() {
+		return products;
+	}
+
+	public void setProducts(int products) {
+		this.products = products;
 	}
 
 	public BigDecimal getTotal() {

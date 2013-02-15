@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/report/customerOnline}" th:text="#{heading.title}">Customers Online Report</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="success" th:if="${msg_success!=null}" th:text="#{${msg_success}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/report.png}" alt="" />
+							<span th:text="#{heading.title}">Customers Online Report</span>
+						</h1>
+					</div>
+					<div class="content">
+						<form th:action="@{/admin/report/customerOnline}" method="get" th:object="${filter}" id="form">
+						<table class="list">
+							<thead>
+								<tr>
+									<td class="left" th:text="#{column.ip}">IP</td>
+									<td class="left" th:text="#{column.customer}">Customer</td>
+									<td class="left" th:text="#{column.url}">Last Page Visited</td>
+									<td class="left" th:text="#{column.referer}">Referer</td>
+									<td class="left" th:text="#{column.dateModified}">Last Click</td>
+									<td class="right" th:text="#{column.action}">Action</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="filter">
+									<td align="left"><input type="text" th:field="*{ip}" /></td>
+									<td align="left"><input type="text" th:field="*{customerName}" /></td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td align="right">
+										<a onclick="$('form').submit();" class="button" th:text="#{button.filter}">Filter</a>
+									</td>
+								</tr>
+								<tr th:each="online : ${onlines}">
+									<td class="left">
+										<a th:href="'http://whatismyipaddress.com/ip/'+${online.ip}"
+											th:text="${online.ip}" target="_blank">192.168.1.111</a>
+									</td>
+									<td class="left" th:text="${online.customerName}">Customer Name</td>
+									<td class="left">
+										<a th:href="${online.url}" th:utext="${online.url}" target="_blank">
+										http://192.168.1.111/jpoweredcart/product/category
+										</a>
+									</td>
+									<td class="left">
+										<a th:href="${online.referer}" th:utext="${online.referer}" target="_blank">
+										http://192.168.1.111/jpoweredcart/
+										</a>
+									</td>
+									<td class="left" th:text="${#dates.format(online.dateModified, #messages.msg('date.formatShort')+' '+#messages.msg('time.format'))}">15/02/2013 14:49:45</td>
+									<td class="right">
+										[ <a th:href="@{/admin/sales/customer/edit/}+${online.customerId}"
+											th:text="#{text.edit}">Edit</a> ]
+									</td>
+								</tr>
+								<tr th:if="${#lists.isEmpty(onlines)}">
+									<td class="center" colspan="6" th:text="#{text.noResults}">No results!</td>
+								</tr>
+							</tbody>
+						</table>
+						</form>
+						<div class="pagination" th:utext="${pagination}"></div>
+					</div> <!-- .content -->
+				</div> <!-- .box -->
+			</div>  <!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
+	</body>
+</html>

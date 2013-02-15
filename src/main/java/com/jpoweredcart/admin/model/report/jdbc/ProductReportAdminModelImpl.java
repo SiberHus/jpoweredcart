@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.report.ProductPurchased;
-import com.jpoweredcart.admin.bean.report.ProductViewed;
+import com.jpoweredcart.admin.bean.report.ProductPurchasedRpt;
+import com.jpoweredcart.admin.bean.report.ProductViewedRpt;
 import com.jpoweredcart.admin.bean.report.filter.DateRangeWithStatusFilter;
 import com.jpoweredcart.admin.model.report.ProductReportAdminModel;
 import com.jpoweredcart.common.BaseModel;
@@ -18,7 +18,7 @@ public class ProductReportAdminModelImpl extends BaseModel implements ProductRep
 	
 	
 	@Override
-	public List<ProductViewed> getProductsViewed(PageParam pageParam) {
+	public List<ProductViewedRpt> getProductsViewed(PageParam pageParam) {
 		
 		List<Object> params = new ArrayList<Object>();
 		int languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
@@ -33,7 +33,7 @@ public class ProductReportAdminModelImpl extends BaseModel implements ProductRep
 		int totalProductViews = getTotalProductViews(); 
 		
 		return getJdbcOperations().query(query.getSql(), 
-				params.toArray(), new ProductViewedRowMapper(totalProductViews));
+				params.toArray(), new ProductViewedRptRowMapper(totalProductViews));
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class ProductReportAdminModelImpl extends BaseModel implements ProductRep
 	}
 
 	@Override
-	public List<ProductPurchased> getProductsPurchased(
+	public List<ProductPurchasedRpt> getProductsPurchased(
 			DateRangeWithStatusFilter filter, PageParam pageParam) {
 		
 		List<Object> params = new ArrayList<Object>();
@@ -87,7 +87,7 @@ public class ProductReportAdminModelImpl extends BaseModel implements ProductRep
 		params.add(query.getLimit());
 		
 		return getJdbcOperations().query(query.getSql(), 
-				params.toArray(), new ProductPurchasedRowMapper());
+				params.toArray(), new ProductPurchasedRptRowMapper());
 	}
 	
 	@Override

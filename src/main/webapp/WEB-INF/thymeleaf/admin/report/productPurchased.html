@@ -57,10 +57,10 @@
 							</thead>
 							<tbody>
 								<tr th:each="pp : ${productsPurchased}">
-									<td class="left" th:text="${pp.name}"></td>
-									<td class="left" th:text="${pp.model}"></td>
-									<td class="right" th:text="${pp.quantity}"></td>
-									<td class="right" th:text="${#numbers.formatDecimal(pp.total,0,2)}">$170.00</td>
+									<td class="left" th:text="${pp.name}">Apple iPhone X</td>
+									<td class="left" th:text="${pp.model}">XXX</td>
+									<td class="right" th:text="${pp.quantity}">3</td>
+									<td class="right" th:text="${#numbers.formatDecimal(pp.total,0,2)}">$1999.00</td>
 								</tr>
 								<tr th:if="${#lists.isEmpty(productsPurchased)}">
 									<td class="center" colspan="4" th:text="#{text.noResults}">No results!</td>

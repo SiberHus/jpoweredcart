@@ -11,9 +11,11 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.jpoweredcart.admin.bean.report.CustomerCredit;
-import com.jpoweredcart.admin.bean.report.CustomerOrder;
-import com.jpoweredcart.admin.bean.report.CustomerReward;
+import com.jpoweredcart.admin.bean.report.CustomerCreditRpt;
+import com.jpoweredcart.admin.bean.report.CustomerOnlineRpt;
+import com.jpoweredcart.admin.bean.report.CustomerOrderRpt;
+import com.jpoweredcart.admin.bean.report.CustomerRewardRpt;
+import com.jpoweredcart.admin.bean.report.filter.CustomerOnlineFilter;
 import com.jpoweredcart.admin.bean.report.filter.DateRangeFilter;
 import com.jpoweredcart.admin.bean.report.filter.DateRangeWithStatusFilter;
 import com.jpoweredcart.admin.model.localisation.OrderStatusAdminModel;
@@ -42,7 +44,7 @@ public class CustomerReportAdminController extends BaseController {
 		model.addAttribute("orderStatuses", orderStatusAdminModel.getList(null));
 		
 		PageParam pageParam = createPageParam(request);
-		List<CustomerOrder> orderList = customerReportAdminModel
+		List<CustomerOrderRpt> orderList = customerReportAdminModel
 				.getOrders(filter, pageParam);
 		model.addAttribute("orders", orderList);
 		int total = customerReportAdminModel.getTotalOrders(filter);
@@ -64,7 +66,7 @@ public class CustomerReportAdminController extends BaseController {
 		model.addAttribute("filter", filter);
 		
 		PageParam pageParam = createPageParam(request);
-		List<CustomerReward> rewardList = customerReportAdminModel
+		List<CustomerRewardRpt> rewardList = customerReportAdminModel
 				.getRewardPoints(filter, pageParam);
 		model.addAttribute("rewards", rewardList);
 		int total = customerReportAdminModel.getTotalRewardPoints(filter);
@@ -86,7 +88,7 @@ public class CustomerReportAdminController extends BaseController {
 		model.addAttribute("filter", filter);
 		
 		PageParam pageParam = createPageParam(request);
-		List<CustomerCredit> rewardList = customerReportAdminModel
+		List<CustomerCreditRpt> rewardList = customerReportAdminModel
 				.getCredits(filter, pageParam);
 		model.addAttribute("credits", rewardList);
 		int total = customerReportAdminModel.getTotalCredits(filter);
@@ -97,6 +99,26 @@ public class CustomerReportAdminController extends BaseController {
 		model.addAttribute("pagination", pagination.render());
 		
 		return "/admin/report/customerCredit";
+	}
+	
+	@RequestMapping(value="/admin/report/customerOnline")
+	public String getOnlines(CustomerOnlineFilter filter, 
+			Model model, HttpServletRequest request){
+		
+		model.addAttribute("filter", filter);
+		
+		PageParam pageParam = createPageParam(request);
+		List<CustomerOnlineRpt> onlineList = customerReportAdminModel
+				.getOnlines(filter, pageParam);
+		model.addAttribute("onlines", onlineList);
+		int total = customerReportAdminModel.getTotalOnlines(filter);
+		Pagination pagination = new Pagination();
+		pagination.setTotal(total).setPageParam(pageParam)
+			.setText(message(request, "text.pagination"))
+			.setUrl(uri("/admin/report/customerOnline"));
+		model.addAttribute("pagination", pagination.render());
+		
+		return "/admin/report/customerOnline";
 	}
 	
 	@InitBinder
