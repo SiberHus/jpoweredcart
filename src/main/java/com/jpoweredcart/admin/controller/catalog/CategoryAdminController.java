@@ -47,7 +47,7 @@ public class CategoryAdminController extends BaseController {
 	public String index(Model model, HttpServletRequest request){
 		PageParam pageParam = createPageParam(request);
 		String separator = message(request, "text.separator");
-		List<Category> infoList = categoryAdminModel.getList(separator);
+		List<Category> infoList = categoryAdminModel.getList(separator, pageParam);
 		model.addAttribute("categories", infoList);
 		
 		int total = categoryAdminModel.getTotal();
@@ -127,7 +127,7 @@ public class CategoryAdminController extends BaseController {
 		String noImageUrl = imageService.getImageUrl("no_image.jpg");
 		model.addAttribute("noImage", noImageUrl);
 		String separator = message(request, "text.separator");
-		model.addAttribute("categories", categoryAdminModel.getList(separator));
+		model.addAttribute("categories", categoryAdminModel.getList(separator, PageParam.list()));
 		model.addAttribute("stores", storeAdminModel.getAll());
 		model.addAttribute("layouts", layoutAdminModel.getList(PageParam.list()));
 	}

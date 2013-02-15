@@ -14,8 +14,6 @@ public class Category implements Serializable {
 	
 	protected String image;
 	
-	protected String path = "";
-	
 	protected Integer parentId;
 	
 	protected boolean top;
@@ -52,14 +50,6 @@ public class Category implements Serializable {
 
 	public void setImage(String image) {
 		this.image = image;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
 	}
 
 	public Integer getParentId() {

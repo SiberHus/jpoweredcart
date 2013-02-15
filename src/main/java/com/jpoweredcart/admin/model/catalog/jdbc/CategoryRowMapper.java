@@ -16,7 +16,6 @@ public class CategoryRowMapper implements RowMapper<Category>{
 	public static void setProperties(ResultSet rs, Category cat) throws SQLException{
 		cat.setId(rs.getInt("category_id"));
 		cat.setImage(rs.getString("image"));
-		cat.setPath(rs.getString("path"));
 		cat.setParentId(rs.getInt("parent_id"));
 		cat.setTop(rs.getBoolean("top"));
 		cat.setColumn(rs.getInt("column"));

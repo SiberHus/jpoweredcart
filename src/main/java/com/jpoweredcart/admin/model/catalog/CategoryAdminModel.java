@@ -3,6 +3,7 @@ package com.jpoweredcart.admin.model.catalog;
 import java.util.List;
 
 import com.jpoweredcart.admin.bean.catalog.CategoryForm;
+import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.catalog.Category;
 import com.jpoweredcart.common.entity.catalog.CategoryDesc;
 import com.jpoweredcart.common.entity.catalog.CategoryToLayout;
@@ -22,7 +23,7 @@ public interface CategoryAdminModel {
 	
 	public Category get(Integer catId);
 	
-	public List<Category> getList(String separator);
+	public List<Category> getList(String separator, PageParam pageParam);
 	
 	/**
 	 * 

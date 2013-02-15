@@ -28,6 +28,8 @@ import com.jpoweredcart.admin.model.catalog.CategoryAdminModel;
 import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import com.jpoweredcart.admin.model.setting.StoreAdminModel;
 import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.catalog.Category;
 import com.jpoweredcart.common.entity.catalog.CategoryDesc;
 import com.jpoweredcart.common.entity.catalog.CategoryToLayout;
@@ -54,19 +56,18 @@ public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminMo
 			@Override
 			public PreparedStatement createPreparedStatement(Connection con)
 					throws SQLException {
-				String sql = "INSERT INTO " +quoteTable("category")+ "(image, path, parent_id, top," 
-					+quoteName("column")+",sort_order, status, date_added, date_modified) VALUES(?,?,?,?,?,?,?,?,?) ";
+				String sql = "INSERT INTO " +quoteTable("category")+ "(image, parent_id, top," 
+					+quoteName("column")+",sort_order, status, date_added, date_modified) VALUES(?,?,?,?,?,?,?,?) ";
 				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				ps.setString(1, HtmlUtils.htmlEscape(catForm.getImage()));
-				ps.setString(2, catForm.getPath());
-				ps.setInt(3, catForm.getParentId());
-				ps.setBoolean(4, catForm.isTop());
-				ps.setInt(5, catForm.getColumn());
-				ps.setInt(6, catForm.getSortOrder());
-				ps.setShort(7, catForm.getStatus());
+				ps.setInt(2, catForm.getParentId());
+				ps.setBoolean(3, catForm.isTop());
+				ps.setInt(4, catForm.getColumn());
+				ps.setInt(5, catForm.getSortOrder());
+				ps.setShort(6, catForm.getStatus());
 				Timestamp currentTime = new Timestamp(new Date().getTime());
+				ps.setTimestamp(7, currentTime);
 				ps.setTimestamp(8, currentTime);
-				ps.setTimestamp(9, currentTime);
 				return ps;
 			}
 		}, keyHolder);
@@ -189,12 +190,16 @@ public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminMo
 	}
 	
 	@Override
-	public List<Category> getList(final String separator) {
+	public List<Category> getList(final String separator, PageParam pageParam) {
 		
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		String sql = "SELECT * FROM " +quoteTable("category")+" c LEFT JOIN "+quoteTable("category_description")
 			+" cd ON (c.category_id = cd.category_id) WHERE cd.language_id = ? ORDER BY c.sort_order, cd.name ASC";
-		List<Category> catList = getJdbcOperations().query(sql, new Object[]{languageId}, new RowMapper<Category>(){
+		QueryBean query = createPaginationQueryFromSql(sql, pageParam);
+		query.addParameters(languageId);
+		
+		List<Category> catList = getJdbcOperations().query(query.getSql(), 
+				query.getParameters(), new RowMapper<Category>(){
 			@Override
 			public Category mapRow(ResultSet rs, int rowNum)
 					throws SQLException {
