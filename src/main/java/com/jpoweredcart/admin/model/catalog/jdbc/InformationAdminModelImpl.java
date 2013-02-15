@@ -11,7 +11,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -31,7 +30,6 @@ import com.jpoweredcart.common.entity.catalog.InformationToStore;
 import com.jpoweredcart.common.entity.setting.Store;
 import com.jpoweredcart.common.jdbc.ScalarResultSetExtractor;
 import com.jpoweredcart.common.service.SettingKey;
-import com.jpoweredcart.common.service.SettingService;
 
 public class InformationAdminModelImpl extends BaseModel implements InformationAdminModel {
 	
@@ -41,9 +39,6 @@ public class InformationAdminModelImpl extends BaseModel implements InformationA
 	@Inject
 	private LanguageAdminModel languageAdminModel;
 	
-	public InformationAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
-		super(settingService, jdbcOperations);
-	}
 	
 	@Transactional
 	@Override

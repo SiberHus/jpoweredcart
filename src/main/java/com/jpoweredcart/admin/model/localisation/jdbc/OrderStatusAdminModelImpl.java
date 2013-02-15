@@ -6,6 +6,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.jpoweredcart.admin.model.localisation.OrderStatusAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
@@ -13,18 +18,9 @@ import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.OrderStatuses;
 import com.jpoweredcart.common.entity.localisation.OrderStatuses.OrderStatus;
 import com.jpoweredcart.common.service.SettingKey;
-import com.jpoweredcart.common.service.SettingService;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.transaction.annotation.Transactional;
 
 public class OrderStatusAdminModelImpl extends BaseModel implements OrderStatusAdminModel {
 	
-	public OrderStatusAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
-		super(settingService, jdbcOperations);
-	}
 	
 	@Transactional
 	@Override

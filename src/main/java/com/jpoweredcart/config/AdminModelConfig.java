@@ -50,10 +50,12 @@ import com.jpoweredcart.admin.model.localisation.jdbc.TaxClassAdminModelImpl;
 import com.jpoweredcart.admin.model.localisation.jdbc.TaxRateAdminModelImpl;
 import com.jpoweredcart.admin.model.localisation.jdbc.WeightClassAdminModelImpl;
 import com.jpoweredcart.admin.model.localisation.jdbc.ZoneAdminModelImpl;
-import com.jpoweredcart.admin.model.report.ProductsReportAdminModel;
-import com.jpoweredcart.admin.model.report.SalesReportAdminModel;
-import com.jpoweredcart.admin.model.report.jdbc.ProductsReportAdminModelImpl;
-import com.jpoweredcart.admin.model.report.jdbc.SalesReportAdminModelImpl;
+import com.jpoweredcart.admin.model.report.CustomerReportAdminModel;
+import com.jpoweredcart.admin.model.report.ProductReportAdminModel;
+import com.jpoweredcart.admin.model.report.SaleReportAdminModel;
+import com.jpoweredcart.admin.model.report.jdbc.CustomerReportAdminModelImpl;
+import com.jpoweredcart.admin.model.report.jdbc.ProductReportAdminModelImpl;
+import com.jpoweredcart.admin.model.report.jdbc.SaleReportAdminModelImpl;
 import com.jpoweredcart.admin.model.sale.CustomerGroupAdminModel;
 import com.jpoweredcart.admin.model.sale.IpBlacklistAdminModel;
 import com.jpoweredcart.admin.model.sale.OrderAdminModel;
@@ -89,85 +91,84 @@ public class AdminModelConfig {
 	
 	//================= Catalog ========================//
 	@Bean
-	public AttributeAdminModel attributeAdminModel(){ return new AttributeAdminModelImpl(settingService, jdbcOperations); }
+	public AttributeAdminModel attributeAdminModel(){ return new AttributeAdminModelImpl(); }
 	@Bean
-	public AttributeGroupAdminModel attributeGroupAdminModel(){ return new AttributeGroupAdminModelImpl(settingService, jdbcOperations); }
+	public AttributeGroupAdminModel attributeGroupAdminModel(){ return new AttributeGroupAdminModelImpl(); }
 	@Bean
-	public CategoryAdminModel categoryAdminModel(){ return new CategoryAdminModelImpl(settingService, jdbcOperations); }
+	public CategoryAdminModel categoryAdminModel(){ return new CategoryAdminModelImpl(); }
 	@Bean
-	public ProductAdminModel productAdminModel(){ return new ProductAdminModelImpl(settingService, jdbcOperations); }
+	public ProductAdminModel productAdminModel(){ return new ProductAdminModelImpl(); }
 	@Bean
-	public InformationAdminModel informationAdminModel(){ return new InformationAdminModelImpl(settingService, jdbcOperations); }
+	public InformationAdminModel informationAdminModel(){ return new InformationAdminModelImpl(); }
 	@Bean
-	public ReviewAdminModel reviewAdminModel(){ return new ReviewAdminModelImpl(settingService, jdbcOperations); }
+	public ReviewAdminModel reviewAdminModel(){ return new ReviewAdminModelImpl(); }
 	
 	//================= Design ========================//
 	@Bean
-	public BannerAdminModel bannerAdminModel(){ return new BannerAdminModelImpl(settingService, jdbcOperations); }
+	public BannerAdminModel bannerAdminModel(){ return new BannerAdminModelImpl(); }
 	@Bean
-	public LayoutAdminModel layoutAdminModel(){ return new LayoutAdminModelImpl(settingService, jdbcOperations); }
+	public LayoutAdminModel layoutAdminModel(){ return new LayoutAdminModelImpl(); }
 	
 	//================= Locaisation ========================//
 	@Bean
-	public LanguageAdminModel languageAdminModel(){ return new LanguageAdminModelImpl(settingService, jdbcOperations);}
+	public LanguageAdminModel languageAdminModel(){ return new LanguageAdminModelImpl();}
 	@Bean
-	public CurrencyAdminModel currencyAdminModel(){ return new CurrencyAdminModelImpl(settingService, jdbcOperations);}
+	public CurrencyAdminModel currencyAdminModel(){ return new CurrencyAdminModelImpl();}
 	@Bean
-	public CountryAdminModel countryAdminModel() { return new CountryAdminModelImpl(settingService, jdbcOperations); }
+	public CountryAdminModel countryAdminModel() { return new CountryAdminModelImpl(); }
 	@Bean
-	public ZoneAdminModel zoneAdminModel() { return new ZoneAdminModelImpl(settingService, jdbcOperations); }
+	public ZoneAdminModel zoneAdminModel() { return new ZoneAdminModelImpl(); }
 	@Bean
-	public GeoZoneAdminModel geoZoneAdminModel(){ return new GeoZoneAdminModelImpl(settingService, jdbcOperations); }
+	public GeoZoneAdminModel geoZoneAdminModel(){ return new GeoZoneAdminModelImpl(); }
 	@Bean
-	public StockStatusAdminModel stockStatusAdminModel(){ return new StockStatusAdminModelImpl(settingService, jdbcOperations); }
+	public StockStatusAdminModel stockStatusAdminModel(){ return new StockStatusAdminModelImpl(); }
 	@Bean
-	public OrderStatusAdminModel orderStatusAdminModel(){ return new OrderStatusAdminModelImpl(settingService, jdbcOperations); }
+	public OrderStatusAdminModel orderStatusAdminModel(){ return new OrderStatusAdminModelImpl(); }
 	@Bean
-	public ReturnStatusAdminModel returnStatusAdminModel(){ return new ReturnStatusAdminModelImpl(settingService, jdbcOperations); }
+	public ReturnStatusAdminModel returnStatusAdminModel(){ return new ReturnStatusAdminModelImpl(); }
 	@Bean
-	public ReturnActionAdminModel returnActionAdminModel(){ return new ReturnActionAdminModelImpl(settingService, jdbcOperations); }
+	public ReturnActionAdminModel returnActionAdminModel(){ return new ReturnActionAdminModelImpl(); }
 	@Bean
-	public ReturnReasonAdminModel returnReasonAdminModel(){ return new ReturnReasonAdminModelImpl(settingService, jdbcOperations); }
+	public ReturnReasonAdminModel returnReasonAdminModel(){ return new ReturnReasonAdminModelImpl(); }
 	@Bean
-	public TaxClassAdminModel taxClassAdminModel(){ return new TaxClassAdminModelImpl(settingService, jdbcOperations); }
+	public TaxClassAdminModel taxClassAdminModel(){ return new TaxClassAdminModelImpl(); }
 	@Bean
-	public TaxRateAdminModel taxRateAdminModel(){ return new TaxRateAdminModelImpl(settingService, jdbcOperations); }
+	public TaxRateAdminModel taxRateAdminModel(){ return new TaxRateAdminModelImpl(); }
 	@Bean
-	public WeightClassAdminModel weightClassAdminModel(){ return new WeightClassAdminModelImpl(settingService, jdbcOperations); }
+	public WeightClassAdminModel weightClassAdminModel(){ return new WeightClassAdminModelImpl(); }
 	@Bean
-	public LengthClassAdminModel lengthClassAdminModel(){ return new LengthClassAdminModelImpl(settingService, jdbcOperations); }
+	public LengthClassAdminModel lengthClassAdminModel(){ return new LengthClassAdminModelImpl(); }
 	
 	//================= Sale ========================//
 	@Bean
-	public OrderAdminModel orderAdminModel(){ return new OrderAdminModelImpl(settingService, jdbcOperations); }
+	public OrderAdminModel orderAdminModel(){ return new OrderAdminModelImpl(); }
 	@Bean
-	public CustomerGroupAdminModel customerGroupAdminModel(){ return new CustomerGroupAdminModelImpl(settingService, jdbcOperations); }
+	public CustomerGroupAdminModel customerGroupAdminModel(){ return new CustomerGroupAdminModelImpl(); }
 	@Bean
-	public IpBlacklistAdminModel ipBlacklistAdminModel(){ return new IpBlacklistAdminModelImpl(settingService, jdbcOperations); }
+	public IpBlacklistAdminModel ipBlacklistAdminModel(){ return new IpBlacklistAdminModelImpl(); }
 	@Bean
-	public VoucherAdminModel voucherAdminModel(){ 
-		VoucherAdminModelImpl voucherAdminModel = new VoucherAdminModelImpl(settingService, jdbcOperations);
-		voucherAdminModel.setEmailService(emailService);
-		return voucherAdminModel;
-	}
+	public VoucherAdminModel voucherAdminModel(){ return new VoucherAdminModelImpl(); }
+	
 	//================= User ========================//
 	@Bean
-	public UserAdminModel userAdminModel(){ return new UserAdminModelImpl(settingService, jdbcOperations);}
+	public UserAdminModel userAdminModel(){ return new UserAdminModelImpl();}
 	@Bean
-	public UserGroupAdminModel userGroupAdminModel(){ return new UserGroupAdminModelImpl(settingService, jdbcOperations);}
+	public UserGroupAdminModel userGroupAdminModel(){ return new UserGroupAdminModelImpl();}
 	
 	
 	//================= Setting ========================//
 	@Bean
-	public SettingAdminModel settingAdminModel(){ return new SettingAdminModelImpl(settingService, jdbcOperations); }
+	public SettingAdminModel settingAdminModel(){ return new SettingAdminModelImpl(); }
 	@Bean
-	public StoreAdminModel storeAdminModel(){ return new StoreAdminModelImpl(settingService, jdbcOperations); }
+	public StoreAdminModel storeAdminModel(){ return new StoreAdminModelImpl(); }
 	
 	//================= Report ========================//
 	@Bean
-	public SalesReportAdminModel salesReportAdminModel(){ return new SalesReportAdminModelImpl(settingService, jdbcOperations); }
+	public SaleReportAdminModel saleReportAdminModel(){ return new SaleReportAdminModelImpl(); }
 	@Bean
-	public ProductsReportAdminModel productsReportAdminModel(){ return new ProductsReportAdminModelImpl(settingService, jdbcOperations); }
+	public ProductReportAdminModel productReportAdminModel(){ return new ProductReportAdminModelImpl(); }
+	@Bean
+	public CustomerReportAdminModel customerReportAdminModel(){ return new CustomerReportAdminModelImpl(); }
 	
 	/*
 	 * We can switch to 

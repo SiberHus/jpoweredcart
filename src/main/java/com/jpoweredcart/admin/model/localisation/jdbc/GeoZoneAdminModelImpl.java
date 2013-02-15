@@ -8,7 +8,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -21,14 +20,10 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.GeoZone;
 import com.jpoweredcart.common.entity.localisation.ZoneToGeoZone;
-import com.jpoweredcart.common.service.SettingService;
 
 
 public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminModel{
 	
-	public GeoZoneAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
-		super(settingService, jdbcOperations);
-	}
 	
 	@Transactional
 	@Override

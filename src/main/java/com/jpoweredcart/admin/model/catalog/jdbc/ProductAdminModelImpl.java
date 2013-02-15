@@ -24,15 +24,9 @@ import com.jpoweredcart.common.entity.catalog.ProductToDownload;
 import com.jpoweredcart.common.entity.catalog.ProductToLayout;
 import com.jpoweredcart.common.entity.catalog.ProductToStore;
 import com.jpoweredcart.common.service.SettingKey;
-import com.jpoweredcart.common.service.SettingService;
-import org.springframework.jdbc.core.JdbcOperations;
 
 public class ProductAdminModelImpl extends BaseModel implements ProductAdminModel {
 
-	
-	public ProductAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
-		super(settingService, jdbcOperations);
-	}
 	
 	@Override
 	public void create(Product product) {

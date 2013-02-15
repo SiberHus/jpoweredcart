@@ -3,35 +3,39 @@ package com.jpoweredcart.common;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-import com.jpoweredcart.common.service.DefaultSettings;
-import com.jpoweredcart.common.service.SettingService;
+import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcOperations;
+
+import com.jpoweredcart.common.service.DefaultSettings;
+import com.jpoweredcart.common.service.SettingService;
 
 
 public class BaseModel {
 	
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 	
+	@Inject
 	private Environment env;
 	
+	@Inject
 	private SettingService settingService;
 	
+	@Inject
 	private JdbcOperations jdbcOperations;
 	
 	public BaseModel(){}
 	
-	public BaseModel(SettingService settingService, JdbcOperations jdbcOperations){
-		setSettingService(settingService);
-		setJdbcOperations(jdbcOperations);
-	}
-	
 	public Environment getEnvironment(){
 		return this.env;
+	}
+	
+	public void setEnvironment(Environment env){
+		this.env = env;
 	}
 	
 	public SettingService getSettingService() {
@@ -40,7 +44,6 @@ public class BaseModel {
 	
 	public void setSettingService(SettingService settingService) {
 		this.settingService = settingService;
-		this.env = settingService.getEnvironment();
 	}
 
 	public JdbcOperations getJdbcOperations() {

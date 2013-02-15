@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -24,16 +23,12 @@ import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.catalog.Attribute;
 import com.jpoweredcart.common.entity.catalog.AttributeDesc;
 import com.jpoweredcart.common.service.SettingKey;
-import com.jpoweredcart.common.service.SettingService;
 
 public class AttributeAdminModelImpl extends BaseModel implements AttributeAdminModel{
 
 	@Inject
 	private LanguageAdminModel languageAdminModel;
 	
-	public AttributeAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
-		super(settingService, jdbcOperations);
-	}
 	
 	@Transactional
 	@Override

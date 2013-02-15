@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.jdbc.core.RowMapper;
+
 import com.jpoweredcart.admin.bean.catalog.ReviewForm;
 import com.jpoweredcart.admin.model.catalog.ReviewAdminModel;
 import com.jpoweredcart.common.BaseModel;
@@ -12,15 +14,9 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.catalog.Review;
 import com.jpoweredcart.common.service.SettingKey;
-import com.jpoweredcart.common.service.SettingService;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.RowMapper;
 
 public class ReviewAdminModelImpl extends BaseModel implements ReviewAdminModel {
-
-	public ReviewAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
-		super(settingService, jdbcOperations);
-	}
+	
 	
 	@Override
 	public void create(ReviewForm reviewForm) {

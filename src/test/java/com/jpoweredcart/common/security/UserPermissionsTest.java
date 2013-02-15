@@ -17,9 +17,9 @@ public class UserPermissionsTest {
 	
 	@Test
 	public void testSerializeAndDeserializePermissionData(){
-		String filenames[] = new String[]{"perms-short.txt", "perms.txt"};
+		String filenames[] = new String[]{"/perms-short.txt", "/perms.txt"};
 		for(String filename: filenames){
-			InputStream in = UserPermissionsTest.class.getResourceAsStream("/com/siberhus/jpoweredcart/common/security/"+filename);
+			InputStream in = UserPermissionsTest.class.getResourceAsStream(filename);
 			String before = readFileToString(in);
 			Map<String, Set<String>> permMap = UserPermissions.unserializePermissions(before);
 			String after = UserPermissions.serializePermissions(permMap);

@@ -35,7 +35,7 @@ import org.thymeleaf.templateresolver.TemplateResolver;
 
 @Configuration
 @ImportResource({
-	"classpath:com/jpoweredcart/config/security.xml"
+	"classpath:security.xml"
 })
 //@EnableScheduling
 public class WebMvcConfig extends WebMvcConfigurationSupport {

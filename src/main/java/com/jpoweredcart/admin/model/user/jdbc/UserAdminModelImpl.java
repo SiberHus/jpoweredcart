@@ -4,22 +4,17 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+
 import com.jpoweredcart.admin.model.user.UserAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.user.User;
 import com.jpoweredcart.common.security.Password;
-import com.jpoweredcart.common.service.SettingService;
-import org.springframework.jdbc.core.JdbcOperations;
 
 
 public class UserAdminModelImpl extends BaseModel implements UserAdminModel {
 	
-	
-	public UserAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
-		super(settingService, jdbcOperations);
-	}
 	
 	@Override
 	public void create(User user) {

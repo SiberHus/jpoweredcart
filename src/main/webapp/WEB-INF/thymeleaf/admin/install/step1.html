@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/install :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/install:: content_top"></div>
+			
+			<h1>Step 1 - License</h1>
+			<div id="column-right">
+				<ul>
+					<li><b>License</b></li>
+					<li>Pre-Installation</li>
+					<li>Configuration</li>
+					<li>Finished</li>
+				</ul>
+			</div>
+			
+			<div id="content">
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{error.warning}"></div>
+				<form th:action="@{/admin/install/step1}" method="post">
+				<div class="terms">
+					<h3>GNU GENERAL PUBLIC LICENSE</h3>
+					
+				</div>
+				<div class="buttons">
+					<div class="right">
+						I agree to the license
+						<input type="checkbox" name="agree" />&nbsp;
+						<input type="submit" value="Continue" class="button" />
+					</div>
+				</div>
+				</form>
+			</div>
+			<div id="footer" th:include="/install :: content_footer"></div>
+		</div> <!-- container -->
+	</body>
+</html>

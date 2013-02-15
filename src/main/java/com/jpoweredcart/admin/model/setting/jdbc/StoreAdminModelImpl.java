@@ -7,14 +7,9 @@ import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.entity.setting.Store;
 import com.jpoweredcart.common.service.DefaultSettings;
 import com.jpoweredcart.common.service.SettingKey;
-import com.jpoweredcart.common.service.SettingService;
-import org.springframework.jdbc.core.JdbcOperations;
 
 public class StoreAdminModelImpl extends BaseModel implements StoreAdminModel {
 
-	public StoreAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
-		super(settingService, jdbcOperations);
-	}
 	
 	@Override
 	public void create(Store store) {

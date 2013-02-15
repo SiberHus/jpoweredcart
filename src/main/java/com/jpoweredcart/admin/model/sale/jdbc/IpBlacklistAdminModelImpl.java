@@ -9,16 +9,9 @@ import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.sale.IpBlacklist;
-import com.jpoweredcart.common.service.SettingService;
-import org.springframework.jdbc.core.JdbcOperations;
 
 public class IpBlacklistAdminModelImpl extends BaseModel implements IpBlacklistAdminModel {
-
 	
-	public IpBlacklistAdminModelImpl(SettingService settingService,
-			JdbcOperations jdbcOperations) {
-		super(settingService, jdbcOperations);
-	}
 
 	@Override
 	public void create(IpBlacklist blacklist) {

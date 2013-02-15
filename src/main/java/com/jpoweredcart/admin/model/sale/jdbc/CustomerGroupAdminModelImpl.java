@@ -10,14 +10,9 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.sale.CustomerGroup;
 import com.jpoweredcart.common.service.SettingKey;
-import com.jpoweredcart.common.service.SettingService;
-import org.springframework.jdbc.core.JdbcOperations;
 
 public class CustomerGroupAdminModelImpl extends BaseModel implements CustomerGroupAdminModel {
 
-	public CustomerGroupAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
-		super(settingService, jdbcOperations);
-	}
 	
 	@Override
 	public void create(CustomerGroup customerGroup) {

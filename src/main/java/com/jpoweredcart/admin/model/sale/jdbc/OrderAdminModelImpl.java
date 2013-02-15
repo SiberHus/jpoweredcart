@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jpoweredcart.admin.bean.sale.filter.TotalOrdersFilter;
 import com.jpoweredcart.admin.model.localisation.CountryAdminModel;
@@ -30,9 +31,6 @@ import com.jpoweredcart.common.entity.sale.OrderVoucher;
 import com.jpoweredcart.common.entity.setting.Store;
 import com.jpoweredcart.common.service.SettingGroup;
 import com.jpoweredcart.common.service.SettingKey;
-import com.jpoweredcart.common.service.SettingService;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.transaction.annotation.Transactional;
 
 public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 	
@@ -51,10 +49,6 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 	@Inject
 	private CurrencyAdminModel currencyAdminModel;
 	
-	
-	public OrderAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
-		super(settingService, jdbcOperations);
-	}
 	
 	public void setStoreModel(StoreAdminModel storeModel){
 		this.storeAdminModel = storeModel;

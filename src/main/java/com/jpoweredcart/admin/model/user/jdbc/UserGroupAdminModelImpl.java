@@ -7,16 +7,10 @@ import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.user.UserGroup;
-import com.jpoweredcart.common.service.SettingService;
-import org.springframework.jdbc.core.JdbcOperations;
 
 
 public class UserGroupAdminModelImpl extends BaseModel implements UserGroupAdminModel {
 	
-	
-	public UserGroupAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
-		super(settingService, jdbcOperations);
-	}
 	
 	@Override
 	public List<UserGroup> getUserGroupsByUsername(String username) {

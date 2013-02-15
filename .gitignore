@@ -18,4 +18,5 @@ target/
 
 src/test/java/Test.java
 bash.exe.stackdump
-
+scratchpad.txt
+tmp/

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/report/saleReturn}" th:text="#{heading.title}">Returns Report</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="success" th:if="${msg_success!=null}" th:text="#{${msg_success}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/report.png}" alt="" />
+							<span th:text="#{heading.title}">Returns Report</span>
+						</h1>
+					</div>
+					<div class="content">
+						<form th:action="@{/admin/report/saleReturn}" method="get" th:object="${filter}" id="form">
+						<table class="form">
+							<tr>
+								<td>
+									<span th:text="#{entry.dateStart}">Date Start:</span>
+									<input type="text" id="dateStart" name="dateStart" size="12"
+										th:value="${filter.dateStart!=null?#dates.format(filter.dateStart,  #messages.msg('date.formatShort')):filter.dateStart}" />
+								</td>
+								<td>
+									<span th:text="#{entry.dateEnd}">Date End:</span>
+									<input type="text" id="dateEnd" name="dateEnd" size="12"
+										th:value="${filter.dateEnd!=null?#dates.format(filter.dateEnd,  #messages.msg('date.formatShort')):filter.dateEnd}" />
+								</td>
+								<td>
+									<span th:text="#{entry.group}">Group By:</span>
+									<select th:field="*{group}">
+										<option value="year" th:text="#{text.year}">Years</option>
+										<option value="month" th:text="#{text.month}">Months</option>
+										<option value="week" th:text="#{text.week}">Weeks</option>
+										<option value="day" th:text="#{text.day}">Days</option>
+									</select>
+								</td>
+								<td>
+									<span th:text="#{entry.status}">Return Status:</span>
+									<select th:field="*{statusId}">
+										<option value="0" th:text="#{text.allStatus}">All Statuses</option>
+										<option th:each="rs: ${returnStatuses}" th:value="${rs.id}" 
+											th:text="${rs.name}">Pending</option>
+									</select>
+								</td>
+								<td style="text-align: right;">
+									<a onclick="$('form').submit();" class="button" th:text="#{button.filter}">Filter</a>
+								</td>
+							</tr>
+						</table>
+						</form>
+						<table class="list">
+							<thead>
+								<tr>
+									<td class="left" th:text="#{column.dateStart}">Date Start</td>
+									<td class="left" th:text="#{column.dateEnd}">Date End</td>
+									<td class="right" th:text="#{column.returns}">No. Returns</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="ret : ${returns}">
+									<td class="left" th:text="${#dates.format(ret.dateStart,  #messages.msg('date.formatShort'))}"></td>
+									<td class="left" th:text="${#dates.format(ret.dateStart,  #messages.msg('date.formatShort'))}"></td>
+									<td class="right" th:text="${ret.returns}"></td>
+								</tr>
+								<tr th:if="${#lists.isEmpty(returns)}">
+									<td class="center" colspan="3" th:text="#{text.noResults}">No results!</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="pagination" th:utext="${pagination}"></div>
+					</div> <!-- .content -->
+				</div> <!-- .box -->
+			</div>  <!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		<script th:inline="javascript">
+			/*<![CDATA[ */
+			$(function(){
+				var dateFormat = /*[[${jsDateFormat}]]*/;
+				$('#dateStart').datepicker({dateFormat: dateFormat});
+				$('#dateEnd').datepicker({dateFormat: dateFormat});
+			});
+			/*]]>*/
+		</script>
+	</body>
+</html>

@@ -4,14 +4,9 @@ import java.util.Map;
 
 import com.jpoweredcart.admin.model.setting.SettingAdminModel;
 import com.jpoweredcart.common.BaseModel;
-import com.jpoweredcart.common.service.SettingService;
-import org.springframework.jdbc.core.JdbcOperations;
 
 public class SettingAdminModelImpl extends BaseModel implements SettingAdminModel{
 	
-	public SettingAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
-		super(settingService, jdbcOperations);
-	}
 	
 	@Override
 	public Map<String, Object> getSettings(String group, Integer storeId) {

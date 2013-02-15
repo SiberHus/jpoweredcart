@@ -16,7 +16,6 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -37,7 +36,6 @@ import com.jpoweredcart.common.entity.setting.Store;
 import com.jpoweredcart.common.jdbc.MapResultSetExtractor;
 import com.jpoweredcart.common.jdbc.ScalarResultSetExtractor;
 import com.jpoweredcart.common.service.SettingKey;
-import com.jpoweredcart.common.service.SettingService;
 
 public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminModel {
 	
@@ -47,9 +45,6 @@ public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminMo
 	@Inject
 	private LanguageAdminModel languageAdminModel;
 	
-	public CategoryAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
-		super(settingService, jdbcOperations);
-	}
 	
 	@Transactional
 	@Override

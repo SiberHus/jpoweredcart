@@ -3,22 +3,16 @@ package com.jpoweredcart.admin.model.localisation.jdbc;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.jdbc.core.JdbcOperations;
-
 import com.jpoweredcart.admin.bean.localisation.CurrencyForm;
 import com.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.Currency;
-import com.jpoweredcart.common.service.SettingService;
 
 
 public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminModel {
 	
-	public CurrencyAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
-		super(settingService, jdbcOperations);
-	}
 	
 	@Override
 	public void create(CurrencyForm currencyForm) {

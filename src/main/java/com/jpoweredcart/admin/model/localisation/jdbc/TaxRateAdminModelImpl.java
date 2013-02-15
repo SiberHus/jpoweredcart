@@ -9,23 +9,19 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import com.jpoweredcart.admin.model.localisation.TaxRateAdminModel;
-import com.jpoweredcart.common.BaseModel;
-import com.jpoweredcart.common.PageParam;
-import com.jpoweredcart.common.QueryBean;
-import com.jpoweredcart.common.entity.localisation.TaxRate;
-import com.jpoweredcart.common.service.SettingService;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jpoweredcart.admin.model.localisation.TaxRateAdminModel;
+import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.QueryBean;
+import com.jpoweredcart.common.entity.localisation.TaxRate;
+
 public class TaxRateAdminModelImpl extends BaseModel implements TaxRateAdminModel {
 
-	public TaxRateAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
-		super(settingService, jdbcOperations);
-	}
 	
 	@Transactional
 	@Override

@@ -7,7 +7,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -21,14 +20,10 @@ import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.Description;
 import com.jpoweredcart.common.entity.localisation.Language;
 import com.jpoweredcart.common.jdbc.ArrayListResultSetExtractor;
-import com.jpoweredcart.common.service.SettingService;
 
 
 public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminModel{
 	
-	public LanguageAdminModelImpl(SettingService settingService, JdbcOperations jdbcOperations){
-		super(settingService, jdbcOperations);
-	}
 	
 	@Transactional
 	@Override

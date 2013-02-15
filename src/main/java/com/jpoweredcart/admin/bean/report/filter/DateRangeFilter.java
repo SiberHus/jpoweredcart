@@ -1,6 +1,7 @@
 package com.jpoweredcart.admin.bean.report.filter;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DateRangeFilter implements Serializable{
@@ -10,6 +11,17 @@ public class DateRangeFilter implements Serializable{
 	protected Date dateStart;
 	
 	protected Date dateEnd;
+	
+	public void setDefaultDateRange(){
+		if(getDateStart()==null){
+			Calendar current = Calendar.getInstance();
+			current.set(Calendar.DAY_OF_MONTH, 1);
+			setDateStart(current.getTime());
+		}
+		if(getDateEnd()==null){
+			setDateEnd(new Date());
+		}
+	}
 	
 	public Date getDateStart() {
 		return dateStart;

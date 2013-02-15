@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/springsecurity">
+	<head th:fragment="header">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title th:text="${title}">JPoweredCart - Installation</title>
+		<link rel="stylesheet" type="text/css" th:href="@{/resources/admin/stylesheet/install.css}" />
+		<script type="text/javascript" th:src="@{/resources/admin/javascript/cufon/cufon-yui.js}"></script>
+		<script type="text/javascript" th:src="@{/resources/admin/javascript/cufon/Verdana_400.font.js}"></script>
+		<script type="text/javascript" th:src="@{/resources/admin/javascript/cufon/Trebuchet_MS_400.font.js}"></script>
+		<script type="text/javascript" th:src="@{/resources/admin/javascript/cufon/Trebuchet_MS_italic_400.font.js}"></script>
+		<script type="text/javascript" th:src="@{/resources/admin/javascript/cufon/Aller_400.font.js}"></script>
+		<script th:inline="javascript">
+			/*<![CDATA[ */ 
+			Cufon.replace('h1', {fontFamily: 'Verdana', textShadow: '2px 2px 0 rgba(0,0,0,0.2)'});
+			Cufon.replace('h2, #header a, .blog-list .date, .blog-list .comment, .blog-info .date, .blog-info .comment', {fontFamily: 'Verdana', hover: true});
+			/*]]> */
+		</script>
+	</head>
+	<body>
+		<div id="container">
+			<div id="header" th:fragment="content_top">
+				<div id="logo"><img th:src="@{/resources/admin/image/install/logo.png}" alt="JPoweredCart" title="JPoweredCart" /></div>
+			</div>
+			
+			<div id="footer" th:fragment="content_footer">
+				<a href="http://www.jpoweredcart.com" target="_blank">Project Homepage</a>|
+				<a href="http://www.jpoweredcart.com/documentation/introduction" target="_blank">Documentation</a>|
+				<a href="http://forum.jpoweredcart.com" target="_blank">Support Forums</a><br />
+				Copyright @ 2013 JPoweredCart - All rights reserved<br/>
+				<div>
+					JPoweredCart is based on OpenCart. The logic and UI are similar but the 
+					underlying technologies are totally different.<br/> 
+					[Why I decided to rewrite it instead of extending it?]
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

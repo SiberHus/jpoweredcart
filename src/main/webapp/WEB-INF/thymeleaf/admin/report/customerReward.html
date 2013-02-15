@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/report/customerReward}" th:text="#{heading.title}">Customer Reward Points Report</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="success" th:if="${msg_success!=null}" th:text="#{${msg_success}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/report.png}" alt="" />
+							<span th:text="#{heading.title}">Customer Reward Points Report</span>
+						</h1>
+					</div>
+					<div class="content">
+						<form th:action="@{/admin/report/customerReward}" method="get" th:object="${filter}" id="form">
+						<table class="form">
+							<tr>
+								<td>
+									<span th:text="#{entry.dateStart}">Date Start:</span>
+									<input type="text" id="dateStart" name="dateStart" size="12"
+										th:value="${filter.dateStart!=null?#dates.format(filter.dateStart,  #messages.msg('date.formatShort')):filter.dateStart}" />
+								</td>
+								<td>
+									<span th:text="#{entry.dateEnd}">Date End:</span>
+									<input type="text" id="dateEnd" name="dateEnd" size="12"
+										th:value="${filter.dateEnd!=null?#dates.format(filter.dateEnd,  #messages.msg('date.formatShort')):filter.dateEnd}" />
+								</td>
+								<td style="text-align: right;">
+									<a onclick="$('form').submit();" class="button" th:text="#{button.filter}">Filter</a>
+								</td>
+							</tr>
+						</table>
+						</form>
+						<table class="list">
+							<thead>
+								<tr>
+									<td class="left" th:text="#{column.customer}">Customer Name</td>
+									<td class="left" th:text="#{column.email}">E-Mail</td>
+									<td class="left" th:text="#{column.customerGroup}">Customer Group</td>
+									<td class="left" th:text="#{column.status}">Status</td>
+									<td class="right" th:text="#{column.points}">Reward Points</td>
+									<td class="right" th:text="#{column.orders}">No. Orders</td>
+									<td class="right" th:text="#{column.total}">Total</td>
+									<td class="right" th:text="#{column.action}">Action</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="reward : ${rewards}">
+									<td class="left" th:text="${reward.customerName}">Hussachai Puripunpinyo</td>
+									<td class="left" th:text="${reward.email}">hussachai@jpoweredcart.com</td>
+									<td class="left" th:text="${reward.customerGroup}">Default</td>
+									<td class="left" th:text="${reward.status==1?#messages.msg('text.enabled'):#messages.msg('text.disabled')}">Enabled</td>
+									<td class="right" th:text="${reward.points}">300</td>
+									<td class="right" th:text="${reward.orders}">2</td>
+									<td class="right" th:text="${#numbers.formatDecimal(reward.total,0,2)}">$170.00</td>
+									<td class="right">
+										[ <a th:href="@{/admin/sales/customer/edit/}+${reward.customerId}"
+											th:text="#{text.edit}">Edit</a> ]
+									</td>
+								</tr>
+								<tr th:if="${#lists.isEmpty(rewards)}">
+									<td class="center" colspan="8" th:text="#{text.noResults}">No results!</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="pagination" th:utext="${pagination}"></div>
+					</div> <!-- .content -->
+				</div> <!-- .box -->
+			</div>  <!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		<script th:inline="javascript">
+			/*<![CDATA[ */
+			$(function(){
+				var dateFormat = /*[[${jsDateFormat}]]*/;
+				$('#dateStart').datepicker({dateFormat: dateFormat});
+				$('#dateEnd').datepicker({dateFormat: dateFormat});
+			});
+			/*]]>*/
+		</script>
+	</body>
+</html>

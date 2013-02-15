@@ -3,6 +3,10 @@ package com.jpoweredcart.admin.model.sale.jdbc;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import org.springframework.transaction.annotation.Transactional;
+
 import com.jpoweredcart.admin.model.sale.VoucherAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
@@ -11,18 +15,11 @@ import com.jpoweredcart.common.entity.sale.Voucher;
 import com.jpoweredcart.common.entity.sale.VoucherHistory;
 import com.jpoweredcart.common.service.EmailService;
 import com.jpoweredcart.common.service.SettingKey;
-import com.jpoweredcart.common.service.SettingService;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.transaction.annotation.Transactional;
 
 public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminModel {
 	
+	@Inject
 	private EmailService emailService;
-	
-	public VoucherAdminModelImpl(SettingService settingService,
-			JdbcOperations jdbcOperations) {
-		super(settingService, jdbcOperations);
-	}
 	
 	@Override
 	public void create(Voucher voucher) {
@@ -108,10 +105,6 @@ public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminMode
 	public int getTotalVoucherHistories(Integer voucherId) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	public void setEmailService(EmailService emailService) {
-		this.emailService = emailService;
 	}
 	
 }
