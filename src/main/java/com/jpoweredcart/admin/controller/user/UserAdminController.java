@@ -146,7 +146,7 @@ public class UserAdminController extends BaseController {
 	private void initUserForm(Model model){
 		//should not over 50
 		model.addAttribute("userGroups", userGroupAdminModel
-				.getUserGroups(PageParam.list(50)));
+				.getList(PageParam.list(50)));
 	}
 	
 	

@@ -2,6 +2,8 @@ package com.jpoweredcart.admin.model.user.jdbc;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.jpoweredcart.admin.model.user.UserGroupAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
@@ -13,7 +15,7 @@ public class UserGroupAdminModelImpl extends BaseModel implements UserGroupAdmin
 	
 	
 	@Override
-	public List<UserGroup> getUserGroupsByUsername(String username) {
+	public List<UserGroup> getOneByUsername(String username) {
 		
 		String sql = "SELECT ug.user_group_id, ug.name, ug.permission FROM " 
 				+ quoteTable("user_group") + " ug INNER JOIN "
@@ -23,36 +25,31 @@ public class UserGroupAdminModelImpl extends BaseModel implements UserGroupAdmin
 		return userGroups;
 	}
 	
+	@Transactional
 	@Override
-	public void addUserGroup(UserGroup userGroup) {
+	public void create(UserGroup userGroup) {
 		//TODO: (isset($data['permission']) ? serialize($data['permission']) : '')
 		String sql = "INSERT INTO "+quoteTable("user_group")+"(name, permission) VALUES(?,?)";
 		getJdbcOperations().update(sql, userGroup.getName(), userGroup.getPermission());
 	}
 	
+	@Transactional
 	@Override
-	public void updateUserGroup(UserGroup userGroup) {
+	public void update(UserGroup userGroup) {
 		
 		String sql = "UPDATE "+quoteTable("user_group")+" SET name=?, permission=? WHERE user_group_id=?";
 		getJdbcOperations().update(sql, userGroup.getName(), userGroup.getPermission(), userGroup.getId());
 	}
 	
+	@Transactional
 	@Override
-	public void saveUserGroup(UserGroup userGroup){
-		if(userGroup.getId()!=null){
-			updateUserGroup(userGroup);
-		}else{
-			addUserGroup(userGroup);
-		}
-	}
-	
-	@Override
-	public void deleteUserGroup(Integer userGroupId) {
+	public void delete(Integer userGroupId) {
 		
 		String sql = "DELETE FROM "+quoteTable("user_group")+" WHERE user_group_id=?";
 		getJdbcOperations().update(sql, userGroupId);
 	}
 	
+	@Transactional
 	@Override
 	public void addPermission(Integer userId, String type, String page) {
 		
@@ -64,13 +61,13 @@ public class UserGroupAdminModelImpl extends BaseModel implements UserGroupAdmin
 	}
 	
 	@Override
-	public UserGroup getUserGroup(Integer userGroupId) {
+	public UserGroup get(Integer userGroupId) {
 		String sql = "SELECT DISTINCT * FROM "+quoteTable("user_group")+" WHERE user_group_id=?";
 		return getJdbcOperations().queryForObject(sql, new Object[]{userGroupId}, new UserGroupRowMapper());
 	}
 	
 	@Override
-	public List<UserGroup> getUserGroups(PageParam pageParam) {
+	public List<UserGroup> getList(PageParam pageParam) {
 		
 		QueryBean query = createPaginationQuery("user_group", pageParam, 
 				new String[]{"name"});
@@ -80,7 +77,7 @@ public class UserGroupAdminModelImpl extends BaseModel implements UserGroupAdmin
 	}
 	
 	@Override
-	public int getTotalUserGroups() {
+	public int getTotal() {
 		
 		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("user_group");
 		return getJdbcOperations().queryForInt(sql);

@@ -38,7 +38,7 @@ public class CartAdminUserDetailService implements UserDetailsService {
 			userDetails.password = user.getPassword();
 			userDetails.username = user.getUsername();
 			userDetails.enabled = user.getStatus()==1;
-			UserGroup userGroup = userGroupModel.getUserGroup(user.getUserGroupId());
+			UserGroup userGroup = userGroupModel.get(user.getUserGroupId());
 			if(userGroup!=null){
 				userDetails.authorities.add(userGroup.getName());
 				String permString = userGroup.getPermission();

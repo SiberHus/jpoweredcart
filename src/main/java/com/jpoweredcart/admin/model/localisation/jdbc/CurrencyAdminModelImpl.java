@@ -3,6 +3,8 @@ package com.jpoweredcart.admin.model.localisation.jdbc;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.jpoweredcart.admin.bean.localisation.CurrencyForm;
 import com.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
 import com.jpoweredcart.common.BaseModel;
@@ -13,7 +15,7 @@ import com.jpoweredcart.common.entity.localisation.Currency;
 
 public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminModel {
 	
-	
+	@Transactional
 	@Override
 	public void create(CurrencyForm currencyForm) {
 		String sql = "INSERT INTO " +quoteTable("currency")+ "(title, code, symbol_left, symbol_right, " +
@@ -23,6 +25,7 @@ public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminMo
 				currencyForm.getStatus(), new Date());
 	}
 	
+	@Transactional
 	@Override
 	public void update(CurrencyForm currencyForm) {
 		String sql = "UPDATE " +quoteTable("currency")+ " SET title=?, code=?, symbol_left=?, symbol_right=?, " +
@@ -32,6 +35,7 @@ public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminMo
 				currencyForm.getStatus(), new Date(), currencyForm.getId());
 	}
 	
+	@Transactional
 	@Override
 	public void delete(Integer currencyId) {
 		String sql = "DELETE FROM "+quoteTable("currency")+" WHERE currency_id=?";

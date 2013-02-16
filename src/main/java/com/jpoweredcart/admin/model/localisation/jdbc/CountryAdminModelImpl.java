@@ -2,6 +2,8 @@ package com.jpoweredcart.admin.model.localisation.jdbc;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.jpoweredcart.admin.bean.localisation.CountryForm;
 import com.jpoweredcart.admin.model.localisation.CountryAdminModel;
 import com.jpoweredcart.common.BaseModel;
@@ -11,7 +13,7 @@ import com.jpoweredcart.common.entity.localisation.Country;
 
 public class CountryAdminModelImpl extends BaseModel implements CountryAdminModel {
 	
-	
+	@Transactional
 	@Override
 	public void create(CountryForm countryForm) {
 		String sql = "INSERT INTO " +quoteTable("country")+ "(name, iso_code_2, iso_code_3, " +
@@ -20,6 +22,7 @@ public class CountryAdminModelImpl extends BaseModel implements CountryAdminMode
 				countryForm.getAddressFormat(), countryForm.isPostcodeRequired(), countryForm.getStatus());
 	}
 	
+	@Transactional
 	@Override
 	public void update(CountryForm countryForm) {
 		String sql = "UPDATE " +quoteTable("country")+ " SET name=?, iso_code_2=?, iso_code_3=?, " +
@@ -29,6 +32,7 @@ public class CountryAdminModelImpl extends BaseModel implements CountryAdminMode
 				countryForm.getId());
 	}
 	
+	@Transactional
 	@Override
 	public void delete(Integer countryId) {
 		String sql = "DELETE FROM "+quoteTable("country")+" WHERE country_id=?";

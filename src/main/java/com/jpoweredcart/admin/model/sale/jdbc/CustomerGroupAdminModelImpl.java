@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.jpoweredcart.admin.model.sale.CustomerGroupAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
@@ -13,18 +15,20 @@ import com.jpoweredcart.common.service.SettingKey;
 
 public class CustomerGroupAdminModelImpl extends BaseModel implements CustomerGroupAdminModel {
 
-	
+	@Transactional
 	@Override
 	public void create(CustomerGroup customerGroup) {
 		
 	}
 
+	@Transactional
 	@Override
 	public void update(CustomerGroup customerGroup) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Transactional
 	@Override
 	public void delete(Integer customerGroupId) {
 		// TODO Auto-generated method stub

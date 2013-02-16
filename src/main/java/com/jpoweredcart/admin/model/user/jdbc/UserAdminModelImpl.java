@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jpoweredcart.admin.bean.user.UserForm;
 import com.jpoweredcart.admin.model.user.UserAdminModel;
@@ -17,6 +18,7 @@ import com.jpoweredcart.common.security.Password;
 public class UserAdminModelImpl extends BaseModel implements UserAdminModel {
 	
 	
+	@Transactional
 	@Override
 	public void create(UserForm userForm) {
 		String sql = "INSERT INTO " + quoteTable("user") + " SET code='', username = ?, salt = ?, password = ?," +
@@ -28,6 +30,7 @@ public class UserAdminModelImpl extends BaseModel implements UserAdminModel {
 				userForm.getUserGroupId(), userForm.getStatus(), new Date());
 	}
 	
+	@Transactional
 	@Override
 	public void update(UserForm userForm) {
 		String sql = "UPDATE " + quoteTable("user") + " SET username = ?, firstname = ?, lastname = ?, " +
@@ -40,6 +43,7 @@ public class UserAdminModelImpl extends BaseModel implements UserAdminModel {
 		}
 	}
 	
+	@Transactional
 	@Override
 	public void updatePassword(Integer userId, String password) {
 		String salt = Password.generateSalt();
@@ -48,12 +52,14 @@ public class UserAdminModelImpl extends BaseModel implements UserAdminModel {
 		getJdbcOperations().update(sql, salt, password, userId);
 	}
 	
+	@Transactional
 	@Override
 	public void updateCode(String email, String code) {
 		String sql = "UPDATE " +quoteTable("user")+ " SET code = ? WHERE email = ?";
 		getJdbcOperations().update(sql, code, email);
 	}
 	
+	@Transactional
 	@Override
 	public void delete(Integer userId) {
 		String sql = "DELETE FROM " +quoteTable("user")+ " WHERE user_id = ?";

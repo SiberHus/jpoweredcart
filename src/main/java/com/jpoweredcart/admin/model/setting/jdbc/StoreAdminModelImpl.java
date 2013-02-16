@@ -2,6 +2,8 @@ package com.jpoweredcart.admin.model.setting.jdbc;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.jpoweredcart.admin.model.setting.StoreAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.entity.setting.Store;
@@ -10,19 +12,21 @@ import com.jpoweredcart.common.service.SettingKey;
 
 public class StoreAdminModelImpl extends BaseModel implements StoreAdminModel {
 
-	
+	@Transactional
 	@Override
 	public void create(Store store) {
 		String sql = "INSERT INTO " +quoteTable("store")+ "(name, url, ssl) VALUES (?,?,?)";
 		getJdbcOperations().update(sql, store.getName(), store.getUrl(), store.isSsl());
 	}
 
+	@Transactional
 	@Override
 	public void update(Store store) {
 		String sql = "UPDATE " +quoteTable("store")+ " SET name=?, url=?, ssl=? WHERE store_id=?";
 		getJdbcOperations().update(sql, store.getName(), store.getUrl(), store.isSsl(), store.getId());
 	}
 	
+	@Transactional
 	@Override
 	public void delete(Integer storeId) {
 		String sql = "DELETE FROM "+quoteTable("store")+" WHERE store_id=?";

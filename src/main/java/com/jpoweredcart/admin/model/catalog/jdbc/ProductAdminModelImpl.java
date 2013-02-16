@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jpoweredcart.admin.bean.catalog.filter.TotalProductsFilter;
 import com.jpoweredcart.admin.model.catalog.ProductAdminModel;
@@ -27,25 +28,28 @@ import com.jpoweredcart.common.service.SettingKey;
 
 public class ProductAdminModelImpl extends BaseModel implements ProductAdminModel {
 
-	
+	@Transactional
 	@Override
 	public void create(Product product) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Transactional
 	@Override
 	public void update(Product product) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Transactional
 	@Override
 	public void copy(Integer productId) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Transactional
 	@Override
 	public void delete(Integer productId) {
 		// TODO Auto-generated method stub

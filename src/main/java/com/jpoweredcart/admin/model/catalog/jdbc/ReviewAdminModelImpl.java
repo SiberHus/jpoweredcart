@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jpoweredcart.admin.bean.catalog.ReviewForm;
 import com.jpoweredcart.admin.model.catalog.ReviewAdminModel;
@@ -17,7 +18,7 @@ import com.jpoweredcart.common.service.SettingKey;
 
 public class ReviewAdminModelImpl extends BaseModel implements ReviewAdminModel {
 	
-	
+	@Transactional
 	@Override
 	public void create(ReviewForm reviewForm) {
 		String sql = "INSERT INTO "+quoteTable("review")
@@ -26,6 +27,7 @@ public class ReviewAdminModelImpl extends BaseModel implements ReviewAdminModel 
 				reviewForm.getText(), reviewForm.getRating(), reviewForm.getStatus(), new Date());
 	}
 
+	@Transactional
 	@Override
 	public void update(ReviewForm reviewForm) {
 		String sql = "UPDATE " +quoteTable("review")
@@ -34,6 +36,7 @@ public class ReviewAdminModelImpl extends BaseModel implements ReviewAdminModel 
 				reviewForm.getText(), reviewForm.getRating(), reviewForm.getStatus(), new Date(), reviewForm.getId());
 	}
 
+	@Transactional
 	@Override
 	public void delete(Integer reviewId) {
 		String sql = "DELETE FROM " +quoteTable("review")+ " WHERE review_id=?";

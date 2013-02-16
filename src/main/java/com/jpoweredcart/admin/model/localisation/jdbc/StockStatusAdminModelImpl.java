@@ -22,7 +22,6 @@ import com.jpoweredcart.common.service.SettingKey;
 public class StockStatusAdminModelImpl extends BaseModel implements StockStatusAdminModel {
 	
 	
-	
 	@Transactional
 	@Override
 	public void create(StockStatus... stockStatuses) {

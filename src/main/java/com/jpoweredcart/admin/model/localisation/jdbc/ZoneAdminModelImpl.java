@@ -2,6 +2,8 @@ package com.jpoweredcart.admin.model.localisation.jdbc;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.jpoweredcart.admin.model.localisation.ZoneAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
@@ -11,7 +13,7 @@ import com.jpoweredcart.common.entity.localisation.Zone;
 
 public class ZoneAdminModelImpl extends BaseModel implements ZoneAdminModel {
 	
-	
+	@Transactional
 	@Override
 	public void create(Zone zone) {
 		String sql = "INSERT INTO " +quoteTable("zone")+ "(country_id, name, code, status) " +
@@ -20,6 +22,7 @@ public class ZoneAdminModelImpl extends BaseModel implements ZoneAdminModel {
 				zone.getCode(), zone.getStatus());
 	}
 	
+	@Transactional
 	@Override
 	public void update(Zone zone) {
 		String sql = "UPDATE " +quoteTable("zone")+ " SET country_id=?, name=?, code=?, status=? " +
@@ -29,6 +32,7 @@ public class ZoneAdminModelImpl extends BaseModel implements ZoneAdminModel {
 		//TODO: delete cache??
 	}
 	
+	@Transactional
 	@Override
 	public void delete(Integer zoneId) {
 		String sql = "DELETE FROM "+quoteTable("zone")+" WHERE zone_id=?";

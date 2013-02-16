@@ -104,12 +104,14 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 		
 	}
 
+	@Transactional
 	@Override
 	public void update(Integer orderId) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Transactional
 	@Override
 	public void delete(Integer orderId) {
 		// TODO Auto-generated method stub

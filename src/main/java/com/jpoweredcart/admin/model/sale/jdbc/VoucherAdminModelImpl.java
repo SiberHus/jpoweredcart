@@ -21,6 +21,7 @@ public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminMode
 	@Inject
 	private EmailService emailService;
 	
+	@Transactional
 	@Override
 	public void create(Voucher voucher) {
 		String sql = "INSERT INTO " +quoteTable("voucher")+ "(code, from_name, from_email, " +
@@ -30,6 +31,7 @@ public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminMode
 				voucher.getAmount(), voucher.getStatus(), new Date());
 	}
 
+	@Transactional
 	@Override
 	public void update(Voucher voucher) {
 		String sql = "UPDATE " +quoteTable("voucher")+ " SET code=?, from_name=?, from_email=?, " +

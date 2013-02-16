@@ -22,7 +22,6 @@ import com.jpoweredcart.common.entity.design.BannerImageDesc;
 public class BannerAdminModelImpl extends BaseModel implements BannerAdminModel {
 
 	
-	
 	@Transactional
 	@Override
 	public void create(final Banner banner) {

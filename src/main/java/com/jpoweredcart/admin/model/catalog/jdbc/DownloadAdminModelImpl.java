@@ -2,6 +2,7 @@ package com.jpoweredcart.admin.model.catalog.jdbc;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.jpoweredcart.admin.bean.catalog.DownloadForm;
@@ -12,6 +13,7 @@ import com.jpoweredcart.common.entity.catalog.Download;
 
 public class DownloadAdminModelImpl extends BaseModel implements DownloadAdminModel{
 
+	@Transactional
 	@Override
 	public void create(DownloadForm dlForm) {
 		if(dlForm.getFileUpload().isEmpty()){
@@ -22,6 +24,7 @@ public class DownloadAdminModelImpl extends BaseModel implements DownloadAdminMo
 //		multipartFile.transferTo(realFile);
 	}
 	
+	@Transactional
 	@Override
 	public void update(DownloadForm dlForm) {
 		if(dlForm.getFileUpload().isEmpty()){
@@ -29,6 +32,7 @@ public class DownloadAdminModelImpl extends BaseModel implements DownloadAdminMo
 		}
 	}
 	
+	@Transactional
 	@Override
 	public void delete(Integer dlId) {
 		

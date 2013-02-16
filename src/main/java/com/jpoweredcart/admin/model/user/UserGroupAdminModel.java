@@ -18,22 +18,20 @@ public interface UserGroupAdminModel {
 	 * @param username
 	 * @return
 	 */
-	public List<UserGroup> getUserGroupsByUsername(String username);
+	public List<UserGroup> getOneByUsername(String username);
 	
-	public void addUserGroup(UserGroup userGroup);
+	public void create(UserGroup userGroup);
 	
-	public void updateUserGroup(UserGroup userGroup);
+	public void update(UserGroup userGroup);
 	
-	public void saveUserGroup(UserGroup userGroup);
-	
-	public void deleteUserGroup(Integer userGroupId);
+	public void delete(Integer userGroupId);
 	
 	public void addPermission(Integer userId, String type, String page);
 	
-	public UserGroup getUserGroup(Integer userGroupId);
+	public UserGroup get(Integer userGroupId);
 	
-	public List<UserGroup> getUserGroups(PageParam pageParam);
+	public List<UserGroup> getList(PageParam pageParam);
 	
-	public int getTotalUserGroups();
+	public int getTotal();
 	
 }

@@ -221,7 +221,7 @@ public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminMo
 		}
 	}
 	
-	
+	@Transactional
 	@Override
 	public void update(LanguageForm lang) {
 		
