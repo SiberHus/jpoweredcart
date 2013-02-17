@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/sale/affiliate}" th:text="#{heading.title}">Affiliate</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/customer.png}" alt="" />
+							<span th:text="#{heading.title}"></span>
+						</h1>
+						<div class="buttons">
+							<a onclick="$('#form').submit();" class="button" th:text="#{button.save}">Save</a>
+							<a th:href="@{/admin/sale/affiliate}" class="button" th:text="#{button.cancel}">Cancel</a>
+						</div>
+					</div>
+					<div class="content">
+						<div id="htabs" class="htabs">
+							<a href="#tab-general" th:text="#{tab.general}">General</a>
+							<a href="#tab-payment" th:text="#{tab.payment}">Payment Details</a>
+							<a href="#tab-transaction" th:if="${affiliateForm.id!=null}" th:text="#{tab.transaction}">Transactions</a>
+						</div>
+						<form th:action="@{/admin/sale/affiliate/save}" th:object="${affiliateForm}" method="post" id="form">
+							<input type="hidden" th:field="*{id}" />
+							<div id="tab-general">
+								<table class="form">
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.firstName}">First Name:</span></td>
+										<td>
+											<input type="text" th:field="*{firstName}" />
+											<span class="error" th:if="${#fields.hasErrors('firstName')}" th:text="#{error.firstName}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.lastName}">Last Name:</span></td>
+										<td>
+											<input type="text" th:field="*{lastName}" />
+											<span class="error" th:if="${#fields.hasErrors('lastName')}" th:text="#{error.lastName}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.email}">Email:</span></td>
+										<td>
+											<input type="text" th:field="*{email}" />
+											<span class="error" th:if="${#fields.hasErrors('email')}" th:text="#{error.email}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.telephone}">Telephone:</span></td>
+										<td>
+											<input type="text" th:field="*{telephone}" />
+											<span class="error" th:if="${#fields.hasErrors('telephone')}" th:text="#{error.telephone}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span th:utext="#{entry.fax}">Fax:</span></td>
+										<td>
+											<input type="text" th:field="*{fax}" />
+										</td>
+									</tr>
+									<tr>
+										<td><span th:utext="#{entry.comapny}">Company:</span></td>
+										<td>
+											<input type="text" th:field="*{company}" />
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.address1}">Address 1:</span></td>
+										<td>
+											<input type="text" th:field="*{address1}" />
+											<span class="error" th:if="${#fields.hasErrors('address1')}" th:text="#{error.address1}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span th:utext="#{entry.telephone}">Address 2:</span></td>
+										<td>
+											<input type="text" th:field="*{address2}" />
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.city}">City:</span></td>
+										<td>
+											<input type="text" th:field="*{city}" />
+											<span class="error" th:if="${#fields.hasErrors('city')}" th:text="#{error.city}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.postcode}">Postcode:</span></td>
+										<td>
+											<input type="text" th:field="*{postcode}" />
+											<span class="error" th:if="${#fields.hasErrors('postcode')}" th:text="#{error.postcode}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.country}">Country:</span></td>
+										<td>
+											<select th:field="*{countryId}">
+												<option value="" th:text="#{text.select}">---Please Select---</option>
+												<option th:each="country: ${countries}" th:value="${country.id}"
+													th:text="${country.name}">Thailand</option>
+											</select>
+											<span class="error" th:if="${#fields.hasErrors('countryId')}" th:text="#{error.country}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.zone}">Region / State:</span></td>
+										<td>
+											<select th:field="*{zoneId}">
+												<option value="" th:text="#{text.select}">---Please Select---</option>
+												<option th:if="${zones!=null}" th:each="zone: ${zones}" 
+													th:value="${zone.id}" th:text="${zone.name}">Thailand</option>
+											</select>
+											<span class="error" th:if="${#fields.hasErrors('countryId')}" th:text="#{error.country}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span class="required">*</span><span th:utext="#{entry.code}">Tracking Code:</span></td>
+										<td>
+											<input type="text" th:field="*{postcode}" />
+											<span class="error" th:if="${#fields.hasErrors('code')}" th:text="#{error.code}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span th:utext="#{entry.code}">Password:</span></td>
+										<td>
+											<input type="password" th:field="*{password}" />
+											<span class="error" th:if="${#fields.hasErrors('password')}" th:text="#{error.password}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span th:utext="#{entry.confirm}">Confirm:</span></td>
+										<td>
+											<input type="text" th:field="*{confirm}" />
+											<span class="error" th:if="${#fields.hasErrors('confirm')}" th:text="#{error.confirm}"></span>
+										</td>
+									</tr>
+									<tr>
+										<td><span th:utext="#{entry.status}">Status:</span></td>
+										<td>
+											<select th:field="*{status}">
+												<option value="0" th:text="#{text.disabled}">Disabled</option>
+												<option value="1" th:text="#{text.enabled}">Enabled</option>
+											</select>
+										</td>
+									</tr>
+								</table>
+							</div><!-- #tab-general -->
+							
+							<div id="tab-payment">
+								<table class="form">
+									<tbody>
+										<tr>
+											<td><span th:utext="#{entry.commission}">Commission (%):</span></td>
+											<td>
+												<input type="text" th:field="*{commission}" />
+											</td>
+										</tr>
+										<tr>
+											<td><span th:utext="#{entry.tax}">Tax ID:</span></td>
+											<td>
+												<input type="text" th:field="*{tax}" />
+											</td>
+										</tr>
+										<tr>
+											<td><span th:utext="#{entry.payment}">Payment Method::</span></td>
+											<td>
+												<input type="radio" name="payment" value="cheque" id="cheque" 
+													th:attr="checked=${affiliateForm.payment=='cheque'?'checked':''}" />
+												<label for="cheque" th:text="#{text.cheque}">Cheque</label>
+												
+												<input type="radio" name="payment" value="paypal" id="paypal" 
+													th:attr="checked=${affiliateForm.payment=='paypal'?'checked':''}" />
+												<label for="paypal" th:text="#{text.paypal}">Paypal</label>
+												
+												<input type="radio" name="payment" value="bank" id="bank" 
+													th:attr="checked=${affiliateForm.payment=='bank'?'checked':''}" />
+												<label for="bank" th:text="#{text.bank}">Bank</label>
+											</td>
+										</tr>
+									</tbody>
+									<tbody id="payment-cheque" class="payment">
+										<tr>
+											<td><span th:utext="#{entry.cheque}">Cheque Payee Name:</span></td>
+											<td>
+												<input type="text" th:field="*{cheque}" />
+											</td>
+										</tr>
+									</tbody>
+									<tbody id="payment-paypal" class="payment">
+										<tr>
+											<td><span th:utext="#{entry.paypal}">PayPal Email Account:</span></td>
+											<td>
+												<input type="text" th:field="*{paypal}" />
+											</td>
+										</tr>
+									</tbody>
+									<tbody id="payment-bank" class="payment">
+										<tr>
+											<td><span th:utext="#{entry.bankName}">Bank Name:</span></td>
+											<td>
+												<input type="text" th:field="*{bankName}" />
+											</td>
+										</tr>
+										<tr>
+											<td><span th:utext="#{entry.bankBranchNumber}">ABA/BSB number (Branch Number):</span></td>
+											<td>
+												<input type="text" th:field="*{bankBranchNumber}" />
+											</td>
+										</tr>
+										<tr>
+											<td><span th:utext="#{entry.bankSwiftCode}">SWIFT Code:</span></td>
+											<td>
+												<input type="text" th:field="*{bankSwiftCode}" />
+											</td>
+										</tr>
+										<tr>
+											<td><span class="required">*</span><span th:utext="#{entry.bankAccountName}">Account Name:</span></td>
+											<td>
+												<input type="text" th:field="*{bankAccountName}" />
+											</td>
+										</tr>
+										<tr>
+											<td><span class="required">*</span><span th:utext="#{entry.bankAccountNumber}">Account Number:</span></td>
+											<td>
+												<input type="text" th:field="*{bankAccountNumber}" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div><!-- #tab-payment -->
+							
+							<div id="tab-transaction" th:if="${affiliateForm.id!=null}">
+								<table class="form">
+									<tr>
+										<td><span th:text="#{entry.description}">Description:</span></td>
+										<td><input type="text" name="description" value="" /></td>
+									</tr>
+									<tr>
+										<td><span th:text="#{entry.amount}">Amount:</span></td>
+										<td><input type="text" name="amount" value="" /></td>
+									</tr>
+									<tr>
+										<td colspan="2" style="text-align: right;">
+											<a id="button-reward" class="button" onclick="addTransaction();">
+												<span th:text="#{button.addTransaction}">Add Transaction</span>
+											</a>
+										</td>
+									</tr>
+								</table>
+								<div id="transaction"></div>
+							</div>
+						</form>
+					</div><!-- .content -->
+				</div><!-- .box -->
+			</div><!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
+		<script th:inline="javascript">
+			/*<![CDATA[ */
+			$(function(){
+				$('.htabs a').tabs();
+				
+				$('input[name=\'payment\']').on('change', function() {
+					$('.payment').hide();
+					$('#payment-' + this.value).show();
+				});
+				$('input[name=\'payment\']:checked').trigger('change');
+				
+				$('#transaction .pagination a').live('click', function() {
+					$('#transaction').load(this.href);
+					
+					return false;
+				});	
+				
+			});
+			/*]]>*/
+		</script>
+	</body>
+</html>

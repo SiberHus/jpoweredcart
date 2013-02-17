@@ -4,42 +4,61 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
+
 public class Affiliate implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
 	protected Integer id;
 	
+	@Size(min=1, max=32) @NotBlank
 	protected String firstName;
 	
+	@Size(min=1, max=32) @NotBlank
 	protected String lastName;
 	
+	@Email @Size(min=1, max=32) @NotNull
 	protected String email;
 	
+	@Size(min=3, max=32) @NotBlank
 	protected String telephone;
 	
 	protected String fax;
 	
+	@Size(min=4, max=20) @NotBlank
 	protected String password;
 	
 	protected String salt;
 	
 	protected String company;
 	
+	@URL
 	protected String website;
 	
+	@Size(min=3, max=128) @NotBlank
 	protected String address1;
 	
 	protected String address2;
 	
+	@Size(min=2, max=128) @NotBlank
 	protected String city;
 	
+	@Size(min=2, max=10)
 	protected String postcode;
 	
+	@NotNull
 	protected Integer countryId;
 	
+	@NotNull
 	protected Integer zoneId;
 	
+	@NotBlank
 	protected String code;
 	
 	protected BigDecimal commission;

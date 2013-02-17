@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/sale/affiliate}" th:text="#{heading.title}">Affiliate</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="success" th:if="${msg_success!=null}" th:text="#{${msg_success}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/customer.png}" alt="" />
+							<span th:text="#{heading.title}"></span>
+						</h1>
+						<div class="buttons">
+							<a id="approveBtn" class="button" th:text="#{button.approve}">Approve</a>
+							<a th:href="@{/admin/sale/affiliate/create}" class="button" th:text="#{button.insert}">Insert</a>
+							<a id="deleteBtn" class="button" th:text="#{button.delete}">Delete</a>
+						</div>
+					</div>
+					<div class="content">
+						<form th:object="${filter}" id="form">
+							<table class="list">
+								<thead>
+									<tr>
+										<td width="1" style="text-align: center;"><input type="checkbox" onclick="$('input[name*=\'selected\']').attr('checked', this.checked);" /></td>
+										<td class="left">
+											<a th:href="@{/admin/sale/affiliate}+'?sort=name&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='name'?param.order[0]:''}" th:text="#{column.name}">Affiliate Name</a>
+										</td>
+										<td class="left">
+											<a th:href="@{/admin/sale/affiliate}+'?sort=a.email&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='a.email'?param.order[0]:''}" th:text="#{column.email}">E-Mail</a>
+										</td>
+										<td class="right" th:text="#{column.balance}">Balance</td>
+										<td class="left">
+											<a th:href="@{/admin/sale/affiliate}+'?sort=a.status&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='a.status'?param.order[0]:''}" th:text="#{column.status}">Status</a>
+										</td>
+										<td class="left">
+											<a th:href="@{/admin/sale/affiliate}+'?sort=a.approved&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='a.approved'?param.order[0]:''}" th:text="#{column.approved}">Approved</a>
+										</td>
+										<td class="left">
+											<a th:href="@{/admin/sale/affiliate}+'?sort=a.date_added&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='a.date_added'?param.order[0]:''}" th:text="#{column.dateAdded}">Date Added</a>
+										</td>
+										<td class="right" th:text="#{column.action}">Action</td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="filter">
+										<td>&nbsp;</td>
+										<td><input type="text" th:field="*{affiliateName}" /></td>
+										<td><input type="text" th:field="*{email}" /></td>
+										<td>&nbsp;</td>
+										<td>
+											<select th:field="*{status}">
+												<option value=""></option>
+												<option value="1" th:text="#{text.enabled}">Enabled</option>
+												<option value="0" th:text="#{text.disabled}">Disabled</option>
+											</select>
+										</td>
+										<td>
+											<select th:field="*{approved}">
+												<option value=""></option>
+												<option value="1" th:text="#{text.yes}">Yes</option>
+												<option value="0" th:text="#{text.no}">No</option>
+											</select>
+										</td>
+										<td>
+											<input type="text" id="dateAdded" name="dateAdded" 
+												th:value="${filter.dateAdded!=null?#dates.format(filter.dateAdded, #messages.msg('date.formatShort')):''}" />
+										</td>
+										<td align="right">
+											<a id="filterBtn" class="button" th:text="#{button.filter}">Filter</a>
+										</td>
+									</tr>
+									<tr th:each="aff : ${affiliates}">
+										<td style="text-align: center;">
+											<input type="checkbox" name="selected" th:value="${aff.id}" />
+										</td>
+										<td class="left" th:text="${aff.firstName+' '+aff.lastName}">Affiliate Name</td>
+										<td class="left" th:text="${aff.email}">affiliate@yourdomain</td>
+										<td class="right" th:text="${aff.balance!=null?#numbers.formatDecimal(aff.balance,1,2):''}">$123</td>
+										<td class="left" th:text="${aff.status==1?#messages.msg('text.enabled'):#messages.msg('text.disabled')}">Enabled</td>
+										<td class="left" th:text="${aff.approved?#messages.msg('text.yes'):#messages.msg('text.no')}">Yes</td>
+										<td class="left" th:text="${#dates.format(aff.dateAdded, #messages.msg('date.formatShort'))}">16/02/2013</td>
+										<td class="right">
+											[ <a th:href="@{/admin/sale/affiliate/edit/}+${aff.id}" th:text="#{text.edit}">Edit</a> ]
+										</td>
+									</tr>
+									<tr th:if="${#lists.isEmpty(affiliates)}">
+										<td class="center" colspan="8" th:text="#{text.noResults}">No results!</td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+						<div class="pagination" th:utext="${pagination}"></div>
+					</div> <!-- .content -->
+				</div> <!-- .box -->
+			</div>  <!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		<script th:inline="javascript">
+			/*<![CDATA[ */
+			$(function(){
+				var baseUrl = /*[[@{/admin/sale/affiliate/}]]*/;
+				var dateFormat = /*[[${jsDateFormat}]]*/'';
+				$('#dateAdded').datepicker({dateFormat: dateFormat});
+				$('#approveBtn').click(function(){
+					$('form').attr('action', baseUrl+'approve');
+					$('form').attr('method', 'post');
+					$('form').submit();
+				});
+				$('#deleteBtn').click(function(){
+					$('form').attr('action', baseUrl+'delete');
+					$('form').attr('method', 'post');
+					$('form').submit();
+				});
+				$('#filterBtn').click(function(){
+					$('form').attr('action', baseUrl);
+					$('form').attr('method', 'get');
+					$('form').submit();
+				});
+			});
+			/*]]>*/
+		</script>
+	</body>
+</html>

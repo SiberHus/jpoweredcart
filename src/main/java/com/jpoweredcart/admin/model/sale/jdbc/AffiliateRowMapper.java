@@ -1,5 +1,6 @@
 package com.jpoweredcart.admin.model.sale.jdbc;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -29,7 +30,9 @@ public class AffiliateRowMapper implements RowMapper<Affiliate>{
 		aff.setCountryId(rs.getInt("country_id"));
 		aff.setZoneId(rs.getInt("zone_id"));
 		aff.setCode (rs.getString("code"));
-		aff.setCommission(rs.getBigDecimal("commission"));
+		BigDecimal commission = rs.getBigDecimal("commission");
+		if(commission==null) commission = BigDecimal.ZERO;
+		aff.setCommission(commission);
 		aff.setTax(rs.getString("tax"));
 		aff.setPayment(rs.getString("payment"));
 		aff.setCheque(rs.getString("cheque"));

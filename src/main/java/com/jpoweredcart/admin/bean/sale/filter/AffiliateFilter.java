@@ -7,7 +7,7 @@ public class AffiliateFilter implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	protected String affilateName;
+	protected String affiliateName;
 	
 	protected String email;
 	
@@ -21,14 +21,14 @@ public class AffiliateFilter implements Serializable {
 	
 	protected Date dateAdded;
 
-	public String getAffilateName() {
-		return affilateName;
+	public String getAffiliateName() {
+		return affiliateName;
 	}
 
-	public void setAffilateName(String affilateName) {
-		this.affilateName = affilateName;
+	public void setAffiliateName(String affiliateName) {
+		this.affiliateName = affiliateName;
 	}
-
+	
 	public String getEmail() {
 		return email;
 	}

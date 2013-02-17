@@ -55,10 +55,12 @@ import com.jpoweredcart.admin.model.report.jdbc.AffiliateReportAdminModelImpl;
 import com.jpoweredcart.admin.model.report.jdbc.CustomerReportAdminModelImpl;
 import com.jpoweredcart.admin.model.report.jdbc.ProductReportAdminModelImpl;
 import com.jpoweredcart.admin.model.report.jdbc.SaleReportAdminModelImpl;
+import com.jpoweredcart.admin.model.sale.AffiliateAdminModel;
 import com.jpoweredcart.admin.model.sale.CustomerGroupAdminModel;
 import com.jpoweredcart.admin.model.sale.IpBlacklistAdminModel;
 import com.jpoweredcart.admin.model.sale.OrderAdminModel;
 import com.jpoweredcart.admin.model.sale.VoucherAdminModel;
+import com.jpoweredcart.admin.model.sale.jdbc.AffiliateAdminModelImpl;
 import com.jpoweredcart.admin.model.sale.jdbc.CustomerGroupAdminModelImpl;
 import com.jpoweredcart.admin.model.sale.jdbc.IpBlacklistAdminModelImpl;
 import com.jpoweredcart.admin.model.sale.jdbc.OrderAdminModelImpl;
@@ -127,6 +129,8 @@ public class AdminModelConfig {
 	public LengthClassAdminModel lengthClassAdminModel(){ return new LengthClassAdminModelImpl(); }
 	
 	//================= Sale ========================//
+	@Bean
+	public AffiliateAdminModel affiliateAdminModel(){ return new AffiliateAdminModelImpl(); }
 	@Bean
 	public OrderAdminModel orderAdminModel(){ return new OrderAdminModelImpl(); }
 	@Bean

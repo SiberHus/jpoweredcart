@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,16 +78,34 @@ public class AffiliateAdminModelImpl extends BaseModel implements AffiliateAdmin
 	}
 	
 	@Override
+	public AffiliateForm newForm() {
+		
+		String uniqueCode = null;
+		int count = 0;
+		
+		do{
+			uniqueCode = RandomStringUtils.randomAlphanumeric(13);
+			String sql = "SELECT COUNT(*) FROM "+quoteTable("affiliate")+" WHERE code=?";
+			count = getJdbcOperations().queryForInt(sql, uniqueCode);
+		}while(count>0);
+		
+		AffiliateForm form = new AffiliateForm();
+		form.setCode(uniqueCode);
+		
+		return form;
+	}
+	
+	@Override
 	public AffiliateForm getForm(Integer affId) {
 		
-		String sql = "SELECT * FROM "+quoteTable("affiliate");
+		String sql = "SELECT * FROM "+quoteTable("affiliate")+" WHERE affiliate_id=?";
 		return getJdbcOperations().queryForObject(sql, new Object[]{affId}, 
 				new AffiliateRowMapper.Form());
 	}
 
 	@Override
 	public Affiliate get(Integer affId) {
-		String sql = "SELECT * FROM "+quoteTable("affiliate");
+		String sql = "SELECT * FROM "+quoteTable("affiliate")+" WHERE affiliate_id=?";
 		return getJdbcOperations().queryForObject(sql, new Object[]{affId}, 
 				new AffiliateRowMapper());
 	}
@@ -104,9 +123,9 @@ public class AffiliateAdminModelImpl extends BaseModel implements AffiliateAdmin
 		String sql = "SELECT *, CONCAT(a.firstname, ' ', a.lastname) AS name, (SELECT SUM(at.amount) FROM "+quoteTable("affiliate_transaction")+
 				" at WHERE at.affiliate_id = a.affiliate_id GROUP BY at.affiliate_id) AS balance FROM "+
 				quoteTable("affiliate")+" a WHERE 1=1 ";
-		if(StringUtils.isNotBlank(filter.getAffilateName())){
+		if(StringUtils.isNotBlank(filter.getAffiliateName())){
 			sql += "AND CONCAT(a.firstname, ' ', a.lastname) LIKE ? ";
-			params.add("%"+filter.getAffilateName()+"%");
+			params.add("%"+filter.getAffiliateName()+"%");
 		}
 		if(StringUtils.isNotBlank(filter.getEmail())){
 			sql += "AND LCASE(a.email) = ? ";
@@ -125,13 +144,15 @@ public class AffiliateAdminModelImpl extends BaseModel implements AffiliateAdmin
 			params.add(filter.getApproved());
 		}
 		if(filter.getDateAdded()!=null){
-			sql += "AND a.date_added = ? ";
-			params.add(filter.getDateAdded());
+			sql += "AND a.date_added >= ? ";
+			params.add(filter.getDateAdded().getTime());
 		}
 		
 		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
 				"name","a.email","a.code","a.status","a.approved","a.date_added");
-		
+		query.addParameters(params.toArray());
+		System.out.println(query.getSql());
+		System.out.println(query.getParameterList());
 		return getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new AffiliateRowMapper(){
 					@Override
@@ -164,9 +185,9 @@ public class AffiliateAdminModelImpl extends BaseModel implements AffiliateAdmin
 	public int getTotal(AffiliateFilter filter) {
 		List<Object> params = new ArrayList<Object>();
 		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("affiliate")+" WHERE 1=1 ";
-		if(StringUtils.isNotBlank(filter.getAffilateName())){
+		if(StringUtils.isNotBlank(filter.getAffiliateName())){
 			sql += "AND CONCAT(firstname, ' ', lastname) LIKE ? ";
-			params.add("%"+filter.getAffilateName()+"%");
+			params.add("%"+filter.getAffiliateName()+"%");
 		}
 		if(StringUtils.isNotBlank(filter.getEmail())){
 			sql += "AND LCASE(email) = ? ";
@@ -185,8 +206,8 @@ public class AffiliateAdminModelImpl extends BaseModel implements AffiliateAdmin
 			params.add(filter.getApproved());
 		}
 		if(filter.getDateAdded()!=null){
-			sql += "AND date_added = ? ";
-			params.add(filter.getDateAdded());
+			sql += "AND date_added >= ? ";
+			params.add(filter.getDateAdded().getTime());
 		}
 		
 		return getJdbcOperations().queryForInt(sql, params.toArray());

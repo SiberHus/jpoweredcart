@@ -89,7 +89,7 @@ public class IpBlacklistAdminController extends BaseController {
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
-	public String delete(@RequestParam("selected") Integer[] ids, Model model,
+	public String delete(@RequestParam(value="selected",required=false) Integer[] ids, Model model,
 			RedirectAttributes redirect){
 		checkModifyPermission();
 		boolean error = false;
@@ -97,8 +97,8 @@ public class IpBlacklistAdminController extends BaseController {
 			if(!error) for(Integer id: ids){
 				ipBlacklistAdminModel.delete(id);
 			}
+			if(!error) redirect.addFlashAttribute("msg_success", "text.success");
 		}
-		if(!error) redirect.addFlashAttribute("msg_success", "text.success");
 		
 		return "redirect:/admin/sale/ipBlacklist";
 	}

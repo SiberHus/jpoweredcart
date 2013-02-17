@@ -17,6 +17,8 @@ public interface AffiliateAdminModel {
 	
 	public void delete(Integer affId);
 	
+	public AffiliateForm newForm();
+	
 	public AffiliateForm getForm(Integer affId);
 	
 	public Affiliate get(Integer affId);
