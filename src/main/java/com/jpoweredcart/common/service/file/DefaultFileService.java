@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -174,7 +173,10 @@ public class DefaultFileService implements FileService {
 	
 	@Override
 	public String ensureEndingSlash(String path){
-		if(path!=null && !(path.endsWith("/") || path.endsWith("\\"))){
+		if (path == null) {
+			throw new IllegalArgumentException("path cannot be null");
+		}
+		if(!(path.endsWith("/") || path.endsWith("\\"))){
 			return path+File.separator;
 		}
 		return path;
@@ -186,7 +188,8 @@ public class DefaultFileService implements FileService {
 //		} catch (UnsupportedEncodingException e) {
 //			throw new RuntimeException(e);
 //		}
-		return StringEscapeUtils.escapeHtml4(path);
+//		return StringEscapeUtils.escapeHtml4(path);
+		return path;
 	}
 	
 }

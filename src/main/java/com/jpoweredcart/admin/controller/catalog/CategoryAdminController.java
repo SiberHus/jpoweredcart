@@ -24,7 +24,7 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.catalog.Category;
 import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import com.jpoweredcart.common.security.UserPermissions;
-import com.jpoweredcart.common.service.image.ImageService;
+import com.jpoweredcart.common.service.media.MediaService;
 import com.jpoweredcart.common.view.Pagination;
 
 @Controller
@@ -41,7 +41,7 @@ public class CategoryAdminController extends BaseController {
 	private LayoutAdminModel layoutAdminModel; 
 	
 	@Inject
-	private ImageService imageService;
+	private MediaService mediaService;
 	
 	@RequestMapping(value={"", "/"})
 	public String index(Model model, HttpServletRequest request){
@@ -124,7 +124,7 @@ public class CategoryAdminController extends BaseController {
 	}
 	
 	private void addFormAttributes(Model model, HttpServletRequest request){
-		String noImageUrl = imageService.getImageUrl("no_image.jpg");
+		String noImageUrl = mediaService.getImageUrl("no_image.jpg");
 		model.addAttribute("noImage", noImageUrl);
 		String separator = message(request, "text.separator");
 		model.addAttribute("categories", categoryAdminModel.getList(separator, PageParam.list()));

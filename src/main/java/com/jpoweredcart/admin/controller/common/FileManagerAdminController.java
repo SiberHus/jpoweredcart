@@ -22,17 +22,17 @@ import com.jpoweredcart.common.service.file.DirectoryInfo;
 import com.jpoweredcart.common.service.file.FileFilters;
 import com.jpoweredcart.common.service.file.FileInfo;
 import com.jpoweredcart.common.service.file.FileService;
-import com.jpoweredcart.common.service.image.ImageService;
+import com.jpoweredcart.common.service.media.MediaService;
 
 @Controller
 @RequestMapping("/admin/common/fileManager")
 public class FileManagerAdminController extends BaseController {
 	
 	@Inject
-	private ImageService imageService;
+	private MediaService mediaService;
 	
 	@Inject
-	private FileService fileService;
+	private FileService mediaFileService;
 	
 	@RequestMapping(value={"","/"})
 	public String index(Model model, HttpServletRequest request){
@@ -48,9 +48,11 @@ public class FileManagerAdminController extends BaseController {
 	@RequestMapping(value="/image", produces={"text/plain"})
 	public @ResponseBody String getImage(@RequestParam String image, HttpServletRequest request){
 		
+		String thumbnailUrl = mediaService.getThumbnailUrl(image, 100, 100);
+		logger.debug("Request image: {}", image);
+		logger.debug("Thumbnail URL: {}", request.getContextPath()+thumbnailUrl);
 		
-		System.out.println(image);
-		return "/resources/image/"+image;
+		return request.getContextPath()+thumbnailUrl;
 	}
 	
 	@RequestMapping(value="/files")
@@ -58,13 +60,13 @@ public class FileManagerAdminController extends BaseController {
 		
 		FileFilter imageFileFilter = new FileFilters.MediaFileFilter();
 		
-		return fileService.getFiles(directory, imageFileFilter);
+		return mediaFileService.getFiles(directory, imageFileFilter);
 	}
 	
 	@RequestMapping(value="/directory")
 	public @ResponseBody List<DirectoryInfo> getDirectories(@RequestParam(value="directory", required=false) String directory){
 		
-		return fileService.getDirectories(directory);
+		return mediaFileService.getDirectories(directory);
 	}
 	
 	
@@ -74,15 +76,15 @@ public class FileManagerAdminController extends BaseController {
 		
 		ActionResult result = new ActionResult();
 		
-		directory = fileService.ensureEndingSlash(directory);
+		directory = mediaFileService.ensureEndingSlash(directory);
 		
 		if(StringUtils.isNotEmpty(directory)){
-			if(!fileService.isDirectory(directory)){
+			if(!mediaFileService.isDirectory(directory)){
 				result.setError(message(request, "error.directory"));
 			}
 			
 			if(StringUtils.isNotEmpty(name)){
-				if(fileService.exists(directory+name)){
+				if(mediaFileService.exists(directory+name)){
 					result.setError(message(request, "error.exists"));
 				}
 			}else{
@@ -97,7 +99,7 @@ public class FileManagerAdminController extends BaseController {
 		}
 		
 		if(result.getError()==null){
-			if(fileService.makeDir(directory, name)){
+			if(mediaFileService.makeDir(directory, name)){
 				result.setSuccess(message(request, "text.create"));
 			}else{
 				result.setError(message(request, "error.directory"));
@@ -114,7 +116,7 @@ public class FileManagerAdminController extends BaseController {
 		ActionResult result = new ActionResult();
 		
 		if(StringUtils.isNotEmpty(path)){
-			if(!fileService.exists(path)){
+			if(!mediaFileService.exists(path)){
 				result.setError(message(request, "error.select"));
 			}
 			
@@ -129,7 +131,7 @@ public class FileManagerAdminController extends BaseController {
 			result.setError(message(request, "error.permission"));
 		}
 		if(result.getError()==null){
-			if(fileService.delete(path)){
+			if(mediaFileService.delete(path)){
 				result.setSuccess(message(request, "text.delete"));
 			}else{
 				result.setError(message(request, "error.delete"));
@@ -145,12 +147,12 @@ public class FileManagerAdminController extends BaseController {
 		ActionResult result = new ActionResult();
 		
 		if(StringUtils.isNotEmpty(from) && StringUtils.isNotEmpty(to)){
-			if(!fileService.exists(from)){
+			if(!mediaFileService.exists(from)){
 				result.setError(message(request, "error.missing"));
 			}else if(from=="/"){
 				result.setError(message(request, "error.default"));
 			}
-			if(!fileService.exists(to)){
+			if(!mediaFileService.exists(to)){
 				result.setError(message(request, "error.move"));
 			}
 		}else{
@@ -162,7 +164,7 @@ public class FileManagerAdminController extends BaseController {
 		}
 		
 		if(result.getError()==null){
-			if(fileService.move(from, to)){
+			if(mediaFileService.move(from, to)){
 				result.setSuccess(message(request, "text.move"));
 			}else{
 				result.setError(message(request, "error.move"));
@@ -181,7 +183,7 @@ public class FileManagerAdminController extends BaseController {
 		if(StringUtils.isNotEmpty(path)){
 			if(name==null || name.length()<3 || name.length()> 255){
 				result.setError(message(request, "error.filename"));
-			}else if(!fileService.exists(path) || name=="/"){
+			}else if(!mediaFileService.exists(path) || name=="/"){
 				result.setError(message(request, "error.copy"));
 			}
 		}else{
@@ -193,7 +195,7 @@ public class FileManagerAdminController extends BaseController {
 		}
 		
 		if(result.getError()==null){
-			if(fileService.copy(path, name)){
+			if(mediaFileService.copy(path, name)){
 				result.setSuccess(message(request, "text.copy"));
 			}else{
 				result.setError(message(request, "error.copy"));
@@ -212,7 +214,7 @@ public class FileManagerAdminController extends BaseController {
 		if(StringUtils.isNotEmpty(path)){
 			if(name==null || name.length()<3 || name.length()> 255){
 				result.setError(message(request, "error.filename"));
-			}else if(!fileService.exists(path) || name=="/"){
+			}else if(!mediaFileService.exists(path) || name=="/"){
 				result.setError(message(request, "error.rename"));
 			}
 		}else{
@@ -224,7 +226,7 @@ public class FileManagerAdminController extends BaseController {
 		}
 		
 		if(result.getError()==null){
-			if(fileService.rename(path, name)){
+			if(mediaFileService.rename(path, name)){
 				result.setSuccess(message(request, "text.rename"));
 			}else{
 				result.setError(message(request, "error.rename"));
@@ -244,7 +246,7 @@ public class FileManagerAdminController extends BaseController {
 		
 		if(StringUtils.isNotEmpty(directory)){
 			
-			if(!fileService.isDirectory(directory)){
+			if(!mediaFileService.isDirectory(directory)){
 				result.setError(message(request, "error.directory"));
 			}else{
 				if(multipartFile.isEmpty()){
@@ -272,7 +274,7 @@ public class FileManagerAdminController extends BaseController {
 		}
 		
 		if(result.getError()==null){
-			if(fileService.upload(multipartFile, fileService.ensureEndingSlash(directory)+fileName)){
+			if(mediaFileService.upload(multipartFile, mediaFileService.ensureEndingSlash(directory)+fileName)){
 				result.setSuccess(message(request, "text.uploaded"));
 			}else{
 				result.setError(message(request, "error.uploaded"));

@@ -10,6 +10,14 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.jpoweredcart.admin.model.design.LayoutAdminModel;
 import com.jpoweredcart.admin.model.localisation.CountryAdminModel;
 import com.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
@@ -26,17 +34,10 @@ import com.jpoweredcart.common.entity.sale.CustomerGroup;
 import com.jpoweredcart.common.entity.setting.Store;
 import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import com.jpoweredcart.common.security.UserPermissions;
-import com.jpoweredcart.common.service.image.ImageService;
+import com.jpoweredcart.common.service.media.MediaService;
 import com.jpoweredcart.common.service.setting.DefaultSettings;
 import com.jpoweredcart.common.service.setting.SettingGroup;
 import com.jpoweredcart.common.view.Pagination;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/setting/store")
@@ -61,7 +62,7 @@ public class StoreAdminController extends BaseController {
 	private CustomerGroupAdminModel customerGroupAdminModel;
 	
 	@Inject
-	private ImageService imageService;
+	private MediaService mediaService;
 	
 	@RequestMapping(value={"", "/"})
 	public String index(Model model, HttpServletRequest request){
@@ -110,7 +111,7 @@ public class StoreAdminController extends BaseController {
 		String templates[] = new File(templateBaseDir).list();
 		model.addAttribute("templates", templates);
 		
-		String noImageUrl = imageService.getImageUrl("no_image.jpg");
+		String noImageUrl = mediaService.getImageUrl("no_image.jpg");
 		model.addAttribute("logo", noImageUrl);
 		model.addAttribute("icon", noImageUrl);
 		model.addAttribute("noImage", noImageUrl);

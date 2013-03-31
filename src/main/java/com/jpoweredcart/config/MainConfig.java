@@ -38,9 +38,8 @@ import com.jpoweredcart.common.service.email.EmailService;
 import com.jpoweredcart.common.service.email.JmsEmailService;
 import com.jpoweredcart.common.service.file.DefaultFileService;
 import com.jpoweredcart.common.service.file.FileService;
-import com.jpoweredcart.common.service.image.AbstractImageService;
-import com.jpoweredcart.common.service.image.DefaultImageService;
-import com.jpoweredcart.common.service.image.ImageService;
+import com.jpoweredcart.common.service.media.DefaultMediaService;
+import com.jpoweredcart.common.service.media.MediaService;
 import com.jpoweredcart.common.service.setting.DefaultSettingService;
 import com.jpoweredcart.common.service.setting.SettingService;
 
@@ -195,57 +194,49 @@ public class MainConfig {
 	}
 	
 	@Bean
-	public FileService fileService(){
+	public FileService mediaFileService(){
 		
 		DefaultFileService defaultFileService = new DefaultFileService();
-		String imgDir = env.getProperty("image.dir");
-		String imgBaseUrl = env.getProperty("image.baseUrl");
+		String imgDir = env.getProperty("media.imageDir");
+		String imgBaseUrl = env.getProperty("media.imageBaseUrl");
 		if(StringUtils.isBlank(imgBaseUrl)){
-			throw new IllegalArgumentException("image.baseUrl cannot be blank");
+			throw new IllegalArgumentException("media.imageBaseUrl cannot be blank");
 		}else if(imgBaseUrl.startsWith("/") && StringUtils.isBlank(imgDir)){
-			defaultFileService.setBaseDir(servletContext.getRealPath(imgBaseUrl));
-		}else{
-			defaultFileService.setBaseDir(imgDir);
+			imgDir = servletContext.getRealPath(imgBaseUrl);
 		}
+		imgDir = defaultFileService.ensureEndingSlash(imgDir)+"data";
+		defaultFileService.setBaseDir(imgDir);
+		
 		return defaultFileService;
 	}
 	
 	@Bean
-	public ImageService imageService(){
+	public MediaService mediaService(){
 		
-		AbstractImageService imageService = null;
-		String imgDir = env.getProperty("image.dir");
-		String imgBaseUrl = env.getProperty("image.baseUrl");
-		String thumbDir = env.getProperty("thumbnail.dir");
-		String thumbBaseUrl = env.getProperty("thumbnail.baseUrl");
+		FileService mediaFileService = mediaFileService();
+		DefaultMediaService defaultMediaService = new DefaultMediaService(mediaFileService);
+		String imgDir = env.getProperty("media.imageDir");
+		String imgBaseUrl = env.getProperty("media.imageBaseUrl");
+		String thumbDir = env.getProperty("media.thumbnailDir");
+		String thumbBaseUrl = env.getProperty("media.thumbnailBaseUrl");
 		
-		DefaultImageService fsImageService = new DefaultImageService();
 		if(StringUtils.isBlank(imgBaseUrl)){
-			throw new IllegalArgumentException("image.baseUrl cannot be blank");
-		}else if(imgBaseUrl.startsWith("/")){
-			if(StringUtils.isBlank(imgDir)){
-				fsImageService.setImageDir(servletContext.getRealPath(imgBaseUrl));
-			}
-			fsImageService.setImageBaseUrl(servletContext.getContextPath()+imgBaseUrl);
-		}else{
-			fsImageService.setImageDir(imgDir);
-			fsImageService.setImageBaseUrl(imgBaseUrl);
+			throw new IllegalArgumentException("media.imageBaseUrl cannot be blank");
+		}else if(imgBaseUrl.startsWith("/") && StringUtils.isBlank(imgDir)){
+			imgDir = servletContext.getRealPath(imgBaseUrl);
 		}
-		if(StringUtils.isBlank(thumbBaseUrl)){
-			throw new IllegalArgumentException("thumbnail.baseUrl cannot be blank");
-		}else if(thumbBaseUrl.startsWith("/")){
-			if(StringUtils.isBlank(thumbDir)){
-				fsImageService.setThumbnailDir(servletContext.getRealPath(imgBaseUrl));
-			}
-			fsImageService.setThumbnailBaseUrl(servletContext.getContextPath()+thumbBaseUrl);
-		}else{
-			fsImageService.setThumbnailDir(thumbDir);
-			fsImageService.setThumbnailBaseUrl(imgBaseUrl);
-		}
-		imageService = fsImageService;
+		defaultMediaService.setImageDir(imgDir);
+		defaultMediaService.setImageBaseUrl(imgBaseUrl);
 		
-		return imageService;
+		if(StringUtils.isBlank(thumbBaseUrl)){
+			throw new IllegalArgumentException("media.thumbnailBaseUrl cannot be blank");
+		}else if(thumbBaseUrl.startsWith("/") && StringUtils.isBlank(thumbDir)){
+			thumbDir = servletContext.getRealPath(thumbBaseUrl);
+		}
+		defaultMediaService.setThumbnailDir(thumbDir);
+		defaultMediaService.setThumbnailBaseUrl(thumbBaseUrl);
+		
+		return defaultMediaService;
 	}
-	
 }
 
