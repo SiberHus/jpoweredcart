@@ -16,7 +16,7 @@ import com.jpoweredcart.admin.model.report.CustomerReportAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
-import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.setting.SettingKey;
 
 public class CustomerReportAdminModelImpl extends BaseModel implements CustomerReportAdminModel {
 

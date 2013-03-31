@@ -12,7 +12,7 @@ import com.jpoweredcart.admin.model.report.ProductReportAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
-import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.setting.SettingKey;
 
 public class ProductReportAdminModelImpl extends BaseModel implements ProductReportAdminModel {
 	

@@ -20,3 +20,9 @@ src/test/java/Test.java
 bash.exe.stackdump
 scratchpad.txt
 tmp/
+
+#test image directory
+src/main/webapp/resources/image/data/test/
+#thumbnail image directory
+src/main/webapp/resources/image/thumbnails
+

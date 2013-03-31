@@ -29,8 +29,8 @@ import com.jpoweredcart.common.entity.sale.OrderProduct;
 import com.jpoweredcart.common.entity.sale.OrderTotal;
 import com.jpoweredcart.common.entity.sale.OrderVoucher;
 import com.jpoweredcart.common.entity.setting.Store;
-import com.jpoweredcart.common.service.SettingGroup;
-import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.setting.SettingGroup;
+import com.jpoweredcart.common.service.setting.SettingKey;
 
 public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 	

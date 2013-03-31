@@ -29,7 +29,7 @@ import com.jpoweredcart.common.entity.catalog.InformationToLayout;
 import com.jpoweredcart.common.entity.catalog.InformationToStore;
 import com.jpoweredcart.common.entity.setting.Store;
 import com.jpoweredcart.common.jdbc.ScalarResultSetExtractor;
-import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.setting.SettingKey;
 
 public class InformationAdminModelImpl extends BaseModel implements InformationAdminModel {
 	

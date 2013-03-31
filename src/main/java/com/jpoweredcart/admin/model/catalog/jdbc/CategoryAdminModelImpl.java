@@ -37,7 +37,7 @@ import com.jpoweredcart.common.entity.catalog.CategoryToStore;
 import com.jpoweredcart.common.entity.setting.Store;
 import com.jpoweredcart.common.jdbc.MapResultSetExtractor;
 import com.jpoweredcart.common.jdbc.ScalarResultSetExtractor;
-import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.setting.SettingKey;
 
 public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminModel {
 	

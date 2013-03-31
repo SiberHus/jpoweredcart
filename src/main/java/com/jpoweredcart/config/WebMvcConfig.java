@@ -1,22 +1,23 @@
 package com.jpoweredcart.config;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Properties;
 
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
-import com.jpoweredcart.common.exception.TemplateMappingExceptionResolver;
-import com.jpoweredcart.common.i18n.CustomMessageResolver;
-import com.jpoweredcart.common.i18n.MessageResolver;
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -31,6 +32,10 @@ import org.thymeleaf.spring3.SpringTemplateEngine;
 import org.thymeleaf.spring3.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
+
+import com.jpoweredcart.common.exception.TemplateMappingExceptionResolver;
+import com.jpoweredcart.common.i18n.CustomMessageResolver;
+import com.jpoweredcart.common.i18n.MessageResolver;
 
 
 @Configuration
@@ -107,6 +112,19 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		resolver.setTemplateEngine(templateEngine());
 		resolver.setCharacterEncoding(env.getProperty("language.encoding", "UTF-8"));
 		return resolver;
+	}
+	
+	@Bean
+	public MultipartResolver multipartResolver() throws IOException{
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+		String tmpDir = env.getProperty("fileUpload.tmpDir", "");
+		if(!tmpDir.equals("")){
+			multipartResolver.setUploadTempDir(new FileSystemResource(tmpDir));
+		}
+		long maxSize = env.getProperty("fileUpload.maxSize", Long.class);
+		if(maxSize>0) multipartResolver.setMaxUploadSize(maxSize);
+		
+		return multipartResolver;
 	}
 	
 	@Bean

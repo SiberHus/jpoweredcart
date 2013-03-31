@@ -24,7 +24,7 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.catalog.Category;
 import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import com.jpoweredcart.common.security.UserPermissions;
-import com.jpoweredcart.common.service.ImageService;
+import com.jpoweredcart.common.service.image.ImageService;
 import com.jpoweredcart.common.view.Pagination;
 
 @Controller

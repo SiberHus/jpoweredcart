@@ -16,14 +16,6 @@ import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.apache.activemq.store.PersistenceAdapter;
 import org.apache.activemq.store.kahadb.KahaDBPersistenceAdapter;
 import org.apache.commons.lang3.StringUtils;
-import com.jpoweredcart.common.service.EmailService;
-import com.jpoweredcart.common.service.ImageService;
-import com.jpoweredcart.common.service.SettingService;
-import com.jpoweredcart.common.service.impl.AbstractImageService;
-import com.jpoweredcart.common.service.impl.DefaultEmailService;
-import com.jpoweredcart.common.service.impl.DefaultSettingService;
-import com.jpoweredcart.common.service.impl.FileSystemImageService;
-import com.jpoweredcart.common.service.impl.JmsEmailService;
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -41,6 +33,16 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.jolbox.bonecp.BoneCPDataSource;
+import com.jpoweredcart.common.service.email.DefaultEmailService;
+import com.jpoweredcart.common.service.email.EmailService;
+import com.jpoweredcart.common.service.email.JmsEmailService;
+import com.jpoweredcart.common.service.file.DefaultFileService;
+import com.jpoweredcart.common.service.file.FileService;
+import com.jpoweredcart.common.service.image.AbstractImageService;
+import com.jpoweredcart.common.service.image.DefaultImageService;
+import com.jpoweredcart.common.service.image.ImageService;
+import com.jpoweredcart.common.service.setting.DefaultSettingService;
+import com.jpoweredcart.common.service.setting.SettingService;
 
 /**
  * Main configuration class for the application.
@@ -193,27 +195,57 @@ public class MainConfig {
 	}
 	
 	@Bean
+	public FileService fileService(){
+		
+		DefaultFileService defaultFileService = new DefaultFileService();
+		String imgDir = env.getProperty("image.dir");
+		String imgBaseUrl = env.getProperty("image.baseUrl");
+		if(StringUtils.isBlank(imgBaseUrl)){
+			throw new IllegalArgumentException("image.baseUrl cannot be blank");
+		}else if(imgBaseUrl.startsWith("/") && StringUtils.isBlank(imgDir)){
+			defaultFileService.setBaseDir(servletContext.getRealPath(imgBaseUrl));
+		}else{
+			defaultFileService.setBaseDir(imgDir);
+		}
+		return defaultFileService;
+	}
+	
+	@Bean
 	public ImageService imageService(){
 		
 		AbstractImageService imageService = null;
-		String imgBaseDir = env.getProperty("image.baseDir");
+		String imgDir = env.getProperty("image.dir");
 		String imgBaseUrl = env.getProperty("image.baseUrl");
+		String thumbDir = env.getProperty("thumbnail.dir");
+		String thumbBaseUrl = env.getProperty("thumbnail.baseUrl");
 		
-		FileSystemImageService fsImageService = new FileSystemImageService();
+		DefaultImageService fsImageService = new DefaultImageService();
 		if(StringUtils.isBlank(imgBaseUrl)){
 			throw new IllegalArgumentException("image.baseUrl cannot be blank");
 		}else if(imgBaseUrl.startsWith("/")){
-			if(StringUtils.isBlank(imgBaseDir)){
-				fsImageService.setBaseDir(servletContext.getRealPath(imgBaseUrl));
+			if(StringUtils.isBlank(imgDir)){
+				fsImageService.setImageDir(servletContext.getRealPath(imgBaseUrl));
 			}
-			fsImageService.setBaseUrl(servletContext.getContextPath()+imgBaseUrl);
+			fsImageService.setImageBaseUrl(servletContext.getContextPath()+imgBaseUrl);
 		}else{
-			fsImageService.setBaseDir(imgBaseDir);
-			fsImageService.setBaseUrl(imgBaseUrl);
+			fsImageService.setImageDir(imgDir);
+			fsImageService.setImageBaseUrl(imgBaseUrl);
+		}
+		if(StringUtils.isBlank(thumbBaseUrl)){
+			throw new IllegalArgumentException("thumbnail.baseUrl cannot be blank");
+		}else if(thumbBaseUrl.startsWith("/")){
+			if(StringUtils.isBlank(thumbDir)){
+				fsImageService.setThumbnailDir(servletContext.getRealPath(imgBaseUrl));
+			}
+			fsImageService.setThumbnailBaseUrl(servletContext.getContextPath()+thumbBaseUrl);
+		}else{
+			fsImageService.setThumbnailDir(thumbDir);
+			fsImageService.setThumbnailBaseUrl(imgBaseUrl);
 		}
 		imageService = fsImageService;
 		
 		return imageService;
 	}
+	
 }
 

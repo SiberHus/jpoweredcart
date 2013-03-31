@@ -47,7 +47,7 @@
 			<span id="head.text.confirm" th:text="#{head.text.confirm}" style="display: none;"></span>
 			<div id="header">
 				<div class="div1">
-					<div class="div2"><img th:src="@{/resources/admin/image/logo.png}" th:title="#{heading.title}" onclick="location = '${home}'" /></div>
+					<div class="div2"><img th:src="@{/resources/admin/image/logo.png}" th:title="#{heading.title}" th:onclick="'location = \''+@{/admin/common/home}+'\''" /></div>
 					<div sec:authorize="isAuthenticated()" class="div3"><img th:src="@{/resources/admin/image/lock.png}" alt="" style="position: relative; top: 3px;" />&nbsp;
 						<span th:text="#{head.text.logged}">You are logged in as</span>&nbsp;
 						<span sec:authentication="name"></span>

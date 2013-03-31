@@ -17,7 +17,7 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.ReturnActions;
 import com.jpoweredcart.common.entity.localisation.ReturnActions.ReturnAction;
-import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.setting.SettingKey;
 
 public class ReturnActionAdminModelImpl extends BaseModel implements ReturnActionAdminModel {
 	

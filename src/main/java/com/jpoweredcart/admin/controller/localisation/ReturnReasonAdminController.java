@@ -15,7 +15,7 @@ import com.jpoweredcart.common.entity.localisation.ReturnReasons;
 import com.jpoweredcart.common.entity.localisation.ReturnReasons.ReturnReason;
 import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import com.jpoweredcart.common.security.UserPermissions;
-import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.setting.SettingKey;
 import com.jpoweredcart.common.view.Pagination;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -17,7 +17,7 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.WeightClass;
 import com.jpoweredcart.common.entity.localisation.WeightClassDesc;
-import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.setting.SettingKey;
 
 public class WeightClassAdminModelImpl extends BaseModel implements WeightClassAdminModel {
 	

@@ -23,7 +23,7 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.localisation.LengthClass;
 import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import com.jpoweredcart.common.security.UserPermissions;
-import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.setting.SettingKey;
 import com.jpoweredcart.common.view.Pagination;
 
 

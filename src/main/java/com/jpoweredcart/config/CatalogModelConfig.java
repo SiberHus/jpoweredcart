@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.JdbcOperations;
 
 import com.jpoweredcart.catalog.model.catalog.ProductModel;
 import com.jpoweredcart.catalog.model.catalog.jdbc.ProductModelImpl;
-import com.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.common.service.setting.SettingService;
 
 @Configuration
 public class CatalogModelConfig {

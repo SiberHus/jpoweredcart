@@ -22,7 +22,7 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.catalog.AttributeGroup;
 import com.jpoweredcart.common.entity.catalog.AttributeGroupDesc;
-import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.setting.SettingKey;
 
 public class AttributeGroupAdminModelImpl extends BaseModel implements AttributeGroupAdminModel{
 

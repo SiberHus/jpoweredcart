@@ -1,4 +1,4 @@
-package com.jpoweredcart.common.service.impl;
+package com.jpoweredcart.common.service.email;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -6,7 +6,7 @@ import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.jms.Session;
 
-import com.jpoweredcart.common.service.EmailMessage;
+
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 

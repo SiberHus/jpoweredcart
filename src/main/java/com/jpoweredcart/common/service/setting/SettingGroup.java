@@ -1,4 +1,4 @@
-package com.jpoweredcart.common.service;
+package com.jpoweredcart.common.service.setting;
 
 
 public class SettingGroup {

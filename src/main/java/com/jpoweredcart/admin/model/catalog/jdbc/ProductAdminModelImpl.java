@@ -24,7 +24,7 @@ import com.jpoweredcart.common.entity.catalog.ProductToCategory;
 import com.jpoweredcart.common.entity.catalog.ProductToDownload;
 import com.jpoweredcart.common.entity.catalog.ProductToLayout;
 import com.jpoweredcart.common.entity.catalog.ProductToStore;
-import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.setting.SettingKey;
 
 public class ProductAdminModelImpl extends BaseModel implements ProductAdminModel {
 

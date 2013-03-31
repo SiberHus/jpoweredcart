@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcOperations;
 
-import com.jpoweredcart.common.service.DefaultSettings;
-import com.jpoweredcart.common.service.SettingService;
+import com.jpoweredcart.common.service.setting.DefaultSettings;
+import com.jpoweredcart.common.service.setting.SettingService;
 
 
 public class BaseModel {

@@ -1,8 +1,10 @@
-package com.jpoweredcart.common.service;
+package com.jpoweredcart.common.service.email;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.jpoweredcart.common.service.setting.DefaultSettings;
 
 
 public class EmailMessage implements Serializable {

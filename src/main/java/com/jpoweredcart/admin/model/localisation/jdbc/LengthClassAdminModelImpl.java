@@ -23,7 +23,7 @@ import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.Language;
 import com.jpoweredcart.common.entity.localisation.LengthClass;
 import com.jpoweredcart.common.entity.localisation.LengthClassDesc;
-import com.jpoweredcart.common.service.SettingKey;
+import com.jpoweredcart.common.service.setting.SettingKey;
 
 public class LengthClassAdminModelImpl extends BaseModel implements LengthClassAdminModel {
 
