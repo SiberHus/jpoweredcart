@@ -205,6 +205,17 @@ public class FileManagerAdminController extends BaseController {
 		return result;
 	}
 	
+	@RequestMapping(value="/folders")
+	public @ResponseBody String getFolders(){
+		StringBuilder strBuilder = new StringBuilder();
+		for(String folder: mediaFileService.getFolders()){
+			strBuilder.append("<option value=\"").append(folder).append("\">")
+			.append(folder).append("</option>");
+		}
+		return strBuilder.toString();
+	}
+	
+	
 	@RequestMapping(value="/rename")
 	public @ResponseBody ActionResult rename(@RequestParam(value="path", required=false) String path,
 			@RequestParam(value="name", required=false) String name, HttpServletRequest request){

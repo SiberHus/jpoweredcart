@@ -24,6 +24,8 @@ public interface FileService {
 	
 	public boolean copy(String path, String name);
 	
+	public List<String> getFolders();
+	
 	public boolean rename(String from, String to);
 	
 	public boolean upload(MultipartFile multipartFile, String fileName);

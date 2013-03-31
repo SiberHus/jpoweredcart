@@ -27,6 +27,7 @@ public class DefaultFileService implements FileService {
 		if(!baseDirFile.exists()){
 			throw new IllegalArgumentException("baseDir doesn't exist: "+baseDir);
 		}
+		baseDir = baseDirFile.getAbsolutePath();
 		this.baseDir = ensureEndingSlash(baseDir);
 	}
 	
@@ -143,6 +144,26 @@ public class DefaultFileService implements FileService {
 			return false;
 		}
 		return true;
+	}
+	
+	@Override
+	public List<String> getFolders(){
+		
+		List<String> folderList = new ArrayList<String>();
+		File dir = new File(baseDir);
+		addFolders(folderList, dir);
+		return folderList;
+	}
+	
+	private void addFolders(List<String> folderList,File dir){
+		for(File file: dir.listFiles()){
+			if(file.isDirectory()){
+				String folder = file.getAbsolutePath()
+					.substring(baseDir.length());
+				folderList.add(folder);
+				addFolders(folderList, file);
+			}
+		}
 	}
 	
 	@Override
