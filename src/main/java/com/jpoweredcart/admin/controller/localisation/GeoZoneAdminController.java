@@ -47,8 +47,8 @@ public class GeoZoneAdminController extends BaseController {
 	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<GeoZone> currencies = geoZoneAdminModel.getList(pageParam);
-		model.addAttribute("geoZones", currencies);
+		List<GeoZone> geoZoneList = geoZoneAdminModel.getList(pageParam);
+		model.addAttribute("geoZones", geoZoneList);
 		int total = geoZoneAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
@@ -88,11 +88,6 @@ public class GeoZoneAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		if(result.hasErrors()){
-			model.addAttribute("geoZoneForm", geoZoneForm);
-			return "/admin/localisation/geoZoneForm";
-		}
-		
 		String countryIds[] = request.getParameterValues("zoneToGeoZones.countryId");
 		String zoneIds[] = request.getParameterValues("zoneToGeoZones.zoneId");
 		if(countryIds!=null){
@@ -105,6 +100,12 @@ public class GeoZoneAdminController extends BaseController {
 				ztgz.setZoneId(zoneId);
 				geoZoneForm.getZoneToGeoZones().add(ztgz);
 			}
+		}
+		
+		if(result.hasErrors()){
+			model.addAttribute("geoZoneForm", geoZoneForm);
+			model.addAttribute("countries", countryAdminModel.getAll());
+			return "/admin/localisation/geoZoneForm";
 		}
 		
 		if(geoZoneForm.getId()!=null){

@@ -111,8 +111,8 @@
 								<li><a th:href="@{/admin/setting/store}" th:text="#{head.text.setting}">Settings</a></li>
 								<li><a class="parent" th:text="#{head.text.design}">Design</a>
 									<ul>
-										<li><a th:href="${layout}" th:text="#{head.text.layout}">Layouts</a></li>
-										<li><a th:href="${banner}" th:text="#{head.text.banner}">Banners</a></li>
+										<li><a th:href="@{/admin/design/layout}" th:text="#{head.text.layout}">Layouts</a></li>
+										<li><a th:href="@{/admin/design/banner}" th:text="#{head.text.banner}">Banners</a></li>
 									</ul>
 								</li>
 								<li><a class="parent" th:text="#{head.text.users}">Users</a>

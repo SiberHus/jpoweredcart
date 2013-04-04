@@ -11,6 +11,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jpoweredcart.admin.bean.design.LayoutForm;
 import com.jpoweredcart.admin.model.design.LayoutAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
@@ -23,7 +24,7 @@ public class LayoutAdminModelImpl extends BaseModel implements LayoutAdminModel 
 	
 	@Transactional
 	@Override
-	public void create(final Layout layout) {
+	public void create(final LayoutForm layoutForm) {
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcOperations().update(new PreparedStatementCreator() {
@@ -32,35 +33,35 @@ public class LayoutAdminModelImpl extends BaseModel implements LayoutAdminModel 
 					throws SQLException {
 				String sql = "INSERT INTO " +quoteTable("layout") + "(name) VALUES(?)";
 				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1, layout.getName());
+				ps.setString(1, layoutForm.getName());
 				return ps;
 			}
 		}, keyHolder);
 		
 		int layoutId = keyHolder.getKey().intValue();
 		
-		layout.setId(layoutId);
-		addLayoutRoutes(layout);
+		layoutForm.setId(layoutId);
+		addLayoutRoutes(layoutForm);
 	}
 	
 	@Transactional
 	@Override
-	public void update(Layout layout) {
+	public void update(LayoutForm layoutForm) {
 		
 		String sql = "UPDATE " +quoteTable("layout")+ " SET name = ? WHERE layout_id = ?";
-		int num = getJdbcOperations().update(sql, layout.getName(), layout.getId());
+		int num = getJdbcOperations().update(sql, layoutForm.getName(), layoutForm.getId());
 		if(num>0){
 			sql = "DELETE FROM "+quoteTable("layout_route")+ " WHERE layout_id=?";
-			getJdbcOperations().update(sql, layout.getId());
-			addLayoutRoutes(layout);
+			getJdbcOperations().update(sql, layoutForm.getId());
+			addLayoutRoutes(layoutForm);
 		}
 	}
 	
-	private void addLayoutRoutes(Layout layout){
-		if(layout.getLayoutRoutes().size()>0){
+	private void addLayoutRoutes(LayoutForm layoutForm){
+		if(layoutForm.getLayoutRoutes().size()>0){
 			String sql = "INSERT INTO " +quoteTable("layout_route")+ " SET layout_id = ?, store_id = ?, route = ?";
-			for(LayoutRoute route: layout.getLayoutRoutes()){
-				getJdbcOperations().update(sql, layout.getId(), layout.getId(), 
+			for(LayoutRoute route: layoutForm.getLayoutRoutes()){
+				getJdbcOperations().update(sql, layoutForm.getId(), 
 						route.getStoreId(), route.getRoute());
 			}
 		}
@@ -78,16 +79,25 @@ public class LayoutAdminModelImpl extends BaseModel implements LayoutAdminModel 
 	}
 	
 	@Override
-	public Layout get(Integer layoutId) {
-		
+	public LayoutForm newForm(){
+		return new LayoutForm();
+	}
+	
+	@Override
+	public LayoutForm getForm(Integer layoutId){
 		String sql = "SELECT DISTINCT * FROM " +quoteTable("layout")+ " WHERE layout_id =?";
-		Layout layout = getJdbcOperations().queryForObject(sql, 
-				new Object[]{layoutId}, new LayoutRowMapper());
+		LayoutForm layoutForm = getJdbcOperations().queryForObject(sql, 
+				new Object[]{layoutId}, new LayoutRowMapper.Form());
 		
 		List<LayoutRoute> layoutRoutes = getLayoutRoutes(layoutId);
-		layout.setLayoutRoutes(layoutRoutes);
+		layoutForm.setLayoutRoutes(layoutRoutes);
+		return layoutForm;
+	}
+	
+	@Override
+	public Layout get(Integer layoutId) {
 		
-		return layout;
+		return getForm(layoutId);
 	}
 	
 	@Override

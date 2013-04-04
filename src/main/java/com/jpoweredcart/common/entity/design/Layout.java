@@ -1,9 +1,10 @@
 package com.jpoweredcart.common.entity.design;
 
 import java.io.Serializable;
-import java.util.List;
 
-import org.springframework.util.AutoPopulatingList;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 public class Layout implements Serializable {
 
@@ -11,9 +12,8 @@ public class Layout implements Serializable {
 	
 	protected Integer id;
 	
+	@NotBlank @Size(min=3, max=64)
 	protected String name;
-
-	protected List<LayoutRoute> layoutRoutes = new AutoPopulatingList<LayoutRoute>(LayoutRoute.class);
 	
 	public Integer getId() {
 		return id;
@@ -29,14 +29,6 @@ public class Layout implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public List<LayoutRoute> getLayoutRoutes() {
-		return layoutRoutes;
-	}
-	
-	public void setLayoutRoutes(List<LayoutRoute> layoutRoutes) {
-		this.layoutRoutes = new AutoPopulatingList<LayoutRoute>(layoutRoutes, LayoutRoute.class);
 	}
 	
 }
