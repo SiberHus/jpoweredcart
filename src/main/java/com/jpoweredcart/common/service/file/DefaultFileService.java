@@ -10,37 +10,24 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
+
+import com.jpoweredcart.common.utils.PathUtils;
 
 
-public class DefaultFileService implements FileService {
-
-	private String baseDir;
+public class DefaultFileService extends AbstractFileService {
 	
 	private FileFilter dirFilter = new FileFilters.DirectoryFilter();
 	
-	public void setBaseDir(String baseDir){
-		if(StringUtils.isBlank(baseDir)){
-			throw new IllegalArgumentException("baseDir cannot be empty");
-		}
-		File baseDirFile = new File(baseDir);
-		if(!baseDirFile.exists()){
-			throw new IllegalArgumentException("baseDir doesn't exist: "+baseDir);
-		}
-		baseDir = baseDirFile.getAbsolutePath();
-		this.baseDir = ensureEndingSlash(baseDir);
-	}
-	
 	@Override
 	public boolean isDirectory(String path){
-		String absPath = ensureEndingSlash(baseDir+path);
+		String absPath = PathUtils.ensureEndingFileSeparator(getBaseDir()+path);
 		File dirFile = new File(absPath);
 		return dirFile.isDirectory();
 	}
 	
 	@Override
 	public boolean exists(String path){
-		String absPath = ensureEndingSlash(baseDir+path);
+		String absPath = PathUtils.ensureEndingFileSeparator(getBaseDir()+path);
 		File dirFile = new File(absPath);
 		return dirFile.exists();
 	}
@@ -48,7 +35,7 @@ public class DefaultFileService implements FileService {
 	@Override
 	public List<FileInfo> getFiles(String directory, FileFilter filter) {
 		List<FileInfo> fileInfoList = new ArrayList<FileInfo>();
-		String absPath = ensureEndingSlash(baseDir+directory);
+		String absPath = PathUtils.ensureEndingFileSeparator(getBaseDir()+directory);
 		File dirFile = new File(absPath);
 		if(!dirFile.isDirectory()){
 			throw new IllegalArgumentException("directory is not valid: "+absPath);
@@ -59,7 +46,7 @@ public class DefaultFileService implements FileService {
 			FileInfo fileInfo = new FileInfo();
 			fileInfo.setFilename(file.getName());
 			
-			String path = absPath.substring(baseDir.length());
+			String path = absPath.substring(getBaseDir().length());
 			if(StringUtils.isNotEmpty(path)) path += File.separator;
 			path += file.getName();
 			fileInfo.setFile(path);
@@ -80,7 +67,7 @@ public class DefaultFileService implements FileService {
 	@Override
 	public List<DirectoryInfo> getDirectories(String directory) {
 		List<DirectoryInfo> dirInfoList = new ArrayList<DirectoryInfo>();
-		String absPath = ensureEndingSlash(baseDir+directory);
+		String absPath = PathUtils.ensureEndingFileSeparator(getBaseDir()+directory);
 		File dirFile = new File(absPath);
 		if(!dirFile.isDirectory()){
 			throw new IllegalArgumentException("directory is not valid: "+absPath);
@@ -89,7 +76,7 @@ public class DefaultFileService implements FileService {
 		for(File file: files){
 			DirectoryInfo dirInfo = new DirectoryInfo();
 			dirInfo.setData(file.getName());
-			String path = absPath.substring(baseDir.length());
+			String path = absPath.substring(getBaseDir().length());
 			if(StringUtils.isNotEmpty(path)) path += File.separator;
 			path += file.getName();
 			dirInfo.addAttribute("directory", encodePath(path));
@@ -103,7 +90,8 @@ public class DefaultFileService implements FileService {
 	
 	@Override
 	public boolean makeDir(String directory, String name) {
-		File dirFile = new File(baseDir+ensureEndingSlash(directory)+name);
+		File dirFile = new File(getBaseDir()+
+				PathUtils.ensureEndingFileSeparator(directory)+name);
 		System.out.println(dirFile.getAbsolutePath());
 		if(dirFile.mkdir()){
 			dirFile.setReadable(true);
@@ -114,14 +102,14 @@ public class DefaultFileService implements FileService {
 	
 	@Override
 	public boolean delete(String path) {
-		File file = new File(baseDir+path);
+		File file = new File(getBaseDir()+path);
 		return FileUtils.deleteQuietly(file);
 	}
 
 	@Override
 	public boolean move(String from, String to) {
-		File fromFile = new File(baseDir+from);
-		File toFile = new File(baseDir+to);
+		File fromFile = new File(getBaseDir()+from);
+		File toFile = new File(getBaseDir()+to);
 		try{
 			FileUtils.moveToDirectory(fromFile, toFile, false);
 		}catch(IOException e){
@@ -132,7 +120,7 @@ public class DefaultFileService implements FileService {
 	
 	@Override
 	public boolean copy(String path, String name) {
-		File fromFile = new File(baseDir+path);
+		File fromFile = new File(getBaseDir()+path);
 		String newFileExt = FilenameUtils.getExtension(name);
 		if(newFileExt.equals("")){
 			name = name+"."+FilenameUtils.getExtension(path);
@@ -150,7 +138,7 @@ public class DefaultFileService implements FileService {
 	public List<String> getFolders(){
 		
 		List<String> folderList = new ArrayList<String>();
-		File dir = new File(baseDir);
+		File dir = new File(getBaseDir());
 		addFolders(folderList, dir);
 		return folderList;
 	}
@@ -159,7 +147,7 @@ public class DefaultFileService implements FileService {
 		for(File file: dir.listFiles()){
 			if(file.isDirectory()){
 				String folder = file.getAbsolutePath()
-					.substring(baseDir.length());
+					.substring(getBaseDir().length());
 				folderList.add(folder);
 				addFolders(folderList, file);
 			}
@@ -168,7 +156,7 @@ public class DefaultFileService implements FileService {
 	
 	@Override
 	public boolean rename(String path, String name) {
-		File fromFile = new File(baseDir+path);
+		File fromFile = new File(getBaseDir()+path);
 		String newFileExt = FilenameUtils.getExtension(name);
 		if(newFileExt.equals("")){
 			name = name+"."+FilenameUtils.getExtension(path);
@@ -181,36 +169,6 @@ public class DefaultFileService implements FileService {
 		}
 		return true;
 	}
-
-	@Override
-	public boolean upload(MultipartFile multipartFile, String fileName) {
-		try{
-			multipartFile.transferTo(new File(baseDir+fileName));
-		}catch(Exception e){
-			return false;
-		}
-		return true;
-	}
 	
-	@Override
-	public String ensureEndingSlash(String path){
-		if (path == null) {
-			throw new IllegalArgumentException("path cannot be null");
-		}
-		if(!(path.endsWith("/") || path.endsWith("\\"))){
-			return path+File.separator;
-		}
-		return path;
-	}
-	
-	private String encodePath(String path){
-//		try {
-//			return URLEncoder.encode(path,"UTF-8");
-//		} catch (UnsupportedEncodingException e) {
-//			throw new RuntimeException(e);
-//		}
-//		return StringEscapeUtils.escapeHtml4(path);
-		return path;
-	}
 	
 }

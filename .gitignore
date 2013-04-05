@@ -22,7 +22,10 @@ scratchpad.txt
 tmp/
 
 #test image directory
-src/main/webapp/resources/image/data/test/
+src/main/webapp/files/images/data/test/
 #thumbnail image directory
-src/main/webapp/resources/image/thumbnails
+src/main/webapp/files/images/thumbnails
+#download directory
+src/main/webapp/files/downloads
+
 

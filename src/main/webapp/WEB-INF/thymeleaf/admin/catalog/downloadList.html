@@ -7,46 +7,55 @@
 			<div id="content">
 				<div class="breadcrumb">
 					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
-					<a th:href="@{/admin/design/layout}" th:text="#{heading.title}">Layouts</a>
+					<a th:href="@{/admin/catalog/download}" th:text="#{heading.title}">Downloads</a>
 				</div>
 				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
 				<div class="success" th:if="${msg_success!=null}" th:text="#{${msg_success}}"></div>
 				<div class="box">
 					<div class="heading">
 						<h1>
-							<img th:src="@{/resources/admin/image/layout.png}" alt="" />
+							<img th:src="@{/resources/admin/image/download.png}" alt="" />
 							<span th:text="#{heading.title}"></span>
 						</h1>
 						<div class="buttons">
-							<a th:href="@{/admin/design/layout/create}" class="button" th:text="#{button.insert}">Insert</a>
+							<a th:href="@{/admin/catalog/download/create}" class="button" th:text="#{button.insert}">Insert</a>
 							<a onclick="$('form').submit();" class="button" th:text="#{button.delete}">Delete</a>
 						</div>
 					</div>
 					<div class="content">
-						<form th:action="@{/admin/design/layout/delete}" method="post" id="form">
+						<form th:action="@{/admin/catalog/download/delete}" method="post" id="form">
 							<table class="list">
 								<thead>
 									<tr>
 										<td width="1" style="text-align: center;"><input type="checkbox" onclick="$('input[name*=\'selected\']').attr('checked', this.checked);" /></td>
 										<td class="left">
-											<a th:href="@{/admin/design/layout}+'?sort=name&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
-												th:class="${param.sort!=null and param.sort[0]=='name'?param.order[0]:''}" th:text="#{column.name}">Layout Name</a>
+											<a th:href="@{/admin/catalog/download}+'?sort=dd.name&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='dd.name'?param.order[0]:''}" th:text="#{column.name}">Download Name</a>
+										</td>
+										<td class="right">
+											<a th:href="@{/admin/catalog/download}+'?sort=d.remaining&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='d.remaining'?param.order[0]:''}" th:text="#{column.remaining}">Total Downloads Allowed</a>
 										</td>
 										<td class="right" th:text="#{column.action}">Action</td>
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="layout : ${layouts}">
+									<tr th:each="download : ${downloads}">
 										<td style="text-align: center;">
-											<input type="checkbox" name="selected" th:value="${layout.id}" />
+											<input type="checkbox" name="selected" th:value="${download.id}" />
 										</td>
-										<td class="left" th:text="${layout.name}">Account</td>
+										<td class="left">
+											<span th:text="${download.name}">JPoweredCart</span>
+										</td>
 										<td class="right">
-											[ <a th:href="@{/admin/design/layout/edit/}+${layout.id}" th:text="#{text.edit}">Edit</a> ]
+											<span th:text="${download.remaining}">2</span>
+										</td>
+										<td class="right">
+											[ <a th:href="@{/admin/catalog/download/edit/}+${download.id}" th:text="#{text.edit}">Edit</a> ]
 										</td>
 									</tr>
-									<tr th:if="${#lists.isEmpty(layouts)}">
-										<td class="center" colspan="3" th:text="#{text.noResults}">No results!</td>
+									<tr th:if="${#lists.isEmpty(downloads)}">
+										<td class="center" colspan="4" th:text="#{text.noResults}">No results!</td>
 									</tr>
 								</tbody>
 							</table>

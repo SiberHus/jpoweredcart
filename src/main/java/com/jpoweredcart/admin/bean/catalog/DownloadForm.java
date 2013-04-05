@@ -16,6 +16,10 @@ public class DownloadForm extends Download {
 
 	protected MultipartFile fileUpload;
 	
+	protected boolean updateOrder;
+	
+	protected String downloadDir;
+	
 	@Valid
 	protected List<DownloadDesc> descs = new AutoPopulatingList<DownloadDesc>(DownloadDesc.class);
 	
@@ -34,4 +38,21 @@ public class DownloadForm extends Download {
 	public void setDescs(List<DownloadDesc> descs) {
 		this.descs = descs = new AutoPopulatingList<DownloadDesc>(descs, DownloadDesc.class);
 	}
+
+	public boolean isUpdateOrder() {
+		return updateOrder;
+	}
+
+	public void setUpdateOrder(boolean updateOrder) {
+		this.updateOrder = updateOrder;
+	}
+
+	public String getDownloadDir() {
+		return downloadDir;
+	}
+
+	public void setDownloadDir(String downloadDir) {
+		this.downloadDir = downloadDir;
+	}
+	
 }

@@ -1,47 +1,39 @@
 package com.jpoweredcart.config;
 
-import java.io.File;
-import java.io.IOException;
-
 import javax.inject.Inject;
-import javax.jms.ConnectionFactory;
 import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
 import net.sf.ehcache.Ehcache;
 
-import org.apache.activemq.Service;
-import org.apache.activemq.broker.BrokerService;
-import org.apache.activemq.spring.ActiveMQConnectionFactory;
-import org.apache.activemq.store.PersistenceAdapter;
-import org.apache.activemq.store.kahadb.KahaDBPersistenceAdapter;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.listener.AbstractMessageListenerContainer;
-import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.jolbox.bonecp.BoneCPDataSource;
 import com.jpoweredcart.common.service.email.DefaultEmailService;
 import com.jpoweredcart.common.service.email.EmailService;
-import com.jpoweredcart.common.service.email.JmsEmailService;
 import com.jpoweredcart.common.service.file.DefaultFileService;
 import com.jpoweredcart.common.service.file.FileService;
 import com.jpoweredcart.common.service.media.DefaultMediaService;
 import com.jpoweredcart.common.service.media.MediaService;
 import com.jpoweredcart.common.service.setting.DefaultSettingService;
 import com.jpoweredcart.common.service.setting.SettingService;
+import com.jpoweredcart.common.utils.PathUtils;
 
 /**
  * Main configuration class for the application.
@@ -49,14 +41,19 @@ import com.jpoweredcart.common.service.setting.SettingService;
  * @author Hussachai Puripunpinyo
  */
 @Configuration
+@PropertySource("classpath:application.properties")
+@ImportResource({
+	"classpath:application.xml"
+})
 @ComponentScan(
 	basePackages = {
 		"com.jpoweredcart.admin.controller"
 	}, 
 	excludeFilters = { @Filter(Configuration.class) })
-@PropertySource("classpath:application.properties")
 @EnableTransactionManagement
-public class MainConfig {
+public class MainConfig implements ApplicationContextAware {
+	
+	private ApplicationContext applicationContext;
 	
 	@Inject
 	private ServletContext servletContext;
@@ -64,8 +61,19 @@ public class MainConfig {
 	@Inject
 	private Environment env;
 	
+	
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext)
+			throws BeansException {
+		this.applicationContext = applicationContext;
+	}
+
 	@Bean(destroyMethod = "close")
 	public DataSource dataSource() {
+		
+		if(applicationContext.containsBean("custom_dataSource")){
+			return (DataSource)applicationContext.getBean("custom_dataSource");
+		}
 		
 		BoneCPDataSource dataSource = new BoneCPDataSource();
 		dataSource.setDriverClass(env.getProperty("database.driverClass"));
@@ -87,6 +95,10 @@ public class MainConfig {
 	@Bean
 	public PlatformTransactionManager transactionManager() {
 		
+		if(applicationContext.containsBean("custom_transactionManager")){
+			return (PlatformTransactionManager)applicationContext.getBean("custom_transactionManager");
+		}
+		
 		return new DataSourceTransactionManager(dataSource());
 	}
 	
@@ -96,61 +108,14 @@ public class MainConfig {
 		return new JdbcTemplate(dataSource());
 	}
 	
-	@Bean(initMethod="start", destroyMethod="stop")
-	public Service embeddedBrokerService(){
-		if(env.getProperty("jms.broker.local", Boolean.class, Boolean.FALSE)){
-			BrokerService brokerService = new BrokerService();
-			brokerService.setBrokerName("embeddedBroker");
-			brokerService.setTransportConnectorURIs(new String[]{env.getProperty("jms.broker.url")});
-			String dataDir = env.getProperty("jms.broker.dataDir");
-			brokerService.setDataDirectory(dataDir);
-			PersistenceAdapter persistenceAdapter = new KahaDBPersistenceAdapter();
-			persistenceAdapter.setDirectory(new File(dataDir+File.separator+"kahadb"));
-			try {
-				brokerService.setPersistenceAdapter(persistenceAdapter);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return brokerService;
-		}
-		return null;
-	}
-	
-	@Bean
-	public ConnectionFactory jmsConnectionFactory(){
-		
-		ActiveMQConnectionFactory jmsConnectionFactory = new ActiveMQConnectionFactory();
-		jmsConnectionFactory.setBrokerURL(env.getProperty("jms.broker.url"));
-		
-		return jmsConnectionFactory;
-	}
-	
-	@Bean 
-	public JmsTemplate jmsTemplate(){
-		JmsTemplate jmsTemplate = new JmsTemplate();
-		jmsTemplate.setConnectionFactory(jmsConnectionFactory());
-		return jmsTemplate;
-	}
-	
-	@Bean
-	public AbstractMessageListenerContainer emailMessageListener(){
-		
-		DefaultMessageListenerContainer listenerContainer = null;
-		String queueName = env.getProperty("jms.queue.email");
-		if(StringUtils.isNotBlank(queueName)){
-			listenerContainer = new DefaultMessageListenerContainer();
-			listenerContainer.setConnectionFactory(jmsConnectionFactory());
-			listenerContainer.setDestinationName(queueName);
-			listenerContainer.setMessageListener(emailService());
-		}
-		
-		return listenerContainer;
-	}
-	
 	//================================= SERVICES ==========================================//
 	
 	@Bean
 	public SettingService settingService(){
+		
+		if(applicationContext.containsBean("custom_settingService")){
+			return (SettingService)applicationContext.getBean("custom_settingService");
+		}
 		
 		DefaultSettingService settingService = new DefaultSettingService();
 		settingService.setJdbcOperations(jdbcOperations());
@@ -178,65 +143,87 @@ public class MainConfig {
 	@Bean
 	public EmailService emailService() {
 		
-		DefaultEmailService emailService = null;
-		String queueName = env.getProperty("jms.queue.email");
-		if(StringUtils.isNotBlank(queueName)){
-			JmsEmailService jmsEmailService = new JmsEmailService();
-			jmsEmailService.setQueueName(queueName);
-			jmsEmailService.setJmsTemplate(jmsTemplate());
-			emailService = jmsEmailService;
-		}else{
-			emailService = new DefaultEmailService();
+		if(applicationContext.containsBean("custom_emailService")){
+			return (EmailService)applicationContext.getBean("custom_emailService");
 		}
+		
+		DefaultEmailService emailService = new DefaultEmailService();
 		emailService.setSettingService(settingService());
 		
 		return emailService;
 	}
 	
 	@Bean
-	public FileService mediaFileService(){
+	public FileService downloadFileService(){
+		if(applicationContext.containsBean("custom_downloadFileService")){
+			return (FileService)applicationContext.getBean("custom_downloadFileService");
+		}
 		
 		DefaultFileService defaultFileService = new DefaultFileService();
-		String imgDir = env.getProperty("media.imageDir");
-		String imgBaseUrl = env.getProperty("media.imageBaseUrl");
-		if(StringUtils.isBlank(imgBaseUrl)){
-			throw new IllegalArgumentException("media.imageBaseUrl cannot be blank");
-		}else if(imgBaseUrl.startsWith("/") && StringUtils.isBlank(imgDir)){
-			imgDir = servletContext.getRealPath(imgBaseUrl);
-		}
-		imgDir = defaultFileService.ensureEndingSlash(imgDir)+"data";
-		defaultFileService.setBaseDir(imgDir);
 		
+		String dlDir = env.getProperty("download.dir");
+		String dlBaseUrl = env.getProperty("download.baseUrl", "/files/downloads");
+		defaultFileService.setBaseDir(getDefaultFilePath(dlDir, dlBaseUrl));
+		defaultFileService.setBaseUrl(getWebPath(dlBaseUrl));
+		
+		return defaultFileService;
+	}
+	
+	@Bean
+	public FileService mediaFileService(){
+		
+		if(applicationContext.containsBean("custom_mediaFileService")){
+			return (FileService)applicationContext.getBean("custom_mediaFileService");
+		}
+		
+		DefaultFileService defaultFileService = new DefaultFileService();
+		
+		String imgDir = env.getProperty("media.imageDir");
+		String imgBaseUrl = env.getProperty("media.imageBaseUrl", "/files/images");
+		
+		imgDir = getDefaultFilePath(imgDir, imgBaseUrl);
+		imgDir = PathUtils.ensureEndingFileSeparator(imgDir)+"data";
+		defaultFileService.setBaseDir(imgDir);
+		defaultFileService.setBaseUrl(getWebPath(imgBaseUrl));
 		return defaultFileService;
 	}
 	
 	@Bean
 	public MediaService mediaService(){
 		
-		FileService mediaFileService = mediaFileService();
-		DefaultMediaService defaultMediaService = new DefaultMediaService(mediaFileService);
+		if(applicationContext.containsBean("custom_mediaService")){
+			return (MediaService)applicationContext.getBean("custom_mediaService");
+		}
+		
+		DefaultMediaService defaultMediaService = new DefaultMediaService();
+		
 		String imgDir = env.getProperty("media.imageDir");
-		String imgBaseUrl = env.getProperty("media.imageBaseUrl");
+		String imgBaseUrl = env.getProperty("media.imageBaseUrl", "/files/images");
+		defaultMediaService.setImageDir(getDefaultFilePath(imgDir, imgBaseUrl));
+		defaultMediaService.setImageBaseUrl(getWebPath(imgBaseUrl));
+		
 		String thumbDir = env.getProperty("media.thumbnailDir");
-		String thumbBaseUrl = env.getProperty("media.thumbnailBaseUrl");
-		
-		if(StringUtils.isBlank(imgBaseUrl)){
-			throw new IllegalArgumentException("media.imageBaseUrl cannot be blank");
-		}else if(imgBaseUrl.startsWith("/") && StringUtils.isBlank(imgDir)){
-			imgDir = servletContext.getRealPath(imgBaseUrl);
-		}
-		defaultMediaService.setImageDir(imgDir);
-		defaultMediaService.setImageBaseUrl(imgBaseUrl);
-		
-		if(StringUtils.isBlank(thumbBaseUrl)){
-			throw new IllegalArgumentException("media.thumbnailBaseUrl cannot be blank");
-		}else if(thumbBaseUrl.startsWith("/") && StringUtils.isBlank(thumbDir)){
-			thumbDir = servletContext.getRealPath(thumbBaseUrl);
-		}
-		defaultMediaService.setThumbnailDir(thumbDir);
-		defaultMediaService.setThumbnailBaseUrl(thumbBaseUrl);
+		String thumbBaseUrl = env.getProperty("media.thumbnailBaseUrl", "/files/images/thumbnails");
+		defaultMediaService.setThumbnailDir(getDefaultFilePath(thumbDir, thumbBaseUrl));
+		defaultMediaService.setThumbnailBaseUrl(getWebPath(thumbBaseUrl));
 		
 		return defaultMediaService;
 	}
+	
+	private String getDefaultFilePath(String path, String uri){
+		if(StringUtils.isBlank(path) && uri.startsWith("/")){
+			return servletContext.getRealPath(uri);
+		}
+		return path;
+	}
+	
+	private String getWebPath(String uri){
+		if(uri!=null && uri.startsWith("/")){
+			return servletContext.getContextPath()+uri;
+		}
+		return uri;
+	}
+	
+	
 }
 

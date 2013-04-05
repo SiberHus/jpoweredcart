@@ -23,6 +23,7 @@ import com.jpoweredcart.common.service.file.FileFilters;
 import com.jpoweredcart.common.service.file.FileInfo;
 import com.jpoweredcart.common.service.file.FileService;
 import com.jpoweredcart.common.service.media.MediaService;
+import com.jpoweredcart.common.utils.PathUtils;
 
 @Controller
 @RequestMapping("/admin/common/fileManager")
@@ -50,9 +51,9 @@ public class FileManagerAdminController extends BaseController {
 		
 		String thumbnailUrl = mediaService.getThumbnailUrl(image, 100, 100);
 		logger.debug("Request image: {}", image);
-		logger.debug("Thumbnail URL: {}", request.getContextPath()+thumbnailUrl);
+		logger.debug("Thumbnail URL: {}", thumbnailUrl);
 		
-		return request.getContextPath()+thumbnailUrl;
+		return thumbnailUrl;
 	}
 	
 	@RequestMapping(value="/files")
@@ -76,7 +77,7 @@ public class FileManagerAdminController extends BaseController {
 		
 		ActionResult result = new ActionResult();
 		
-		directory = mediaFileService.ensureEndingSlash(directory);
+		directory = PathUtils.ensureEndingFileSeparator(directory);
 		
 		if(StringUtils.isNotEmpty(directory)){
 			if(!mediaFileService.isDirectory(directory)){
@@ -285,7 +286,7 @@ public class FileManagerAdminController extends BaseController {
 		}
 		
 		if(result.getError()==null){
-			if(mediaFileService.upload(multipartFile, mediaFileService.ensureEndingSlash(directory)+fileName)){
+			if(mediaFileService.upload(multipartFile, PathUtils.ensureEndingFileSeparator(directory)+fileName)){
 				result.setSuccess(message(request, "text.uploaded"));
 			}else{
 				result.setError(message(request, "error.uploaded"));

@@ -6,12 +6,14 @@ import org.springframework.context.annotation.Configuration;
 import com.jpoweredcart.admin.model.catalog.AttributeAdminModel;
 import com.jpoweredcart.admin.model.catalog.AttributeGroupAdminModel;
 import com.jpoweredcart.admin.model.catalog.CategoryAdminModel;
+import com.jpoweredcart.admin.model.catalog.DownloadAdminModel;
 import com.jpoweredcart.admin.model.catalog.InformationAdminModel;
 import com.jpoweredcart.admin.model.catalog.ProductAdminModel;
 import com.jpoweredcart.admin.model.catalog.ReviewAdminModel;
 import com.jpoweredcart.admin.model.catalog.jdbc.AttributeAdminModelImpl;
 import com.jpoweredcart.admin.model.catalog.jdbc.AttributeGroupAdminModelImpl;
 import com.jpoweredcart.admin.model.catalog.jdbc.CategoryAdminModelImpl;
+import com.jpoweredcart.admin.model.catalog.jdbc.DownloadAdminModelImpl;
 import com.jpoweredcart.admin.model.catalog.jdbc.InformationAdminModelImpl;
 import com.jpoweredcart.admin.model.catalog.jdbc.ProductAdminModelImpl;
 import com.jpoweredcart.admin.model.catalog.jdbc.ReviewAdminModelImpl;
@@ -89,6 +91,8 @@ public class AdminModelConfig {
 	public ProductAdminModel productAdminModel(){ return new ProductAdminModelImpl(); }
 	@Bean
 	public InformationAdminModel informationAdminModel(){ return new InformationAdminModelImpl(); }
+	@Bean
+	public DownloadAdminModel downloadAdminModel(){ return new DownloadAdminModelImpl(); }
 	@Bean
 	public ReviewAdminModel reviewAdminModel(){ return new ReviewAdminModelImpl(); }
 	

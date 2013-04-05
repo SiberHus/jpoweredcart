@@ -5,6 +5,7 @@ import java.util.List;
 import com.jpoweredcart.admin.bean.catalog.DownloadForm;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.catalog.Download;
+import com.jpoweredcart.common.entity.catalog.DownloadDesc;
 
 public interface DownloadAdminModel {
 	
@@ -22,7 +23,7 @@ public interface DownloadAdminModel {
 	
 	public List<Download> getList(PageParam pageParam);
 	
-	public List<Download> getDescriptions(Integer dlId);
+	public List<DownloadDesc> getDescriptions(Integer dlId);
 	
 	public int getTotal();
 	

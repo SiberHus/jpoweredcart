@@ -3,6 +3,10 @@ package com.jpoweredcart.common.entity.catalog;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 public class Download implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -14,6 +18,7 @@ public class Download implements Serializable {
 	//@Transient
 	protected String name;//default name
 	
+	@NotBlank @Size(min=3, max=128)
 	protected String mask;
 	
 	protected int remaining;
@@ -36,6 +41,14 @@ public class Download implements Serializable {
 		this.fileName = fileName;
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getMask() {
 		return mask;
 	}

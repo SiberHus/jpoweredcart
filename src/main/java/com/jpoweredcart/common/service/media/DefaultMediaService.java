@@ -5,12 +5,10 @@ import java.io.IOException;
 
 import org.apache.commons.io.FilenameUtils;
 
-import com.jpoweredcart.common.service.file.FileService;
 import com.jpoweredcart.common.utils.ImageUtils;
+import com.jpoweredcart.common.utils.PathUtils;
 
 public class DefaultMediaService implements MediaService {
-	
-	private FileService mediaFileService;
 	
 	private String imageDir;
 	
@@ -20,8 +18,7 @@ public class DefaultMediaService implements MediaService {
 	
 	private String thumbnailBaseUrl;
 	
-	public DefaultMediaService(FileService mediaFileService){
-		this.mediaFileService = mediaFileService;
+	public DefaultMediaService(){
 	}
 	
 	public String getImageDir() {
@@ -29,15 +26,15 @@ public class DefaultMediaService implements MediaService {
 	}
 
 	public void setImageDir(String imageDir) {
-		this.imageDir = mediaFileService.ensureEndingSlash(imageDir);
+		this.imageDir = PathUtils.ensureEndingFileSeparator(imageDir);
 	}
-
+	
 	public String getImageBaseUrl() {
 		return imageBaseUrl;
 	}
 
 	public void setImageBaseUrl(String imageBaseUrl) {
-		this.imageBaseUrl = checkBaseUrl(imageBaseUrl);
+		this.imageBaseUrl = PathUtils.ensureEndingSlash(imageBaseUrl);
 	}
 
 	public String getThumbnailDir() {
@@ -45,7 +42,7 @@ public class DefaultMediaService implements MediaService {
 	}
 
 	public void setThumbnailDir(String thumbnailDir) {
-		this.thumbnailDir = mediaFileService.ensureEndingSlash(thumbnailDir);
+		this.thumbnailDir = PathUtils.ensureEndingFileSeparator(thumbnailDir);
 	}
 
 	public String getThumbnailBaseUrl() {
@@ -53,7 +50,7 @@ public class DefaultMediaService implements MediaService {
 	}
 
 	public void setThumbnailBaseUrl(String thumbnailBaseUrl) {
-		this.thumbnailBaseUrl = checkBaseUrl(thumbnailBaseUrl);
+		this.thumbnailBaseUrl = PathUtils.ensureEndingSlash(thumbnailBaseUrl);
 	}
 
 	@Override
@@ -91,13 +88,4 @@ public class DefaultMediaService implements MediaService {
 		return getThumbnailBaseUrl() + thumbnailPath;
 	}
 	
-	protected String checkBaseUrl(String url) {
-		if (url == null) {
-			throw new IllegalArgumentException("url cannot be null");
-		}
-		if (!url.endsWith("/")) {
-			url += "/";
-		}
-		return url;
-	}
 }

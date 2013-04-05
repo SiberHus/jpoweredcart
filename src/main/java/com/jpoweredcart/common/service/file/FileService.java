@@ -8,6 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
 	
+	public String getUrl(String path);
+	
 	public boolean isDirectory(String path);
 	
 	public boolean exists(String path);
@@ -30,6 +32,6 @@ public interface FileService {
 	
 	public boolean upload(MultipartFile multipartFile, String fileName);
 	
-	public String ensureEndingSlash(String path);
+	public String generateRandomName();
 	
 }
