@@ -1,26 +1,27 @@
 package com.jpoweredcart.common.entity.sale;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.jpoweredcart.common.entity.Description;
 
 public class CustomerGroupDesc extends Description {
 	
 	private static final long serialVersionUID = 1L;
 	
-	protected Integer lengthClassId;
+	protected Integer customerGroupId;
 	
-	@Length(min=3, max=32)
+	@NotBlank @Length(min=3, max=32)
 	protected String name;
 	
-	@Length(min=1, max=4)
 	protected String description;
 	
-	public Integer getLengthClassId() {
-		return lengthClassId;
+	public Integer getCustomerGroupId() {
+		return customerGroupId;
 	}
 
-	public void setLengthClassId(Integer lengthClassId) {
-		this.lengthClassId = lengthClassId;
+	public void setCustomerGroupId(Integer customerGroupId) {
+		this.customerGroupId = customerGroupId;
 	}
 
 	public String getName() {

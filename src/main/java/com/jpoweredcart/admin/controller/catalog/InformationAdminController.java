@@ -60,8 +60,7 @@ public class InformationAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		model.addAttribute("informationForm", informationAdminModel.newForm());
-		addFormAttributes(model);
+		addFormAttributes(informationAdminModel.newForm(), model);
 		
 		return "/admin/catalog/informationForm";
 	}
@@ -71,9 +70,7 @@ public class InformationAdminController extends BaseController {
 		
 		checkModifyPermission();
 		InformationForm infoForm = informationAdminModel.getForm(id);
-		model.addAttribute("informationForm", infoForm);
-		
-		addFormAttributes(model);
+		addFormAttributes(infoForm, model);
 		
 		return "/admin/catalog/informationForm";
 	}
@@ -85,9 +82,8 @@ public class InformationAdminController extends BaseController {
 		checkModifyPermission();
 		
 		if(result.hasErrors()){
-			model.addAttribute("informationForm", infoForm);
 			model.addAttribute("msg_warning", "error.warning");
-			addFormAttributes(model);
+			addFormAttributes(infoForm, model);
 			return "/admin/catalog/informationForm";
 		}
 		
@@ -118,7 +114,9 @@ public class InformationAdminController extends BaseController {
 		return "redirect:/admin/catalog/information";
 	}
 	
-	private void addFormAttributes(Model model){
+	private void addFormAttributes(InformationForm form, Model model){
+		
+		model.addAttribute("informationForm", form);
 		model.addAttribute("stores", storeAdminModel.getAll());
 		model.addAttribute("layouts", layoutAdminModel.getList(PageParam.list()));
 	}

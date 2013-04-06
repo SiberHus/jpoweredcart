@@ -65,8 +65,7 @@ public class CategoryAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		model.addAttribute("categoryForm", categoryAdminModel.newForm());
-		addFormAttributes(model, request);
+		addFormAttributes(categoryAdminModel.newForm(), model, request);
 		
 		return "/admin/catalog/categoryForm";
 	}
@@ -75,32 +74,29 @@ public class CategoryAdminController extends BaseController {
 	public String edit(@PathVariable("id") Integer id, Model model, HttpServletRequest request){
 		
 		checkModifyPermission();
-		CategoryForm infoForm = categoryAdminModel.getForm(id);
-		model.addAttribute("categoryForm", infoForm);
-		
-		addFormAttributes(model, request);
+		CategoryForm catForm = categoryAdminModel.getForm(id);
+		addFormAttributes(catForm, model, request);
 		
 		return "/admin/catalog/categoryForm";
 	}
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public String save(@Valid CategoryForm infoForm, BindingResult result, Model model, 
+	public String save(@Valid CategoryForm catForm, BindingResult result, Model model, 
 			RedirectAttributes redirect, HttpServletRequest request){
 		
 		checkModifyPermission();
 		
 		if(result.hasErrors()){
-			model.addAttribute("categoryForm", infoForm);
 			model.addAttribute("msg_warning", "error.warning");
-			addFormAttributes(model, request);
+			addFormAttributes(catForm, model, request);
 			return "/admin/catalog/categoryForm";
 		}
 		
 		
-		if(infoForm.getId()!=null){
-			categoryAdminModel.update(infoForm);
+		if(catForm.getId()!=null){
+			categoryAdminModel.update(catForm);
 		}else{
-			categoryAdminModel.create(infoForm);
+			categoryAdminModel.create(catForm);
 		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
@@ -123,7 +119,7 @@ public class CategoryAdminController extends BaseController {
 		return "redirect:/admin/catalog/category";
 	}
 	
-	private void addFormAttributes(Model model, HttpServletRequest request){
+	private void addFormAttributes(CategoryForm form, Model model, HttpServletRequest request){
 		String noImageUrl = mediaService.getImageUrl("no_image.jpg");
 		model.addAttribute("noImage", noImageUrl);
 		String separator = message(request, "text.separator");

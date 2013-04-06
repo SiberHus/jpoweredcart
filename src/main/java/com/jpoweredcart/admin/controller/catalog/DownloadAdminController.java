@@ -54,8 +54,7 @@ public class DownloadAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		model.addAttribute("downloadForm", downloadAdminModel.newForm());
-		addFormAttributes(model);
+		addFormAttributes(downloadAdminModel.newForm(), model);
 		
 		return "/admin/catalog/downloadForm";
 	}
@@ -65,9 +64,8 @@ public class DownloadAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		Download dlForm = downloadAdminModel.getForm(id);
-		model.addAttribute("downloadForm", dlForm);
-		addFormAttributes(model);
+		DownloadForm dlForm = downloadAdminModel.getForm(id);
+		addFormAttributes(dlForm, model);
 		
 		return "/admin/catalog/downloadForm";
 	}
@@ -79,11 +77,7 @@ public class DownloadAdminController extends BaseController {
 		checkModifyPermission();
 		
 		if(result.hasErrors()){
-			System.out.println(result.getAllErrors());
-			System.out.println(result.getFieldErrors());
-			
-			model.addAttribute("downloadForm", dlForm);
-			addFormAttributes(model);
+			addFormAttributes(dlForm, model);
 			return "/admin/catalog/downloadForm";
 		}
 		
@@ -113,8 +107,8 @@ public class DownloadAdminController extends BaseController {
 		return "redirect:/admin/catalog/download";
 	}
 	
-	private void addFormAttributes(Model model){
-		model.addAttribute("downloadGroups", downloadAdminModel.getList(null));
+	private void addFormAttributes(DownloadForm form, Model model){
+		model.addAttribute("downloadForm", form);
 	}
 	
 	private void checkModifyPermission(){

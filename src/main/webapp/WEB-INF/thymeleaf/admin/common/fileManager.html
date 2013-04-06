@@ -224,7 +224,7 @@ $(document).ready(function() {
 				+ $(this).find('input[name=\'image\']').attr('value'));
 			self.close();	
 		} else {
-			parent.$(field).attr('value', 'data/' + $(this).find('input[name=\'image\']').attr('value'));
+			parent.$('#'+field).attr('value', $(this).find('input[name=\'image\']').attr('value'));
 			parent.$('#dialog').dialog('close');
 			parent.$('#dialog').remove();
 		}
@@ -506,6 +506,7 @@ $(document).ready(function() {
 	});
 
 	$('#image').on('change', function() {
+		
 		var tree = $.tree.focused();
 		$('input[name=\'directory\']').attr('value', $(tree.selected).attr('directory'));		
 		$.ajax({

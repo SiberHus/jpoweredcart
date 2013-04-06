@@ -41,7 +41,7 @@ public class FileManagerAdminController extends BaseController {
 		String field = request.getParameter("field");
 		model.addAttribute("field", field!=null?field:"");
 		String fckeditor = request.getParameter("CKEditorFuncNum");
-		model.addAttribute("fckeditor", fckeditor!=null?fckeditor:false);
+		model.addAttribute("fckeditor", fckeditor!=null?"yes":"");
 		
 		return "/admin/common/fileManager";
 	}

@@ -7,35 +7,33 @@
 			<div id="content">
 				<div class="breadcrumb">
 					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
-					<a th:href="@{/admin/catalog/download}" th:text="#{heading.title}">Downloads</a>
+					<a th:href="@{/admin/sale/customerGroup}" th:text="#{heading.title}">Customer Group</a>
 				</div>
 				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
 				<div class="box">
 					<div class="heading">
 						<h1>
-							<img th:src="@{/resources/admin/image/download.png}" alt="" />
+							<img th:src="@{/resources/admin/image/customer.png}" alt="" />
 							<span th:text="#{heading.title}"></span>
 						</h1>
 						<div class="buttons">
 							<a onclick="$('#form').submit();" class="button" th:text="#{button.save}">Save</a>
-							<a th:href="@{/admin/catalog/download}" class="button" th:text="#{button.cancel}">Cancel</a>
+							<a th:href="@{/admin/sale/customerGroup}" class="button" th:text="#{button.cancel}">Cancel</a>
 						</div>
 					</div>
 					<div class="content">
-						<form th:action="@{/admin/catalog/download/save}" th:object="${downloadForm}" 
-							method="post" id="form" enctype="multipart/form-data">
+						<form th:action="@{/admin/sale/customerGroup/save}" th:object="${customerGroupForm}" 
+							method="post" id="form">
 							<input type="hidden" th:field="*{id}" />
-							<input type="hidden" th:field="*{downloadDir}" />
-							<input type="hidden" th:field="*{fileName}" />
 							<table class="form">
 								<tr>
-									<td><span class="required">*</span><span th:utext="#{entry.name}">Download Name:</span></td>
+									<td><span class="required">*</span><span th:utext="#{entry.name}">Customer Group Name:</span></td>
 									<td>
 										<div th:each="desc, rowStat : *{descs}">
 											<input type="hidden" th:name="${'descs['+rowStat.index+'].languageId'}" th:value="${desc.languageId}" />
 											<input type="hidden" th:name="${'descs['+rowStat.index+'].languageName'}" th:value="${desc.languageName}" />
 											<input type="hidden" th:name="${'descs['+rowStat.index+'].languageImage'}" th:value="${desc.languageImage}" />
-											<input type="hidden" th:name="${'descs['+rowStat.index+'].downloadId'}" th:value="${desc.downloadId}" />
+											<input type="hidden" th:name="${'descs['+rowStat.index+'].customerGroupId'}" th:value="${desc.customerGroupId}" />
 											<input type="text" th:name="${'descs['+rowStat.index+'].name'}" th:value="${desc.name}"/>
 											<img th:src="@{'/resources/admin/image/flags/'+${desc.languageImage}}" th:title="${desc.languageName}" />
 											<span class="error" th:if="${#fields.hasErrors('descs['+rowStat.index+'].name')}" th:text="#{error.name}"></span>
@@ -43,34 +41,26 @@
 										</div>
 									</td>
 								</tr>
-								<tr>
-									<td><span class="required">*</span><span th:utext="#{entry.filename}">Filename:</span></td>
+								<tr th:each="desc, rowStat: *{descs}">
+									<td><span th:utext="#{entry.description}">Description:</span></td>
 									<td>
-										<input th:if="${downloadForm.id==null}" type="file" name="fileUpload" />
-										<span th:if="${downloadForm.id!=null}">
-											<a th:href="${downloadForm.downloadDir+downloadForm.fileName}" target="_blank" 
-												th:text="${downloadForm.fileName}"></a>
-										</span>
-										<span class="error" th:if="${#fields.hasErrors('fileName')}" th:text="#{error.filename}"></span>
+										<textarea th:name="${'descs['+rowStat.index+'].description'}" th:text="${desc.description}" cols="40" rows="5"></textarea>
+										<img th:src="@{'/resources/admin/image/flags/'+${desc.languageImage}}" th:title="${desc.languageName}" />
 									</td>
 								</tr>
 								<tr>
-									<td><span class="required">*</span><span th:utext="#{entry.mask}">Mask:</span></td>
+									<td><span th:utext="#{entry.approval}">Approve New Customers:</span></td>
 									<td>
-										<input type="text" th:field="*{mask}" />
-										<span class="error" th:if="${#fields.hasErrors('mask')}" th:text="#{error.mask}"></span>
+										<input type="radio" th:field="*{approval}" th:value="1"/>
+										<span th:text="#{text.yes}">Yes</span>
+										<input type="radio" th:field="*{approval}" th:value="0"/>
+										<span th:text="#{text.no}">No</span>
 									</td>
 								</tr>
 								<tr>
-									<td><span th:utext="#{entry.remaining}">Total Downloads Allowed:</span></td>
+									<td><span th:utext="#{entry.sortOrder}">Sort Order:</span></td>
 									<td>
-										<input type="text" th:field="*{remaining}" />
-									</td>
-								</tr>
-								<tr th:if="${downloadForm.id!=null}">
-									<td><span th:utext="#{entry.update}">Push to Previous Customers:</span></td>
-									<td>
-										<input type="checkbox" th:field="*{updateOrder}" />
+										<input type="text" th:field="*{sortOrder}" />
 									</td>
 								</tr>
 							</table>

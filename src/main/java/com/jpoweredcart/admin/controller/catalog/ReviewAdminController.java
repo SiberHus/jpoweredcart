@@ -6,14 +6,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.jpoweredcart.admin.bean.catalog.ReviewForm;
-import com.jpoweredcart.admin.model.catalog.ReviewAdminModel;
-import com.jpoweredcart.common.BaseController;
-import com.jpoweredcart.common.PageParam;
-import com.jpoweredcart.common.entity.catalog.Review;
-import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
-import com.jpoweredcart.common.security.UserPermissions;
-import com.jpoweredcart.common.view.Pagination;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.jpoweredcart.admin.bean.catalog.ReviewForm;
+import com.jpoweredcart.admin.model.catalog.ReviewAdminModel;
+import com.jpoweredcart.common.BaseController;
+import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.catalog.Review;
+import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
+import com.jpoweredcart.common.security.UserPermissions;
+import com.jpoweredcart.common.view.Pagination;
 
 @Controller
 @RequestMapping("/admin/catalog/review")
@@ -50,8 +51,7 @@ public class ReviewAdminController extends BaseController {
 	public String create(Model model){
 		
 		checkModifyPermission();
-		model.addAttribute("reviewForm", reviewAdminModel.newForm());
-		
+		addFormAttributes(reviewAdminModel.newForm(), model);
 		return "/admin/catalog/reviewForm";
 	}
 	
@@ -60,7 +60,7 @@ public class ReviewAdminController extends BaseController {
 		
 		checkModifyPermission();
 		ReviewForm reviewForm = reviewAdminModel.getForm(id);
-		model.addAttribute("reviewForm", reviewForm);
+		addFormAttributes(reviewForm, model);
 		
 		return "/admin/catalog/reviewForm";
 	}
@@ -72,7 +72,7 @@ public class ReviewAdminController extends BaseController {
 		checkModifyPermission();
 		
 		if(result.hasErrors()){
-			model.addAttribute("reviewForm", reviewForm);
+			addFormAttributes(reviewForm, model);
 			return "/admin/catalog/reviewForm";
 		}
 		
@@ -102,6 +102,10 @@ public class ReviewAdminController extends BaseController {
 		return "redirect:/admin/catalog/review";
 	}
 	
+	private void addFormAttributes(ReviewForm form, Model model){
+		
+		model.addAttribute("reviewForm", form);
+	}
 	
 	private void checkModifyPermission(){
 		UserPermissions.checkModify("catalog/review", 

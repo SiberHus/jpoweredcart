@@ -9,47 +9,46 @@ import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.jpoweredcart.admin.bean.sale.AffiliateForm;
-import com.jpoweredcart.admin.bean.sale.filter.AffiliateFilter;
-import com.jpoweredcart.admin.model.sale.AffiliateAdminModel;
+import com.jpoweredcart.admin.bean.sale.VoucherThemeForm;
+import com.jpoweredcart.admin.model.sale.VoucherThemeAdminModel;
 import com.jpoweredcart.common.BaseController;
 import com.jpoweredcart.common.PageParam;
-import com.jpoweredcart.common.entity.sale.Affiliate;
+import com.jpoweredcart.common.entity.sale.VoucherTheme;
 import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import com.jpoweredcart.common.security.UserPermissions;
+import com.jpoweredcart.common.service.media.DefaultMediaService;
+import com.jpoweredcart.common.service.media.MediaService;
 import com.jpoweredcart.common.view.Pagination;
 
 @Controller
-@RequestMapping("/admin/sale/affiliate")
-public class AffiliateAdminController extends BaseController {
+@RequestMapping("/admin/sale/voucherTheme")
+public class VoucherThemeAdminController extends BaseController {
 
 	@Inject
-	private AffiliateAdminModel affiliateAdminModel;
+	private MediaService mediaService;
+	
+	@Inject
+	private VoucherThemeAdminModel voucherThemeAdminModel;
 	
 	@RequestMapping(value={"", "/"})
-	public String index(AffiliateFilter filter, Model model, HttpServletRequest request){
-		
-		addJsDateFormatAttribute(model, request);
-		model.addAttribute("filter", filter);
+	public String index(Model model, HttpServletRequest request){
 		
 		PageParam pageParam = createPageParam(request);
-		List<Affiliate> affiliateList = affiliateAdminModel.getList(filter, pageParam);
-		model.addAttribute("affiliates", affiliateList);
-		int total = affiliateAdminModel.getTotal(filter);
+		List<VoucherTheme> voucherThemeList = voucherThemeAdminModel.getList(pageParam);
+		model.addAttribute("voucherThemes", voucherThemeList);
+		int total = voucherThemeAdminModel.getTotal();
 		Pagination pagination = new Pagination();
 		pagination.setTotal(total).setPageParam(pageParam)
 			.setText(message(request, "text.pagination"))
-			.setUrl(uri("/admin/sale/affiliate"));
+			.setUrl(uri("/admin/sale/voucherTheme"));
 		model.addAttribute("pagination", pagination.render());
-		return "/admin/sale/affiliateList";
+		return "/admin/sale/voucherThemeList";
 	}
 	
 	@RequestMapping(value="/create")
@@ -57,9 +56,9 @@ public class AffiliateAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		addFormAttributes(affiliateAdminModel.newForm(), model);
+		addFormAttributes(voucherThemeAdminModel.newForm(), model);
 		
-		return "/admin/sale/affiliateForm";
+		return "/admin/sale/voucherThemeForm";
 	}
 	
 	@RequestMapping(value="/edit/{id}")
@@ -67,32 +66,32 @@ public class AffiliateAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		AffiliateForm affForm = affiliateAdminModel.getForm(id);
-		addFormAttributes(affForm, model);
+		VoucherThemeForm vtForm = voucherThemeAdminModel.getForm(id);
+		addFormAttributes(vtForm, model);
 		
-		return "/admin/sale/affiliateForm";
+		return "/admin/sale/voucherThemeForm";
 	}
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public String save(@Valid AffiliateForm affForm, BindingResult result, Model model, 
+	public String save(@Valid VoucherThemeForm vtForm, BindingResult result, Model model, 
 			RedirectAttributes redirect){
 		
 		checkModifyPermission();
 		
 		if(result.hasErrors()){
-			addFormAttributes(affForm, model);
-			return "/admin/sale/affiliateForm";
+			addFormAttributes(vtForm, model);
+			return "/admin/sale/voucherThemeForm";
 		}
 		
-		if(affForm.getId()!=null){
-			affiliateAdminModel.update(affForm);
+		if(vtForm.getId()!=null){
+			voucherThemeAdminModel.update(vtForm);
 		}else{
-			affiliateAdminModel.create(affForm);
+			voucherThemeAdminModel.create(vtForm);
 		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
 		
-		return "redirect:/admin/sale/affiliate";
+		return "redirect:/admin/sale/voucherTheme";
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
@@ -102,27 +101,26 @@ public class AffiliateAdminController extends BaseController {
 		boolean error = false;
 		if(ids!=null){
 			if(!error) for(Integer id: ids){
-				affiliateAdminModel.delete(id);
+				voucherThemeAdminModel.delete(id);
 			}
 			if(!error) redirect.addFlashAttribute("msg_success", "text.success");
 		}
 		
-		return "redirect:/admin/sale/affiliate";
+		return "redirect:/admin/sale/voucherTheme";
 	}
 	
-	@InitBinder
-	@Override
-	protected void initBinder(WebDataBinder binder, HttpServletRequest request) {
-		super.initBinder(binder, request);
-	}
-
-	private void addFormAttributes(AffiliateForm form, Model model){
+	private void addFormAttributes(VoucherThemeForm form, Model model){
 		
-		model.addAttribute("affiliateForm", form);
+		model.addAttribute("voucherThemeForm", form);
+		
+		String imgUrl = mediaService.getThumbnailUrl(form.getImage());
+		model.addAttribute("thumb", imgUrl);
+		String noImgUrl = mediaService.getImageUrl(DefaultMediaService.NO_IMG_PATH);
+		model.addAttribute("noImg", noImgUrl);
 	}
 	
 	private void checkModifyPermission(){
-		UserPermissions.checkModify("sale/affiliate", 
+		UserPermissions.checkModify("sale/voucher_theme", 
 				new UnauthorizedAdminException());
 	}
 }

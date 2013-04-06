@@ -58,8 +58,7 @@ public class AttributeAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		model.addAttribute("attributeForm", attributeAdminModel.newForm());
-		addFormAttributes(model);
+		addFormAttributes(attributeAdminModel.newForm(), model);
 		
 		return "/admin/catalog/attributeForm";
 	}
@@ -69,9 +68,8 @@ public class AttributeAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		Attribute attrForm = attributeAdminModel.getForm(id);
-		model.addAttribute("attributeForm", attrForm);
-		addFormAttributes(model);
+		AttributeForm attrForm = attributeAdminModel.getForm(id);
+		addFormAttributes(attrForm, model);
 		
 		return "/admin/catalog/attributeForm";
 	}
@@ -83,8 +81,7 @@ public class AttributeAdminController extends BaseController {
 		checkModifyPermission();
 		
 		if(result.hasErrors()){
-			model.addAttribute("attributeForm", attrForm);
-			addFormAttributes(model);
+			addFormAttributes(attrForm, model);
 			return "/admin/catalog/attributeForm";
 		}
 		
@@ -115,7 +112,8 @@ public class AttributeAdminController extends BaseController {
 		return "redirect:/admin/catalog/attribute";
 	}
 	
-	private void addFormAttributes(Model model){
+	private void addFormAttributes(AttributeForm form, Model model){
+		model.addAttribute("attributeForm", form);
 		model.addAttribute("attributeGroups", attributeGroupAdminModel.getList(null));
 	}
 	

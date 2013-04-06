@@ -4,11 +4,22 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jpoweredcart.common.utils.ImageUtils;
 import com.jpoweredcart.common.utils.PathUtils;
 
 public class DefaultMediaService implements MediaService {
+	
+	public static final int THUMB_WIDTH = 100;
+	
+	public static final int THUMB_HEIGHT = 100;
+	
+	public static final String NO_IMG_PATH = "no_image.jpg";
+	
+	protected static Logger logger = LoggerFactory.getLogger(DefaultMediaService.class);
 	
 	private String imageDir;
 	
@@ -62,6 +73,10 @@ public class DefaultMediaService implements MediaService {
 	@Override
 	public String getThumbnailUrl(String path, int width, int height) {
 		
+		if(StringUtils.isBlank(path)){
+			return getImageUrl(NO_IMG_PATH);
+		}
+		
 		String directory = FilenameUtils.getPath(path);
 		String baseName = FilenameUtils.getBaseName(path);
 		String ext = FilenameUtils.getExtension(path);
@@ -71,7 +86,8 @@ public class DefaultMediaService implements MediaService {
 		if(!thumbnailFile.exists()){
 			File imageFile = new File(getImageDir()+"data"+File.separator+path);
 			if(!imageFile.exists()){
-				throw new RuntimeException("Image file not found: "+imageFile.getAbsolutePath());
+				logger.warn("Image file not found: "+imageFile.getAbsolutePath());
+				return getImageUrl(NO_IMG_PATH);
 			}
 			try {
 				File parentDir = thumbnailFile.getParentFile();
@@ -83,9 +99,15 @@ public class DefaultMediaService implements MediaService {
 				throw new RuntimeException(e);
 			}
 		}
+		
 		thumbnailPath = thumbnailPath.replaceAll("[\\\\|\\\\/|/]+", "/");
 		
 		return getThumbnailBaseUrl() + thumbnailPath;
+	}
+	
+	@Override
+	public String getThumbnailUrl(String path){
+		return getThumbnailUrl(path, THUMB_WIDTH, THUMB_HEIGHT);
 	}
 	
 }

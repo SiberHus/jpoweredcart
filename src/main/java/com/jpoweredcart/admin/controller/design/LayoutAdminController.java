@@ -57,8 +57,7 @@ public class LayoutAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		model.addAttribute("layoutForm", layoutAdminModel.newForm());
-		model.addAttribute("stores", storeAdminModel.getAll());
+		addFormAttributes(layoutAdminModel.newForm(), model);
 		
 		return "/admin/design/layoutForm";
 	}
@@ -69,8 +68,7 @@ public class LayoutAdminController extends BaseController {
 		checkModifyPermission();
 		
 		LayoutForm layoutForm = layoutAdminModel.getForm(id);
-		model.addAttribute("layoutForm", layoutForm);
-		model.addAttribute("stores", storeAdminModel.getAll());
+		addFormAttributes(layoutForm, model);
 		
 		return "/admin/design/layoutForm";
 	}
@@ -95,8 +93,7 @@ public class LayoutAdminController extends BaseController {
 		}
 		
 		if(result.hasErrors()){
-			model.addAttribute("layoutForm", layoutForm);
-			model.addAttribute("stores", storeAdminModel.getAll());
+			addFormAttributes(layoutForm, model);
 			return "/admin/design/layoutForm";
 		}
 		
@@ -126,6 +123,11 @@ public class LayoutAdminController extends BaseController {
 		return "redirect:/admin/design/layout";
 	}
 	
+	private void addFormAttributes(LayoutForm form, Model model){
+		
+		model.addAttribute("layoutForm", form);
+		model.addAttribute("stores", storeAdminModel.getAll());
+	}
 	
 	private void checkModifyPermission(){
 		UserPermissions.checkModify("design/layout", 

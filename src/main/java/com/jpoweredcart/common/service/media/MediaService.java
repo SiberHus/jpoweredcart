@@ -18,4 +18,6 @@ public interface MediaService {
 	 */
 	public String getThumbnailUrl(String path, int width, int height);
 	
+	public String getThumbnailUrl(String path);
+	
 }

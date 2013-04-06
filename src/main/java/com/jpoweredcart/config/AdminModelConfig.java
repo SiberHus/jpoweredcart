@@ -62,11 +62,13 @@ import com.jpoweredcart.admin.model.sale.CustomerGroupAdminModel;
 import com.jpoweredcart.admin.model.sale.IpBlacklistAdminModel;
 import com.jpoweredcart.admin.model.sale.OrderAdminModel;
 import com.jpoweredcart.admin.model.sale.VoucherAdminModel;
+import com.jpoweredcart.admin.model.sale.VoucherThemeAdminModel;
 import com.jpoweredcart.admin.model.sale.jdbc.AffiliateAdminModelImpl;
 import com.jpoweredcart.admin.model.sale.jdbc.CustomerGroupAdminModelImpl;
 import com.jpoweredcart.admin.model.sale.jdbc.IpBlacklistAdminModelImpl;
 import com.jpoweredcart.admin.model.sale.jdbc.OrderAdminModelImpl;
 import com.jpoweredcart.admin.model.sale.jdbc.VoucherAdminModelImpl;
+import com.jpoweredcart.admin.model.sale.jdbc.VoucherThemeAdminModelImpl;
 import com.jpoweredcart.admin.model.setting.SettingAdminModel;
 import com.jpoweredcart.admin.model.setting.StoreAdminModel;
 import com.jpoweredcart.admin.model.setting.jdbc.SettingAdminModelImpl;
@@ -143,6 +145,8 @@ public class AdminModelConfig {
 	public IpBlacklistAdminModel ipBlacklistAdminModel(){ return new IpBlacklistAdminModelImpl(); }
 	@Bean
 	public VoucherAdminModel voucherAdminModel(){ return new VoucherAdminModelImpl(); }
+	@Bean
+	public VoucherThemeAdminModel voucherThemeAdminModel(){ return new VoucherThemeAdminModelImpl(); }
 	
 	//================= User ========================//
 	@Bean
