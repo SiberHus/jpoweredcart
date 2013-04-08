@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-	<head th:include="/admin :: header">
-		
-	</head>
+	<head th:include="/admin :: header"></head>
 	<body>
 		<div id="container">
 			<div th:include="/admin :: content_top"></div>
@@ -15,7 +13,7 @@
 						</h1>
 					</div>
 					<div class="content" style="min-height: 150px; overflow: hidden;">
-						<div class="success" th:if="${success}" th:text="${sucess}"></div>
+						<div class="success" th:if="${msg_success}" th:text="${msg_success}"></div>
 						<div class="warning" th:if="${param.error}" th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"></div>
 						<form th:action="@{/admin/auth/j_spring_security_check}" method="post" id="form">
 							<table style="width: 100%;">
@@ -30,7 +28,7 @@
 										<span th:text="#{entry.password}">Password</span><br />
 										<input type="password" name="j_password" th:value="${password}" style="margin-top: 4px;" />
 										<br />
-										<a href="${forgotten}" th:text="#{text.forgotten}">Forgotten Password</a>
+										<a th:href="@{/admin/common/forgotten}" th:text="#{text.forgotten}">Forgotten Password</a>
 									</td>
 								</tr>
 								<tr>

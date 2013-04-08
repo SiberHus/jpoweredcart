@@ -138,6 +138,7 @@ public class SettingKey {
 	public static final String CFG_NAME = "config_name";
 	public static final String CFG_SEO_URL = "config_seo_url";
 	public static final String CFG_MAINTENANCE = "config_maintenance";
+	public static final String CFG_PASSWORD = "config_password";
 	public static final String CFG_ENCRYPTION = "config_encryption";
 	public static final String CFG_COMPRESSION = "config_compression";
 	public static final String CFG_ERROR_DISPLAY = "config_error_display";

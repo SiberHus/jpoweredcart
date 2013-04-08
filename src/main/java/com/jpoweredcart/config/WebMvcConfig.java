@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.Properties;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
@@ -46,6 +47,9 @@ import com.jpoweredcart.common.i18n.MessageResolver;
 public class WebMvcConfig extends WebMvcConfigurationSupport {
 	
 	@Inject
+	private ServletContext servletContext;
+	
+	@Inject
 	private Environment env;
 	
 	@Inject
@@ -60,7 +64,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/").setViewName("ok");
 		registry.addViewController("/admin/error/permission").setViewName("/admin/error/permission");
 	}
 	
@@ -154,7 +157,11 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		
 		CustomMessageResolver messageResolver = new CustomMessageResolver();
 		messageResolver.setEnvironment(env);
-		messageResolver.setBaseDir(env.getProperty("language.baseDir"));
+		String baseDir = env.getProperty("language.baseDir", "/WEB-INF/languages");
+		if(baseDir.startsWith("/")){
+			baseDir = servletContext.getRealPath(baseDir);
+		}
+		messageResolver.setBaseDir(baseDir);
 		messageResolver.setJdbcTemplate(jdbcTemplate);
 		messageResolver.setLocaleResolver(localeResolver());
 		

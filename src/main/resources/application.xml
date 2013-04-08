@@ -13,8 +13,9 @@
 	==============================================
 	dataSource					BoneCPDataSource
 	transactionManager			DataSourceTransactionManager
-	settingService				DefaultSettingService
-	emailService				DefaultEmailService (Direct SMTP, no queue)
+	templateService				SpringWebTemplateService
+	settingService				DefaultSettingService (JDBC database)
+	emailService				SmtpEmailService (Direct SMTP no queue) for testing purpose only
 	downloadFileService			DefaultFileService (file system base)
 	mediaFileService			DefaultFileService (file system base)
 	mediaService				DefaultMediaService

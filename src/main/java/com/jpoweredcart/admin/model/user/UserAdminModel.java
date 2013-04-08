@@ -6,7 +6,11 @@ import com.jpoweredcart.admin.bean.user.UserForm;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.user.User;
 
-
+/**
+ * 
+ * @author hussachai
+ *
+ */
 public interface UserAdminModel {
 	
 	public void create(UserForm userForm);
@@ -15,7 +19,14 @@ public interface UserAdminModel {
 	
 	public void updatePassword(Integer userId, String password);
 	
-	public void updateCode(String email, String code);
+	/**
+	 * Generate random alphanumeric 32 digits then update it to user record.
+	 * The code returning from this method may be used for resetting passport
+	 * or doing other purposes for identifying real user from email. 
+	 * @param email
+	 * @return
+	 */
+	public String generateCode(String email);
 	
 	public void delete(Integer userId);
 	

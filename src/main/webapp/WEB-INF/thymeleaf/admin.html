@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/springsecurity">
 	<head th:fragment="header">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title th:text="${title}">Administration</title>
+		<title th:text="#{heading.title}">Administration</title>
 		<base th:href="${base}" />
 		<meta name="description" th:if="${not #strings.isEmpty(description)}" th:content="${description}" />
 		<meta name="keywords" th:if="${not #strings.isEmpty(keywords)}" th:content="${keywords}" />
@@ -44,162 +44,162 @@
 	</head>
 	<body>
 		<div id="container" th:fragment="content_top">
-			<span id="head.text.confirm" th:text="#{head.text.confirm}" style="display: none;"></span>
+			<span th:text="#{text.confirm}" style="display: none;"></span>
 			<div id="header">
 				<div class="div1">
 					<div class="div2"><img th:src="@{/resources/admin/image/logo.png}" th:title="#{heading.title}" th:onclick="'location = \''+@{/admin/common/home}+'\''" /></div>
 					<div sec:authorize="isAuthenticated()" class="div3"><img th:src="@{/resources/admin/image/lock.png}" alt="" style="position: relative; top: 3px;" />&nbsp;
-						<span th:text="#{head.text.logged}">You are logged in as</span>&nbsp;
+						<span th:text="#{text.logged}">You are logged in as</span>&nbsp;
 						<span sec:authentication="name"></span>
 					</div>
 				</div>
 				<div id="menu" sec:authorize="isAuthenticated()">
 					<ul class="left" style="display: none;">
-						<li id="dashboard"><a th:href="@{/admin/common/home}" class="top" th:text="#{head.text.dashboard}">Dashboard</a></li>
-						<li id="catalog"><a class="top" th:text="#{head.text.catalog}">Catalog</a>
+						<li id="dashboard"><a th:href="@{/admin/common/home}" class="top" th:text="#{text.dashboard}">Dashboard</a></li>
+						<li id="catalog"><a class="top" th:text="#{text.catalog}">Catalog</a>
 							<ul>
-								<li><a th:href="@{/admin/catalog/category}" th:text="#{head.text.category}">Categories</a></li>
-								<li><a th:href="@{/admin/catalog/product}" th:text="#{head.text.product}">Products</a></li>
-								<li><a th:href="@{/admin/catalog/filter}" th:text="#{head.text.filter}">Filters</a></li>
-								<li><a class="parent" th:text="#{head.text.attribute}">Attributes</a>
+								<li><a th:href="@{/admin/catalog/category}" th:text="#{text.category}">Categories</a></li>
+								<li><a th:href="@{/admin/catalog/product}" th:text="#{text.product}">Products</a></li>
+								<li><a th:href="@{/admin/catalog/filter}" th:text="#{text.filter}">Filters</a></li>
+								<li><a class="parent" th:text="#{text.attribute}">Attributes</a>
 									<ul>
-										<li><a th:href="@{/admin/catalog/attribute}" th:text="#{head.text.attribute}">Attributes</a></li>
-										<li><a th:href="@{/admin/catalog/attributeGroup}" th:text="#{head.text.attributeGroup}">Attribute Groups</a></li>
+										<li><a th:href="@{/admin/catalog/attribute}" th:text="#{text.attribute}">Attributes</a></li>
+										<li><a th:href="@{/admin/catalog/attributeGroup}" th:text="#{text.attributeGroup}">Attribute Groups</a></li>
 									</ul>
 								</li>
-								<li><a th:href="@{/admin/catalog/option}" th:text="#{head.text.option}">Options</a></li>
-								<li><a th:href="@{/admin/catalog/manufacturer}" th:text="#{head.text.manufacturer}">Manufacturers</a></li>
-								<li><a th:href="@{/admin/catalog/download}" th:text="#{head.text.download}">Downloads</a></li>
-								<li><a th:href="@{/admin/catalog/review}" th:text="#{head.text.review}"></a></li>
-								 <li><a th:href="@{/admin/catalog/information}" th:text="#{head.text.information}">Information</a></li>
+								<li><a th:href="@{/admin/catalog/option}" th:text="#{text.option}">Options</a></li>
+								<li><a th:href="@{/admin/catalog/manufacturer}" th:text="#{text.manufacturer}">Manufacturers</a></li>
+								<li><a th:href="@{/admin/catalog/download}" th:text="#{text.download}">Downloads</a></li>
+								<li><a th:href="@{/admin/catalog/review}" th:text="#{text.review}"></a></li>
+								 <li><a th:href="@{/admin/catalog/information}" th:text="#{text.information}">Information</a></li>
 							</ul>
 						</li>
-						<li id="extension"><a class="top" th:text="#{head.text.extension}">Extensions</a>
+						<li id="extension"><a class="top" th:text="#{text.extension}">Extensions</a>
 							<ul>
-								<li><a th:href="@{/admin/extension/manager}" th:text="#{head.text.manager}">Extension Manager</a></li>
-								<li><a th:href="@{/admin/extension/module}" th:text="#{head.text.module}">Modules</a></li>
-								<li><a th:href="@{/admin/extension/shipping}" th:text="#{head.text.shipping}">Shipping</a></li>
-								<li><a th:href="@{/admin/extension/payment}" th:text="#{head.text.payment}">Payments</a></li>
-								<li><a th:href="@{/admin/extension/total}" th:text="#{head.text.total}">Order Totals</a></li>
-								<li><a th:href="@{/admin/extension/feed}" th:text="#{head.text.feed}">Product Feeds</a></li>
+								<li><a th:href="@{/admin/extension/manager}" th:text="#{text.manager}">Extension Manager</a></li>
+								<li><a th:href="@{/admin/extension/module}" th:text="#{text.module}">Modules</a></li>
+								<li><a th:href="@{/admin/extension/shipping}" th:text="#{text.shipping}">Shipping</a></li>
+								<li><a th:href="@{/admin/extension/payment}" th:text="#{text.payment}">Payments</a></li>
+								<li><a th:href="@{/admin/extension/total}" th:text="#{text.total}">Order Totals</a></li>
+								<li><a th:href="@{/admin/extension/feed}" th:text="#{text.feed}">Product Feeds</a></li>
 							</ul>
 						</li>
-						<li id="sale"><a class="top" th:text="#{head.text.sale}">Sales</a>
+						<li id="sale"><a class="top" th:text="#{text.sale}">Sales</a>
 							<ul>
-								<li><a th:href="@{/admin/sale/order}" th:text="#{head.text.order}">Orders</a></li>
-								<li><a th:href="@{/admin/sale/return}" th:text="#{head.text.return}">Returns</a></li>
-								<li><a class="parent" th:text="#{head.text.customer}">Customers</a>
+								<li><a th:href="@{/admin/sale/order}" th:text="#{text.order}">Orders</a></li>
+								<li><a th:href="@{/admin/sale/return}" th:text="#{text.return}">Returns</a></li>
+								<li><a class="parent" th:text="#{text.customer}">Customers</a>
 									<ul>
-										<li><a th:href="@{/admin/sale/customer}" th:text="#{head.text.customer}">Customers</a></li>
-										<li><a th:href="@{/admin/sale/customerGroup}" th:text="#{head.text.customerGroup}">Customer Groups</a></li>
-										<li><a th:href="@{/admin/sale/ipBlacklist}" th:text="#{head.text.customerBlacklist}">IP Blacklist</a></li>
+										<li><a th:href="@{/admin/sale/customer}" th:text="#{text.customer}">Customers</a></li>
+										<li><a th:href="@{/admin/sale/customerGroup}" th:text="#{text.customerGroup}">Customer Groups</a></li>
+										<li><a th:href="@{/admin/sale/ipBlacklist}" th:text="#{text.customerBlacklist}">IP Blacklist</a></li>
 									</ul>
 								</li>
-								<li><a th:href="@{/admin/sale/affiliate}" th:text="#{head.text.affiliate}">Affiliates</a></li>
-								<li><a th:href="@{/admin/sale/coupon}" th:text="#{head.text.coupon}">Coupons</a></li>
-								<li><a class="parent" th:text="#{head.text.voucher}">Gift Vouchers</a>
+								<li><a th:href="@{/admin/sale/affiliate}" th:text="#{text.affiliate}">Affiliates</a></li>
+								<li><a th:href="@{/admin/sale/coupon}" th:text="#{text.coupon}">Coupons</a></li>
+								<li><a class="parent" th:text="#{text.voucher}">Gift Vouchers</a>
 									<ul>
-										<li><a th:href="@{/admin/sale/voucher}" th:text="#{head.text.voucher}"></a></li>
-										<li><a th:href="@{/admin/sale/voucherTheme}" th:text="#{head.text.voucherTheme}"></a></li>
+										<li><a th:href="@{/admin/sale/voucher}" th:text="#{text.voucher}"></a></li>
+										<li><a th:href="@{/admin/sale/voucherTheme}" th:text="#{text.voucherTheme}"></a></li>
 									</ul>
 								</li>
-								<li><a th:href="@{/admin/sale/contact}" th:text="#{head.text.contact}"></a></li>
+								<li><a th:href="@{/admin/sale/contact}" th:text="#{text.contact}"></a></li>
 							</ul>
 						</li>
-						<li id="system"><a class="top" th:text="#{head.text.system}">System</a>
+						<li id="system"><a class="top" th:text="#{text.system}">System</a>
 							<ul>
-								<li><a th:href="@{/admin/setting/store}" th:text="#{head.text.setting}">Settings</a></li>
-								<li><a class="parent" th:text="#{head.text.design}">Design</a>
+								<li><a th:href="@{/admin/setting/store}" th:text="#{text.setting}">Settings</a></li>
+								<li><a class="parent" th:text="#{text.design}">Design</a>
 									<ul>
-										<li><a th:href="@{/admin/design/layout}" th:text="#{head.text.layout}">Layouts</a></li>
-										<li><a th:href="@{/admin/design/banner}" th:text="#{head.text.banner}">Banners</a></li>
+										<li><a th:href="@{/admin/design/layout}" th:text="#{text.layout}">Layouts</a></li>
+										<li><a th:href="@{/admin/design/banner}" th:text="#{text.banner}">Banners</a></li>
 									</ul>
 								</li>
-								<li><a class="parent" th:text="#{head.text.users}">Users</a>
+								<li><a class="parent" th:text="#{text.users}">Users</a>
 									<ul>
-										<li><a th:href="@{/admin/user/user}" th:text="#{head.text.user}">Users</a></li>
-										<li><a th:href="@{/admin/user/userPermission}" th:text="#{head.text.userGroup}">User Groups</a></li>
+										<li><a th:href="@{/admin/user/user}" th:text="#{text.user}">Users</a></li>
+										<li><a th:href="@{/admin/user/userPermission}" th:text="#{text.userGroup}">User Groups</a></li>
 									</ul>
 								</li>
-								<li><a class="parent" th:text="#{head.text.localisation}">Localisation</a>
+								<li><a class="parent" th:text="#{text.localisation}">Localisation</a>
 									<ul>
-										<li><a th:href="@{/admin/localisation/language}" th:text="#{head.text.language}">Languages</a></li>
-										<li><a th:href="@{/admin/localisation/currency}" th:text="#{head.text.currency}">Currencies</a></li>
-										<li><a th:href="@{/admin/localisation/stockStatus}" th:text="#{head.text.stockStatus}">Stock Statuses</a></li>
-										<li><a th:href="@{/admin/localisation/orderStatus}" th:text="#{head.text.orderStatus}">Order Statuses</a></li>
-										<li><a class="parent" th:text="#{head.text.return}">Returns</a>
+										<li><a th:href="@{/admin/localisation/language}" th:text="#{text.language}">Languages</a></li>
+										<li><a th:href="@{/admin/localisation/currency}" th:text="#{text.currency}">Currencies</a></li>
+										<li><a th:href="@{/admin/localisation/stockStatus}" th:text="#{text.stockStatus}">Stock Statuses</a></li>
+										<li><a th:href="@{/admin/localisation/orderStatus}" th:text="#{text.orderStatus}">Order Statuses</a></li>
+										<li><a class="parent" th:text="#{text.return}">Returns</a>
 											<ul>
-												<li><a th:href="@{/admin/localisation/returnStatus}" th:text="#{head.text.returnStatus}">Return Statuses</a></li>
-												<li><a th:href="@{/admin/localisation/returnAction}" th:text="#{head.text.returnAction}">Return Actions</a></li>
-												<li><a th:href="@{/admin/localisation/returnReason}" th:text="#{head.text.returnReason}">Return Reasons</a></li>
+												<li><a th:href="@{/admin/localisation/returnStatus}" th:text="#{text.returnStatus}">Return Statuses</a></li>
+												<li><a th:href="@{/admin/localisation/returnAction}" th:text="#{text.returnAction}">Return Actions</a></li>
+												<li><a th:href="@{/admin/localisation/returnReason}" th:text="#{text.returnReason}">Return Reasons</a></li>
 											</ul>
 										</li>
-										<li><a th:href="@{/admin/localisation/country}" th:text="#{head.text.country}">Countries</a></li>
-										<li><a th:href="@{/admin/localisation/zone}" th:text="#{head.text.zone}">Zones</a></li>
-										<li><a th:href="@{/admin/localisation/geoZone}" th:text="#{head.text.geoZone}">Geo Zones</a></li>
-										<li><a class="parent" th:text="#{head.text.tax}">Taxes</a>
+										<li><a th:href="@{/admin/localisation/country}" th:text="#{text.country}">Countries</a></li>
+										<li><a th:href="@{/admin/localisation/zone}" th:text="#{text.zone}">Zones</a></li>
+										<li><a th:href="@{/admin/localisation/geoZone}" th:text="#{text.geoZone}">Geo Zones</a></li>
+										<li><a class="parent" th:text="#{text.tax}">Taxes</a>
 											<ul>
-												<li><a th:href="@{/admin/localisation/taxClass}" th:text="#{head.text.taxClass}">Tax Classes</a></li>
-												<li><a th:href="@{/admin/localisation/taxRate}" th:text="#{head.text.taxRate}">Tax Rates</a></li>
+												<li><a th:href="@{/admin/localisation/taxClass}" th:text="#{text.taxClass}">Tax Classes</a></li>
+												<li><a th:href="@{/admin/localisation/taxRate}" th:text="#{text.taxRate}">Tax Rates</a></li>
 											</ul>
 										</li>
-										<li><a th:href="@{/admin/localisation/lengthClass}" th:text="#{head.text.lengthClass}">Length Classes</a></li>
-										<li><a th:href="@{/admin/localisation/weightClass}" th:text="#{head.text.weightClass}">Weight Classes</a></li>
+										<li><a th:href="@{/admin/localisation/lengthClass}" th:text="#{text.lengthClass}">Length Classes</a></li>
+										<li><a th:href="@{/admin/localisation/weightClass}" th:text="#{text.weightClass}">Weight Classes</a></li>
 									</ul>
 								</li>
-								<li><a th:href="@{/admin/tool/errorLog}" th:text="#{head.text.errorLog}">Error Logs</a></li>
-								<li><a th:href="@{/admin/tool/backup}" th:text="#{head.text.backup}">Backup/Restore</a></li>
+								<li><a th:href="@{/admin/tool/errorLog}" th:text="#{text.errorLog}">Error Logs</a></li>
+								<li><a th:href="@{/admin/tool/backup}" th:text="#{text.backup}">Backup/Restore</a></li>
 							</ul>
 						</li>
-						<li id="reports"><a class="top" th:text="#{head.text.reports}">Reports</a>
+						<li id="reports"><a class="top" th:text="#{text.reports}">Reports</a>
 							<ul>
-								<li><a class="parent" th:text="#{head.text.sale}">Sales</a>
+								<li><a class="parent" th:text="#{text.sale}">Sales</a>
 									<ul>
-										<li><a th:href="@{/admin/report/saleOrder}" th:text="#{head.text.reportSaleOrder}">Orders</a></li>
-										<li><a th:href="@{/admin/report/saleTax}" th:text="#{head.text.reportSaleTax}">Tax</a></li>
-										<li><a th:href="@{/admin/report/saleShipping}" th:text="#{head.text.reportSaleShipping}">Shipping</a></li>
-										<li><a th:href="@{/admin/report/saleReturn}" th:text="#{head.text.reportSaleReturn}">Returns</a></li>
-										<li><a th:href="@{/admin/report/saleCoupon}" th:text="#{head.text.reportSaleCoupon}">Coupons</a></li>
+										<li><a th:href="@{/admin/report/saleOrder}" th:text="#{text.reportSaleOrder}">Orders</a></li>
+										<li><a th:href="@{/admin/report/saleTax}" th:text="#{text.reportSaleTax}">Tax</a></li>
+										<li><a th:href="@{/admin/report/saleShipping}" th:text="#{text.reportSaleShipping}">Shipping</a></li>
+										<li><a th:href="@{/admin/report/saleReturn}" th:text="#{text.reportSaleReturn}">Returns</a></li>
+										<li><a th:href="@{/admin/report/saleCoupon}" th:text="#{text.reportSaleCoupon}">Coupons</a></li>
 									</ul>
 								</li>
-								<li><a class="parent" th:text="#{head.text.product}">Products</a>
+								<li><a class="parent" th:text="#{text.product}">Products</a>
 									<ul>
-										<li><a th:href="@{/admin/report/productViewed}" th:text="#{head.text.reportProductViewed}">Viewed</a></li>
-										<li><a th:href="@{/admin/report/productPurchased}" th:text="#{head.text.reportProductPurchased}">Purchased</a></li>
+										<li><a th:href="@{/admin/report/productViewed}" th:text="#{text.reportProductViewed}">Viewed</a></li>
+										<li><a th:href="@{/admin/report/productPurchased}" th:text="#{text.reportProductPurchased}">Purchased</a></li>
 									</ul>
 								</li>
-								<li><a class="parent" th:text="#{head.text.customer}">Customers</a>
+								<li><a class="parent" th:text="#{text.customer}">Customers</a>
 									<ul>
-										<li><a th:href="@{/admin/report/customerOnline}" th:text="#{head.text.reportCustomerOnline}">Customers Online</a></li>
-										<li><a th:href="@{/admin/report/customerOrder}" th:text="#{head.text.reportCustomerOrder}">Orders</a></li>
-										<li><a th:href="@{/admin/report/customerReward}" th:text="#{head.text.reportCustomerReward}">Reward Points</a></li>
-										<li><a th:href="@{/admin/report/customerCredit}" th:text="#{head.text.reportCustomerCredit}">Credit</a></li>
+										<li><a th:href="@{/admin/report/customerOnline}" th:text="#{text.reportCustomerOnline}">Customers Online</a></li>
+										<li><a th:href="@{/admin/report/customerOrder}" th:text="#{text.reportCustomerOrder}">Orders</a></li>
+										<li><a th:href="@{/admin/report/customerReward}" th:text="#{text.reportCustomerReward}">Reward Points</a></li>
+										<li><a th:href="@{/admin/report/customerCredit}" th:text="#{text.reportCustomerCredit}">Credit</a></li>
 									</ul>
 								</li>
-								<li><a class="parent" th:text="#{head.text.affiliate}">Affiliates</a>
+								<li><a class="parent" th:text="#{text.affiliate}">Affiliates</a>
 									<ul>
-										<li><a th:href="@{/admin/report/affiliateCommission}" th:text="#{head.text.reportAffiliateCommission}">Commission</a></li>
+										<li><a th:href="@{/admin/report/affiliateCommission}" th:text="#{text.reportAffiliateCommission}">Commission</a></li>
 									</ul>
 								</li>
 							</ul>
 						</li>
-						<li id="help"><a class="top" th:text="#{head.text.help}">Help</a>
+						<li id="help"><a class="top" th:text="#{text.help}">Help</a>
 							<ul>
-								<li><a onClick="window.open('http://www.jpoweredcart.com');" th:text="#{head.text.opencart}">Homepage</a></li>
+								<li><a onClick="window.open('http://www.jpoweredcart.com');" th:text="#{text.opencart}">Homepage</a></li>
 								<li><a onClick="window.open('http://www.jpoweredcart.com/docs');">Documentation</a></li>
 								<li><a onClick="window.open('http://www.jpoweredcart.com/forum');">Support Forum</a></li>
 							</ul>
 						</li>
 					</ul>
 					<ul class="right">
-						<li id="store"><a th:onclick="'window.open('+${store}+');'" class="top" th:text="#{head.text.front}">Store Front</a>
+						<li id="store"><a th:onclick="'window.open('+${store}+');'" class="top" th:text="#{text.front}">Store Front</a>
 							<ul>
 								<!-- 
 								<li th:each="store : ${stores}"><a th:onclick="window.open('${store.href}');" th:text="${store.name}"></a></li>
 								 -->
 							</ul>
 						</li>
-						<li id="store"><a class="top" th:href="@{/admin/auth/j_spring_security_logout}" th:text="#{head.text.logout}">Logout</a></li>
+						<li id="store"><a class="top" th:href="@{/admin/auth/j_spring_security_logout}" th:text="#{text.logout}">Logout</a></li>
 					</ul>
 					
 					<script type="text/javascript">

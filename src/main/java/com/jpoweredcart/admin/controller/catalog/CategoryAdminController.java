@@ -120,6 +120,7 @@ public class CategoryAdminController extends BaseController {
 	}
 	
 	private void addFormAttributes(CategoryForm form, Model model, HttpServletRequest request){
+		model.addAttribute("categoryForm", form);
 		String noImageUrl = mediaService.getImageUrl("no_image.jpg");
 		model.addAttribute("noImage", noImageUrl);
 		String separator = message(request, "text.separator");

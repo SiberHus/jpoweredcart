@@ -5,20 +5,17 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 
-import com.jpoweredcart.common.BaseModel;
-import com.jpoweredcart.common.jdbc.ArrayListResultSetExtractor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -29,12 +26,16 @@ import org.thymeleaf.Arguments;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.messageresolver.MessageResolution;
 
+import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.jdbc.ArrayListResultSetExtractor;
+import com.jpoweredcart.common.utils.PathUtils;
+
 
 public abstract class AbstractMessageResolver implements MessageResolver {
 	
-	public static final String MSG_DIR_ATTR_NAME = AbstractMessageResolver.class.getName()+".LOCALE"; 
-	
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
+	
+	private Map<String, String> messageDirMap = new ConcurrentHashMap<String, String>();
 	
 	private Environment env;
 	
@@ -49,7 +50,7 @@ public abstract class AbstractMessageResolver implements MessageResolver {
 	private boolean cacheable = true;
 	
 	@Override
-	public String getName() { return "SimpleMessageResolver"; }
+	public String getName() { return "AbstractMessageResolver"; }
 	
 	@Override
 	public Integer getOrder() { return 0; }
@@ -82,7 +83,10 @@ public abstract class AbstractMessageResolver implements MessageResolver {
 	}
 	
 	public void setBaseDir(String baseDir) {
-		this.baseDir = baseDir;
+		if(!new File(baseDir).exists()){
+			throw new IllegalArgumentException("baseDir doesn't exist!");
+		}
+		this.baseDir = PathUtils.ensureEndingFileSeparator(baseDir);
 	}
 	
 	public void setCacheable(boolean cacheable){
@@ -109,41 +113,34 @@ public abstract class AbstractMessageResolver implements MessageResolver {
 			Object... messageParameters) {
 		
 		Locale locale = localeResolver.resolveLocale(httpRequest);
-		ServletContext servletContext = httpRequest.getSession().getServletContext();
-		
-		@SuppressWarnings("unchecked")
-		Map<String, String> msgDirMap = (Map<String, String>)servletContext
-				.getAttribute(MSG_DIR_ATTR_NAME);
 		String langCode = locale.getLanguage();
 		String langDir = null;
-		if(msgDirMap==null || (langDir=msgDirMap.get(langCode))==null ){
-			msgDirMap = new HashMap<String, String>();
+		if((langDir=messageDirMap.get(langCode))==null ){
 			String sql = "SELECT code, directory FROM "+BaseModel.quoteTable(env, "language")
 					+ " WHERE status=1";
 			List<Object[]> result = jdbcTemplate.query(sql, new ArrayListResultSetExtractor());
 			for(Object[] row: result){
-				msgDirMap.put((String)row[0], (String)row[1]);
+				messageDirMap.put((String)row[0], (String)row[1]);
 			}
-			servletContext.setAttribute(MSG_DIR_ATTR_NAME, msgDirMap);
-			langDir = msgDirMap.get(langCode);
+			langDir = messageDirMap.get(langCode);
 		}
 		if(langDir==null){
-			langDir = "english";//TODO: remove this hardcode
+			langDir = "english";/* default language dir */
 		}
 		
-		String baseDir = servletContext.getRealPath(this.baseDir);
 		String paths[] = getMessagePaths(httpRequest);
+		
 		Properties props = null;
-		for(String path : paths){
-			
-			String resourceName = langDir+File.separator+path;
+		for(int i=paths.length-1; i>=0; i--){
+			String path = paths[i];
+			String resourceName = langDir+File.separatorChar+path;
 			Element element = null;
 			
 			if(cacheable){
 				element = cache.get(resourceName);
 			}
 			if(element==null){
-				File inputFile = new File(baseDir+File.separator+resourceName+".properties");
+				File inputFile = new File(baseDir+resourceName+".properties");
 				if(inputFile.exists()){
 					props = new Properties();
 					InputStreamReader in = null;
@@ -171,15 +168,51 @@ public abstract class AbstractMessageResolver implements MessageResolver {
 			if (messageParameters == null || messageParameters.length == 0) {
 				return messageValue;
 			}
+			
 			MessageFormat messageFormat = new MessageFormat(messageValue, locale);
 			String message =  messageFormat.format(messageParameters);
 			return message;
-		}
+			
+		}//end for
 		
 		return null;
 	}
 	
-	
 	public abstract String[] getMessagePaths(HttpServletRequest request);
+	
+	
+	/**
+	 * This method will get the request URI from HttpServletRequest then
+	 * remove the context path and parameters if they exist.
+	 * The slash character at the beginning will also be removed.
+	 * Example:
+	 * Suppose that /jpoweredcart is context path
+	 * /jpoweredcart/admin/ ==> admin
+	 * /jpoweredcart/admin/common/login ==> admin/common/login
+	 * /jpoweredcart/admin/test?param1=1&param2=2 ==> admin/test
+	 * /jpoweredcart/admin/common/home;jsessionid=3344?test=1 ==> admin/common/home
+	 * 
+	 * @param request
+	 * @return
+	 */
+	protected String extractRequestPath(HttpServletRequest request){
+		String requestPath = request.getRequestURI();
+		String contextPath = request.getContextPath();
+		/* remove context path */
+		if(!"".equals(contextPath)){
+			requestPath = requestPath.substring(contextPath.length()+1);
+		}else{
+			requestPath = requestPath.substring(1);
+		}
+		
+		/* remove parameters */
+		int idx = 0;
+		if((idx=requestPath.indexOf(";"))!=-1){
+			requestPath = requestPath.substring(0, idx);
+		}else if((idx=requestPath.indexOf("?"))!=-1){
+			requestPath = requestPath.substring(0, idx);
+		}
+		return requestPath;
+	}
 	
 }

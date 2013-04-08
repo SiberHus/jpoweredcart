@@ -4,37 +4,43 @@ import java.io.File;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * This message resolver use URI convention like UriHierarchyMessageResolver
+ * but this is specific to this system URI design only. 
+ * 
+ * The convention of URI for this system is
+ * baseModule/subModule/pageName
+ * 
+ * For example:
+ * admin/localisation/language
+ * 
+ * The result of getMessagePaths should be {admin, admin/localisation/language}
+ * 
+ * @author hussachai
+ *
+ */
 public class CustomMessageResolver extends AbstractMessageResolver {
+	
+	public String getName() { return "CustomMessageResolver"; }
 	
 	@Override
 	public String[] getMessagePaths(HttpServletRequest request){
 		
-		String uri = request.getRequestURI();
-		String messagePaths[] = extractMessageParts(uri);
+		String requestPath = extractRequestPath(request);
 		
-		return messagePaths;
-		
-	}
-	
-	protected String[] extractMessageParts(String uri){
-			
-		String uriParts[] = uri.split("/");
-		if(uriParts.length < 5){
-			throw new IllegalArgumentException("Unable to process URI: "+uri);
+		String parts[] = requestPath.split("/+");
+		if(parts.length<3){
+			throw new RuntimeException("CustomMessageResolver expect URI " +
+					"in this pattern /contextPath/moduleName/submoduleName/pageName");
 		}
-		String lastPart = uriParts[4];
-		int sepIdx = 0;
-		if((sepIdx=lastPart.indexOf(";"))!=-1
-				|| (sepIdx=lastPart.indexOf("?"))!=-1) 
-			lastPart = lastPart.substring(0, sepIdx);
-		
-		String messagePaths[] = new String[2]; 
-		messagePaths[0] = File.separator + uriParts[2];// admin or catalog
-		messagePaths[1] = messagePaths[0] + File.separator + uriParts[3] 
-				+ File.separator + lastPart; // moduleName/controllerName
-		
-		return messagePaths;
+		String p = "";
+		String results[] = new String[2];
+		p = p+File.separatorChar+parts[0];
+		results[0] = p;
+		p = p+File.separatorChar+parts[1];
+		p = p+File.separatorChar+parts[2];
+		results[1] = p;
+		return results;
 	}
-	
 	
 }

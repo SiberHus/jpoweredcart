@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/sale/contact}" th:text="#{heading.title}">Mail</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/mail.png}" alt="" />
+							<span th:text="#{heading.title}"></span>
+						</h1>
+						<div class="buttons">
+							<a id="button-send" onclick="send();" class="button" th:text="#{button.send}">Send</a>
+							<a th:href="@{/admin/sale/contact}" class="button" th:text="#{button.cancel}">Cancel</a>
+						</div>
+					</div>
+					<div class="content">
+						<table id="mail" class="form">
+							<tr>
+								<td><span th:utext="#{entry.store}"></span></td>
+								<td>
+									<select name="storeId">
+										<option th:each="store: ${stores}" th:value="${store.id}" 
+											th:text="${store.name}">Another Store</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td><span th:utext="#{entry.to}"></span></td>
+								<td>
+									<select name="toTarget">
+										<option value="Newsletter" th:text="#{text.newsletter}"></option>
+										<option value="CustomerAll" th:text="#{text.customerAll}"></option>
+										<option value="CustomerGroup" th:text="#{text.customerGroup}"></option>
+										<option value="Customer" th:text="#{text.customer}"></option>
+										<option value="AffiliateAll" th:text="#{text.affiliateAll}"></option>
+										<option value="Affiliate" th:text="#{text.affiliate}"></option>
+										<option value="Product" th:text="#{text.product}"></option>
+									</select>
+								</td>
+							</tr>
+							<tbody id="toTarget-CustomerGroup" class="toTarget">
+								<tr>
+									<td><span th:utext="#{entry.customerGroup}"></span></td>
+									<td>
+										<select name="customerGroupId">
+											<option th:each="custGrp: ${customerGroups}" th:value="${custGrp.id}"
+												th:text="${custGrp.name}">Default</option>
+										</select>
+									</td>
+								</tr>
+							</tbody>
+							<tbody id="toTarget-Customer" class="toTarget">
+								<tr>
+									<td><span th:utext="#{entry.customer}"></span></td>
+									<td><input type="text" name="customers" value="" /></td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td><div id="customer" class="scrollbox"></div></td>
+								</tr>
+							</tbody>
+							<tbody id="toTarget-Affiliate" class="toTarget">
+								<tr>
+									<td><span th:utext="#{entry.affiliate}"></span></td>
+									<td><input type="text" name="affiliates" value="" /></td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td><div id="affiliate" class="scrollbox"></div></td>
+								</tr>
+							</tbody>
+							<tbody id="toTarget-Product" class="toTarget">
+								<tr>
+									<td><span th:utext="#{entry.product}"></span></td>
+									<td><input type="text" name="products" value="" /></td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td><div id="product" class="scrollbox"></div></td>
+								</tr>
+							</tbody>
+							<tr>
+								<td><span class="required">*</span><span th:utext="#{entry.subject}"></span></td>
+								<td><input type="text" name="subject" value="" /></td>
+							</tr>
+							<tr>
+								<td><span class="required">*</span><span th:utext="#{entry.message}"></span></td>
+								<td><textarea name="message"></textarea></td>
+							</tr>
+						</table>
+					</div><!-- .content -->
+				</div><!-- .box -->
+			</div><!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
+		<script type="text/javascript" th:src="@{/resources/admin/javascript/ckeditor/ckeditor.js}"></script> 
+		<script th:inline="javascript">
+			/*<![CDATA[ */
+			var loadingImg = /*[[@{/resources/admin/image/loading.gif}]]*/'';
+			var deleteImg = /*[[@{/resources/admin/image/delete.png}]]*/'';
+			var fmUrl = /*[[@{/admin/common/fileManager}]]*/'';
+			CKEDITOR.replace('message', {
+				filebrowserBrowseUrl: fmUrl,
+				filebrowserImageBrowseUrl: fmUrl,
+				filebrowserFlashBrowseUrl: fmUrl,
+				filebrowserUploadUrl: fmUrl,
+				filebrowserImageUploadUrl: fmUrl,
+				filebrowserFlashUploadUrl: fmUrl
+			});
+			
+			$('select[name=\'toTarget\']').on('change', function() {
+				$('#mail .toTarget').hide();
+				
+				$('#mail #toTarget-' + $(this).attr('value').replace('_', '-')).show();
+			});
+			$('select[name=\'toTarget\']').trigger('change');
+			
+			$.widget('custom.catcomplete', $.ui.autocomplete, {
+				_renderMenu: function(ul, items) {
+					var self = this, currentCategory = '';
+					$.each(items, function(index, item) {
+						if (item.category != currentCategory) {
+							ul.append('<li class="ui-autocomplete-category">' + item.category + '</li>');
+							currentCategory = item.category;
+						}
+						self._renderItem(ul, item);
+					});
+				}
+			});
+			
+			var customerAutoCompleteUrl = /*[[@{/admin/sale/customer/autocomplete}]]*/'';
+			$('input[name=\'customers\']').catcomplete({
+				delay: 500,
+				source: function(request, response) {
+					$.ajax({
+						url: customerAutoCompleteUrl+'?filter_name=' +  encodeURIComponent(request.term),
+						dataType: 'json',
+						success: function(json) {	
+							response($.map(json, function(item) {
+								return {
+									category: item.customer_group,
+									label: item.name,
+									value: item.customer_id
+								}
+							}));
+						}
+					});
+				}, 
+				select: function(event, ui) {
+					$('#customer' + ui.item.value).remove();
+					$('#customer').append('<div id="customer' + ui.item.value + '">' + ui.item.label + 
+						'<img src="'+deleteImg+'" alt="" /><input type="hidden" name="customerIds" value="' + 
+						ui.item.value + '" /></div>');
+					$('#customer div:odd').attr('class', 'odd');
+					$('#customer div:even').attr('class', 'even');
+					return false;
+				},
+				focus: function(event, ui) {
+					return false;
+				}
+			});
+
+			$('#customer div img').live('click', function() {
+				$(this).parent().remove();
+				$('#customer div:odd').attr('class', 'odd');
+				$('#customer div:even').attr('class', 'even');	
+			});
+			
+			var affiliateAutoCompleteUrl = /*[[@{/admin/sale/affiliate/autocomplete}]]*/'';
+			$('input[name=\'affiliates\']').autocomplete({
+				delay: 500,
+				source: function(request, response) {
+					$.ajax({
+						url: affiliateAutoCompleteUrl+'?filter_name=' +  encodeURIComponent(request.term),
+						dataType: 'json',
+						success: function(json) {		
+							response($.map(json, function(item) {
+								return {
+									label: item.name,
+									value: item.affiliate_id
+								}
+							}));
+						}
+					});
+				}, 
+				select: function(event, ui) {
+					$('#affiliate' + ui.item.value).remove();
+					$('#affiliate').append('<div id="affiliate' + ui.item.value + '">' + ui.item.label + 
+						'<img src="'+deleteImg+'" alt="" /><input type="hidden" name="affiliateIds" value="' + 
+						ui.item.value + '" /></div>');
+					$('#affiliate div:odd').attr('class', 'odd');
+					$('#affiliate div:even').attr('class', 'even');
+					return false;
+				},
+				focus: function(event, ui) {
+					return false;
+				}
+			});
+
+			$('#affiliate div img').live('click', function() {
+				$(this).parent().remove();
+				$('#affiliate div:odd').attr('class', 'odd');
+				$('#affiliate div:even').attr('class', 'even');	
+			});
+
+			var productAutoCompleteUrl = /*[[@{/admin/catalog/product/autocomplete}]]*/'';
+			$('input[name=\'products\']').autocomplete({
+				delay: 500,
+				source: function(request, response) {
+					$.ajax({
+						url: productAutoCompleteUrl+'?filter_name=' +  encodeURIComponent(request.term),
+						dataType: 'json',
+						success: function(json) {		
+							response($.map(json, function(item) {
+								return {
+									label: item.name,
+									value: item.product_id
+								}
+							}));
+						}
+					});
+				}, 
+				select: function(event, ui) {
+					$('#product' + ui.item.value).remove();
+					$('#product').append('<div id="product' + ui.item.value + '">' + ui.item.label + 
+						'<img src="'+deleteImg+'" alt="" /><input type="hidden" name="productIds" value="' + 
+						ui.item.value + '" /></div>');
+					$('#product div:odd').attr('class', 'odd');
+					$('#product div:even').attr('class', 'even');
+					return false;
+				},
+				focus: function(event, ui) {
+					return false;
+				}
+			});
+
+			$('#product div img').live('click', function() {
+				$(this).parent().remove();
+				$('#product div:odd').attr('class', 'odd');
+				$('#product div:even').attr('class', 'even');	
+			});
+			
+			function send() { 
+				var sendUrl = /*[[@{/admin/sale/contact/send}]]*/'';
+				$('textarea[name=\'message\']').html(CKEDITOR.instances.message.getData());
+				$.ajax({
+					url: sendUrl,
+					type: 'post',
+					data: $('select, input, textarea'),		
+					dataType: 'json',
+					beforeSend: function() {
+						$('#button-send').attr('disabled', true);
+						$('#button-send').before('<img src="'+loadingImg+'" class="loading" style="padding-right: 5px;" />');
+					},
+					complete: function() {
+						$('#button-send').attr('disabled', false);
+						$('.loading').remove();
+					},				
+					success: function(json) {
+						//alert(JSON.stringify(json));
+						$('.success, .warning, .error').remove();
+						
+						if (json['errors']) {
+							if (json['errors']['warning']) {
+								$('.box').before('<div class="warning" style="display: none;">' + json['errors']['warning'] + '</div>');
+								$('.warning').fadeIn('slow');
+							}
+							if (json['errors']['subject']) {
+								$('input[name=\'subject\']').after('<span class="error">' + json['errors']['subject'] + '</span>');
+							}
+							if (json['errors']['message']) {
+								$('textarea[name=\'message\']').parent().append('<span class="error">' + json['errors']['message'] + '</span>');
+							}
+						}
+						if (json['success']) {
+							$('.box').before('<div class="success" style="display: none;">' + json['success'] + '</div>');
+							$('.success').fadeIn('slow');
+						}
+					}
+				});
+			}
+			
+			/*]]>*/
+		</script>
+		
+	</body>
+</html>

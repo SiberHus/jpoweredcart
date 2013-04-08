@@ -23,9 +23,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.ViewResolver;
 
 import com.jolbox.bonecp.BoneCPDataSource;
-import com.jpoweredcart.common.service.email.DefaultEmailService;
+import com.jpoweredcart.common.service.email.SmtpEmailService;
 import com.jpoweredcart.common.service.email.EmailService;
 import com.jpoweredcart.common.service.file.DefaultFileService;
 import com.jpoweredcart.common.service.file.FileService;
@@ -33,6 +34,8 @@ import com.jpoweredcart.common.service.media.DefaultMediaService;
 import com.jpoweredcart.common.service.media.MediaService;
 import com.jpoweredcart.common.service.setting.DefaultSettingService;
 import com.jpoweredcart.common.service.setting.SettingService;
+import com.jpoweredcart.common.service.template.SpringWebTemplateService;
+import com.jpoweredcart.common.service.template.TemplateService;
 import com.jpoweredcart.common.utils.PathUtils;
 
 /**
@@ -60,7 +63,6 @@ public class MainConfig implements ApplicationContextAware {
 	
 	@Inject
 	private Environment env;
-	
 	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext)
@@ -111,6 +113,17 @@ public class MainConfig implements ApplicationContextAware {
 	//================================= SERVICES ==========================================//
 	
 	@Bean
+	public TemplateService templateService(){
+		if(applicationContext.containsBean("custom_templateService")){
+			return (TemplateService)applicationContext.getBean("custom_templateService");
+		}
+		SpringWebTemplateService templateService = new SpringWebTemplateService();
+		ViewResolver viewResolver = applicationContext.getBean("viewResolver", ViewResolver.class);
+		templateService.setViewResolver(viewResolver);
+		return templateService;
+	}
+	
+	@Bean
 	public SettingService settingService(){
 		
 		if(applicationContext.containsBean("custom_settingService")){
@@ -147,7 +160,7 @@ public class MainConfig implements ApplicationContextAware {
 			return (EmailService)applicationContext.getBean("custom_emailService");
 		}
 		
-		DefaultEmailService emailService = new DefaultEmailService();
+		SmtpEmailService emailService = new SmtpEmailService();
 		emailService.setSettingService(settingService());
 		
 		return emailService;

@@ -9,7 +9,7 @@ import javax.jms.Session;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
-public class JmsEmailService extends DefaultEmailService implements MessageListener {
+public class JmsEmailService extends SmtpEmailService implements MessageListener {
 	
 	private String queueName;
 	

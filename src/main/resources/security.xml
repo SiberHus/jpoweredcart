@@ -32,6 +32,9 @@
 		<logout logout-url="/admin/auth/j_spring_security_logout" logout-success-url="/admin" />
 		
 		<intercept-url pattern="/admin/common/login" access="permitAll" requires-channel="http" />
+		
+		<intercept-url pattern="/admin/common/forgotten" access="permitAll" requires-channel="any" />
+		<intercept-url pattern="/admin/common/reset/**" access="permitAll" requires-channel="any" />
 		<intercept-url pattern="/admin/**" access="isAuthenticated()" requires-channel="any"/>
 		<!-- 
 		<intercept-url pattern="/signup" access="permitAll" requires-channel="http"/>

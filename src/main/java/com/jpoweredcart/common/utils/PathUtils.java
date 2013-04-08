@@ -19,7 +19,7 @@ public class PathUtils {
 			throw new IllegalArgumentException("path cannot be null");
 		}
 		if(!(path.endsWith("/") || path.endsWith("\\"))){
-			return path+File.separator;
+			return path+File.separatorChar;
 		}
 		return path;
 	}

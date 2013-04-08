@@ -4,72 +4,38 @@ import java.io.File;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * This message resolver use the URI convention to resolve all the possible message paths
+ * The URI is from HttpServletRequest.requestURI but without context path and parameters
+ * For example: 
+ * Suppose that the context path is /jpoweredcart
+ * The request URI is /jpoweredcart/admin/common/login
+ * The result of getMessagePaths will be the array of string
+ * {admin, admin/common, admin/common/login}
+ * 
+ * @author hussachai
+ *
+ */
 public class UriHierarchyMessageResolver extends AbstractMessageResolver {
 	
-	private boolean ignoreContext = true;
-	
-	private int deep = -1; //-1 means unlimited deep
-	
-	public void setIgnoreContext(boolean ignoreContext){
-		this.ignoreContext = ignoreContext;
-	}
-	
-	public void setDeep(int deep){
-		this.deep = deep;
-	}
+	public String getName() { return "UriHierarchyMessageResolver"; }
 	
 	@Override
-	public String[] getMessagePaths(HttpServletRequest request){
+	public String[] getMessagePaths(HttpServletRequest request) {
 		
-		String uri = request.getRequestURI();
-		String messagePaths[] = extractMessageParts(uri);
+		String requestPath = extractRequestPath(request);
 		
-		return messagePaths;
+		String parts[] = requestPath.split("/+");
 		
+		int length = parts.length;
+		String p = "";
+		String results[] = new String[length];
+		for(int i=0;i<length;i++){
+			p = p+File.separatorChar+parts[i];
+			results[i] = p;
+		}
+		
+		return results;
 	}
-	
-	protected String[] extractMessageParts(String uri){
-		
-		String uriParts[] = uri.split("/");
-		
-		int pathLength = uriParts.length;
-		int lastIdx = pathLength-1;
-		String lastPart = uriParts[lastIdx];
-		int sepIdx = 0;
-		//remove parameters
-		if((sepIdx=lastPart.indexOf(";"))!=-1
-				|| (sepIdx=lastPart.indexOf("?"))!=-1) 
-			lastPart = lastPart.substring(0, sepIdx);
-		
-		int j = 0;
-		int i = ignoreContext?2: 1;//ignore context name?
-		int arraySize = pathLength-i;
-		if("".equals(lastPart)) {
-			arraySize--;lastIdx--;
-			lastPart = uriParts[lastIdx];
-		}
-		if(deep!=-1) {
-			int deepLastIdx = i+deep-1; 
-			if(deepLastIdx>lastIdx){
-				deepLastIdx = lastIdx;
-			}else{
-				arraySize = deep;
-			}
-			lastPart = uriParts[deepLastIdx];
-		}
-		String[] messagePaths = new String[arraySize]; 
-		
-		for(; i < arraySize+1 ;i++, j++){
-			String prev = j-1>-1 ? messagePaths[j-1] : "";  
-			messagePaths[j] = prev + File.separator + uriParts[i];
-		}
-		if(messagePaths.length-1==j){
-			String prev = j-1>-1 ? messagePaths[j-1] : "";
-			messagePaths[j] = prev + File.separator + lastPart;
-		}
-		
-		return messagePaths;
-	}
-	
 	
 }

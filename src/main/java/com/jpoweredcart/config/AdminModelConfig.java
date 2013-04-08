@@ -10,17 +10,17 @@ import com.jpoweredcart.admin.model.catalog.DownloadAdminModel;
 import com.jpoweredcart.admin.model.catalog.InformationAdminModel;
 import com.jpoweredcart.admin.model.catalog.ProductAdminModel;
 import com.jpoweredcart.admin.model.catalog.ReviewAdminModel;
-import com.jpoweredcart.admin.model.catalog.jdbc.AttributeAdminModelImpl;
-import com.jpoweredcart.admin.model.catalog.jdbc.AttributeGroupAdminModelImpl;
-import com.jpoweredcart.admin.model.catalog.jdbc.CategoryAdminModelImpl;
-import com.jpoweredcart.admin.model.catalog.jdbc.DownloadAdminModelImpl;
-import com.jpoweredcart.admin.model.catalog.jdbc.InformationAdminModelImpl;
-import com.jpoweredcart.admin.model.catalog.jdbc.ProductAdminModelImpl;
-import com.jpoweredcart.admin.model.catalog.jdbc.ReviewAdminModelImpl;
+import com.jpoweredcart.admin.model.catalog.impl.AttributeAdminModelImpl;
+import com.jpoweredcart.admin.model.catalog.impl.AttributeGroupAdminModelImpl;
+import com.jpoweredcart.admin.model.catalog.impl.CategoryAdminModelImpl;
+import com.jpoweredcart.admin.model.catalog.impl.DownloadAdminModelImpl;
+import com.jpoweredcart.admin.model.catalog.impl.InformationAdminModelImpl;
+import com.jpoweredcart.admin.model.catalog.impl.ProductAdminModelImpl;
+import com.jpoweredcart.admin.model.catalog.impl.ReviewAdminModelImpl;
 import com.jpoweredcart.admin.model.design.BannerAdminModel;
 import com.jpoweredcart.admin.model.design.LayoutAdminModel;
-import com.jpoweredcart.admin.model.design.jdbc.BannerAdminModelImpl;
-import com.jpoweredcart.admin.model.design.jdbc.LayoutAdminModelImpl;
+import com.jpoweredcart.admin.model.design.impl.BannerAdminModelImpl;
+import com.jpoweredcart.admin.model.design.impl.LayoutAdminModelImpl;
 import com.jpoweredcart.admin.model.localisation.CountryAdminModel;
 import com.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
 import com.jpoweredcart.admin.model.localisation.GeoZoneAdminModel;
@@ -35,48 +35,52 @@ import com.jpoweredcart.admin.model.localisation.TaxClassAdminModel;
 import com.jpoweredcart.admin.model.localisation.TaxRateAdminModel;
 import com.jpoweredcart.admin.model.localisation.WeightClassAdminModel;
 import com.jpoweredcart.admin.model.localisation.ZoneAdminModel;
-import com.jpoweredcart.admin.model.localisation.jdbc.CountryAdminModelImpl;
-import com.jpoweredcart.admin.model.localisation.jdbc.CurrencyAdminModelImpl;
-import com.jpoweredcart.admin.model.localisation.jdbc.GeoZoneAdminModelImpl;
-import com.jpoweredcart.admin.model.localisation.jdbc.LanguageAdminModelImpl;
-import com.jpoweredcart.admin.model.localisation.jdbc.LengthClassAdminModelImpl;
-import com.jpoweredcart.admin.model.localisation.jdbc.OrderStatusAdminModelImpl;
-import com.jpoweredcart.admin.model.localisation.jdbc.ReturnActionAdminModelImpl;
-import com.jpoweredcart.admin.model.localisation.jdbc.ReturnReasonAdminModelImpl;
-import com.jpoweredcart.admin.model.localisation.jdbc.ReturnStatusAdminModelImpl;
-import com.jpoweredcart.admin.model.localisation.jdbc.StockStatusAdminModelImpl;
-import com.jpoweredcart.admin.model.localisation.jdbc.TaxClassAdminModelImpl;
-import com.jpoweredcart.admin.model.localisation.jdbc.TaxRateAdminModelImpl;
-import com.jpoweredcart.admin.model.localisation.jdbc.WeightClassAdminModelImpl;
-import com.jpoweredcart.admin.model.localisation.jdbc.ZoneAdminModelImpl;
+import com.jpoweredcart.admin.model.localisation.impl.CountryAdminModelImpl;
+import com.jpoweredcart.admin.model.localisation.impl.CurrencyAdminModelImpl;
+import com.jpoweredcart.admin.model.localisation.impl.GeoZoneAdminModelImpl;
+import com.jpoweredcart.admin.model.localisation.impl.LanguageAdminModelImpl;
+import com.jpoweredcart.admin.model.localisation.impl.LengthClassAdminModelImpl;
+import com.jpoweredcart.admin.model.localisation.impl.OrderStatusAdminModelImpl;
+import com.jpoweredcart.admin.model.localisation.impl.ReturnActionAdminModelImpl;
+import com.jpoweredcart.admin.model.localisation.impl.ReturnReasonAdminModelImpl;
+import com.jpoweredcart.admin.model.localisation.impl.ReturnStatusAdminModelImpl;
+import com.jpoweredcart.admin.model.localisation.impl.StockStatusAdminModelImpl;
+import com.jpoweredcart.admin.model.localisation.impl.TaxClassAdminModelImpl;
+import com.jpoweredcart.admin.model.localisation.impl.TaxRateAdminModelImpl;
+import com.jpoweredcart.admin.model.localisation.impl.WeightClassAdminModelImpl;
+import com.jpoweredcart.admin.model.localisation.impl.ZoneAdminModelImpl;
 import com.jpoweredcart.admin.model.report.AffiliateReportAdminModel;
 import com.jpoweredcart.admin.model.report.CustomerReportAdminModel;
 import com.jpoweredcart.admin.model.report.ProductReportAdminModel;
 import com.jpoweredcart.admin.model.report.SaleReportAdminModel;
-import com.jpoweredcart.admin.model.report.jdbc.AffiliateReportAdminModelImpl;
-import com.jpoweredcart.admin.model.report.jdbc.CustomerReportAdminModelImpl;
-import com.jpoweredcart.admin.model.report.jdbc.ProductReportAdminModelImpl;
-import com.jpoweredcart.admin.model.report.jdbc.SaleReportAdminModelImpl;
+import com.jpoweredcart.admin.model.report.impl.AffiliateReportAdminModelImpl;
+import com.jpoweredcart.admin.model.report.impl.CustomerReportAdminModelImpl;
+import com.jpoweredcart.admin.model.report.impl.ProductReportAdminModelImpl;
+import com.jpoweredcart.admin.model.report.impl.SaleReportAdminModelImpl;
 import com.jpoweredcart.admin.model.sale.AffiliateAdminModel;
+import com.jpoweredcart.admin.model.sale.ContactAdminModel;
+import com.jpoweredcart.admin.model.sale.CustomerAdminModel;
 import com.jpoweredcart.admin.model.sale.CustomerGroupAdminModel;
 import com.jpoweredcart.admin.model.sale.IpBlacklistAdminModel;
 import com.jpoweredcart.admin.model.sale.OrderAdminModel;
 import com.jpoweredcart.admin.model.sale.VoucherAdminModel;
 import com.jpoweredcart.admin.model.sale.VoucherThemeAdminModel;
-import com.jpoweredcart.admin.model.sale.jdbc.AffiliateAdminModelImpl;
-import com.jpoweredcart.admin.model.sale.jdbc.CustomerGroupAdminModelImpl;
-import com.jpoweredcart.admin.model.sale.jdbc.IpBlacklistAdminModelImpl;
-import com.jpoweredcart.admin.model.sale.jdbc.OrderAdminModelImpl;
-import com.jpoweredcart.admin.model.sale.jdbc.VoucherAdminModelImpl;
-import com.jpoweredcart.admin.model.sale.jdbc.VoucherThemeAdminModelImpl;
+import com.jpoweredcart.admin.model.sale.impl.AffiliateAdminModelImpl;
+import com.jpoweredcart.admin.model.sale.impl.ContactAdminModelImpl;
+import com.jpoweredcart.admin.model.sale.impl.CustomerAdminModelImpl;
+import com.jpoweredcart.admin.model.sale.impl.CustomerGroupAdminModelImpl;
+import com.jpoweredcart.admin.model.sale.impl.IpBlacklistAdminModelImpl;
+import com.jpoweredcart.admin.model.sale.impl.OrderAdminModelImpl;
+import com.jpoweredcart.admin.model.sale.impl.VoucherAdminModelImpl;
+import com.jpoweredcart.admin.model.sale.impl.VoucherThemeAdminModelImpl;
 import com.jpoweredcart.admin.model.setting.SettingAdminModel;
 import com.jpoweredcart.admin.model.setting.StoreAdminModel;
-import com.jpoweredcart.admin.model.setting.jdbc.SettingAdminModelImpl;
-import com.jpoweredcart.admin.model.setting.jdbc.StoreAdminModelImpl;
+import com.jpoweredcart.admin.model.setting.impl.SettingAdminModelImpl;
+import com.jpoweredcart.admin.model.setting.impl.StoreAdminModelImpl;
 import com.jpoweredcart.admin.model.user.UserAdminModel;
 import com.jpoweredcart.admin.model.user.UserGroupAdminModel;
-import com.jpoweredcart.admin.model.user.jdbc.UserAdminModelImpl;
-import com.jpoweredcart.admin.model.user.jdbc.UserGroupAdminModelImpl;
+import com.jpoweredcart.admin.model.user.impl.UserAdminModelImpl;
+import com.jpoweredcart.admin.model.user.impl.UserGroupAdminModelImpl;
 
 
 @Configuration
@@ -136,17 +140,21 @@ public class AdminModelConfig {
 	
 	//================= Sale ========================//
 	@Bean
-	public AffiliateAdminModel affiliateAdminModel(){ return new AffiliateAdminModelImpl(); }
-	@Bean
 	public OrderAdminModel orderAdminModel(){ return new OrderAdminModelImpl(); }
+	@Bean
+	public CustomerAdminModel customerAdminModel(){ return new CustomerAdminModelImpl(); }
 	@Bean
 	public CustomerGroupAdminModel customerGroupAdminModel(){ return new CustomerGroupAdminModelImpl(); }
 	@Bean
 	public IpBlacklistAdminModel ipBlacklistAdminModel(){ return new IpBlacklistAdminModelImpl(); }
 	@Bean
+	public AffiliateAdminModel affiliateAdminModel(){ return new AffiliateAdminModelImpl(); }
+	@Bean
 	public VoucherAdminModel voucherAdminModel(){ return new VoucherAdminModelImpl(); }
 	@Bean
 	public VoucherThemeAdminModel voucherThemeAdminModel(){ return new VoucherThemeAdminModelImpl(); }
+	@Bean
+	public ContactAdminModel contactAdminModel(){ return new ContactAdminModelImpl(); }
 	
 	//================= User ========================//
 	@Bean
