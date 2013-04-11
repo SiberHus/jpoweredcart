@@ -16,7 +16,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.format.support.FormattingConversionService;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -53,7 +53,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	private Environment env;
 	
 	@Inject
-	private JdbcTemplate jdbcTemplate;
+	private JdbcOperations jdbcOperations;
 	
 	@Override
 	protected void addInterceptors(InterceptorRegistry registry) {
@@ -162,7 +162,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 			baseDir = servletContext.getRealPath(baseDir);
 		}
 		messageResolver.setBaseDir(baseDir);
-		messageResolver.setJdbcTemplate(jdbcTemplate);
+		messageResolver.setJdbcTemplate(jdbcOperations);
 		messageResolver.setLocaleResolver(localeResolver());
 		
 		boolean cacheable = env.getProperty("language.cacheable", Boolean.class, Boolean.TRUE);

@@ -14,22 +14,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
-public class CartAdminUserDetailService implements UserDetailsService {
+public class AdminUserDetailService implements UserDetailsService {
 
-	private static final Logger logger = LoggerFactory.getLogger(CartAdminUserDetailService.class);
+	private static final Logger logger = LoggerFactory.getLogger(AdminUserDetailService.class);
 	
 	@Inject
-	private UserAdminModel userModel;
+	private UserAdminModel userAdminModel;
 	
 	@Inject
-	private UserGroupAdminModel userGroupModel;
+	private UserGroupAdminModel userGroupAdminModel;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
 		
 		try{
-			User user = userModel.getOneByUsername(username);
+			User user = userAdminModel.getOneByUsername(username);
 			if(user==null) throw new EmptyResultDataAccessException(1);
 			
 			CartUserDetails userDetails = new CartUserDetails();
@@ -38,7 +38,7 @@ public class CartAdminUserDetailService implements UserDetailsService {
 			userDetails.password = user.getPassword();
 			userDetails.username = user.getUsername();
 			userDetails.enabled = user.getStatus()==1;
-			UserGroup userGroup = userGroupModel.get(user.getUserGroupId());
+			UserGroup userGroup = userGroupAdminModel.get(user.getUserGroupId());
 			if(userGroup!=null){
 				userDetails.authorities.add(userGroup.getName());
 				String permString = userGroup.getPermission();

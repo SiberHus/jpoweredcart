@@ -19,7 +19,7 @@ import net.sf.ehcache.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.util.Assert;
 import org.springframework.web.servlet.LocaleResolver;
 import org.thymeleaf.Arguments;
@@ -39,7 +39,7 @@ public abstract class AbstractMessageResolver implements MessageResolver {
 	
 	private Environment env;
 	
-	private JdbcTemplate jdbcTemplate;
+	private JdbcOperations jdbcOperations;
 	
 	private Ehcache cache;
 	
@@ -58,7 +58,7 @@ public abstract class AbstractMessageResolver implements MessageResolver {
 	@Override
 	public void initialize() {
 		Assert.notNull(env, "environment is required");
-		Assert.notNull(jdbcTemplate, "jdbcTemplate is required");
+		Assert.notNull(jdbcOperations, "jdbcTemplate is required");
 		if(cacheable){
 			Assert.notNull(cache, "cache is required if the cacheable attribute is set to true");
 		}
@@ -70,8 +70,8 @@ public abstract class AbstractMessageResolver implements MessageResolver {
 		this.env = env;
 	}
 	
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate){
-		this.jdbcTemplate = jdbcTemplate;
+	public void setJdbcTemplate(JdbcOperations jdbcOperations){
+		this.jdbcOperations = jdbcOperations;
 	}
 	
 	public void setCache(Ehcache cache){
@@ -118,7 +118,7 @@ public abstract class AbstractMessageResolver implements MessageResolver {
 		if((langDir=messageDirMap.get(langCode))==null ){
 			String sql = "SELECT code, directory FROM "+BaseModel.quoteTable(env, "language")
 					+ " WHERE status=1";
-			List<Object[]> result = jdbcTemplate.query(sql, new ArrayListResultSetExtractor());
+			List<Object[]> result = jdbcOperations.query(sql, new ArrayListResultSetExtractor());
 			for(Object[] row: result){
 				messageDirMap.put((String)row[0], (String)row[1]);
 			}

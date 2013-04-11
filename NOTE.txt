@@ -6,4 +6,15 @@
 5. Out of the box AWS Cloud support
 6. The plugin does have to be open source
 
+
+
+Cart		db, session, tax, weight, customerUserDetails
+Length		db
+Weight		db
+Currency	db, language, (request, session are required but we will put it in LocalizedDataInterceptor)
+Tax			db,  tax requires session to initialize address data
+
+
+Length, Weight, Currency will be used in Thymeleaf view, other services, and probably controller
+
  
