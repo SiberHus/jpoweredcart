@@ -36,8 +36,10 @@ import org.thymeleaf.templateresolver.TemplateResolver;
 import com.jpoweredcart.common.exception.TemplateMappingExceptionResolver;
 import com.jpoweredcart.common.i18n.CustomMessageResolver;
 import com.jpoweredcart.common.i18n.MessageResolver;
+import com.jpoweredcart.common.service.CurrencyService;
 import com.jpoweredcart.common.service.StoreResolver;
 import com.jpoweredcart.common.system.UserDataInterceptor;
+import com.jpoweredcart.common.system.setting.SettingService;
 
 
 @Configuration
@@ -56,13 +58,21 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	private JdbcOperations jdbcOperations;
 	
 	@Inject
+	private SettingService settingService;
+	
+	@Inject
 	private StoreResolver storeResolver;
+	
+	@Inject
+	private CurrencyService currencyService;
 	
 	@Override
 	protected void addInterceptors(InterceptorRegistry registry) {
 		UserDataInterceptor userDataInterceptor = new UserDataInterceptor();
 		userDataInterceptor.setJdbcOperations(jdbcOperations);
+		userDataInterceptor.setSettingService(settingService);
 		userDataInterceptor.setStoreResolver(storeResolver);
+		userDataInterceptor.setCurrencyService(currencyService);
 		userDataInterceptor.setLanguageParam(env.getProperty("language.param", "language_code"));
 		userDataInterceptor.setCurrencyParam(env.getProperty("currency.param", "currency_code"));
 		

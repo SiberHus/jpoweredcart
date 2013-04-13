@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 public class Currency implements Serializable{
@@ -22,12 +24,12 @@ public class Currency implements Serializable{
 	
 	protected String symbolRight;
 	
-	@Size(max=1)
-	protected String decimalPlace; //TODO: I don't know why OpenCart define this data as char type
+	@Min(0) @Max(9)
+	protected int decimalPlace; //TODO: I don't know why OpenCart define this data as char type
 	
 	protected BigDecimal value;
 	
-	protected int status = 1;
+	protected short status = 1;
 	
 	protected Date dateModified;
 	
@@ -71,11 +73,11 @@ public class Currency implements Serializable{
 		this.symbolRight = symbolRight;
 	}
 
-	public String getDecimalPlace() {
+	public int getDecimalPlace() {
 		return decimalPlace;
 	}
 
-	public void setDecimalPlace(String decimalPlace) {
+	public void setDecimalPlace(int decimalPlace) {
 		this.decimalPlace = decimalPlace;
 	}
 
@@ -87,11 +89,11 @@ public class Currency implements Serializable{
 		this.value = value;
 	}
 
-	public int getStatus() {
+	public short getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(short status) {
 		this.status = status;
 	}
 

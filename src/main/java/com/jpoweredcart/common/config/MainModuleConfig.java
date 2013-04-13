@@ -25,8 +25,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
 
 import com.jolbox.bonecp.BoneCPDataSource;
+import com.jpoweredcart.common.service.CurrencyService;
 import com.jpoweredcart.common.service.StoreResolver;
 import com.jpoweredcart.common.service.UserService;
+import com.jpoweredcart.common.service.impl.CurrencyServiceImpl;
 import com.jpoweredcart.common.service.impl.StoreResolverImpl;
 import com.jpoweredcart.common.service.impl.UserServiceImpl;
 import com.jpoweredcart.common.system.email.EmailService;
@@ -123,7 +125,10 @@ public class MainModuleConfig implements ApplicationContextAware {
 	public UserService userService(){
 		return new UserServiceImpl();
 	}
-	
+	@Bean
+	public CurrencyService currencyService(){
+		return new CurrencyServiceImpl();
+	}
 	@Bean
 	public StoreResolver storeResolver(){
 		return new StoreResolverImpl();

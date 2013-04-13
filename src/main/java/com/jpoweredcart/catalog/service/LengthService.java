@@ -8,7 +8,7 @@ public interface LengthService {
 	public BigDecimal convert(BigDecimal value, Integer languageId,  
 			Integer fromClassId, Integer toClassId);
 	
-	public String format(BigDecimal value, Integer languageId, Integer classId, Locale locale);
+	public String format(Number value, Integer languageId, Integer classId, Locale locale);
 	
 	public String getUnit(Integer languageId, Integer classId);
 	

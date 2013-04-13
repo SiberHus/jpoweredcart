@@ -20,9 +20,6 @@ Catalog
 CartService (session)
 Tax (session)
 
-Main
-===============
-Currency (singleton)
 
 
 

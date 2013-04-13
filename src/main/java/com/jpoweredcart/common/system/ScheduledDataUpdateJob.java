@@ -28,6 +28,8 @@ public class ScheduledDataUpdateJob implements ApplicationContextAware {
 			entry.getValue().updateData();
 			logger.info("{} is now updated", entry.getKey());
 		}
+		
+		System.gc();
 	}
 	
 }

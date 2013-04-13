@@ -5,14 +5,17 @@ import java.util.Locale;
 
 public interface CurrencyService {
 	
+	public void updateCurrencyDatabase() throws Exception;
+	
+	public String getDefaultCurrencyCode();
+	
 	public Integer getId(String code);
 	
 	public BigDecimal getValue(String code);
 	
 	public boolean has(String code);
 	
-	public String format(BigDecimal number, String code, 
-			BigDecimal value, Locale locale);
+	public String format(Number value, String code, Locale locale);
 	
 	public BigDecimal convert(BigDecimal value, String fromCode, String toCode);
 	
@@ -20,6 +23,6 @@ public interface CurrencyService {
 	
 	public String getSymbolRight(String code);
 	
-	public int getDecimalPlace(String code);
+	public Integer getDecimalPlace(String code);
 	
 }

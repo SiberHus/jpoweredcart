@@ -69,7 +69,7 @@ public class LengthServiceImpl extends BaseModel implements LengthService, Sched
 	}
 	
 	@Override
-	public String format(BigDecimal value, Integer languageId, Integer classId, Locale locale) {
+	public String format(Number value, Integer languageId, Integer classId, Locale locale) {
 		
 		return NumberFormat.getInstance(locale).format(value)
 			+" "+getUnit(languageId, classId);

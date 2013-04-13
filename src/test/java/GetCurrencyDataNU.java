@@ -13,12 +13,12 @@ public class GetCurrencyDataNU {
 
 	public static void main(String[] args) throws Exception{
 		
-		String url = "http://download.finance.yahoo.com/d/quotes.csv?s=USDTHB=X,USDEUR=X&f=sl1&e=.csv";
+		String url = "http://download.finance.yahoo.com/d/quotes.csv?s=USDTHB=X,USDEUR=X,USDUSD=X&f=sl1&e=.csv";
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		
 		// Create an HTTP GET request
 		HttpGet httpget = new HttpGet(url);
-
+		
 		// Execute the request
 		httpget.getRequestLine();
 		HttpResponse response = null;
