@@ -12,13 +12,14 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.localisation.LanguageForm;
+import com.jpoweredcart.admin.form.localisation.LanguageForm;
 import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.Description;
 import com.jpoweredcart.common.entity.localisation.Language;
+import com.jpoweredcart.common.entity.localisation.jdbc.LanguageRowMapper;
 import com.jpoweredcart.common.jdbc.ArrayListResultSetExtractor;
 
 
@@ -56,8 +57,8 @@ public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminMo
 				+" WHERE "+quoteName("group")+" = 'config' AND "+quoteName("key")
 				+" = 'config_language' AND store_id=0", String.class);
 		//Use language code to find default language ID 
-		int defaultLangId = getJdbcOperations().queryForInt("SELECT language_id FROM "+quoteTable("language")
-				+" WHERE status=1 AND code=?", langCode);
+		int defaultLangId = getJdbcOperations().queryForObject("SELECT language_id FROM "+quoteTable("language")
+				+" WHERE status=1 AND code=?", Integer.class, langCode);
 		
 		//Attribute
 		String table = quoteTable("attribute_description");
@@ -261,7 +262,11 @@ public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminMo
 	@Override
 	public LanguageForm getForm(Integer langId) {
 		String sql = "SELECT * FROM " +quoteTable("language")+ " WHERE language_id = ?";
-		return getJdbcOperations().queryForObject(sql, new Object[]{langId}, new LanguageRowMapper.Form());
+		return (LanguageForm)getJdbcOperations().queryForObject(
+				sql, new Object[]{langId}, new LanguageRowMapper(){
+					@Override
+					public Language newObject() { return new LanguageForm();}
+				});
 	}
 	
 	@Override
@@ -281,7 +286,7 @@ public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminMo
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("language");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 	

@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.sale.filter.TotalOrdersFilter;
+import com.jpoweredcart.admin.form.sale.filter.TotalOrdersFilter;
 import com.jpoweredcart.admin.model.localisation.CountryAdminModel;
 import com.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
 import com.jpoweredcart.admin.model.localisation.ZoneAdminModel;
@@ -29,8 +29,8 @@ import com.jpoweredcart.common.entity.sale.OrderProduct;
 import com.jpoweredcart.common.entity.sale.OrderTotal;
 import com.jpoweredcart.common.entity.sale.OrderVoucher;
 import com.jpoweredcart.common.entity.setting.Store;
-import com.jpoweredcart.common.service.setting.SettingGroup;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.system.setting.SettingGroup;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 	

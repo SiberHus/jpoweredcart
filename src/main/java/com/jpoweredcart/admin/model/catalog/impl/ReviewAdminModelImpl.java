@@ -8,13 +8,14 @@ import java.util.List;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.catalog.ReviewForm;
+import com.jpoweredcart.admin.form.catalog.ReviewForm;
 import com.jpoweredcart.admin.model.catalog.ReviewAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.catalog.Review;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.entity.catalog.jdbc.ReviewRowMapper;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class ReviewAdminModelImpl extends BaseModel implements ReviewAdminModel {
 	
@@ -50,23 +51,21 @@ public class ReviewAdminModelImpl extends BaseModel implements ReviewAdminModel 
 	
 	@Override
 	public ReviewForm getForm(Integer reviewId) {
+		String sql = "SELECT DISTINCT *, (SELECT pd.name FROM "+quoteTable("product_description")
+				+" pd WHERE pd.product_id = r.product_id AND pd.language_id = ?) AS product_name FROM "
+				+quoteTable("review")+" r WHERE r.review_id =?";
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
-		return getJdbcOperations().queryForObject(getSqlSelect(), new Object[]{reviewId, languageId}, 
-				new ReviewRowMapper.Form());
+		return (ReviewForm)getJdbcOperations().queryForObject(sql, new Object[]{reviewId, languageId}, 
+				new ReviewRowMapper(){
+					public Review newObject(){
+						return new ReviewForm();
+					}
+		});
 	}
 	
 	@Override
 	public Review get(Integer reviewId) {
-		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
-		return getJdbcOperations().queryForObject(getSqlSelect(), new Object[]{reviewId, languageId}, 
-				new ReviewRowMapper());
-	}
-	
-	private String getSqlSelect(){
-		String sql = "SELECT DISTINCT *, (SELECT pd.name FROM "+quoteTable("product_description")
-				+" pd WHERE pd.product_id = r.product_id AND pd.language_id = ?) AS product_name FROM "
-				+quoteTable("review")+" r WHERE r.review_id =?";
-		return sql;
+		return getForm(reviewId);
 	}
 	
 	@Override
@@ -100,13 +99,13 @@ public class ReviewAdminModelImpl extends BaseModel implements ReviewAdminModel 
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("review");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 
 	@Override
 	public int getTotalAwaitingApproval() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("review")+ " WHERE status=0";
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 }

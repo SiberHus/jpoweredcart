@@ -2,6 +2,7 @@ package com.jpoweredcart.admin.model.localisation.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.localisation.LengthClassForm;
+import com.jpoweredcart.admin.form.localisation.LengthClassForm;
 import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import com.jpoweredcart.admin.model.localisation.LengthClassAdminModel;
 import com.jpoweredcart.common.BaseModel;
@@ -23,7 +24,8 @@ import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.Language;
 import com.jpoweredcart.common.entity.localisation.LengthClass;
 import com.jpoweredcart.common.entity.localisation.LengthClassDesc;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.entity.localisation.jdbc.LengthClassRowMapper;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class LengthClassAdminModelImpl extends BaseModel implements LengthClassAdminModel {
 
@@ -104,8 +106,13 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 	public LengthClassForm getForm(Integer lcId) {
 		
 		String sql = "SELECT * FROM "+quoteTable("length_class")+ " WHERE length_class_id=?";
-		LengthClassForm lcForm = getJdbcOperations().queryForObject(sql, 
-				new Object[]{lcId}, new LengthClassRowMapper.Form());
+		LengthClassForm lcForm = (LengthClassForm)getJdbcOperations().queryForObject(
+				sql, new Object[]{lcId}, new LengthClassRowMapper(){
+					@Override
+					public LengthClass newObject() {
+						return new LengthClassForm();
+					}
+				});
 		
 		List<LengthClassDesc> desc = getDescriptions(lcId);
 		if(desc!=null){
@@ -135,7 +142,16 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 				new String[]{"title", "unit", "value"});
 		query.addParameters(languageId);
 		List<LengthClass> lengthClassList = getJdbcOperations().query(query.getSql(), 
-				query.getParameters(), new LengthClassRowMapper());
+				query.getParameters(), new LengthClassRowMapper(){
+					@Override
+					public LengthClass mapRow(ResultSet rs, int rowNum)
+							throws SQLException {
+						LengthClass lc = super.mapRow(rs, rowNum);
+						lc.setTitle(rs.getString("title"));
+						lc.setUnit(rs.getString("unit"));
+						return lc;
+					}
+		});
 		return lengthClassList;
 	}
 	
@@ -163,7 +179,7 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 	public int getTotal() {
 		
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("length_class");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 }

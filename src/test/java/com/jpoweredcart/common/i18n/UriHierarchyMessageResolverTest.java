@@ -7,7 +7,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.jpoweredcart.common.web.mock.MockHttpServletRequest;
+import com.jpoweredcart.common.mock.servlet.MockHttpServletRequest;
 
 public class UriHierarchyMessageResolverTest {
 

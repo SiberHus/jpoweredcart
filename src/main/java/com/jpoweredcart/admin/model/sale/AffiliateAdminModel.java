@@ -3,8 +3,8 @@ package com.jpoweredcart.admin.model.sale;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.jpoweredcart.admin.bean.sale.AffiliateForm;
-import com.jpoweredcart.admin.bean.sale.filter.AffiliateFilter;
+import com.jpoweredcart.admin.form.sale.AffiliateForm;
+import com.jpoweredcart.admin.form.sale.filter.AffiliateFilter;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.sale.Affiliate;
 import com.jpoweredcart.common.entity.sale.AffiliateTransaction;

@@ -2,7 +2,7 @@ package com.jpoweredcart.admin.model.design;
 
 import java.util.List;
 
-import com.jpoweredcart.admin.bean.design.LayoutForm;
+import com.jpoweredcart.admin.form.design.LayoutForm;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.design.Layout;
 import com.jpoweredcart.common.entity.design.LayoutRoute;

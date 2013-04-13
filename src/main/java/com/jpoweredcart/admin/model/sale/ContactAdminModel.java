@@ -1,6 +1,6 @@
 package com.jpoweredcart.admin.model.sale;
 
-import com.jpoweredcart.admin.bean.sale.ContactForm;
+import com.jpoweredcart.admin.form.sale.ContactForm;
 
 public interface ContactAdminModel {
 	

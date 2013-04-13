@@ -19,6 +19,8 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.TaxClass;
 import com.jpoweredcart.common.entity.localisation.TaxRule;
+import com.jpoweredcart.common.entity.localisation.jdbc.TaxClassRowMapper;
+import com.jpoweredcart.common.entity.localisation.jdbc.TaxRuleRowMapper;
 
 public class TaxClassAdminModelImpl extends BaseModel implements TaxClassAdminModel {
 
@@ -107,7 +109,7 @@ public class TaxClassAdminModelImpl extends BaseModel implements TaxClassAdminMo
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("tax_class");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 	

@@ -11,6 +11,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jpoweredcart.admin.form.design.BannerForm;
 import com.jpoweredcart.admin.model.design.BannerAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
@@ -18,13 +19,15 @@ import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.design.Banner;
 import com.jpoweredcart.common.entity.design.BannerImage;
 import com.jpoweredcart.common.entity.design.BannerImageDesc;
+import com.jpoweredcart.common.entity.design.jdbc.BannerImageRowMapper;
+import com.jpoweredcart.common.entity.design.jdbc.BannerRowMapper;
 
 public class BannerAdminModelImpl extends BaseModel implements BannerAdminModel {
 
 	
 	@Transactional
 	@Override
-	public void create(final Banner banner) {
+	public void create(final BannerForm banner) {
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		getJdbcOperations().update(new PreparedStatementCreator() {
@@ -47,7 +50,7 @@ public class BannerAdminModelImpl extends BaseModel implements BannerAdminModel 
 
 	@Transactional
 	@Override
-	public void update(Banner banner) {
+	public void update(BannerForm banner) {
 		
 		String sql = "UPDATE " +quoteTable("banner")+ " SET name = ?, status = ? WHERE banner_id = ?";
 		getJdbcOperations().update(sql, banner.getName(), banner.getStatus(), banner.getId());
@@ -59,7 +62,7 @@ public class BannerAdminModelImpl extends BaseModel implements BannerAdminModel 
 		addBannerImages(banner);
 	}
 	
-	private void addBannerImages(final Banner banner){
+	private void addBannerImages(final BannerForm banner){
 		if(banner.getImages().size()>0){
 			for(final BannerImage image: banner.getImages()){
 				
@@ -102,16 +105,32 @@ public class BannerAdminModelImpl extends BaseModel implements BannerAdminModel 
 	}
 	
 	@Override
-	public Banner get(Integer bannerId) {
+	public BannerForm newForm(){
+		return new BannerForm();
+	}
+	
+	@Override
+	public BannerForm getForm(Integer bannerId) {
 		
 		String sql = "SELECT * FROM " +quoteTable("banner")+ " WHERE banner_id = ?";
 		
-		Banner banner = getJdbcOperations().queryForObject(sql, 
-				new Object[]{bannerId}, new BannerRowMapper());
+		BannerForm bannerForm = (BannerForm)getJdbcOperations().queryForObject(
+				sql, new Object[]{bannerId}, 
+				new BannerRowMapper(){
+					@Override
+					public Banner newObject() {
+						return new BannerForm();
+					}
+				});
 		
 		List<BannerImage> imageList = getBannerImages(bannerId);
-		banner.setImages(imageList);
-		return banner;
+		bannerForm.setImages(imageList);
+		return bannerForm;
+	}
+	
+	@Override
+	public Banner get(Integer bannerId) {
+		return getForm(bannerId);
 	}
 	
 	@Override
@@ -142,7 +161,7 @@ public class BannerAdminModelImpl extends BaseModel implements BannerAdminModel 
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("banner");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 }

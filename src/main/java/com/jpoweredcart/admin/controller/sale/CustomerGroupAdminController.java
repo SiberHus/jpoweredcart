@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.jpoweredcart.admin.bean.sale.CustomerGroupForm;
+import com.jpoweredcart.admin.form.sale.CustomerGroupForm;
 import com.jpoweredcart.admin.model.sale.CustomerGroupAdminModel;
 import com.jpoweredcart.common.BaseController;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.sale.CustomerGroup;
 import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import com.jpoweredcart.common.security.UserPermissions;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.system.setting.SettingKey;
 import com.jpoweredcart.common.view.Pagination;
 
 @Controller

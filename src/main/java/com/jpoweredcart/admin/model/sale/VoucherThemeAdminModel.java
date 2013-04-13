@@ -2,7 +2,7 @@ package com.jpoweredcart.admin.model.sale;
 
 import java.util.List;
 
-import com.jpoweredcart.admin.bean.sale.VoucherThemeForm;
+import com.jpoweredcart.admin.form.sale.VoucherThemeForm;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.sale.VoucherTheme;
 import com.jpoweredcart.common.entity.sale.VoucherThemeDesc;

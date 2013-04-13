@@ -9,21 +9,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.jpoweredcart.admin.model.sale.AffiliateAdminModel;
 import com.jpoweredcart.common.entity.sale.Affiliate;
+import com.jpoweredcart.common.service.UserService;
 
 public class AffiliateUserDetailService implements UserDetailsService {
 
 	private static final Logger logger = LoggerFactory.getLogger(AffiliateUserDetailService.class);
 	
 	@Inject
-	private AffiliateAdminModel affiliateAdminModel;
+	private UserService userService;
 	
 	@Override
 	public UserDetails loadUserByUsername(String email)
 			throws UsernameNotFoundException {
 		try{
-			Affiliate affiliate = affiliateAdminModel.getOneByEmail(email);
+			Affiliate affiliate = userService.getAffiliateByEmail(email);
 			if(affiliate==null) throw new EmptyResultDataAccessException(1);
 			
 			CartUserDetails userDetails = new CartUserDetails();

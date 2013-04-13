@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.jpoweredcart.admin.bean.sale.AffiliateForm;
-import com.jpoweredcart.admin.bean.sale.filter.AffiliateFilter;
+import com.jpoweredcart.admin.form.sale.AffiliateForm;
+import com.jpoweredcart.admin.form.sale.filter.AffiliateFilter;
 import com.jpoweredcart.admin.model.sale.AffiliateAdminModel;
 import com.jpoweredcart.common.BaseController;
 import com.jpoweredcart.common.PageParam;

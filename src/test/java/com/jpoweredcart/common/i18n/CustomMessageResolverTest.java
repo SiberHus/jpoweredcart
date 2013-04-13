@@ -6,7 +6,7 @@ import java.util.Arrays;
 import junit.framework.Assert;
 
 import com.jpoweredcart.common.i18n.CustomMessageResolver;
-import com.jpoweredcart.common.web.mock.MockHttpServletRequest;
+import com.jpoweredcart.common.mock.servlet.MockHttpServletRequest;
 
 import org.junit.Test;
 

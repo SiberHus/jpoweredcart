@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.jpoweredcart.admin.bean.common.PasswordResetForm;
+import com.jpoweredcart.admin.form.common.PasswordResetForm;
 import com.jpoweredcart.admin.model.user.UserAdminModel;
 import com.jpoweredcart.common.BaseController;
 import com.jpoweredcart.common.entity.user.User;
-import com.jpoweredcart.common.service.email.EmailMessage;
-import com.jpoweredcart.common.service.email.EmailService;
-import com.jpoweredcart.common.service.setting.SettingKey;
-import com.jpoweredcart.common.service.template.TemplateService;
+import com.jpoweredcart.common.system.email.EmailMessage;
+import com.jpoweredcart.common.system.email.EmailService;
+import com.jpoweredcart.common.system.setting.SettingKey;
+import com.jpoweredcart.common.system.template.TemplateService;
 
 @Controller
 @RequestMapping("/admin/common")

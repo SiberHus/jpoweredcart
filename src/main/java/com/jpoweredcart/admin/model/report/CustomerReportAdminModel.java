@@ -2,13 +2,13 @@ package com.jpoweredcart.admin.model.report;
 
 import java.util.List;
 
-import com.jpoweredcart.admin.bean.report.CustomerCreditRpt;
-import com.jpoweredcart.admin.bean.report.CustomerOnlineRpt;
-import com.jpoweredcart.admin.bean.report.CustomerOrderRpt;
-import com.jpoweredcart.admin.bean.report.CustomerRewardRpt;
-import com.jpoweredcart.admin.bean.report.filter.CustomerOnlineFilter;
-import com.jpoweredcart.admin.bean.report.filter.DateRangeFilter;
-import com.jpoweredcart.admin.bean.report.filter.DateRangeWithStatusFilter;
+import com.jpoweredcart.admin.form.report.CustomerCreditRpt;
+import com.jpoweredcart.admin.form.report.CustomerOnlineRpt;
+import com.jpoweredcart.admin.form.report.CustomerOrderRpt;
+import com.jpoweredcart.admin.form.report.CustomerRewardRpt;
+import com.jpoweredcart.admin.form.report.filter.CustomerOnlineFilter;
+import com.jpoweredcart.admin.form.report.filter.DateRangeFilter;
+import com.jpoweredcart.admin.form.report.filter.DateRangeWithStatusFilter;
 import com.jpoweredcart.common.PageParam;
 
 public interface CustomerReportAdminModel {

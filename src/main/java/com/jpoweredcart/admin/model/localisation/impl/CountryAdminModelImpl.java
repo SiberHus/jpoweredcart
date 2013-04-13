@@ -4,12 +4,13 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.localisation.CountryForm;
+import com.jpoweredcart.admin.form.localisation.CountryForm;
 import com.jpoweredcart.admin.model.localisation.CountryAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.Country;
+import com.jpoweredcart.common.entity.localisation.jdbc.CountryRowMapper;
 
 public class CountryAdminModelImpl extends BaseModel implements CountryAdminModel {
 	
@@ -48,7 +49,12 @@ public class CountryAdminModelImpl extends BaseModel implements CountryAdminMode
 	@Override
 	public CountryForm getForm(Integer countryId) {
 		String sql = "SELECT * FROM " +quoteTable("country")+ " WHERE country_id = ?";
-		return getJdbcOperations().queryForObject(sql, new Object[]{countryId}, new CountryRowMapper.Form());
+		return (CountryForm)getJdbcOperations().queryForObject(
+				sql, new Object[]{countryId}, 
+			new CountryRowMapper(){
+				@Override
+				public Country newObject() { return new CountryForm(); }
+			});
 	}
 	
 	@Override
@@ -74,7 +80,7 @@ public class CountryAdminModelImpl extends BaseModel implements CountryAdminMode
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("country");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 }

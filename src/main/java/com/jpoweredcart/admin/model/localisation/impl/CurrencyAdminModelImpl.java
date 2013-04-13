@@ -5,12 +5,13 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.localisation.CurrencyForm;
+import com.jpoweredcart.admin.form.localisation.CurrencyForm;
 import com.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.Currency;
+import com.jpoweredcart.common.entity.localisation.jdbc.CurrencyRowMapper;
 
 
 public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminModel {
@@ -51,7 +52,11 @@ public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminMo
 	@Override
 	public CurrencyForm getForm(Integer currencyId) {
 		String sql = "SELECT * FROM " +quoteTable("currency")+ " WHERE currency_id = ?";
-		return getJdbcOperations().queryForObject(sql, new Object[]{currencyId}, new CurrencyRowMapper.Form());
+		return (CurrencyForm)getJdbcOperations().queryForObject(
+				sql, new Object[]{currencyId}, new CurrencyRowMapper(){
+					@Override
+					public Currency newObject() { return new CurrencyForm(); }
+				});
 	}
 	
 	@Override
@@ -83,7 +88,7 @@ public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminMo
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("currency");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 	

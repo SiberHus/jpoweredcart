@@ -5,11 +5,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,7 +35,7 @@ public abstract class AbstractMessageResolver implements MessageResolver {
 	
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private Map<String, String> messageDirMap = new ConcurrentHashMap<String, String>();
+	private Map<String, String> messageDirMap = new HashMap<String, String>();
 	
 	private Environment env;
 	
@@ -115,14 +115,17 @@ public abstract class AbstractMessageResolver implements MessageResolver {
 		Locale locale = localeResolver.resolveLocale(httpRequest);
 		String langCode = locale.getLanguage();
 		String langDir = null;
-		if((langDir=messageDirMap.get(langCode))==null ){
-			String sql = "SELECT code, directory FROM "+BaseModel.quoteTable(env, "language")
-					+ " WHERE status=1";
-			List<Object[]> result = jdbcOperations.query(sql, new ArrayListResultSetExtractor());
-			for(Object[] row: result){
-				messageDirMap.put((String)row[0], (String)row[1]);
+		
+		synchronized(this){
+			if((langDir=messageDirMap.get(langCode))==null ){
+				String sql = "SELECT code, directory FROM "+BaseModel.quoteTable(env, "language")
+						+ " WHERE status=1";
+				List<Object[]> result = jdbcOperations.query(sql, new ArrayListResultSetExtractor());
+				for(Object[] row: result){
+					messageDirMap.put((String)row[0], (String)row[1]);
+				}
+				langDir = messageDirMap.get(langCode);
 			}
-			langDir = messageDirMap.get(langCode);
 		}
 		if(langDir==null){
 			langDir = "english";/* default language dir */
@@ -152,7 +155,7 @@ public abstract class AbstractMessageResolver implements MessageResolver {
 							cache.put(element);
 						}
 					}catch(IOException e){
-						//TODO: add exception handler
+						logger.warn("Cannot read file: {}", inputFile);
 					}finally{
 						if(in!=null) try{ in.close(); }catch(Exception e){}
 					}

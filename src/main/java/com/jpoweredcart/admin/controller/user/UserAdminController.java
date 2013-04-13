@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.jpoweredcart.admin.bean.user.UserForm;
+import com.jpoweredcart.admin.form.user.UserForm;
 import com.jpoweredcart.admin.model.user.UserAdminModel;
 import com.jpoweredcart.admin.model.user.UserGroupAdminModel;
 import com.jpoweredcart.common.BaseController;

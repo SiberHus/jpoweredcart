@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.jpoweredcart.common.service.template.TemplateService;
+import com.jpoweredcart.common.system.template.TemplateService;
 import com.jpoweredcart.common.view.helper.CurrencyFormatter;
 
 

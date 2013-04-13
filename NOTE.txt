@@ -9,12 +9,20 @@
 
 
 Cart		db, session, tax, weight, customerUserDetails
-Length		db
-Weight		db
+Length		db, user language
+Weight		db, user language
 Currency	db, language, (request, session are required but we will put it in LocalizedDataInterceptor)
 Tax			db,  tax requires session to initialize address data
 
 
-Length, Weight, Currency will be used in Thymeleaf view, other services, and probably controller
+Catalog
+===============
+CartService (session)
+Tax (session)
 
- 
+Main
+===============
+Currency (singleton)
+
+
+

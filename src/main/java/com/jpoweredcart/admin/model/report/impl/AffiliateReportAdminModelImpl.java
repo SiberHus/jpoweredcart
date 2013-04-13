@@ -3,12 +3,13 @@ package com.jpoweredcart.admin.model.report.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jpoweredcart.admin.bean.report.AffiliateCommissionRpt;
-import com.jpoweredcart.admin.bean.report.filter.DateRangeFilter;
+import com.jpoweredcart.admin.form.report.AffiliateCommissionRpt;
+import com.jpoweredcart.admin.form.report.filter.DateRangeFilter;
 import com.jpoweredcart.admin.model.report.AffiliateReportAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
+import com.jpoweredcart.common.entity.report.jdbc.AffiliateCommissionRptRowMapper;
 
 public class AffiliateReportAdminModelImpl extends BaseModel implements AffiliateReportAdminModel {
 
@@ -54,7 +55,7 @@ public class AffiliateReportAdminModelImpl extends BaseModel implements Affiliat
 			params.add(filter.getDateEnd());
 		}
 		
-		return getJdbcOperations().queryForInt(sql, params.toArray());
+		return getJdbcOperations().queryForObject(sql, Integer.class, params.toArray());
 	}
 	
 }

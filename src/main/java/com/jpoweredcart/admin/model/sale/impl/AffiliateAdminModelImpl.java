@@ -11,14 +11,15 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.sale.AffiliateForm;
-import com.jpoweredcart.admin.bean.sale.filter.AffiliateFilter;
+import com.jpoweredcart.admin.form.sale.AffiliateForm;
+import com.jpoweredcart.admin.form.sale.filter.AffiliateFilter;
 import com.jpoweredcart.admin.model.sale.AffiliateAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.sale.Affiliate;
 import com.jpoweredcart.common.entity.sale.AffiliateTransaction;
+import com.jpoweredcart.common.entity.sale.jdbc.AffiliateRowMapper;
 import com.jpoweredcart.common.security.Password;
 
 public class AffiliateAdminModelImpl extends BaseModel implements AffiliateAdminModel {
@@ -86,7 +87,7 @@ public class AffiliateAdminModelImpl extends BaseModel implements AffiliateAdmin
 		do{
 			uniqueCode = RandomStringUtils.randomAlphanumeric(13);
 			String sql = "SELECT COUNT(*) FROM "+quoteTable("affiliate")+" WHERE code=?";
-			count = getJdbcOperations().queryForInt(sql, uniqueCode);
+			count = getJdbcOperations().queryForObject(sql, Integer.class, uniqueCode);
 		}while(count>0);
 		
 		AffiliateForm form = new AffiliateForm();
@@ -99,15 +100,15 @@ public class AffiliateAdminModelImpl extends BaseModel implements AffiliateAdmin
 	public AffiliateForm getForm(Integer affId) {
 		
 		String sql = "SELECT * FROM "+quoteTable("affiliate")+" WHERE affiliate_id=?";
-		return getJdbcOperations().queryForObject(sql, new Object[]{affId}, 
-				new AffiliateRowMapper.Form());
+		return (AffiliateForm)getJdbcOperations().queryForObject(
+				sql, new Object[]{affId}, new AffiliateRowMapper(){
+					public Affiliate newObject(){ return new AffiliateForm(); }
+				});
 	}
-
+	
 	@Override
 	public Affiliate get(Integer affId) {
-		String sql = "SELECT * FROM "+quoteTable("affiliate")+" WHERE affiliate_id=?";
-		return getJdbcOperations().queryForObject(sql, new Object[]{affId}, 
-				new AffiliateRowMapper());
+		return getForm(affId);
 	}
 
 	@Override
@@ -210,7 +211,7 @@ public class AffiliateAdminModelImpl extends BaseModel implements AffiliateAdmin
 			params.add(filter.getDateAdded().getTime());
 		}
 		
-		return getJdbcOperations().queryForInt(sql, params.toArray());
+		return getJdbcOperations().queryForObject(sql, Integer.class, params.toArray());
 		
 	}
 	
@@ -220,21 +221,21 @@ public class AffiliateAdminModelImpl extends BaseModel implements AffiliateAdmin
 		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("affiliate")+
 				" WHERE status=? OR approved =?";
 		
-		return getJdbcOperations().queryForInt(sql, 0, Boolean.FALSE);
+		return getJdbcOperations().queryForObject(sql, Integer.class, 0, Boolean.FALSE);
 	}
 	
 	@Override
 	public int getTotalByCountryId(Integer countryId) {
 		
 		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("affiliate")+" WHERE country_id = ?";
-		return getJdbcOperations().queryForInt(sql, countryId);
+		return getJdbcOperations().queryForObject(sql, Integer.class, countryId);
 	}
 	
 	@Override
 	public int getTotalByZoneId(Integer zoneId) {
 		
 		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("affiliate")+" WHERE zone_id=?";
-		return getJdbcOperations().queryForInt(sql, zoneId);
+		return getJdbcOperations().queryForObject(sql, Integer.class, zoneId);
 	}
 
 	@Transactional
@@ -264,7 +265,7 @@ public class AffiliateAdminModelImpl extends BaseModel implements AffiliateAdmin
 	public int getTotalTransactions(Integer affId) {
 		
 		String sql = "SELECT COUNT(*) AS total  FROM "+quoteTable("affiliate_transaction")+" WHERE affiliate_id = ?";
-		return getJdbcOperations().queryForInt(sql, affId);
+		return getJdbcOperations().queryForObject(sql, Integer.class, affId);
 	}
 
 	@Override
@@ -278,7 +279,7 @@ public class AffiliateAdminModelImpl extends BaseModel implements AffiliateAdmin
 	public int getTotalTransactionsByOrderId(Integer orderId) {
 		
 		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("affiliate_transaction")+" WHERE order_id = ?";
-		return getJdbcOperations().queryForInt(sql, orderId);
+		return getJdbcOperations().queryForObject(sql, Integer.class, orderId);
 	}
 	
 }

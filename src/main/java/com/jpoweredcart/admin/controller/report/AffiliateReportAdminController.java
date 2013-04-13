@@ -11,8 +11,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.jpoweredcart.admin.bean.report.AffiliateCommissionRpt;
-import com.jpoweredcart.admin.bean.report.filter.DateRangeFilter;
+import com.jpoweredcart.admin.form.report.AffiliateCommissionRpt;
+import com.jpoweredcart.admin.form.report.filter.DateRangeFilter;
 import com.jpoweredcart.admin.model.report.AffiliateReportAdminModel;
 import com.jpoweredcart.common.BaseController;
 import com.jpoweredcart.common.PageParam;

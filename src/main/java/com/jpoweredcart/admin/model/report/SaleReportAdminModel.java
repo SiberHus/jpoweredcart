@@ -2,12 +2,12 @@ package com.jpoweredcart.admin.model.report;
 
 import java.util.List;
 
-import com.jpoweredcart.admin.bean.report.SaleCouponRpt;
-import com.jpoweredcart.admin.bean.report.SaleOrderByTitleRpt;
-import com.jpoweredcart.admin.bean.report.SaleOrderRpt;
-import com.jpoweredcart.admin.bean.report.SaleReturnRpt;
-import com.jpoweredcart.admin.bean.report.filter.DateRangeFilter;
-import com.jpoweredcart.admin.bean.report.filter.SaleReportFilter;
+import com.jpoweredcart.admin.form.report.SaleCouponRpt;
+import com.jpoweredcart.admin.form.report.SaleOrderByTitleRpt;
+import com.jpoweredcart.admin.form.report.SaleOrderRpt;
+import com.jpoweredcart.admin.form.report.SaleReturnRpt;
+import com.jpoweredcart.admin.form.report.filter.DateRangeFilter;
+import com.jpoweredcart.admin.form.report.filter.SaleReportFilter;
 import com.jpoweredcart.common.PageParam;
 
 public interface SaleReportAdminModel {

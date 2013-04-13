@@ -17,7 +17,8 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.OrderStatuses;
 import com.jpoweredcart.common.entity.localisation.OrderStatuses.OrderStatus;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.entity.localisation.jdbc.OrderStatusRowMapper;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class OrderStatusAdminModelImpl extends BaseModel implements OrderStatusAdminModel {
 	
@@ -101,7 +102,7 @@ public class OrderStatusAdminModelImpl extends BaseModel implements OrderStatusA
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("order_status")+ " WHERE language_id=?";
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
-		return getJdbcOperations().queryForInt(sql, languageId);
+		return getJdbcOperations().queryForObject(sql, Integer.class, languageId);
 	}
 	
 	

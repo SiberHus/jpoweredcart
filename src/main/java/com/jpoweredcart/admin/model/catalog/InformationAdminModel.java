@@ -2,7 +2,7 @@ package com.jpoweredcart.admin.model.catalog;
 
 import java.util.List;
 
-import com.jpoweredcart.admin.bean.catalog.InformationForm;
+import com.jpoweredcart.admin.form.catalog.InformationForm;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.catalog.Information;
 import com.jpoweredcart.common.entity.catalog.InformationDesc;

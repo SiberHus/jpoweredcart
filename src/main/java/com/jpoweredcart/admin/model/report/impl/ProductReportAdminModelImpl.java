@@ -5,14 +5,16 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.report.ProductPurchasedRpt;
-import com.jpoweredcart.admin.bean.report.ProductViewedRpt;
-import com.jpoweredcart.admin.bean.report.filter.DateRangeWithStatusFilter;
+import com.jpoweredcart.admin.form.report.ProductPurchasedRpt;
+import com.jpoweredcart.admin.form.report.ProductViewedRpt;
+import com.jpoweredcart.admin.form.report.filter.DateRangeWithStatusFilter;
 import com.jpoweredcart.admin.model.report.ProductReportAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.entity.report.jdbc.ProductPurchasedRptRowMapper;
+import com.jpoweredcart.common.entity.report.jdbc.ProductViewedRptRowMapper;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class ProductReportAdminModelImpl extends BaseModel implements ProductReportAdminModel {
 	
@@ -40,14 +42,14 @@ public class ProductReportAdminModelImpl extends BaseModel implements ProductRep
 	public int getTotalProductsViewed() {
 		
 		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("product")+" WHERE viewed > 0";
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 	@Override
 	public int getTotalProductViews() {
 		
 		String sql = "SELECT SUM(viewed) AS total FROM "+quoteTable("product");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 	@Transactional
@@ -112,7 +114,7 @@ public class ProductReportAdminModelImpl extends BaseModel implements ProductRep
 			params.add(filter.getDateEnd());
 		}
 		
-		return getJdbcOperations().queryForInt(sql, params.toArray());
+		return getJdbcOperations().queryForObject(sql, Integer.class, params.toArray());
 	}
 	
 }

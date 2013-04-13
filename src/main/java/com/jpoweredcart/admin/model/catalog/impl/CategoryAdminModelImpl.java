@@ -17,13 +17,12 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.HtmlUtils;
 
-import com.jpoweredcart.admin.bean.catalog.CategoryForm;
+import com.jpoweredcart.admin.form.catalog.CategoryForm;
 import com.jpoweredcart.admin.model.catalog.CategoryAdminModel;
 import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import com.jpoweredcart.admin.model.setting.StoreAdminModel;
@@ -34,10 +33,11 @@ import com.jpoweredcart.common.entity.catalog.Category;
 import com.jpoweredcart.common.entity.catalog.CategoryDesc;
 import com.jpoweredcart.common.entity.catalog.CategoryToLayout;
 import com.jpoweredcart.common.entity.catalog.CategoryToStore;
+import com.jpoweredcart.common.entity.catalog.jdbc.CategoryRowMapper;
 import com.jpoweredcart.common.entity.setting.Store;
 import com.jpoweredcart.common.jdbc.MapResultSetExtractor;
 import com.jpoweredcart.common.jdbc.ScalarResultSetExtractor;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminModel {
 	
@@ -170,9 +170,21 @@ public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminMo
 		String sql = "SELECT DISTINCT *, (SELECT keyword FROM " +quoteTable("url_alias")
 				+ " WHERE query = ?) AS keyword FROM " 
 				+ quoteTable("category")+" WHERE category_id = ?";
-		CategoryForm catForm = getJdbcOperations().queryForObject(sql, 
-				new Object[]{"category_id="+catId, catId}, 
-				new CategoryRowMapper.Form());
+		CategoryForm catForm = (CategoryForm)getJdbcOperations().queryForObject(
+				sql, new Object[]{"category_id="+catId, catId}, 
+				new CategoryRowMapper(){
+					@Override
+					public Category newObject() {
+						return new CategoryForm();
+					}
+					@Override
+					public Category mapRow(ResultSet rs, int rowNum)
+							throws SQLException {
+						CategoryForm form = (CategoryForm)super.mapRow(rs, rowNum);
+						form.setKeyword(rs.getString("keyword"));
+						return form;
+					}
+			});
 		catForm.setDescs(getDescriptions(catId));
 		catForm.setStores(getCatStores(catId));
 		catForm.setLayouts(getCatLayouts(catId));
@@ -199,12 +211,11 @@ public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminMo
 		query.addParameters(languageId);
 		
 		List<Category> catList = getJdbcOperations().query(query.getSql(), 
-				query.getParameters(), new RowMapper<Category>(){
+				query.getParameters(), new CategoryRowMapper(){
 			@Override
 			public Category mapRow(ResultSet rs, int rowNum)
 					throws SQLException {
-				Category cat = new Category();
-				CategoryRowMapper.setProperties(rs, cat);
+				Category cat = super.mapRow(rs, rowNum);
 				cat.setName(getPath(cat.getId(), separator));
 				return cat;
 			}
@@ -276,20 +287,20 @@ public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminMo
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("category");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 	@Override
 	public int getTotalByImageId(Integer imageId) {
 		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("category")+" WHERE image_id =?";
-		return getJdbcOperations().queryForInt(sql, imageId);
+		return getJdbcOperations().queryForObject(sql, Integer.class, imageId);
 	}
 
 	@Override
 	public int getTotalByLayoutId(Integer layoutId) {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("category_to_layout")
 				+" WHERE layout_id=?";
-		return getJdbcOperations().queryForInt(sql, layoutId);
+		return getJdbcOperations().queryForObject(sql, Integer.class, layoutId);
 	}
 	
 	

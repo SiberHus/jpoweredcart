@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.jpoweredcart.admin.bean.localisation.GeoZoneForm;
+import com.jpoweredcart.admin.form.localisation.GeoZoneForm;
 import com.jpoweredcart.admin.model.localisation.CountryAdminModel;
 import com.jpoweredcart.admin.model.localisation.GeoZoneAdminModel;
 import com.jpoweredcart.admin.model.localisation.ZoneAdminModel;

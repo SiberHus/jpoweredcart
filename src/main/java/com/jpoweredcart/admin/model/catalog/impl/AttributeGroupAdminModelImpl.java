@@ -14,7 +14,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.catalog.AttributeGroupForm;
+import com.jpoweredcart.admin.form.catalog.AttributeGroupForm;
 import com.jpoweredcart.admin.model.catalog.AttributeGroupAdminModel;
 import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import com.jpoweredcart.common.BaseModel;
@@ -22,7 +22,8 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.catalog.AttributeGroup;
 import com.jpoweredcart.common.entity.catalog.AttributeGroupDesc;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.entity.catalog.jdbc.AttributeGroupRowMapper;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class AttributeGroupAdminModelImpl extends BaseModel implements AttributeGroupAdminModel{
 
@@ -89,8 +90,14 @@ public class AttributeGroupAdminModelImpl extends BaseModel implements Attribute
 	
 	@Override
 	public AttributeGroupForm getForm(Integer attrGrpId) {
-		AttributeGroupForm attrGrpForm = getJdbcOperations().queryForObject(getSelectSql(), 
-			new Object[]{attrGrpId}, new AttributeGroupRowMapper.Form());
+		AttributeGroupForm attrGrpForm = (AttributeGroupForm)getJdbcOperations()
+				.queryForObject(getSelectSql(), new Object[]{attrGrpId}, 
+						new AttributeGroupRowMapper(){
+							@Override
+							public AttributeGroup newObject() {
+								return new AttributeGroupForm();
+							}
+				});
 		attrGrpForm.setDescs(getDescriptions(attrGrpId));
 		return attrGrpForm;
 	}
@@ -137,7 +144,7 @@ public class AttributeGroupAdminModelImpl extends BaseModel implements Attribute
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("attribute_group");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 }

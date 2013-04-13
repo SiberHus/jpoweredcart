@@ -9,21 +9,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.jpoweredcart.admin.model.sale.CustomerAdminModel;
 import com.jpoweredcart.common.entity.sale.Customer;
+import com.jpoweredcart.common.service.UserService;
 
 public class CustomerUserDetailService implements UserDetailsService {
 
 	private static final Logger logger = LoggerFactory.getLogger(CustomerUserDetailService.class);
 	
 	@Inject
-	private CustomerAdminModel customerAdminModel;
+	private UserService userService;
 	
 	@Override
 	public UserDetails loadUserByUsername(String email)
 			throws UsernameNotFoundException {
 		try{
-			Customer customer = customerAdminModel.getOneByEmail(email);
+			Customer customer = userService.getCustomerByEmail(email);
 			if(customer==null) throw new EmptyResultDataAccessException(1);
 			
 			CartUserDetails userDetails = new CartUserDetails();

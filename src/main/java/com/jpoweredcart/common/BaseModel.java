@@ -11,16 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcOperations;
 
-import com.jpoweredcart.common.service.setting.DefaultSettings;
-import com.jpoweredcart.common.service.setting.SettingService;
+import com.jpoweredcart.common.system.setting.DefaultSettings;
+import com.jpoweredcart.common.system.setting.SettingService;
 
 
 public class BaseModel {
 	
 	protected Logger logger = LoggerFactory.getLogger(getClass());
-	
-	@Inject
-	private Environment env;
 	
 	@Inject
 	private SettingService settingService;
@@ -31,27 +28,15 @@ public class BaseModel {
 	public BaseModel(){}
 	
 	public Environment getEnvironment(){
-		return this.env;
-	}
-	
-	public void setEnvironment(Environment env){
-		this.env = env;
+		return this.settingService.getEnvironment();
 	}
 	
 	public SettingService getSettingService() {
 		return settingService;
 	}
 	
-	public void setSettingService(SettingService settingService) {
-		this.settingService = settingService;
-	}
-
 	public JdbcOperations getJdbcOperations() {
 		return jdbcOperations;
-	}
-	
-	public void setJdbcOperations(JdbcOperations jdbcOperations) {
-		this.jdbcOperations = jdbcOperations;
 	}
 	
 	/**
@@ -82,12 +67,12 @@ public class BaseModel {
 	
 	protected String quoteTable(String tableName){
 		
-		return BaseModel.quoteTable(env, tableName);
+		return BaseModel.quoteTable(getEnvironment(), tableName);
 	}
 	
 	protected String quoteName(String name){
 		
-		return BaseModel.quoteName(env, name);
+		return BaseModel.quoteName(getEnvironment(), name);
 	}
 	
 	protected QueryBean createPaginationQuery(String table, PageParam pageParam, String... sortFields){

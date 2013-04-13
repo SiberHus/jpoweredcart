@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.jpoweredcart.admin.bean.catalog.CategoryForm;
+import com.jpoweredcart.admin.form.catalog.CategoryForm;
 import com.jpoweredcart.admin.model.catalog.CategoryAdminModel;
 import com.jpoweredcart.admin.model.design.LayoutAdminModel;
 import com.jpoweredcart.admin.model.setting.StoreAdminModel;
@@ -24,7 +24,7 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.catalog.Category;
 import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import com.jpoweredcart.common.security.UserPermissions;
-import com.jpoweredcart.common.service.media.MediaService;
+import com.jpoweredcart.common.system.media.MediaService;
 import com.jpoweredcart.common.view.Pagination;
 
 @Controller

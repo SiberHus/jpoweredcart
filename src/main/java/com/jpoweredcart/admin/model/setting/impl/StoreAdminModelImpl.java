@@ -7,8 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jpoweredcart.admin.model.setting.StoreAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.entity.setting.Store;
-import com.jpoweredcart.common.service.setting.DefaultSettings;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.entity.setting.jdbc.StoreRowMapper;
+import com.jpoweredcart.common.system.setting.DefaultSettings;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class StoreAdminModelImpl extends BaseModel implements StoreAdminModel {
 
@@ -57,59 +58,59 @@ public class StoreAdminModelImpl extends BaseModel implements StoreAdminModel {
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("store");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 
 	@Override
 	public int getTotalByLayoutId(Integer layoutId) {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("setting")+ " WHERE "+quoteName("key")
 				+"= 'config_layout_id' AND "+quoteName("value")+" = ? AND store_id != '0'";
-		return getJdbcOperations().queryForInt(sql, layoutId);
+		return getJdbcOperations().queryForObject(sql, Integer.class, layoutId);
 	}
 
 	@Override
 	public int getTotalByLanguageCode(String languageCode) {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("setting")+ " WHERE "+quoteName("key")
 				+" = 'config_language' AND "+quoteName("value")+" = ? AND store_id != '0'";
-		return getJdbcOperations().queryForInt(sql, languageCode);
+		return getJdbcOperations().queryForObject(sql, Integer.class, languageCode);
 	}
 	
 	@Override
 	public int getTotalByCurrencyCode(String currencyCode) {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("setting")+ " WHERE "+quoteName("key")
 				+" = 'config_currency' AND "+quoteName("value")+" = ? AND store_id != '0'";
-		return getJdbcOperations().queryForInt(sql, currencyCode);
+		return getJdbcOperations().queryForObject(sql, Integer.class, currencyCode);
 	}
 	
 	@Override
 	public int getTotalByCountryId(Integer countryId) {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("setting")+ " WHERE "+quoteName("key")
 				+" = 'config_country_id' AND "+quoteName("value")+" = ? AND store_id != '0'";
-		return getJdbcOperations().queryForInt(sql, countryId);
+		return getJdbcOperations().queryForObject(sql, Integer.class, countryId);
 	}
 	
 	@Override
 	public int getTotalByZoneId(Integer zoneId) {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("setting")+ " WHERE "+quoteName("key")
 				+" = 'config_zone_id' AND "+quoteName("value")+" = ? AND store_id != '0'";
-		return getJdbcOperations().queryForInt(sql, zoneId);
+		return getJdbcOperations().queryForObject(sql, Integer.class, zoneId);
 	}
 	
 	@Override
 	public int getTotalByCustomerGroupId(Integer customerGroupId) {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("setting")+ " WHERE "+quoteName("key")
 				+" = 'config_customer_group_id' AND "+quoteName("value")+" = ? AND store_id != '0'";
-		return getJdbcOperations().queryForInt(sql, customerGroupId);
+		return getJdbcOperations().queryForObject(sql, Integer.class, customerGroupId);
 	}
 
 	@Override
 	public int getTotalByInformationId(Integer informationId) {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("setting")+ " WHERE "+quoteName("key")
 				+" = 'config_account_id' AND "+quoteName("value")+" = ? AND store_id != '0'";
-		int x1 = getJdbcOperations().queryForInt(sql, informationId);
+		int x1 = getJdbcOperations().queryForObject(sql, Integer.class, informationId);
 		sql = "SELECT COUNT(*) AS total FROM " +quoteTable("setting")+ " WHERE "+quoteName("key")
 				+" = 'config_checkout_id' AND "+quoteName("value")+" = ? AND store_id != '0'";
-		int x2 = getJdbcOperations().queryForInt(sql, informationId);
+		int x2 = getJdbcOperations().queryForObject(sql, Integer.class, informationId);
 		return x1+x2;
 	}
 	
@@ -117,7 +118,7 @@ public class StoreAdminModelImpl extends BaseModel implements StoreAdminModel {
 	public int getTotalByOrderStatusId(Integer orderStatusId) {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("setting")+ " WHERE "+quoteName("key")
 				+" = 'config_order_status_id' AND "+quoteName("value")+" = ? AND store_id != '0'";
-		return getJdbcOperations().queryForInt(sql, orderStatusId);
+		return getJdbcOperations().queryForObject(sql, Integer.class, orderStatusId);
 	}
 	
 }

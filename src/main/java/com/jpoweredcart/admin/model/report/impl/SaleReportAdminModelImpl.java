@@ -5,16 +5,19 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.jpoweredcart.admin.bean.report.SaleCouponRpt;
-import com.jpoweredcart.admin.bean.report.SaleOrderRpt;
-import com.jpoweredcart.admin.bean.report.SaleOrderByTitleRpt;
-import com.jpoweredcart.admin.bean.report.SaleReturnRpt;
-import com.jpoweredcart.admin.bean.report.filter.DateRangeFilter;
-import com.jpoweredcart.admin.bean.report.filter.SaleReportFilter;
+import com.jpoweredcart.admin.form.report.SaleCouponRpt;
+import com.jpoweredcart.admin.form.report.SaleOrderByTitleRpt;
+import com.jpoweredcart.admin.form.report.SaleOrderRpt;
+import com.jpoweredcart.admin.form.report.SaleReturnRpt;
+import com.jpoweredcart.admin.form.report.filter.DateRangeFilter;
+import com.jpoweredcart.admin.form.report.filter.SaleReportFilter;
 import com.jpoweredcart.admin.model.report.SaleReportAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
+import com.jpoweredcart.common.entity.report.jdbc.SaleCouponRptRowMapper;
+import com.jpoweredcart.common.entity.report.jdbc.SaleOrderRptRowMapper;
+import com.jpoweredcart.common.entity.report.jdbc.SaleReturnRptRowMapper;
 
 public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdminModel{
 	
@@ -96,7 +99,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 			params.add(filter.getDateEnd());
 		}
 		
-		return getJdbcOperations().queryForInt(sql, params.toArray());
+		return getJdbcOperations().queryForObject(sql, Integer.class, params.toArray());
 	}
 
 	@Override
@@ -199,7 +202,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 		}
 		sql += ") tmp";
 		
-		return getJdbcOperations().queryForInt(sql, params.toArray());
+		return getJdbcOperations().queryForObject(sql, Integer.class, params.toArray());
 	}
 	
 	@Override
@@ -273,7 +276,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 			params.add(filter.getDateEnd());
 		}
 		
-		return getJdbcOperations().queryForInt(sql, params.toArray());
+		return getJdbcOperations().queryForObject(sql, Integer.class, params.toArray());
 	}
 	
 	@Override
@@ -313,7 +316,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 			params.add(filter.getDateEnd());
 		}
 		
-		return getJdbcOperations().queryForInt(sql, params.toArray());
+		return getJdbcOperations().queryForObject(sql, Integer.class, params.toArray());
 	}
 	
 	private String getFilterGroup(SaleReportFilter filter){

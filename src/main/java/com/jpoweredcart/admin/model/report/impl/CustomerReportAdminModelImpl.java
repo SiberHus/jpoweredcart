@@ -5,18 +5,22 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.jpoweredcart.admin.bean.report.CustomerCreditRpt;
-import com.jpoweredcart.admin.bean.report.CustomerOnlineRpt;
-import com.jpoweredcart.admin.bean.report.CustomerOrderRpt;
-import com.jpoweredcart.admin.bean.report.CustomerRewardRpt;
-import com.jpoweredcart.admin.bean.report.filter.CustomerOnlineFilter;
-import com.jpoweredcart.admin.bean.report.filter.DateRangeFilter;
-import com.jpoweredcart.admin.bean.report.filter.DateRangeWithStatusFilter;
+import com.jpoweredcart.admin.form.report.CustomerCreditRpt;
+import com.jpoweredcart.admin.form.report.CustomerOnlineRpt;
+import com.jpoweredcart.admin.form.report.CustomerOrderRpt;
+import com.jpoweredcart.admin.form.report.CustomerRewardRpt;
+import com.jpoweredcart.admin.form.report.filter.CustomerOnlineFilter;
+import com.jpoweredcart.admin.form.report.filter.DateRangeFilter;
+import com.jpoweredcart.admin.form.report.filter.DateRangeWithStatusFilter;
 import com.jpoweredcart.admin.model.report.CustomerReportAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.entity.report.jdbc.CustomerCreditRptRowMapper;
+import com.jpoweredcart.common.entity.report.jdbc.CustomerOnlineRptRowMapper;
+import com.jpoweredcart.common.entity.report.jdbc.CustomerOrderRptRowMapper;
+import com.jpoweredcart.common.entity.report.jdbc.CustomerRewardRptRowMapper;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class CustomerReportAdminModelImpl extends BaseModel implements CustomerReportAdminModel {
 
@@ -77,7 +81,7 @@ public class CustomerReportAdminModelImpl extends BaseModel implements CustomerR
 			params.add(filter.getDateEnd());
 		}
 		
-		return getJdbcOperations().queryForInt(sql, params.toArray());
+		return getJdbcOperations().queryForObject(sql, Integer.class, params.toArray());
 	}
 
 	@Override
@@ -124,7 +128,7 @@ public class CustomerReportAdminModelImpl extends BaseModel implements CustomerR
 			params.add(filter.getDateEnd());
 		}
 		
-		return getJdbcOperations().queryForInt(sql, params.toArray());
+		return getJdbcOperations().queryForObject(sql, Integer.class, params.toArray());
 	}
 
 	@Override
@@ -168,7 +172,7 @@ public class CustomerReportAdminModelImpl extends BaseModel implements CustomerR
 			params.add(filter.getDateEnd());
 		}
 		
-		return getJdbcOperations().queryForInt(sql, params.toArray());
+		return getJdbcOperations().queryForObject(sql, Integer.class, params.toArray());
 	}
 
 	@Override
@@ -209,7 +213,7 @@ public class CustomerReportAdminModelImpl extends BaseModel implements CustomerR
 			params.add("%"+filter.getCustomerName()+"%");
 		}
 		
-		return getJdbcOperations().queryForInt(sql, params.toArray());
+		return getJdbcOperations().queryForObject(sql, Integer.class, params.toArray());
 	}
 	
 	

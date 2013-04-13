@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.jpoweredcart.admin.bean.report.ProductPurchasedRpt;
-import com.jpoweredcart.admin.bean.report.ProductViewedRpt;
-import com.jpoweredcart.admin.bean.report.filter.DateRangeWithStatusFilter;
+import com.jpoweredcart.admin.form.report.ProductPurchasedRpt;
+import com.jpoweredcart.admin.form.report.ProductViewedRpt;
+import com.jpoweredcart.admin.form.report.filter.DateRangeWithStatusFilter;
 import com.jpoweredcart.admin.model.localisation.OrderStatusAdminModel;
 import com.jpoweredcart.admin.model.report.ProductReportAdminModel;
 import com.jpoweredcart.common.BaseController;

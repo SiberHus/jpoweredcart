@@ -17,12 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.jpoweredcart.common.BaseController;
 import com.jpoweredcart.common.security.UserPermissions;
-import com.jpoweredcart.common.service.file.ActionResult;
-import com.jpoweredcart.common.service.file.DirectoryInfo;
-import com.jpoweredcart.common.service.file.FileFilters;
-import com.jpoweredcart.common.service.file.FileInfo;
-import com.jpoweredcart.common.service.file.FileService;
-import com.jpoweredcart.common.service.media.MediaService;
+import com.jpoweredcart.common.system.file.ActionResult;
+import com.jpoweredcart.common.system.file.DirectoryInfo;
+import com.jpoweredcart.common.system.file.FileFilters;
+import com.jpoweredcart.common.system.file.FileInfo;
+import com.jpoweredcart.common.system.file.FileService;
+import com.jpoweredcart.common.system.media.MediaService;
 import com.jpoweredcart.common.utils.PathUtils;
 
 @Controller

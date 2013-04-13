@@ -17,7 +17,8 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.StockStatuses;
 import com.jpoweredcart.common.entity.localisation.StockStatuses.StockStatus;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.entity.localisation.jdbc.StockStatusRowMapper;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class StockStatusAdminModelImpl extends BaseModel implements StockStatusAdminModel {
 	
@@ -101,7 +102,7 @@ public class StockStatusAdminModelImpl extends BaseModel implements StockStatusA
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("stock_status")+ " WHERE language_id=?";
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
-		return getJdbcOperations().queryForInt(sql, languageId);
+		return getJdbcOperations().queryForObject(sql, Integer.class, languageId);
 	}
 	
 	

@@ -1,9 +1,6 @@
 package com.jpoweredcart.common.entity.design;
 
 import java.io.Serializable;
-import java.util.List;
-
-import org.springframework.util.AutoPopulatingList;
 
 public class Banner implements Serializable {
 
@@ -14,8 +11,6 @@ public class Banner implements Serializable {
 	protected String name;
 
 	protected int status;
-	
-	protected List<BannerImage> images = new AutoPopulatingList<BannerImage>(BannerImage.class);
 	
 	public Integer getId() {
 		return id;
@@ -39,14 +34,6 @@ public class Banner implements Serializable {
 
 	public void setStatus(int status) {
 		this.status = status;
-	}
-
-	public List<BannerImage> getImages() {
-		return images;
-	}
-
-	public void setImages(List<BannerImage> images) {
-		this.images = new AutoPopulatingList<BannerImage>(images, BannerImage.class);
 	}
 	
 }

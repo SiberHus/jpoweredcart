@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.jpoweredcart.admin.bean.catalog.AttributeGroupForm;
+import com.jpoweredcart.admin.form.catalog.AttributeGroupForm;
 import com.jpoweredcart.admin.model.catalog.AttributeGroupAdminModel;
 import com.jpoweredcart.common.BaseController;
 import com.jpoweredcart.common.PageParam;

@@ -9,6 +9,7 @@ import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.Zone;
+import com.jpoweredcart.common.entity.localisation.jdbc.ZoneRowMapper;
 
 
 public class ZoneAdminModelImpl extends BaseModel implements ZoneAdminModel {
@@ -69,13 +70,13 @@ public class ZoneAdminModelImpl extends BaseModel implements ZoneAdminModel {
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("zone");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 	@Override
 	public int getTotalZonesByCountryId(Integer countryId) {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("zone") +
 				" WHERE country_id=?";
-		return getJdbcOperations().queryForInt(sql, countryId);
+		return getJdbcOperations().queryForObject(sql, Integer.class, countryId);
 	}
 }

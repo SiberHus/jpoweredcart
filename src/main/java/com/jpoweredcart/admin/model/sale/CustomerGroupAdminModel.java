@@ -2,7 +2,7 @@ package com.jpoweredcart.admin.model.sale;
 
 import java.util.List;
 
-import com.jpoweredcart.admin.bean.sale.CustomerGroupForm;
+import com.jpoweredcart.admin.form.sale.CustomerGroupForm;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.sale.CustomerGroup;
 import com.jpoweredcart.common.entity.sale.CustomerGroupDesc;

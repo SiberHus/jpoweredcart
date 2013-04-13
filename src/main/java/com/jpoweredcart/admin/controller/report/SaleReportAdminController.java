@@ -11,12 +11,12 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.jpoweredcart.admin.bean.report.SaleCouponRpt;
-import com.jpoweredcart.admin.bean.report.SaleOrderRpt;
-import com.jpoweredcart.admin.bean.report.SaleOrderByTitleRpt;
-import com.jpoweredcart.admin.bean.report.SaleReturnRpt;
-import com.jpoweredcart.admin.bean.report.filter.DateRangeFilter;
-import com.jpoweredcart.admin.bean.report.filter.SaleReportFilter;
+import com.jpoweredcart.admin.form.report.SaleCouponRpt;
+import com.jpoweredcart.admin.form.report.SaleOrderByTitleRpt;
+import com.jpoweredcart.admin.form.report.SaleOrderRpt;
+import com.jpoweredcart.admin.form.report.SaleReturnRpt;
+import com.jpoweredcart.admin.form.report.filter.DateRangeFilter;
+import com.jpoweredcart.admin.form.report.filter.SaleReportFilter;
 import com.jpoweredcart.admin.model.localisation.OrderStatusAdminModel;
 import com.jpoweredcart.admin.model.localisation.ReturnStatusAdminModel;
 import com.jpoweredcart.admin.model.report.SaleReportAdminModel;

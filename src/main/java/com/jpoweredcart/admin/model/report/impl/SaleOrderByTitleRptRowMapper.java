@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.jpoweredcart.admin.bean.report.SaleOrderByTitleRpt;
+import com.jpoweredcart.admin.form.report.SaleOrderByTitleRpt;
 
 public class SaleOrderByTitleRptRowMapper implements RowMapper<SaleOrderByTitleRpt>{
 

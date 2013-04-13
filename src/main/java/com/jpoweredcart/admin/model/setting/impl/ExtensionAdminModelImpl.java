@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jpoweredcart.admin.model.setting.ExtensionAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.entity.setting.Extension;
+import com.jpoweredcart.common.entity.setting.jdbc.ExtensionRowMapper;
 
 public class ExtensionAdminModelImpl extends BaseModel implements ExtensionAdminModel {
 

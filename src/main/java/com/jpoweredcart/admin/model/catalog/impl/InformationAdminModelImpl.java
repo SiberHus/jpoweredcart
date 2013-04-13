@@ -16,7 +16,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.catalog.InformationForm;
+import com.jpoweredcart.admin.form.catalog.InformationForm;
 import com.jpoweredcart.admin.model.catalog.InformationAdminModel;
 import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import com.jpoweredcart.admin.model.setting.StoreAdminModel;
@@ -27,9 +27,10 @@ import com.jpoweredcart.common.entity.catalog.Information;
 import com.jpoweredcart.common.entity.catalog.InformationDesc;
 import com.jpoweredcart.common.entity.catalog.InformationToLayout;
 import com.jpoweredcart.common.entity.catalog.InformationToStore;
+import com.jpoweredcart.common.entity.catalog.jdbc.InformationRowMapper;
 import com.jpoweredcart.common.entity.setting.Store;
 import com.jpoweredcart.common.jdbc.ScalarResultSetExtractor;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class InformationAdminModelImpl extends BaseModel implements InformationAdminModel {
 	
@@ -152,9 +153,21 @@ public class InformationAdminModelImpl extends BaseModel implements InformationA
 		String sql = "SELECT DISTINCT *, (SELECT keyword FROM " +quoteTable("url_alias")
 				+ " WHERE query = ?) AS keyword FROM " 
 				+ quoteTable("information")+" WHERE information_id = ?";
-		InformationForm infoForm = getJdbcOperations().queryForObject(sql, 
-				new Object[]{"information_id="+infoId, infoId}, 
-				new InformationRowMapper.Form());
+		InformationForm infoForm = (InformationForm)getJdbcOperations().queryForObject(
+				sql, new Object[]{"information_id="+infoId, infoId}, 
+				new InformationRowMapper(){
+					@Override
+					public Information newObject() {
+						return new InformationForm();
+					}
+					@Override
+					public Information mapRow(ResultSet rs, int rowNum)
+							throws SQLException {
+						InformationForm form = (InformationForm)super.mapRow(rs, rowNum);
+						form.setKeyword(rs.getString("keyword"));
+						return form;
+					}
+				});
 		infoForm.setDescs(getDescriptions(infoId));
 		infoForm.setStores(getInfoStores(infoId));
 		infoForm.setLayouts(getInfoLayouts(infoId));
@@ -230,14 +243,14 @@ public class InformationAdminModelImpl extends BaseModel implements InformationA
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("information");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 
 	@Override
 	public int getTotalByLayoutId(Integer layoutId) {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("information_to_layout")
 				+" WHERE layout_id=?";
-		return getJdbcOperations().queryForInt(sql, layoutId);
+		return getJdbcOperations().queryForObject(sql, Integer.class, layoutId);
 	}
 	
 }

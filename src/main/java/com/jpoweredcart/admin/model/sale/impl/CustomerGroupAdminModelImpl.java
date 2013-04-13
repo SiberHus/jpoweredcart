@@ -14,7 +14,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.sale.CustomerGroupForm;
+import com.jpoweredcart.admin.form.sale.CustomerGroupForm;
 import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import com.jpoweredcart.admin.model.sale.CustomerGroupAdminModel;
 import com.jpoweredcart.common.BaseModel;
@@ -22,7 +22,8 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.sale.CustomerGroup;
 import com.jpoweredcart.common.entity.sale.CustomerGroupDesc;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.entity.sale.jdbc.CustomerGroupRowMapper;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class CustomerGroupAdminModelImpl extends BaseModel implements CustomerGroupAdminModel {
 
@@ -97,8 +98,13 @@ public class CustomerGroupAdminModelImpl extends BaseModel implements CustomerGr
 //		String sql = "SELECT DISTINCT * FROM " +quoteTable("customer_group")+ " cg LEFT JOIN " +quoteTable("customer_group_description")+ 
 //				" cgd ON (cg.customer_group_id = cgd.customer_group_id) WHERE cg.customer_group_id = ? AND cgd.language_id = ?";
 		String sql = "SELECT DISTINCT * FROM " +quoteTable("customer_group")+ " cg WHERE cg.customer_group_id = ?";
-		CustomerGroupForm cgForm = getJdbcOperations().queryForObject(sql, 
-				new Object[]{cgId}, new CustomerGroupRowMapper.Form());
+		CustomerGroupForm cgForm = (CustomerGroupForm)getJdbcOperations().queryForObject(
+				sql, new Object[]{cgId}, new CustomerGroupRowMapper(){
+					@Override
+					public CustomerGroup newObject() {
+						return new CustomerGroupForm();
+					}
+				});
 		cgForm.setDescs(getDescriptions(cgId));
 		return cgForm;
 	}
@@ -142,7 +148,7 @@ public class CustomerGroupAdminModelImpl extends BaseModel implements CustomerGr
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " + quoteTable("customer_group");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 
 }

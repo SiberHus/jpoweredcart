@@ -14,7 +14,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.catalog.AttributeForm;
+import com.jpoweredcart.admin.form.catalog.AttributeForm;
 import com.jpoweredcart.admin.model.catalog.AttributeAdminModel;
 import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import com.jpoweredcart.common.BaseModel;
@@ -22,7 +22,8 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.catalog.Attribute;
 import com.jpoweredcart.common.entity.catalog.AttributeDesc;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.entity.catalog.jdbc.AttributeRowMapper;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class AttributeAdminModelImpl extends BaseModel implements AttributeAdminModel{
 
@@ -92,8 +93,13 @@ public class AttributeAdminModelImpl extends BaseModel implements AttributeAdmin
 	@Override
 	public AttributeForm getForm(Integer attrId) {
 		String sql = "SELECT * FROM " + quoteTable("attribute")+" WHERE attribute_id = ?";
-		AttributeForm attrForm = getJdbcOperations().queryForObject(sql, 
-			new Object[]{attrId}, new AttributeRowMapper.Form());
+		AttributeForm attrForm = (AttributeForm)getJdbcOperations().queryForObject(
+				sql, new Object[]{attrId}, new AttributeRowMapper(){
+					@Override
+					public Attribute newObject() {
+						return new AttributeForm();
+					}
+				});
 		attrForm.setDescs(getDescriptions(attrId));
 		return attrForm;
 	}
@@ -137,7 +143,7 @@ public class AttributeAdminModelImpl extends BaseModel implements AttributeAdmin
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("attribute");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 	@Override
@@ -145,7 +151,7 @@ public class AttributeAdminModelImpl extends BaseModel implements AttributeAdmin
 		
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("attribute")
 				+ "WHERE attribute_group_id=?";
-		return getJdbcOperations().queryForInt(sql, attrGrpId);
+		return getJdbcOperations().queryForObject(sql, Integer.class, attrGrpId);
 	}
 	
 }

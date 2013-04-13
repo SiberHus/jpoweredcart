@@ -34,9 +34,9 @@ import com.jpoweredcart.common.entity.sale.CustomerGroup;
 import com.jpoweredcart.common.entity.setting.Store;
 import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import com.jpoweredcart.common.security.UserPermissions;
-import com.jpoweredcart.common.service.media.MediaService;
-import com.jpoweredcart.common.service.setting.DefaultSettings;
-import com.jpoweredcart.common.service.setting.SettingGroup;
+import com.jpoweredcart.common.system.media.MediaService;
+import com.jpoweredcart.common.system.setting.DefaultSettings;
+import com.jpoweredcart.common.system.setting.SettingGroup;
 import com.jpoweredcart.common.view.Pagination;
 
 @Controller

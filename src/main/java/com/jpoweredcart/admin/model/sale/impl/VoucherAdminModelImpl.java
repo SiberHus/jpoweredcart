@@ -13,8 +13,9 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.sale.Voucher;
 import com.jpoweredcart.common.entity.sale.VoucherHistory;
-import com.jpoweredcart.common.service.email.EmailService;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.entity.sale.jdbc.VoucherRowMapper;
+import com.jpoweredcart.common.system.email.EmailService;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminModel {
 	

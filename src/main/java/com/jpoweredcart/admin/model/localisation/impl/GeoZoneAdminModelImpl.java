@@ -13,13 +13,14 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.localisation.GeoZoneForm;
+import com.jpoweredcart.admin.form.localisation.GeoZoneForm;
 import com.jpoweredcart.admin.model.localisation.GeoZoneAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.GeoZone;
 import com.jpoweredcart.common.entity.localisation.ZoneToGeoZone;
+import com.jpoweredcart.common.entity.localisation.jdbc.GeoZoneRowMapper;
 
 
 public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminModel{
@@ -97,8 +98,11 @@ public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminMode
 	@Override
 	public GeoZoneForm getForm(Integer geoZoneId){
 		String sql = "SELECT * FROM " +quoteTable("geo_zone")+ " WHERE geo_zone_id = ?";
-		GeoZoneForm geoZoneForm = getJdbcOperations().queryForObject(sql, 
-				new Object[]{geoZoneId}, new GeoZoneRowMapper.Form());
+		GeoZoneForm geoZoneForm = (GeoZoneForm)getJdbcOperations().queryForObject(sql, 
+				new Object[]{geoZoneId}, new GeoZoneRowMapper(){
+					@Override
+					public GeoZone newObject() { return new GeoZoneForm();}
+		});
 		sql = "SELECT * FROM "+quoteTable("zone_to_geo_zone")+ " WHERE geo_zone_id =?";
 		List<ZoneToGeoZone> zoneToGeoZones = getJdbcOperations()
 				.query(sql, new Object[]{geoZoneId}, new ZoneToGeoZoneRowMapper());
@@ -126,7 +130,7 @@ public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminMode
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("geo_zone");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 }

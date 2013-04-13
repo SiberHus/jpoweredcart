@@ -9,21 +9,11 @@ import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.user.UserGroup;
+import com.jpoweredcart.common.entity.user.jdbc.UserGroupRowMapper;
 
 
 public class UserGroupAdminModelImpl extends BaseModel implements UserGroupAdminModel {
 	
-	
-	@Override
-	public List<UserGroup> getOneByUsername(String username) {
-		
-		String sql = "SELECT ug.user_group_id, ug.name, ug.permission FROM " 
-				+ quoteTable("user_group") + " ug INNER JOIN "
-				+ quoteTable("user")+ " u ON u.user_group_id=ug.user_group_id WHERE u.username=?";
-		List<UserGroup> userGroups = getJdbcOperations().query(sql, 
-				new Object[]{username}, new UserGroupRowMapper());
-		return userGroups;
-	}
 	
 	@Transactional
 	@Override
@@ -54,7 +44,7 @@ public class UserGroupAdminModelImpl extends BaseModel implements UserGroupAdmin
 	public void addPermission(Integer userId, String type, String page) {
 		
 		String sql = "SELECT COUNT(DISTINCT user_group_id) FROM "+quoteTable("user")+" WHERE user_id=?";
-//		if(getJdbcOperations().queryForInt(sql, userId)>0){
+//		if(getJdbcOperations().queryForObject(sql, Integer.class, userId)>0){
 //			sql = "SELECT DISTINCT * FROM "+getDbPrefix()+"user_group "
 //		}
 		//TODO: implement this

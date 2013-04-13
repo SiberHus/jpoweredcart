@@ -14,7 +14,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.sale.VoucherThemeForm;
+import com.jpoweredcart.admin.form.sale.VoucherThemeForm;
 import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import com.jpoweredcart.admin.model.sale.VoucherThemeAdminModel;
 import com.jpoweredcart.common.BaseModel;
@@ -22,7 +22,8 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.sale.VoucherTheme;
 import com.jpoweredcart.common.entity.sale.VoucherThemeDesc;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.entity.sale.jdbc.VoucherThemeRowMapper;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class VoucherThemeAdminModelImpl extends BaseModel implements VoucherThemeAdminModel {
 
@@ -91,8 +92,10 @@ public class VoucherThemeAdminModelImpl extends BaseModel implements VoucherThem
 	@Override
 	public VoucherThemeForm getForm(Integer vtId){
 		String sql = "SELECT * FROM " +quoteTable("voucher_theme")+ " WHERE voucher_theme_id = ?";
-		VoucherThemeForm vtForm = getJdbcOperations().queryForObject(sql, 
-				new Object[]{vtId}, new VoucherThemeRowMapper.Form());
+		VoucherThemeForm vtForm = (VoucherThemeForm)getJdbcOperations().queryForObject(
+				sql, new Object[]{vtId}, new VoucherThemeRowMapper(){
+					public VoucherTheme newObject(){ return new VoucherThemeForm(); }
+				});
 		vtForm.setDescs(getDescriptions(vtId));
 		return vtForm;
 	}
@@ -136,7 +139,7 @@ public class VoucherThemeAdminModelImpl extends BaseModel implements VoucherThem
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " + quoteTable("voucher_theme");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 
 }

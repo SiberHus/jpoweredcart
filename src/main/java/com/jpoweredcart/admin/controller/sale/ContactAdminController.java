@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jpoweredcart.admin.bean.sale.ContactForm;
-import com.jpoweredcart.admin.bean.sale.EmailSubmissionResult;
+import com.jpoweredcart.admin.form.sale.ContactForm;
+import com.jpoweredcart.admin.form.sale.EmailSubmissionResult;
 import com.jpoweredcart.admin.model.sale.ContactAdminModel;
 import com.jpoweredcart.admin.model.sale.CustomerGroupAdminModel;
 import com.jpoweredcart.admin.model.setting.StoreAdminModel;

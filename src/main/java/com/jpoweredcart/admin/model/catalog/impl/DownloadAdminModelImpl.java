@@ -16,7 +16,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.catalog.DownloadForm;
+import com.jpoweredcart.admin.form.catalog.DownloadForm;
 import com.jpoweredcart.admin.model.catalog.DownloadAdminModel;
 import com.jpoweredcart.admin.model.localisation.LanguageAdminModel;
 import com.jpoweredcart.common.BaseModel;
@@ -24,8 +24,9 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.catalog.Download;
 import com.jpoweredcart.common.entity.catalog.DownloadDesc;
-import com.jpoweredcart.common.service.file.FileService;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.entity.catalog.jdbc.DownloadRowMapper;
+import com.jpoweredcart.common.system.file.FileService;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class DownloadAdminModelImpl extends BaseModel implements DownloadAdminModel{
 	
@@ -127,8 +128,14 @@ public class DownloadAdminModelImpl extends BaseModel implements DownloadAdminMo
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		String sql = "SELECT DISTINCT * FROM " +quoteTable("download")+ " d LEFT JOIN "+quoteTable("download_description")+
 				" dd ON (d.download_id = dd.download_id) WHERE d.download_id = ? AND dd.language_id = ?";
-		DownloadForm dlForm = getJdbcOperations().queryForObject(sql, 
-				new Object[]{dlId, languageId}, new DownloadRowMapper.Form());
+		DownloadForm dlForm = (DownloadForm)getJdbcOperations().queryForObject(
+				sql, new Object[]{dlId, languageId}, 
+				new DownloadRowMapper(){
+					@Override
+					public Download newObject() {
+						return new DownloadForm();
+					}
+			});
 			dlForm.setDescs(getDescriptions(dlId));
 		
 		dlForm.setDownloadDir(downloadFileService.getUrl(""));//get only baseUrl
@@ -174,7 +181,7 @@ public class DownloadAdminModelImpl extends BaseModel implements DownloadAdminMo
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("download");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 }

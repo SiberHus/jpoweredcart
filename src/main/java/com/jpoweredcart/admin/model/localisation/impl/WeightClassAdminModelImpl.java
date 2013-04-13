@@ -17,7 +17,8 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.localisation.WeightClass;
 import com.jpoweredcart.common.entity.localisation.WeightClassDesc;
-import com.jpoweredcart.common.service.setting.SettingKey;
+import com.jpoweredcart.common.entity.localisation.jdbc.WeightClassRowMapper;
+import com.jpoweredcart.common.system.setting.SettingKey;
 
 public class WeightClassAdminModelImpl extends BaseModel implements WeightClassAdminModel {
 	
@@ -127,7 +128,7 @@ public class WeightClassAdminModelImpl extends BaseModel implements WeightClassA
 	public int getTotal() {
 		
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("weight_class");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 }

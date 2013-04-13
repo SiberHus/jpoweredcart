@@ -18,9 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 
 import com.jpoweredcart.common.i18n.MessageResolver;
-import com.jpoweredcart.common.service.setting.SettingKey;
-import com.jpoweredcart.common.service.setting.SettingService;
-import com.jpoweredcart.common.web.bridge.conversion.JQueryDateFormatTranslator;
+import com.jpoweredcart.common.system.setting.SettingKey;
+import com.jpoweredcart.common.system.setting.SettingService;
+import com.jpoweredcart.common.view.JQueryDateFormatTranslator;
 
 
 public abstract class BaseController{

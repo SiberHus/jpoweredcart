@@ -11,6 +11,7 @@ import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.sale.IpBlacklist;
+import com.jpoweredcart.common.entity.sale.jdbc.IpBlacklistRowMapper;
 
 public class IpBlacklistAdminModelImpl extends BaseModel implements IpBlacklistAdminModel {
 	
@@ -62,7 +63,7 @@ public class IpBlacklistAdminModelImpl extends BaseModel implements IpBlacklistA
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("customer_ip_blacklist");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 
 }

@@ -11,13 +11,15 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.design.LayoutForm;
+import com.jpoweredcart.admin.form.design.LayoutForm;
 import com.jpoweredcart.admin.model.design.LayoutAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.design.Layout;
 import com.jpoweredcart.common.entity.design.LayoutRoute;
+import com.jpoweredcart.common.entity.design.jdbc.LayoutRouteRowMapper;
+import com.jpoweredcart.common.entity.design.jdbc.LayoutRowMapper;
 
 public class LayoutAdminModelImpl extends BaseModel implements LayoutAdminModel {
 	
@@ -86,9 +88,11 @@ public class LayoutAdminModelImpl extends BaseModel implements LayoutAdminModel 
 	@Override
 	public LayoutForm getForm(Integer layoutId){
 		String sql = "SELECT DISTINCT * FROM " +quoteTable("layout")+ " WHERE layout_id =?";
-		LayoutForm layoutForm = getJdbcOperations().queryForObject(sql, 
-				new Object[]{layoutId}, new LayoutRowMapper.Form());
-		
+		LayoutForm layoutForm = (LayoutForm)getJdbcOperations().queryForObject(
+				sql, new Object[]{layoutId}, 
+			new LayoutRowMapper(){
+				public LayoutForm newObject(){ return new LayoutForm(); }	
+			});
 		List<LayoutRoute> layoutRoutes = getLayoutRoutes(layoutId);
 		layoutForm.setLayoutRoutes(layoutRoutes);
 		return layoutForm;
@@ -118,7 +122,7 @@ public class LayoutAdminModelImpl extends BaseModel implements LayoutAdminModel 
 	@Override
 	public int getTotal() {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("layout");
-		return getJdbcOperations().queryForInt(sql);
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 	
 	

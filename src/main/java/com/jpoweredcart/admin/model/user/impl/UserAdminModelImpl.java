@@ -7,12 +7,13 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jpoweredcart.admin.bean.user.UserForm;
+import com.jpoweredcart.admin.form.user.UserForm;
 import com.jpoweredcart.admin.model.user.UserAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.user.User;
+import com.jpoweredcart.common.entity.user.jdbc.UserRowMapper;
 import com.jpoweredcart.common.security.Password;
 
 

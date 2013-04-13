@@ -3,8 +3,8 @@ package com.jpoweredcart.admin.model.sale;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.jpoweredcart.admin.bean.sale.CustomerForm;
-import com.jpoweredcart.admin.bean.sale.filter.CustomerFilter;
+import com.jpoweredcart.admin.form.sale.CustomerForm;
+import com.jpoweredcart.admin.form.sale.filter.CustomerFilter;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.sale.Address;
 import com.jpoweredcart.common.entity.sale.Customer;

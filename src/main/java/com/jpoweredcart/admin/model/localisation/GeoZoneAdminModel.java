@@ -2,7 +2,7 @@ package com.jpoweredcart.admin.model.localisation;
 
 import java.util.List;
 
-import com.jpoweredcart.admin.bean.localisation.GeoZoneForm;
+import com.jpoweredcart.admin.form.localisation.GeoZoneForm;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.localisation.GeoZone;
 
