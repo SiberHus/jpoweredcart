@@ -99,8 +99,9 @@ public class TaxClassAdminModelImpl extends BaseModel implements TaxClassAdminMo
 	
 	@Override
 	public List<TaxClass> getList(PageParam pageParam) {
-		QueryBean query = createPaginationQuery("tax_class", pageParam, 
-				new String[]{"tax_class_id"});
+		String sql = "SELECT * FROM "+quoteTable("tax_class");
+		//sortedKeys={"tax_class_id"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		List<TaxClass> taxClassList = getJdbcOperations()
 				.query(query.getSql(), query.getParameters(), new TaxClassRowMapper());
 		return taxClassList;

@@ -33,7 +33,7 @@ public class AffiliateReportAdminModelImpl extends BaseModel implements Affiliat
 		}
 		sql += " GROUP BY at.affiliate_id ORDER BY commission DESC";
 		
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam);
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		params.add(query.getStart());
 		params.add(query.getLimit());
 		

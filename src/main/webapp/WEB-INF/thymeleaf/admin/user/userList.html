@@ -37,8 +37,8 @@
 												th:class="${param.sort!=null and param.sort[0]=='status'?param.order[0]:''}" th:text="#{column.status}">Status</a>
 										</td>
 										<td class="left">
-											<a th:href="@{/admin/user/user}+'?sort=dateAdded&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
-												th:class="${param.sort!=null and param.sort[0]=='dateAdded'?param.order[0]:''}" th:text="#{column.dateAdded}">Date Added</a>
+											<a th:href="@{/admin/user/user}+'?sort=date_added&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='date_added'?param.order[0]:''}" th:text="#{column.dateAdded}">Date Added</a>
 										</td>
 										<td class="right" th:text="#{column.action}">Action</td>
 									</tr>

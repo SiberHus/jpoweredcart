@@ -73,15 +73,16 @@ public abstract class BaseController{
 		String orderDir = request.getParameter("order");
 		String pageStr = request.getParameter("page");
 		int page = 0;
-		if(!StringUtils.isBlank(pageStr)){
+		if(StringUtils.isNotBlank(pageStr)){
 			page = conversionService.convert(pageStr, Integer.class);
 		}
 		int limit = settingService.getConfig(SettingKey.CFG_ADMIN_LIMIT, Integer.class);
 		int start = (page - 1) * limit;
 		
 		PageParam pageParam = new PageParam();
-		pageParam.setSortKey(sortKey);
-		pageParam.setOrderDir(orderDir);
+		if(StringUtils.isNotBlank(sortKey)){
+			pageParam.addOrder(sortKey, orderDir);
+		}
 		pageParam.setPage(page);
 		pageParam.setStart(start);
 		pageParam.setLimit(limit);

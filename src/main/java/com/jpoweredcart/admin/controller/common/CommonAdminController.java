@@ -72,11 +72,8 @@ public class CommonAdminController {
 		model.addAttribute("totalAffiliate", affiliateAdminModel.getTotal(new AffiliateFilter()));
 		model.addAttribute("totalAffiliateApproval", affiliateAdminModel.getTotalAwaitingApproval());
 		
-		PageParam orderListParam = new PageParam();
-		orderListParam.setSortKey("o.date_added");
-		orderListParam.setOrderDir("DESC");
-		orderListParam.setStart(0);
-		orderListParam.setLimit(10);
+		PageParam orderListParam = PageParam.list(0, 10);
+		orderListParam.addOrder("o.date_added", "DESC");
 		model.addAttribute("orders", orderAdminModel.getList(orderListParam));
 		
 		return "/admin/common/home";

@@ -154,8 +154,8 @@ public class DownloadAdminModelImpl extends BaseModel implements DownloadAdminMo
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		String sql = "SELECT * FROM "+quoteTable("download")+" d LEFT JOIN "+quoteTable("download_description")+
 				" dd ON (d.download_id = dd.download_id) WHERE dd.language_id =?";
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
-				new String[]{"dd.name", "d.remaining"});
+		//sortedKeys={"dd.name", "d.remaining"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		query.addParameters(languageId);
 		return getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new DownloadRowMapper(){

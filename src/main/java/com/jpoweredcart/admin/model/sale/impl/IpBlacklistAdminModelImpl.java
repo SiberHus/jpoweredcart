@@ -46,7 +46,8 @@ public class IpBlacklistAdminModelImpl extends BaseModel implements IpBlacklistA
 	public List<IpBlacklist> getList(PageParam pageParam) {
 		String sql = "SELECT *, (SELECT COUNT(DISTINCT customer_id) FROM " +quoteTable("customer_ip")
 				+ " ci WHERE ci.ip = cib.ip) AS total FROM " +quoteTable("customer_ip_blacklist")+" cib";
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{"ip"});
+		//sortedKeys={"ip"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		List<IpBlacklist> blacklists = getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new IpBlacklistRowMapper(){
 					@Override

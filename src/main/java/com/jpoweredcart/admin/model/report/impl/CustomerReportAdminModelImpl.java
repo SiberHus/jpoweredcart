@@ -52,7 +52,7 @@ public class CustomerReportAdminModelImpl extends BaseModel implements CustomerR
 		}
 		sql +=  " GROUP BY o.customer_id ORDER BY total DESC";
 		
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam);
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		params.add(query.getStart());
 		params.add(query.getLimit());
 		
@@ -106,7 +106,7 @@ public class CustomerReportAdminModelImpl extends BaseModel implements CustomerR
 		}
 		sql += " GROUP BY cr.customer_id ORDER BY points DESC";
 		
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam);
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		params.add(query.getStart());
 		params.add(query.getLimit());
 		
@@ -150,7 +150,7 @@ public class CustomerReportAdminModelImpl extends BaseModel implements CustomerR
 		}
 		sql += " GROUP BY ct.customer_id ORDER BY total DESC";
 		
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam);
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		params.add(query.getStart());
 		params.add(query.getLimit());
 		
@@ -191,7 +191,7 @@ public class CustomerReportAdminModelImpl extends BaseModel implements CustomerR
 		}
 		sql += " ORDER BY co.date_added DESC";
 		
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam);
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		params.add(query.getStart());
 		params.add(query.getLimit());
 		

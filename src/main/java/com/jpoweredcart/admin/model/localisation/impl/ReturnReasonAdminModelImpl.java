@@ -79,7 +79,8 @@ public class ReturnReasonAdminModelImpl extends BaseModel implements ReturnReaso
 	@Override
 	public List<ReturnReason> getList(PageParam pageParam) {
 		String sql = "SELECT * FROM "+quoteTable("return_reason")+" WHERE language_id=?";
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{"name"});
+		//sortedKeys={"name"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		query.addParameters(languageId);
 		List<ReturnReason> returnReasonList = getJdbcOperations()

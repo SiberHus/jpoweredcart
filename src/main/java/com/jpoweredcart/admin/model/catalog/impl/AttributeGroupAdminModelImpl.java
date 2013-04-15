@@ -117,8 +117,8 @@ public class AttributeGroupAdminModelImpl extends BaseModel implements Attribute
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		String sql = "SELECT * FROM "+quoteTable("attribute_group")+" ag LEFT JOIN "+quoteTable("attribute_group_description")
 				+" agd ON (ag.attribute_group_id = agd.attribute_group_id) WHERE agd.language_id = ?";
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
-				new String[]{"agd.name", "ag.sort_order"});
+		//sortedKeys={"agd.name", "ag.sort_order"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		query.addParameters(languageId);
 		return getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new AttributeGroupRowMapper(){

@@ -47,7 +47,7 @@ public interface CustomerAdminModel {
 	
 	public int getTotalAddressesByZoneId(Integer zoneId);
 	
-	public int getTotalAddressesByCustomerGroupId(Integer cgId);
+	public int getTotalByCustomerGroupId(Integer custGrpId);
 	
 	public void addHistory(CustomerHistory history);
 	

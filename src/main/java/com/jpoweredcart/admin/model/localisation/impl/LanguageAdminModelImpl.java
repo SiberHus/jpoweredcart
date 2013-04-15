@@ -276,8 +276,9 @@ public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminMo
 	
 	@Override
 	public List<Language> getList(PageParam pageParam) {
-		QueryBean query = createPaginationQuery("language", pageParam, 
-				new String[]{"name", "code", "sort_order"});
+		String sql = "SELECT * FROM "+quoteTable("language");
+		//sortedKeys={"name", "code", "sort_order"};
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		List<Language> languageList = getJdbcOperations()
 				.query(query.getSql(), query.getParameters(), new LanguageRowMapper());
 		return languageList;

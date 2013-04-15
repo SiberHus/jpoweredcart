@@ -98,8 +98,9 @@ public class UserAdminModelImpl extends BaseModel implements UserAdminModel {
 	@Override
 	public List<User> getList(PageParam pageParam) {
 		
-		QueryBean query = createPaginationQuery("user", pageParam, 
-				new String[]{"username", "status", "date_added"});
+		//sortedKeys={"username", "status", "date_added"}
+		String sql = "SELECT * FROM "+quoteTable("user");
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		List<User> userList = getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new UserRowMapper());
 		return userList;

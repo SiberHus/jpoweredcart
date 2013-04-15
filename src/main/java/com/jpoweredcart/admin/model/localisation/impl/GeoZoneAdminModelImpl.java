@@ -120,8 +120,9 @@ public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminMode
 	
 	@Override
 	public List<GeoZone> getList(PageParam pageParam) {
-		QueryBean query = createPaginationQuery("geo_zone", pageParam, 
-				new String[]{"name", "description"});
+		String sql = "SELECT * FROM "+quoteTable("geo_zone");
+		//sortedKeys={"name", "description"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		List<GeoZone> geoZoneList = getJdbcOperations()
 				.query(query.getSql(), query.getParameters(), new GeoZoneRowMapper());
 		return geoZoneList;

@@ -120,8 +120,8 @@ public class CustomerGroupAdminModelImpl extends BaseModel implements CustomerGr
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		String sql = "SELECT * FROM " +quoteTable("customer_group")+ " cg LEFT JOIN " +quoteTable("customer_group_description")
 				+ " cgd ON (cg.customer_group_id = cgd.customer_group_id) WHERE cgd.language_id = ?";
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
-				new String[]{"cgd.name", "cg.sort_order"});
+		//sortedKeys={"cgd.name", "cg.sort_order"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		query.addParameters(languageId);
 		List<CustomerGroup> customerGroupList = getJdbcOperations()
 				.query(query.getSql(), query.getParameters(), new CustomerGroupRowMapper(){

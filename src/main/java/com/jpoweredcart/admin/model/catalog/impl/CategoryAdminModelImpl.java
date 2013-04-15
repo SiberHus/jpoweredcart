@@ -207,7 +207,7 @@ public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminMo
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		String sql = "SELECT * FROM " +quoteTable("category")+" c LEFT JOIN "+quoteTable("category_description")
 			+" cd ON (c.category_id = cd.category_id) WHERE cd.language_id = ? ORDER BY c.sort_order, cd.name ASC";
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam);
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		query.addParameters(languageId);
 		
 		List<Category> catList = getJdbcOperations().query(query.getSql(), 

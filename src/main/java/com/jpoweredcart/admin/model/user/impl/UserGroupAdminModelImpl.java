@@ -59,8 +59,9 @@ public class UserGroupAdminModelImpl extends BaseModel implements UserGroupAdmin
 	@Override
 	public List<UserGroup> getList(PageParam pageParam) {
 		
-		QueryBean query = createPaginationQuery("user_group", pageParam, 
-				new String[]{"name"});
+		String sql = "SELECT * FROM "+quoteTable("user_group");
+		//sortedKeys={"name"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		List<UserGroup> userGroupList = getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new UserGroupRowMapper());
 		return userGroupList;

@@ -74,8 +74,8 @@ public class ReviewAdminModelImpl extends BaseModel implements ReviewAdminModel 
 		String sql = "SELECT r.review_id, pd.name, r.author, r.rating, r.status, r.date_added FROM " 
 				+quoteTable("review")+" r LEFT JOIN " +quoteTable("product_description") 
 				+" pd ON (r.product_id = pd.product_id) WHERE pd.language_id = ?";
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{
-				"pd.name","r.author","r.rating","r.status","r.date_added"});
+		//sortedKeys={"pd.name","r.author","r.rating","r.status","r.date_added"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		query.addParameters(languageId);
 		return getJdbcOperations().query(query.getSql(), 

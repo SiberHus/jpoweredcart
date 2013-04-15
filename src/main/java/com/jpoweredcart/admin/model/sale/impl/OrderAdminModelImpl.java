@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jpoweredcart.admin.form.sale.filter.TotalOrdersFilter;
@@ -179,41 +180,44 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 	@Override
 	public int getTotalByStoreId(Integer storeId) {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("order")+" WHERE store_id=?";
+		return getJdbcOperations().queryForObject(sql, new Object[]{storeId}, Integer.class);
 	}
 
 	@Override
 	public int getTotalByOrderStatusId(Integer orderStatusId) {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("order")+" WHERE order_status_id =? AND order_status_id > '0'";
+		return getJdbcOperations().queryForObject(sql, new Object[]{orderStatusId}, Integer.class);
 	}
 
 	@Override
 	public int getTotalByLanguageId(Integer languageId) {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("order")+
+				" WHERE language_id = ? AND order_status_id > '0'";
+		return getJdbcOperations().queryForObject(sql, new Object[]{languageId}, Integer.class);
 	}
 
 	@Override
 	public int getTotalByCurrencyId(Integer currencyId) {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("order")+
+				" WHERE currency_id =? AND order_status_id > '0'";
+		return getJdbcOperations().queryForObject(sql, new Object[]{currencyId}, Integer.class);
 	}
-
+	
 	@Override
 	public int getTotalSales() {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "SELECT SUM(total) AS total FROM "+quoteTable("order")+" WHERE order_status_id > '0'";
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 
 	@Override
 	public int getTotalSalesByYear(int year) {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "SELECT SUM(total) AS total FROM "+quoteTable("order")+
+				" WHERE order_status_id > '0' AND YEAR(date_added) = ?";
+		return getJdbcOperations().queryForObject(sql, new Object[]{year}, Integer.class);
 	}
 
 	@Override
@@ -227,36 +231,57 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public List<OrderHistory> getOrderHistories(Integer orderId, int start,
 			int limit) {
-		// TODO Auto-generated method stub
+		start = start<0?0:start;
+		limit = limit<1?10:limit;
+		Integer languageId = getSettingService().getConfig(
+				SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
+		String sql = "SELECT oh.date_added, os.name AS status, oh.comment, oh.notify FROM "+
+				quoteTable("order_history")+" oh LEFT JOIN "+quoteTable("order_status")+
+				" os ON oh.order_status_id = os.order_status_id WHERE oh.order_id = ? AND " +
+				"os.language_id=? ORDER BY oh.date_added ASC LIMIT ?,?";
+		
 		return null;
 	}
 
 	@Override
 	public int getTotalOrderHistories(Integer orderId) {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("order_history")+" WHERE order_id = ?";
+		return getJdbcOperations().queryForObject(sql, 
+				new Object[]{orderId}, Integer.class);
 	}
 
 	@Override
 	public int getTotalOrderHistoriesByOrderStatusId(Integer orderStatusId) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("order_history")+
+				" WHERE order_status_id = ?";
+		return getJdbcOperations().queryForObject(sql, 
+				new Object[]{orderStatusId}, Integer.class);
 	}
 
 	@Override
 	public List<String> getEmailsByProductsOrdered(Integer[] productIds,
 			int start, int end) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		String parts[] = new String[productIds.length];
+		for(int i=0;i<productIds.length;i++){
+			parts[i] = "op.product_id=?";
+		}
+		
+		String sql = "SELECT DISTINCT email FROM "+quoteTable("order")+" o LEFT JOIN "+
+				quoteTable("order_product")+" op ON (o.order_id = op.order_id) WHERE (" +
+				StringUtils.join(parts, " OR ")+ ") AND o.order_status_id <> '0' LIMIT "+
+				start+","+end;
+		return getJdbcOperations().queryForList(sql, String.class, (Object[])productIds);
 	}
 
 	@Override
 	public int getTotalEmailsByProductsOrdered(Integer[] productIds) {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 	

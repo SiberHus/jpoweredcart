@@ -111,8 +111,8 @@ public class VoucherThemeAdminModelImpl extends BaseModel implements VoucherThem
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		String sql = "SELECT * FROM " +quoteTable("voucher_theme")+ " vt LEFT JOIN " +quoteTable("voucher_theme_description")
 				+ " vtd ON (vt.voucher_theme_id = vtd.voucher_theme_id) WHERE vtd.language_id = ?";
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
-				new String[]{"vtd.name"});
+		//sortedKeys={"vtd.name"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		query.addParameters(languageId);
 		List<VoucherTheme> customerGroupList = getJdbcOperations()
 				.query(query.getSql(), query.getParameters(), new VoucherThemeRowMapper(){

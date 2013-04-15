@@ -1,5 +1,7 @@
 package com.jpoweredcart.admin.model.sale.impl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +15,7 @@ import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
 import com.jpoweredcart.common.entity.sale.Voucher;
 import com.jpoweredcart.common.entity.sale.VoucherHistory;
+import com.jpoweredcart.common.entity.sale.jdbc.VoucherHistoryRowMapper;
 import com.jpoweredcart.common.entity.sale.jdbc.VoucherRowMapper;
 import com.jpoweredcart.common.system.email.EmailService;
 import com.jpoweredcart.common.system.setting.SettingKey;
@@ -70,9 +73,8 @@ public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminMode
 		String sql = "SELECT v.voucher_id, v.code, v.from_name, v.from_email, v.to_name, v.to_email, (SELECT vtd.name FROM " 
 				+quoteTable("voucher_theme_description")+ " vtd WHERE vtd.voucher_theme_id = v.voucher_theme_id AND vtd.language_id = ?) AS theme, v.amount, v.status, v.date_added FROM " +quoteTable("voucher")+ " v";
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{
-				"v.code", "v.from_name", "v.from_email", "v.to_name", "v.to_email",
-				"v.theme", "v.amount", "v.status", "v.date_added"});
+		//sortedKeys={"v.code", "v.from_name", "v.from_email", "v.to_name", "v.to_email","v.theme", "v.amount", "v.status", "v.date_added"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		query.addParameters(languageId);
 		List< Voucher> vouchers = getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new VoucherRowMapper());
@@ -81,33 +83,47 @@ public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminMode
 
 	@Override
 	public void sendVoucher(Integer voucherId) {
-		// TODO Auto-generated method stub
+		Voucher voucher = get(voucherId);
 		
 	}
-
+	
 	@Override
 	public int getTotal() {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("voucher");
+		return getJdbcOperations().queryForObject(sql, Integer.class);
 	}
 
 	@Override
 	public int getTotalByThemeId(Integer voucherThemeId) {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("voucher")+" WHERE voucher_theme_id =?";
+		return getJdbcOperations().queryForObject(sql, new Object[]{voucherThemeId}, Integer.class);
 	}
 
 	@Override
 	public List<VoucherHistory> getVoucherHistories(Integer voucherId,
 			int start, int limit) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "SELECT vh.order_id, o.firstname, o.lastname, vh.amount, vh.date_added FROM "+
+			quoteTable("voucher_history")+" vh LEFT JOIN "+quoteTable("order")+
+			" o ON (vh.order_id = o.order_id) WHERE vh.voucher_id =?";
+		PageParam pageParam = PageParam.list(start, limit);
+		pageParam.addOrder("vh.date_added", "ASC");
+		QueryBean query = createPaginationQuery(sql, pageParam);
+		return getJdbcOperations().query(query.getSql(), query.getParameters(), 
+			new VoucherHistoryRowMapper(){
+			@Override
+			public VoucherHistory mapRow(ResultSet rs, int rowNum)
+					throws SQLException {
+				VoucherHistory vh = super.mapRow(rs, rowNum);
+				vh.setCustomer(rs.getString("firstname")+" "+rs.getString("lastname"));
+				return vh;
+			}
+		});
 	}
 
 	@Override
 	public int getTotalVoucherHistories(Integer voucherId) {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("voucher_history")+" WHERE voucher_id=?";
+		return getJdbcOperations().queryForObject(sql, new Object[]{voucherId}, Integer.class);
 	}
 	
 }

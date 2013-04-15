@@ -18,6 +18,9 @@ public class VoucherHistory implements Serializable {
 	
 	protected Date dateAdded;
 
+	/*============ Transient =============*/
+	protected String customer;//customer fullName
+	
 	public Integer getId() {
 		return id;
 	}
@@ -56,6 +59,14 @@ public class VoucherHistory implements Serializable {
 
 	public void setDateAdded(Date dateAdded) {
 		this.dateAdded = dateAdded;
+	}
+
+	public String getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(String customer) {
+		this.customer = customer;
 	}
 	
 }

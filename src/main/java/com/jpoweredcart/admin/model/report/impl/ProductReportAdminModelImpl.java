@@ -28,7 +28,7 @@ public class ProductReportAdminModelImpl extends BaseModel implements ProductRep
 			quoteTable("product_description")+ " pd ON (p.product_id = pd.product_id) WHERE pd.language_id = ? AND p.viewed > 0 ORDER BY p.viewed DESC";
 		params.add(languageId);
 		
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam);
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		params.add(query.getStart());
 		params.add(query.getLimit());
 		
@@ -84,7 +84,7 @@ public class ProductReportAdminModelImpl extends BaseModel implements ProductRep
 		}
 		sql += " GROUP BY op.model ORDER BY total DESC";
 		
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam);
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		params.add(query.getStart());
 		params.add(query.getLimit());
 		

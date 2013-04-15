@@ -95,9 +95,10 @@ public class WeightClassAdminModelImpl extends BaseModel implements WeightClassA
 	public List<WeightClass> getList(PageParam pageParam) {
 		
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
-		String sql = "SELECT * FROM " +quoteTable("weight_class")+ " wc LEFT JOIN " +quoteTable("weight_class_description")+ " wcd ON (wc.weight_class_id = wcd.weight_class_id) WHERE wcd.language_id = ?";
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
-				new String[]{"title", "unit", "value"});
+		String sql = "SELECT * FROM " +quoteTable("weight_class")+ " wc LEFT JOIN " +quoteTable("weight_class_description")+ 
+				" wcd ON (wc.weight_class_id = wcd.weight_class_id) WHERE wcd.language_id = ?";
+		//sortedKeys={"title", "unit", "value"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		query.addParameters(languageId);
 		List<WeightClass> weightClassList = getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new WeightClassRowMapper());

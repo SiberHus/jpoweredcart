@@ -72,8 +72,9 @@ public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminMo
 	
 	@Override
 	public List<Currency> getList(PageParam pageParam) {
-		QueryBean query = createPaginationQuery("currency", pageParam, 
-				new String[]{"title", "code", "value", "date_modified"});
+		String sql = "SELECT * FROM "+quoteTable("currency");
+		//sortedKeys="title", "code", "value", "date_modified"
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		List<Currency> currencyList = getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new CurrencyRowMapper());
 		//TODO: Do we need to update the cache here?

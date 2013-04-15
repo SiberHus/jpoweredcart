@@ -115,8 +115,8 @@ public class AttributeAdminModelImpl extends BaseModel implements AttributeAdmin
 		String sql = "SELECT *, (SELECT agd.name FROM "+quoteTable("attribute_group_description")
 				+" agd WHERE agd.attribute_group_id = a.attribute_group_id AND agd.language_id = ?) AS attribute_group FROM "
 				+quoteTable("attribute")+ " a LEFT JOIN " +quoteTable("attribute_description")+ " ad ON (a.attribute_id = ad.attribute_id) WHERE ad.language_id =?";
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
-				new String[]{"ad.name", "attribute_group", "a.sort_order"});
+		//sortedKeys={"ad.name", "attribute_group", "a.sort_order"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		query.addParameters(languageId, languageId);
 		return getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new AttributeRowMapper(){

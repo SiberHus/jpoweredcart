@@ -1,16 +1,39 @@
 package com.jpoweredcart.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PageParam {
 	
-	private String sortKey;
+	public static class OrderPair {
+		private String key;
+		private String dir;
+		public OrderPair(String key, String dir){
+			this.key = key;
+			this.dir = dir==null?"":dir;
+		}
+		public String getKey() {
+			return key;
+		}
+		public String getDir() {
+			return dir;
+		}
+	}
 	
-	private String orderDir;
+	private List<OrderPair> orders = null;
 	
 	private int page;
 	
 	private int limit;
 	
 	private int start;
+	
+	public static PageParam list(int start, int limit){
+		PageParam pageParam = new PageParam();
+		pageParam.setStart(start);
+		pageParam.setLimit(limit);
+		return pageParam;
+	}
 	
 	public static PageParam list(int limit){
 		PageParam pageParam = new PageParam();
@@ -24,20 +47,15 @@ public class PageParam {
 		return pageParam;
 	}
 	
-	public String getSortKey() {
-		return sortKey;
+	public void addOrder(String key, String dir){
+		if(orders==null){
+			orders = new ArrayList<OrderPair>();
+		}
+		orders.add(new OrderPair(key, dir));
 	}
-
-	public void setSortKey(String sortKey) {
-		this.sortKey = sortKey;
-	}
-
-	public String getOrderDir() {
-		return orderDir;
-	}
-
-	public void setOrderDir(String orderDir) {
-		this.orderDir = orderDir;
+	
+	public List<OrderPair> getOrders(){
+		return this.orders;
 	}
 
 	public int getPage() {

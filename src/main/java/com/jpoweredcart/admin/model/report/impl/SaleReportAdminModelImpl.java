@@ -60,7 +60,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 		}
 		sql += " ORDER BY tmp.date_added DESC";
 		
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam);
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		params.add(query.getStart());
 		params.add(query.getLimit());
 		
@@ -161,7 +161,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 		}else if(group.equals("year")){
 			sql += " GROUP BY ot.title, YEAR(o.date_added)";
 		}
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam);
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		params.add(query.getStart());
 		params.add(query.getLimit());
 		
@@ -237,7 +237,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 			sql += " GROUP BY YEAR(r.date_added)";
 		}
 		
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam);
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		params.add(query.getStart());
 		params.add(query.getLimit());
 		
@@ -295,7 +295,7 @@ public class SaleReportAdminModelImpl extends BaseModel implements SaleReportAdm
 		}
 		sql += " GROUP BY ch.coupon_id ORDER BY total DESC";
 		
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam);
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		params.add(query.getStart());
 		params.add(query.getLimit());
 		

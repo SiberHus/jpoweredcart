@@ -137,9 +137,10 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 	public List<LengthClass> getList(PageParam pageParam) {
 		
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
-		String sql = "SELECT * FROM " +quoteTable("length_class")+ " wc LEFT JOIN " +quoteTable("length_class_description")+ " wcd ON (wc.length_class_id = wcd.length_class_id) WHERE wcd.language_id = ?";
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
-				new String[]{"title", "unit", "value"});
+		String sql = "SELECT * FROM " +quoteTable("length_class")+ " wc LEFT JOIN " +quoteTable("length_class_description")+ 
+				" wcd ON (wc.length_class_id = wcd.length_class_id) WHERE wcd.language_id = ?";
+		//sortedKeys={"title", "unit", "value"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		query.addParameters(languageId);
 		List<LengthClass> lengthClassList = getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new LengthClassRowMapper(){

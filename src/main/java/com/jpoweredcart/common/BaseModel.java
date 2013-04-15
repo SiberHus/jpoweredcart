@@ -1,8 +1,5 @@
 package com.jpoweredcart.common;
 
-import java.util.Arrays;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcOperations;
 
+import com.jpoweredcart.common.PageParam.OrderPair;
 import com.jpoweredcart.common.system.setting.DefaultSettings;
 import com.jpoweredcart.common.system.setting.SettingService;
 
@@ -75,30 +73,21 @@ public class BaseModel {
 		return BaseModel.quoteName(getEnvironment(), name);
 	}
 	
-	protected QueryBean createPaginationQuery(String table, PageParam pageParam, String... sortFields){
+	protected QueryBean createPaginationQuery(String sql, PageParam pageParam){
 		
-		String sql = "SELECT * FROM "+quoteTable(table);
+		pageParam = pageParam==null? PageParam.list(): pageParam;
 		
-		return createPaginationQueryFromSql(sql, pageParam, sortFields);
-	}
-	
-	protected QueryBean createPaginationQueryFromSql(String sql, PageParam pageParam, String... sortFields){
-		
-		//TODO: Add database specific pagination query
-		if(sortFields!=null && sortFields.length>0){
-			List<String> sortKeys = Arrays.asList(sortFields);
-			if(pageParam==null){
-				pageParam = PageParam.list(-1);//use the default limit
-			}
-			if(pageParam.getSortKey()!=null && sortKeys.contains(pageParam.getSortKey())){
-				sql += " ORDER BY "+pageParam.getSortKey();
-			}else{
-				sql += " ORDER BY "+sortFields[0];
-			}
-			if(pageParam.getOrderDir()!=null && "desc".equals(pageParam.getOrderDir())){
-				sql += " DESC";
-			}else{
-				sql += " ASC";
+		if(pageParam.getOrders()!=null){
+			sql += " ORDER BY ";
+			int i=pageParam.getOrders().size();
+			for(OrderPair pair: pageParam.getOrders()){
+				i--;
+				sql += quoteName(pair.getKey())+ " "+pair.getDir();
+				if(i>0){
+					sql += ",";
+				}else{
+					sql += " ";
+				}
 			}
 		}
 		

@@ -49,10 +49,10 @@ public class ZoneAdminModelImpl extends BaseModel implements ZoneAdminModel {
 	
 	@Override
 	public List<Zone> getList(PageParam pageParam) {
-		String sql = "SELECT z.zone_id, z.country_id, z.code, z.name, z.status, c.name AS country_name FROM " +quoteTable("zone") + " z LEFT JOIN " +
-				quoteTable("country") + " c ON (z.country_id = c.country_id)";
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
-				new String[]{"c.name", "z.name", "z.code"});
+		String sql = "SELECT z.zone_id, z.country_id, z.code, z.name, z.status, c.name AS country_name FROM " +
+				quoteTable("zone") + " z LEFT JOIN "+quoteTable("country") + " c ON (z.country_id = c.country_id)";
+		//sortedKeys={"c.name", "z.name", "z.code"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		List<Zone> zoneList = getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new ZoneRowMapper());
 		return zoneList;

@@ -79,7 +79,8 @@ public class ReturnStatusAdminModelImpl extends BaseModel implements ReturnStatu
 	@Override
 	public List<ReturnStatus> getList(PageParam pageParam) {
 		String sql = "SELECT * FROM "+quoteTable("return_status")+" WHERE language_id=?";
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam, new String[]{"name"});
+		//sortedKeys={"name"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		query.addParameters(languageId);
 		List<ReturnStatus> returnStatusList = getJdbcOperations()

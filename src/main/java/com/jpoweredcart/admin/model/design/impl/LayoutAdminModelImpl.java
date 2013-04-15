@@ -106,8 +106,9 @@ public class LayoutAdminModelImpl extends BaseModel implements LayoutAdminModel 
 	
 	@Override
 	public List<Layout> getList(PageParam pageParam) {
-		QueryBean query = createPaginationQuery("layout", pageParam, 
-				new String[]{"name"});
+		String sql = "SELECT * FROM "+quoteTable("layout");
+		//sortedKeys={"name"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		List<Layout> layoutList = getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new LayoutRowMapper());
 		return layoutList;

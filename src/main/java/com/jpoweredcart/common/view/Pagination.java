@@ -43,7 +43,10 @@ public class Pagination {
 	public Pagination setPageParam(PageParam pageParam){
 		setPage(pageParam.getPage());
 		setLimit(pageParam.getLimit());
-		setSortedField(pageParam.getSortKey(), pageParam.getOrderDir());
+		if(pageParam.getOrders()!=null && pageParam.getOrders().size()>0){
+			PageParam.OrderPair pair = pageParam.getOrders().get(0);
+			setSortedField(pair.getKey(), pair.getDir());
+		}
 		return this;
 	}
 	

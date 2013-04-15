@@ -149,8 +149,8 @@ public class AffiliateAdminModelImpl extends BaseModel implements AffiliateAdmin
 			params.add(filter.getDateAdded().getTime());
 		}
 		
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
-				"name","a.email","a.code","a.status","a.approved","a.date_added");
+		//sortedKeys = {"name","a.email","a.code","a.status","a.approved","a.date_added"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		query.addParameters(params.toArray());
 		System.out.println(query.getSql());
 		System.out.println(query.getParameterList());

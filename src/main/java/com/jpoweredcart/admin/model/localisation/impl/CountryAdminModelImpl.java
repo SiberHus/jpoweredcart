@@ -70,8 +70,9 @@ public class CountryAdminModelImpl extends BaseModel implements CountryAdminMode
 	
 	@Override
 	public List<Country> getList(PageParam pageParam) {
-		QueryBean query = createPaginationQuery("country", pageParam, 
-				new String[]{"name", "iso_code_2", "iso_code_3"});
+		//sortedKeys={"name", "iso_code_2", "iso_code_3"}
+		String sql = "SELECT * FROM "+quoteTable("country");
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		List<Country> countries = getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new CountryRowMapper());
 		return countries;

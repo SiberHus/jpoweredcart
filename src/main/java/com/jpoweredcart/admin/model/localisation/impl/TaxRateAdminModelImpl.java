@@ -107,8 +107,8 @@ public class TaxRateAdminModelImpl extends BaseModel implements TaxRateAdminMode
 	public List<TaxRate> getList(PageParam pageParam) {
 		String sql = "SELECT tr.tax_rate_id, tr.name AS name, tr.rate, tr.type, tr.geo_zone_id, gz.name AS geo_zone, tr.date_added, tr.date_modified FROM " 
 				+quoteTable("tax_rate")+ " tr LEFT JOIN " +quoteTable("geo_zone")+ " gz ON (tr.geo_zone_id = gz.geo_zone_id)";
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
-				new String[]{"tr.name", "tr.rate", "tr.type", "gz.name", "tr.date_added", "tr.date_modified"});
+		//sortedKeys={"tr.name", "tr.rate", "tr.type", "gz.name", "tr.date_added", "tr.date_modified"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		List<TaxRate> taxRateList = getJdbcOperations()
 				.query(query.getSql(), query.getParameters(), new TaxRateRowMapper(){
 					@Override

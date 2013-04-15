@@ -189,8 +189,8 @@ public class InformationAdminModelImpl extends BaseModel implements InformationA
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		String sql = "SELECT * FROM " +quoteTable("information")+ " i LEFT JOIN " +quoteTable("information_description")
 				+ " id ON (i.information_id = id.information_id) WHERE id.language_id = ?";
-		QueryBean query = createPaginationQueryFromSql(sql, pageParam, 
-				new String[]{"id.title", "i.sort_order"});
+		//sortedKeys={"id.title", "i.sort_order"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		query.addParameters(languageId);
 		List<Information> infoList = getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new InformationRowMapper(){

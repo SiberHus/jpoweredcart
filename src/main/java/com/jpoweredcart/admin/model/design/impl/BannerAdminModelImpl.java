@@ -135,8 +135,9 @@ public class BannerAdminModelImpl extends BaseModel implements BannerAdminModel 
 	
 	@Override
 	public List<Banner> getList(PageParam pageParam) {
-		QueryBean query = createPaginationQuery("banner", pageParam, 
-				new String[]{"name", "status"});
+		String sql = "SELECT * FROM "+quoteTable("banner");
+		//sortedKeys={"name", "status"}
+		QueryBean query = createPaginationQuery(sql, pageParam);
 		List<Banner> bannerList = getJdbcOperations().query(query.getSql(), 
 				query.getParameters(), new BannerRowMapper());
 		return bannerList;
