@@ -9,18 +9,16 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.UserAttributes;
-import com.jpoweredcart.common.entity.Status;
+import com.jpoweredcart.common.entity.localisation.Language;
 import com.jpoweredcart.common.service.CurrencyService;
+import com.jpoweredcart.common.service.LanguageService;
 import com.jpoweredcart.common.service.StoreResolver;
 import com.jpoweredcart.common.system.setting.DefaultSettings;
 import com.jpoweredcart.common.system.setting.SettingKey;
@@ -33,6 +31,8 @@ public class UserDataInterceptor extends HandlerInterceptorAdapter {
 	private JdbcOperations jdbcOperations;
 	
 	private SettingService settingService;
+	
+	private LanguageService languageService;
 	
 	private StoreResolver storeResolver;
 	
@@ -53,9 +53,17 @@ public class UserDataInterceptor extends HandlerInterceptorAdapter {
 	public SettingService getSettingService() {
 		return settingService;
 	}
-
+	
 	public void setSettingService(SettingService settingService) {
 		this.settingService = settingService;
+	}
+	
+	public LanguageService getLanguageService() {
+		return languageService;
+	}
+
+	public void setLanguageService(LanguageService languageService) {
+		this.languageService = languageService;
 	}
 
 	public StoreResolver getStoreResolver() {
@@ -99,47 +107,39 @@ public class UserDataInterceptor extends HandlerInterceptorAdapter {
 		UserAttributes userAttrs = (UserAttributes)session.getAttribute(UserAttributes.NAME);
 		if(userAttrs==null){
 			userAttrs = new UserAttributes();
-			userAttrs.setStoreId(storeResolver.resolve(
+			userAttrs.setStoreId(storeResolver.getStoreId(
 					request.getRequestURL().toString()));
 			userAttrs.setLanguageId(DefaultSettings.LANGUAGE_ID);
-			userAttrs.setCurrency(currencyService.getDefaultCurrencyCode());
-			String defaultLangCode = settingService.getConfig(
-					userAttrs.getStoreId(), SettingKey.CFG_LANGUAGE);
-			userAttrs.setLanguage(defaultLangCode);
-			userAttrs.setLocale(new Locale(defaultLangCode));
+			userAttrs.setCurrencyCode(currencyService.getDefaultCurrencyCode());
 			session.setAttribute(UserAttributes.NAME, userAttrs);
 		}
 		
-		/* We can expect locale format here */
-		String language = request.getParameter(this.languageParam);
-		if (language != null) {
+		String langCode = request.getParameter(this.languageParam);
+		if (langCode != null) {
 			LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
 			if (localeResolver == null) {
 				throw new IllegalStateException("No LocaleResolver found: not in a DispatcherServlet request?");
 			}
-			Locale locale = StringUtils.parseLocaleString(language);
+			
+			Locale locale = StringUtils.parseLocaleString(langCode);
 			localeResolver.setLocale(request, response, locale);
-			Environment env = getSettingService().getEnvironment();
-			Integer languageId = null;
-			String sql = "SELECT * FROM "+BaseModel.quoteTable(env, "language")+" WHERE code=? AND status=?";
-			try{
-				languageId = jdbcOperations.queryForObject(sql, 
-					new Object[]{language, Status.ENABLED}, Integer.class);
-				userAttrs.setLanguageId(languageId);
-			}catch(IncorrectResultSizeDataAccessException e){
-				logger.warn("Language id not found for code: {}", language);
+			
+			Language language = languageService.getByCode(langCode);
+			if(language!=null){
+				userAttrs.setLanguageId(language.getId());
+				locale = language.getLocale();
+			}else{
+				logger.warn("Language id not found for code: {}", langCode);
 			}
-			userAttrs.setLanguage(language);
-			userAttrs.setLocale(locale);
 		}
 		
-		String currency = request.getParameter(this.currencyParam);
-		if(currency != null){
-			if(!currencyService.has(currency)){ 
-				currency = settingService.getConfig(
+		String currencyCode = request.getParameter(this.currencyParam);
+		if(currencyCode != null){
+			if(!currencyService.has(currencyCode)){ 
+				currencyCode = settingService.getConfig(
 						userAttrs.getStoreId(), SettingKey.CFG_CURRENCY);
 			}
-			userAttrs.setCurrency(currency);
+			userAttrs.setCurrencyCode(currencyCode);
 		}
 		
 		return true;

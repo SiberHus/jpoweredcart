@@ -3,46 +3,72 @@ package com.jpoweredcart.admin.model.sale.impl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jpoweredcart.admin.form.sale.VoucherForm;
+import com.jpoweredcart.admin.model.sale.OrderAdminModel;
 import com.jpoweredcart.admin.model.sale.VoucherAdminModel;
+import com.jpoweredcart.admin.model.sale.VoucherThemeAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.QueryBean;
+import com.jpoweredcart.common.entity.sale.Order;
 import com.jpoweredcart.common.entity.sale.Voucher;
 import com.jpoweredcart.common.entity.sale.VoucherHistory;
+import com.jpoweredcart.common.entity.sale.VoucherTheme;
 import com.jpoweredcart.common.entity.sale.jdbc.VoucherHistoryRowMapper;
 import com.jpoweredcart.common.entity.sale.jdbc.VoucherRowMapper;
+import com.jpoweredcart.common.service.CurrencyService;
+import com.jpoweredcart.common.system.email.EmailMessage;
 import com.jpoweredcart.common.system.email.EmailService;
+import com.jpoweredcart.common.system.media.MediaService;
 import com.jpoweredcart.common.system.setting.SettingKey;
+import com.jpoweredcart.common.system.template.TemplateService;
 
 public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminModel {
 	
 	@Inject
 	private EmailService emailService;
 	
+	@Inject
+	private TemplateService templateService;
+	
+	@Inject
+	private VoucherThemeAdminModel voucherThemeAdminModel;
+	
+	@Inject
+	private OrderAdminModel orderAdminModel;
+	
+	@Inject
+	private CurrencyService currencyService;
+	
+	@Inject
+	private MediaService mediaService;
+	
 	@Transactional
 	@Override
-	public void create(Voucher voucher) {
+	public void create(VoucherForm voucherForm) {
 		String sql = "INSERT INTO " +quoteTable("voucher")+ "(code, from_name, from_email, " +
 				"to_name, to_email, voucher_theme_id, message, amount, status, date_added) VALUES (?,?,?,?,?,?)";
-		getJdbcOperations().update(sql, voucher.getCode(), voucher.getFromName(), voucher.getFromEmail(),
-				voucher.getToName(), voucher.getToEmail(), voucher.getVoucherThemeId(), voucher.getMessage(),
-				voucher.getAmount(), voucher.getStatus(), new Date());
+		getJdbcOperations().update(sql, voucherForm.getCode(), voucherForm.getFromName(), voucherForm.getFromEmail(),
+				voucherForm.getToName(), voucherForm.getToEmail(), voucherForm.getVoucherThemeId(), voucherForm.getMessage(),
+				voucherForm.getAmount(), voucherForm.getStatus(), new Date());
 	}
 
 	@Transactional
 	@Override
-	public void update(Voucher voucher) {
+	public void update(VoucherForm voucherForm) {
 		String sql = "UPDATE " +quoteTable("voucher")+ " SET code=?, from_name=?, from_email=?, " +
 				"to_name=?, to_email=?, voucher_theme_id=?, message=?, amount=?, status=?, date_added=? WHERE voucher_id=?";
-		getJdbcOperations().update(sql, voucher.getCode(), voucher.getFromName(), voucher.getFromEmail(),
-				voucher.getToName(), voucher.getToEmail(), voucher.getVoucherThemeId(), voucher.getMessage(),
-				voucher.getAmount(), voucher.getStatus(), voucher.getDateAdded(), voucher.getId());
+		getJdbcOperations().update(sql, voucherForm.getCode(), voucherForm.getFromName(), voucherForm.getFromEmail(),
+				voucherForm.getToName(), voucherForm.getToEmail(), voucherForm.getVoucherThemeId(), voucherForm.getMessage(),
+				voucherForm.getAmount(), voucherForm.getStatus(), voucherForm.getDateAdded(), voucherForm.getId());
 	}
 	
 	@Transactional
@@ -55,11 +81,22 @@ public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminMode
 		getJdbcOperations().update(sql, voucherId);
 		
 	}
+	
+	@Override
+	public VoucherForm newForm() {
+		return new VoucherForm();
+	}
 
 	@Override
-	public Voucher get(Integer voucherId) {
+	public VoucherForm getForm(Integer voucherId) {
+		return (VoucherForm)get(voucherId, VoucherForm.class);
+	}
+
+	@Override
+	public Voucher get(Integer voucherId, Class<? extends Voucher> clazz) {
 		String sql = "SELECT * FROM " +quoteTable("voucher")+ " WHERE voucher_id = ?";
-		return getJdbcOperations().queryForObject(sql, new Object[]{voucherId}, new VoucherRowMapper());
+		return getJdbcOperations().queryForObject(sql, new Object[]{voucherId}, 
+				new VoucherRowMapper().setTargetClass(clazz));
 	}
 
 	@Override
@@ -83,8 +120,53 @@ public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminMode
 
 	@Override
 	public void sendVoucher(Integer voucherId) {
-		Voucher voucher = get(voucherId);
+		Voucher voucher = get(voucherId, Voucher.class);
+		if(voucher==null){
+			return;
+		}
 		
+		VoucherTheme voucherTheme = voucherThemeAdminModel
+				.get(voucher.getVoucherThemeId(), VoucherTheme.class);
+		
+		Map<String, Object> model = new HashMap<String, Object>(); 
+		model.put("fromName", voucher.getFromName());
+		
+		String storeName = null;
+		String storeUrl = null;
+		
+		String image = voucherTheme.getImage();
+		image = mediaService.getImageUrl(image);
+		model.put("image", image);
+		
+		Integer orderId = voucher.getOrderId();
+		Order order = orderAdminModel.get(orderId, Order.class);
+		// If voucher belongs to an order
+		if(order!=null){
+			Integer languageId = order.getLanguageId();
+			String amount = currencyService.format(voucher.getAmount(), order.getCurrencyCode(),
+					order.getCurrencyValue(), languageId);
+			model.put("amount", amount);
+			storeName = order.getStoreName();
+			storeUrl = order.getStoreUrl();
+		}else{
+			String languageCode = getSettingService().getConfig(SettingKey.CFG_LANGUAGE);
+			
+//			String amount = currencyService.format(voucher.getAmount(), order.getCurrencyCode(),
+//					order.getCurrencyValue(), );
+//			model.put("amount", amount);
+		}
+		
+		model.put("code", voucher.getCode());
+		model.put("storeName", storeUrl);
+		model.put("storeUrl", storeUrl);
+		
+		String text = templateService.renderTemplate("/admin/email/voucher", model);
+		EmailMessage email = new EmailMessage();
+		email.setTo(voucher.getToEmail());
+		email.setSenderName(storeName);
+		email.setBodyHtml(text);
+		
+		emailService.send(email);
 	}
 	
 	@Override
@@ -100,7 +182,7 @@ public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminMode
 	}
 
 	@Override
-	public List<VoucherHistory> getVoucherHistories(Integer voucherId,
+	public List<VoucherHistory> getHistories(Integer voucherId,
 			int start, int limit) {
 		String sql = "SELECT vh.order_id, o.firstname, o.lastname, vh.amount, vh.date_added FROM "+
 			quoteTable("voucher_history")+" vh LEFT JOIN "+quoteTable("order")+
@@ -121,7 +203,7 @@ public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminMode
 	}
 
 	@Override
-	public int getTotalVoucherHistories(Integer voucherId) {
+	public int getTotalHistories(Integer voucherId) {
 		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("voucher_history")+" WHERE voucher_id=?";
 		return getJdbcOperations().queryForObject(sql, new Object[]{voucherId}, Integer.class);
 	}

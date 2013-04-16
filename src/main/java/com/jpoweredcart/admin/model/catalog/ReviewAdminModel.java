@@ -18,7 +18,7 @@ public interface ReviewAdminModel {
 	
 	public ReviewForm getForm(Integer reviewId);
 	
-	public Review get(Integer reviewId);
+	public Review get(Integer reviewId, Class<? extends Review> clazz);
 	
 	public List<Review> getList(PageParam pageParam);
 	

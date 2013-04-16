@@ -9,26 +9,22 @@ import com.jpoweredcart.common.entity.catalog.Category;
 import com.jpoweredcart.common.entity.catalog.CategoryDesc;
 import com.jpoweredcart.common.entity.catalog.CategoryToLayout;
 import com.jpoweredcart.common.entity.catalog.CategoryToStore;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class CategoryRowMapper implements RowMapper<Category>{
-	
-	public Category newObject(){
-		return new Category();
-	}
+public class CategoryRowMapper extends ObjectFactoryRowMapper<Category>{
 	
 	@Override
-	public Category mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Category cat = newObject();
-		cat.setId(rs.getInt("category_id"));
-		cat.setImage(rs.getString("image"));
-		cat.setParentId(rs.getInt("parent_id"));
-		cat.setTop(rs.getBoolean("top"));
-		cat.setColumn(rs.getInt("column"));
-		cat.setSortOrder(rs.getInt("sort_order"));
-		cat.setStatus(rs.getShort("status"));
-		cat.setDateAdded(rs.getDate("date_added"));
-		cat.setDateModified(rs.getDate("date_modified"));
-		return cat;
+	public Category mapRow(ResultSet rs, Category object) throws SQLException {
+		object.setId(rs.getInt("category_id"));
+		object.setImage(rs.getString("image"));
+		object.setParentId(rs.getInt("parent_id"));
+		object.setTop(rs.getBoolean("top"));
+		object.setColumn(rs.getInt("column"));
+		object.setSortOrder(rs.getInt("sort_order"));
+		object.setStatus(rs.getShort("status"));
+		object.setDateAdded(rs.getDate("date_added"));
+		object.setDateModified(rs.getDate("date_modified"));
+		return object;
 	}
 	
 	public static class Desc implements RowMapper<CategoryDesc>{

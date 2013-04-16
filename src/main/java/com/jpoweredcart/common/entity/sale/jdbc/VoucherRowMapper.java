@@ -4,30 +4,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.jpoweredcart.common.entity.sale.Voucher;
-import org.springframework.jdbc.core.RowMapper;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class VoucherRowMapper implements RowMapper<Voucher>{
-
-	public Voucher newObject(){
-		return new Voucher();
-	}
+public class VoucherRowMapper extends ObjectFactoryRowMapper<Voucher>{
 	
 	@Override
-	public Voucher mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Voucher voucher = newObject();
-		voucher.setId(rs.getInt("voucher_id"));
-		voucher.setOrderId(rs.getInt("order_id"));
-		voucher.setCode(rs.getString("code"));
-		voucher.setFromName(rs.getString("from_name"));
-		voucher.setFromEmail(rs.getString("from_email"));
-		voucher.setToName(rs.getString("to_name"));
-		voucher.setToEmail(rs.getString("to_email"));
-		voucher.setVoucherThemeId(rs.getInt("voucher_theme_id"));
-		voucher.setMessage(rs.getString("message"));
-		voucher.setAmount(rs.getBigDecimal("amount"));
-		voucher.setStatus(rs.getInt("status"));
-		voucher.setDateAdded(rs.getDate("date_added"));
-		return voucher;
+	public Voucher mapRow(ResultSet rs, Voucher object) throws SQLException {
+		object.setId(rs.getInt("voucher_id"));
+		object.setOrderId(rs.getInt("order_id"));
+		object.setCode(rs.getString("code"));
+		object.setFromName(rs.getString("from_name"));
+		object.setFromEmail(rs.getString("from_email"));
+		object.setToName(rs.getString("to_name"));
+		object.setToEmail(rs.getString("to_email"));
+		object.setVoucherThemeId(rs.getInt("voucher_theme_id"));
+		object.setMessage(rs.getString("message"));
+		object.setAmount(rs.getBigDecimal("amount"));
+		object.setStatus(rs.getInt("status"));
+		object.setDateAdded(rs.getDate("date_added"));
+		return object;
 	}
 	
 }

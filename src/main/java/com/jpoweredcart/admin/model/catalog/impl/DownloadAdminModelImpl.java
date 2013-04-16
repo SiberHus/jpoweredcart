@@ -130,23 +130,20 @@ public class DownloadAdminModelImpl extends BaseModel implements DownloadAdminMo
 				" dd ON (d.download_id = dd.download_id) WHERE d.download_id = ? AND dd.language_id = ?";
 		DownloadForm dlForm = (DownloadForm)getJdbcOperations().queryForObject(
 				sql, new Object[]{dlId, languageId}, 
-				new DownloadRowMapper(){
-					@Override
-					public Download newObject() {
-						return new DownloadForm();
-					}
-			});
+				new DownloadRowMapper().setTargetClass(DownloadForm.class));
 			dlForm.setDescs(getDescriptions(dlId));
 		
-		dlForm.setDownloadDir(downloadFileService.getUrl(""));//get only baseUrl
+		dlForm.setDownloadDir(downloadFileService.getUrl(""));//leave it empty to get only baseUrl
 		
 		return dlForm;
 	}
 	
 	@Override
-	public Download get(Integer dlId) {
+	public Download get(Integer dlId, Class<? extends Download> clazz) {
 		
-		return getForm(dlId);
+		String sql = "SELECT * FROM "+quoteTable("download")+" WHERE download_id=?";
+		return getJdbcOperations().queryForObject(sql, new Object[]{dlId},
+				new DownloadRowMapper().setTargetClass(clazz));
 	}
 	
 	@Override

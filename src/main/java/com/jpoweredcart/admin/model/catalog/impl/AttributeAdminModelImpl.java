@@ -92,21 +92,16 @@ public class AttributeAdminModelImpl extends BaseModel implements AttributeAdmin
 	
 	@Override
 	public AttributeForm getForm(Integer attrId) {
-		String sql = "SELECT * FROM " + quoteTable("attribute")+" WHERE attribute_id = ?";
-		AttributeForm attrForm = (AttributeForm)getJdbcOperations().queryForObject(
-				sql, new Object[]{attrId}, new AttributeRowMapper(){
-					@Override
-					public Attribute newObject() {
-						return new AttributeForm();
-					}
-				});
+		AttributeForm attrForm = (AttributeForm)get(attrId, AttributeForm.class);
 		attrForm.setDescs(getDescriptions(attrId));
 		return attrForm;
 	}
 	
 	@Override
-	public Attribute get(Integer attrId) {
-		return getForm(attrId);
+	public Attribute get(Integer attrId, Class<? extends Attribute> clazz) {
+		String sql = "SELECT * FROM " + quoteTable("attribute")+" WHERE attribute_id = ?";
+		return (Attribute)getJdbcOperations().queryForObject(
+				sql, new Object[]{attrId}, new AttributeRowMapper().setTargetClass(clazz));
 	}
 	
 	@Override

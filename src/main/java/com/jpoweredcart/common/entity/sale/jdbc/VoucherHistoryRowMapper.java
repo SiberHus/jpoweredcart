@@ -4,23 +4,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.jpoweredcart.common.entity.sale.VoucherHistory;
-import org.springframework.jdbc.core.RowMapper;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class VoucherHistoryRowMapper implements RowMapper<VoucherHistory>{
-	
-	public VoucherHistory newObject(){
-		return new VoucherHistory();
-	}
+public class VoucherHistoryRowMapper extends ObjectFactoryRowMapper<VoucherHistory>{
 	
 	@Override
-	public VoucherHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
-		VoucherHistory vh = newObject();
-		vh.setId(rs.getInt("voucher_history_id"));
-		vh.setVoucherId(rs.getInt("voucher_id"));
-		vh.setOrderId(rs.getInt("order_id"));
-		vh.setAmount(rs.getBigDecimal("amount"));
-		vh.setDateAdded(rs.getDate("date_added"));
-		return vh;
+	public VoucherHistory mapRow(ResultSet rs, VoucherHistory object) throws SQLException {
+		object.setId(rs.getInt("voucher_history_id"));
+		object.setVoucherId(rs.getInt("voucher_id"));
+		object.setOrderId(rs.getInt("order_id"));
+		object.setAmount(rs.getBigDecimal("amount"));
+		object.setDateAdded(rs.getDate("date_added"));
+		return object;
 	}
 
 }

@@ -22,7 +22,7 @@
 						</div>
 					</div>
 					<div class="content">
-						<form th:action="@{/admin/sale/ipBlacklist/save}" th:object="${ipBlacklist}" method="post" id="form">
+						<form th:action="@{/admin/sale/ipBlacklist/save}" th:object="${ipBlacklistForm}" method="post" id="form">
 							<input type="hidden" th:field="*{id}" />
 							<table class="form">
 								<tr>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jpoweredcart.admin.form.user.UserGroupForm;
 import com.jpoweredcart.admin.model.user.UserGroupAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
@@ -17,18 +18,19 @@ public class UserGroupAdminModelImpl extends BaseModel implements UserGroupAdmin
 	
 	@Transactional
 	@Override
-	public void create(UserGroup userGroup) {
+	public void create(UserGroupForm userGroupForm) {
 		//TODO: (isset($data['permission']) ? serialize($data['permission']) : '')
 		String sql = "INSERT INTO "+quoteTable("user_group")+"(name, permission) VALUES(?,?)";
-		getJdbcOperations().update(sql, userGroup.getName(), userGroup.getPermission());
+		getJdbcOperations().update(sql, userGroupForm.getName(), userGroupForm.getPermission());
 	}
 	
 	@Transactional
 	@Override
-	public void update(UserGroup userGroup) {
+	public void update(UserGroupForm userGroupForm) {
 		
 		String sql = "UPDATE "+quoteTable("user_group")+" SET name=?, permission=? WHERE user_group_id=?";
-		getJdbcOperations().update(sql, userGroup.getName(), userGroup.getPermission(), userGroup.getId());
+		getJdbcOperations().update(sql, userGroupForm.getName(), userGroupForm.getPermission(), 
+				userGroupForm.getId());
 	}
 	
 	@Transactional
@@ -37,6 +39,24 @@ public class UserGroupAdminModelImpl extends BaseModel implements UserGroupAdmin
 		
 		String sql = "DELETE FROM "+quoteTable("user_group")+" WHERE user_group_id=?";
 		getJdbcOperations().update(sql, userGroupId);
+	}
+	
+	@Override
+	public UserGroupForm newForm() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UserGroupForm getForm(Integer userGroupId) {
+		return (UserGroupForm)get(userGroupId, UserGroupForm.class);
+	}
+	
+	@Override
+	public UserGroup get(Integer userGroupId, Class<? extends UserGroup> clazz) {
+		String sql = "SELECT DISTINCT * FROM "+quoteTable("user_group")+" WHERE user_group_id=?";
+		return getJdbcOperations().queryForObject(sql, new Object[]{userGroupId}, 
+				new UserGroupRowMapper().setTargetClass(clazz));
 	}
 	
 	@Transactional
@@ -50,11 +70,7 @@ public class UserGroupAdminModelImpl extends BaseModel implements UserGroupAdmin
 		//TODO: implement this
 	}
 	
-	@Override
-	public UserGroup get(Integer userGroupId) {
-		String sql = "SELECT DISTINCT * FROM "+quoteTable("user_group")+" WHERE user_group_id=?";
-		return getJdbcOperations().queryForObject(sql, new Object[]{userGroupId}, new UserGroupRowMapper());
-	}
+	
 	
 	@Override
 	public List<UserGroup> getList(PageParam pageParam) {

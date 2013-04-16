@@ -2,19 +2,24 @@ package com.jpoweredcart.admin.model.sale;
 
 import java.util.List;
 
+import com.jpoweredcart.admin.form.sale.VoucherForm;
 import com.jpoweredcart.common.PageParam;
 import com.jpoweredcart.common.entity.sale.Voucher;
 import com.jpoweredcart.common.entity.sale.VoucherHistory;
 
 public interface VoucherAdminModel {
 	
-	public void create(Voucher voucher);
+	public void create(VoucherForm voucherForm);
 	
-	public void update(Voucher voucher);
+	public void update(VoucherForm voucherForm);
 	
 	public void delete(Integer voucherId);
 	
-	public Voucher get(Integer voucherId);
+	public VoucherForm newForm();
+	
+	public VoucherForm getForm(Integer voucherId);
+	
+	public Voucher get(Integer voucherId, Class<? extends Voucher> clazz);
 	
 	public Voucher getOneByCode(String code);
 	
@@ -26,8 +31,8 @@ public interface VoucherAdminModel {
 	
 	public int getTotalByThemeId(Integer voucherThemeId);
 	
-	public List<VoucherHistory> getVoucherHistories(Integer voucherId, int start, int limit);
+	public List<VoucherHistory> getHistories(Integer voucherId, int start, int limit);
 	
-	public int getTotalVoucherHistories(Integer voucherId);
+	public int getTotalHistories(Integer voucherId);
 	
 }

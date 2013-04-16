@@ -206,8 +206,10 @@ public class DefaultSettingService implements SettingService, InitializingBean {
 		}
 		
 		derivedConfigProcessors = new HashMap<String, DerivedConfigProcessor>();
-		derivedConfigProcessors.put(SettingKey.ADMIN_LANGUAGE_ID, new LanguageIdDcp());
-		
+		derivedConfigProcessors.put(SettingKey.ADMIN_LANGUAGE_ID, new LanguageCodeToIdDcp(
+				SettingKey.CFG_ADMIN_LANGUAGE, SettingKey.ADMIN_LANGUAGE_ID));
+		derivedConfigProcessors.put(SettingKey.LANGUAGE_ID, new LanguageCodeToIdDcp(
+				SettingKey.CFG_LANGUAGE, SettingKey.LANGUAGE_ID));
 	}
 	
 	protected String quoteTable(String tableName){
@@ -230,19 +232,26 @@ public class DefaultSettingService implements SettingService, InitializingBean {
 		public void process(Integer storeId, String group, DefaultSettingService configService);
 	}
 	
-	public static class LanguageIdDcp implements DerivedConfigProcessor {
+	public static class LanguageCodeToIdDcp implements DerivedConfigProcessor {
+		
+		private String codeKey;
+		private String idKey;
+		public LanguageCodeToIdDcp(String codeKey, String idKey){
+			this.codeKey = codeKey;
+			this.idKey = idKey;
+		}
 		
 		@Override
 		public void process(Integer storeId, String group, DefaultSettingService configService) {
 			
-			group = SettingGroup.CONFIG;
-			String languageCode = configService.get(storeId, group, SettingKey.CFG_ADMIN_LANGUAGE);
+			String languageCode = configService.get(storeId, group, codeKey);
 			
 			String sql = "SELECT language_id FROM "+configService.quoteTable("language")+" WHERE code=?";
 			
-			Map<String, Object> language = configService.getJdbcOperations().queryForMap(sql, languageCode);
-			Integer languageId = ((Number)language.get("language_id")).intValue();
-			configService.set(storeId, group, SettingKey.ADMIN_LANGUAGE_ID, languageId);
+			Integer languageId = configService.getJdbcOperations().queryForObject(sql, 
+					new Object[]{languageCode}, Integer.class);
+			
+			configService.set(storeId, group, idKey, languageId);
 		}
 		
 	}

@@ -19,7 +19,7 @@ public interface VoucherThemeAdminModel {
 
 	public VoucherThemeForm getForm(Integer vtId);
 
-	public VoucherTheme get(Integer vtId);
+	public VoucherTheme get(Integer vtId, Class<? extends VoucherTheme> clazz);
 
 	public List<VoucherTheme> getList(PageParam pageParam);
 

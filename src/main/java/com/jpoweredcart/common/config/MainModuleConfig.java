@@ -26,9 +26,11 @@ import org.springframework.web.servlet.ViewResolver;
 
 import com.jolbox.bonecp.BoneCPDataSource;
 import com.jpoweredcart.common.service.CurrencyService;
+import com.jpoweredcart.common.service.LanguageService;
 import com.jpoweredcart.common.service.StoreResolver;
 import com.jpoweredcart.common.service.UserService;
 import com.jpoweredcart.common.service.impl.CurrencyServiceImpl;
+import com.jpoweredcart.common.service.impl.LanguageServiceImpl;
 import com.jpoweredcart.common.service.impl.StoreResolverImpl;
 import com.jpoweredcart.common.service.impl.UserServiceImpl;
 import com.jpoweredcart.common.system.email.EmailService;
@@ -121,6 +123,10 @@ public class MainModuleConfig implements ApplicationContextAware {
 	}
 	
 	//================================= SERVICES ==========================================//
+	@Bean
+	public LanguageService languageService(){
+		return new LanguageServiceImpl();
+	}
 	@Bean
 	public UserService userService(){
 		return new UserServiceImpl();

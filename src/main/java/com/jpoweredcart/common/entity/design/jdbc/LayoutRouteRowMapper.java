@@ -4,19 +4,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.jpoweredcart.common.entity.design.LayoutRoute;
-import org.springframework.jdbc.core.RowMapper;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class LayoutRouteRowMapper implements RowMapper<LayoutRoute>{
+public class LayoutRouteRowMapper extends ObjectFactoryRowMapper<LayoutRoute>{
 
 	@Override
-	public LayoutRoute mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public LayoutRoute mapRow(ResultSet rs, LayoutRoute object) throws SQLException {
 		
-		LayoutRoute layoutRoute = new LayoutRoute();
-		layoutRoute.setId(rs.getInt("layout_route_id"));
-		layoutRoute.setLayoutId(rs.getInt("layout_id"));
-		layoutRoute.setStoreId(rs.getInt("store_id"));
-		layoutRoute.setRoute(rs.getString("route"));
-		return layoutRoute;
+		object.setId(rs.getInt("layout_route_id"));
+		object.setLayoutId(rs.getInt("layout_id"));
+		object.setStoreId(rs.getInt("store_id"));
+		object.setRoute(rs.getString("route"));
+		return object;
 	}
 
 	

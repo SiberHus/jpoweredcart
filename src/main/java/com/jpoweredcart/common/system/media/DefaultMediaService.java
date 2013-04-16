@@ -69,7 +69,7 @@ public class DefaultMediaService implements MediaService {
 		
 		return getImageBaseUrl() + path;
 	}
-
+	
 	@Override
 	public String getThumbnailUrl(String path, int width, int height) {
 		

@@ -32,7 +32,7 @@ public interface UserAdminModel {
 	
 	public UserForm getForm(Integer userId);
 	
-	public User get(Integer userId);
+	public User get(Integer userId, Class<? extends User> clazz);
 	
 	public User getOneByUsername(String username);
 	

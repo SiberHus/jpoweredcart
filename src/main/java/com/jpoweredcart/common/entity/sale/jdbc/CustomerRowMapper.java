@@ -3,39 +3,34 @@ package com.jpoweredcart.common.entity.sale.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.springframework.jdbc.core.RowMapper;
-
 import com.jpoweredcart.common.entity.sale.Customer;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class CustomerRowMapper implements RowMapper<Customer>{
-
-	public Customer newObject(){
-		return new Customer();
-	}
+public class CustomerRowMapper extends ObjectFactoryRowMapper<Customer>{
+	
 	
 	@Override
-	public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Customer cust = newObject();
-		cust.setId(rs.getInt("customer_id"));
-		cust.setStoreId(rs.getInt("store_id"));
-		cust.setFirstName(rs.getString("firstname"));
-		cust.setLastName(rs.getString("lastname"));
-		cust.setEmail(rs.getString("email"));
-		cust.setTelephone(rs.getString("telephone"));
-		cust.setFax(rs.getString("fax"));
-		cust.setPassword(rs.getString("password"));
-		cust.setSalt(rs.getString("salt"));
-		cust.setCart(rs.getString("cart"));
-		cust.setWishlist(rs.getString("wishlist"));
-		cust.setNewsletter(rs.getShort("newsletter"));
-		cust.setAddressId(rs.getInt("address_id"));
-		cust.setCustomerGroupId(rs.getInt("customer_group_id"));
-		cust.setIp(rs.getString(rs.getString("ip")));
-		cust.setStatus(rs.getShort("status"));
-		cust.setApproved(rs.getShort("approved"));
-		cust.setToken(rs.getString("token"));
-		cust.setDateAdded(rs.getDate("date_added"));
-		return cust;
+	public Customer mapRow(ResultSet rs, Customer object) throws SQLException {
+		object.setId(rs.getInt("customer_id"));
+		object.setStoreId(rs.getInt("store_id"));
+		object.setFirstName(rs.getString("firstname"));
+		object.setLastName(rs.getString("lastname"));
+		object.setEmail(rs.getString("email"));
+		object.setTelephone(rs.getString("telephone"));
+		object.setFax(rs.getString("fax"));
+		object.setPassword(rs.getString("password"));
+		object.setSalt(rs.getString("salt"));
+		object.setCart(rs.getString("cart"));
+		object.setWishlist(rs.getString("wishlist"));
+		object.setNewsletter(rs.getShort("newsletter"));
+		object.setAddressId(rs.getInt("address_id"));
+		object.setCustomerGroupId(rs.getInt("customer_group_id"));
+		object.setIp(rs.getString(rs.getString("ip")));
+		object.setStatus(rs.getShort("status"));
+		object.setApproved(rs.getShort("approved"));
+		object.setToken(rs.getString("token"));
+		object.setDateAdded(rs.getDate("date_added"));
+		return object;
 	}
 
 	

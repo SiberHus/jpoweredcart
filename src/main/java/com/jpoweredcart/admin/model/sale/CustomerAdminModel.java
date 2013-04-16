@@ -25,7 +25,7 @@ public interface CustomerAdminModel {
 	
 	public CustomerForm getForm(Integer custId);
 	
-	public Customer get(Integer custId);
+	public Customer get(Integer custId, Class<? extends Customer> clazz);
 	
 	public Customer getOneByEmail(String email);
 	

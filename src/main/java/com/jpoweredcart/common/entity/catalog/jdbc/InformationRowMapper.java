@@ -9,21 +9,17 @@ import com.jpoweredcart.common.entity.catalog.Information;
 import com.jpoweredcart.common.entity.catalog.InformationDesc;
 import com.jpoweredcart.common.entity.catalog.InformationToLayout;
 import com.jpoweredcart.common.entity.catalog.InformationToStore;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class InformationRowMapper implements RowMapper<Information>{
-	
-	public Information newObject(){
-		return new Information();
-	}
+public class InformationRowMapper extends ObjectFactoryRowMapper<Information>{
 	
 	@Override
-	public Information mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Information info = newObject();
-		info.setId(rs.getInt("information_id"));
-		info.setBottom(rs.getInt("bottom"));
-		info.setSortOrder(rs.getInt("sort_order"));
-		info.setStatus(rs.getShort("status"));
-		return info;
+	public Information mapRow(ResultSet rs, Information object) throws SQLException {
+		object.setId(rs.getInt("information_id"));
+		object.setBottom(rs.getInt("bottom"));
+		object.setSortOrder(rs.getInt("sort_order"));
+		object.setStatus(rs.getShort("status"));
+		return object;
 	}
 	
 	public static class Desc implements RowMapper<InformationDesc>{

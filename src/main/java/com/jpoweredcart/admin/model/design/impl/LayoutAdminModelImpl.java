@@ -87,21 +87,18 @@ public class LayoutAdminModelImpl extends BaseModel implements LayoutAdminModel 
 	
 	@Override
 	public LayoutForm getForm(Integer layoutId){
-		String sql = "SELECT DISTINCT * FROM " +quoteTable("layout")+ " WHERE layout_id =?";
-		LayoutForm layoutForm = (LayoutForm)getJdbcOperations().queryForObject(
-				sql, new Object[]{layoutId}, 
-			new LayoutRowMapper(){
-				public LayoutForm newObject(){ return new LayoutForm(); }	
-			});
+		LayoutForm layoutForm = (LayoutForm)get(layoutId, LayoutForm.class);
 		List<LayoutRoute> layoutRoutes = getLayoutRoutes(layoutId);
 		layoutForm.setLayoutRoutes(layoutRoutes);
 		return layoutForm;
 	}
 	
 	@Override
-	public Layout get(Integer layoutId) {
-		
-		return getForm(layoutId);
+	public Layout get(Integer layoutId, Class<? extends Layout> clazz) {
+		String sql = "SELECT DISTINCT * FROM " +quoteTable("layout")+ " WHERE layout_id =?";
+		return (LayoutForm)getJdbcOperations().queryForObject(
+				sql, new Object[]{layoutId}, 
+			new LayoutRowMapper().setTargetClass(clazz));
 	}
 	
 	@Override

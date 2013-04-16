@@ -99,16 +99,14 @@ public class AffiliateAdminModelImpl extends BaseModel implements AffiliateAdmin
 	@Override
 	public AffiliateForm getForm(Integer affId) {
 		
-		String sql = "SELECT * FROM "+quoteTable("affiliate")+" WHERE affiliate_id=?";
-		return (AffiliateForm)getJdbcOperations().queryForObject(
-				sql, new Object[]{affId}, new AffiliateRowMapper(){
-					public Affiliate newObject(){ return new AffiliateForm(); }
-				});
+		return (AffiliateForm)get(affId, AffiliateForm.class);
 	}
 	
 	@Override
-	public Affiliate get(Integer affId) {
-		return getForm(affId);
+	public Affiliate get(Integer affId, Class<? extends Affiliate> clazz) {
+		String sql = "SELECT * FROM "+quoteTable("affiliate")+" WHERE affiliate_id=?";
+		return getJdbcOperations().queryForObject(sql, new Object[]{affId}, 
+				new AffiliateRowMapper().setTargetClass(clazz));
 	}
 
 	@Override

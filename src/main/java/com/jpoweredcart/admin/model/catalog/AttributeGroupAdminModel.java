@@ -20,7 +20,7 @@ public interface AttributeGroupAdminModel {
 	
 	public AttributeGroupForm getForm(Integer attrGrpId);
 	
-	public AttributeGroup get(Integer attrGrpId);
+	public AttributeGroup get(Integer attrGrpId, Class<? extends AttributeGroup> clazz);
 	
 	public List<AttributeGroup> getList(PageParam pageParam);
 	

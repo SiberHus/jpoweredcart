@@ -57,7 +57,7 @@ public class ProductAdminModelImpl extends BaseModel implements ProductAdminMode
 	}
 
 	@Override
-	public Product get(Integer productId) {
+	public Product get(Integer productId, Class<? extends Product> clazz) {
 		// TODO Auto-generated method stub
 		return null;
 	}

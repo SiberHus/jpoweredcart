@@ -3,26 +3,20 @@ package com.jpoweredcart.common.entity.localisation.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.springframework.jdbc.core.RowMapper;
-
 import com.jpoweredcart.common.entity.localisation.GeoZone;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class GeoZoneRowMapper implements RowMapper<GeoZone> {
-	
-	public GeoZone newObject(){
-		return new GeoZone();
-	}
+public class GeoZoneRowMapper extends ObjectFactoryRowMapper<GeoZone> {
 	
 	@Override
-	public GeoZone mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public GeoZone mapRow(ResultSet rs, GeoZone object) throws SQLException {
 		
-		GeoZone geoZone = newObject();
-		geoZone.setId(rs.getInt("geo_zone_id"));
-		geoZone.setName(rs.getString("name"));
-		geoZone.setDescription(rs.getString("description"));
-		geoZone.setDateModified(rs.getDate("date_modified"));
-		geoZone.setDateAdded(rs.getDate("date_added"));
-		return geoZone;
+		object.setId(rs.getInt("geo_zone_id"));
+		object.setName(rs.getString("name"));
+		object.setDescription(rs.getString("description"));
+		object.setDateModified(rs.getDate("date_modified"));
+		object.setDateAdded(rs.getDate("date_added"));
+		return object;
 	}
 	
 	

@@ -48,18 +48,16 @@ public class CountryAdminModelImpl extends BaseModel implements CountryAdminMode
 
 	@Override
 	public CountryForm getForm(Integer countryId) {
-		String sql = "SELECT * FROM " +quoteTable("country")+ " WHERE country_id = ?";
-		return (CountryForm)getJdbcOperations().queryForObject(
-				sql, new Object[]{countryId}, 
-			new CountryRowMapper(){
-				@Override
-				public Country newObject() { return new CountryForm(); }
-			});
+		return (CountryForm)get(countryId, CountryForm.class);
 	}
 	
 	@Override
-	public Country get(Integer countryId) {
-		return getForm(countryId);
+	public Country get(Integer countryId, final Class<? extends Country> clazz) {
+		
+		String sql = "SELECT * FROM " +quoteTable("country")+ " WHERE country_id = ?";
+		return (Country)getJdbcOperations().queryForObject(
+				sql, new Object[]{countryId}, 
+			new CountryRowMapper().setTargetClass(clazz));
 	}
 	
 	@Override

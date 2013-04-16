@@ -4,22 +4,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.jpoweredcart.common.entity.localisation.TaxRate;
-import org.springframework.jdbc.core.RowMapper;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class TaxRateRowMapper implements RowMapper<TaxRate>{
+public class TaxRateRowMapper extends ObjectFactoryRowMapper<TaxRate>{
 
 	
 	@Override
-	public TaxRate mapRow(ResultSet rs, int rowNum) throws SQLException {
-		TaxRate taxRate = new TaxRate();
-		taxRate.setId(rs.getInt("tax_rate_id"));
-		taxRate.setGeoZoneId(rs.getInt("geo_zone_id"));
-		taxRate.setName(rs.getString("name"));
-		taxRate.setRate(rs.getBigDecimal("rate"));
-		taxRate.setType(rs.getString("type"));
-		taxRate.setDateAdded(rs.getDate("date_added"));
-		taxRate.setDateModified(rs.getDate("date_modified"));
-		return taxRate;
+	public TaxRate mapRow(ResultSet rs, TaxRate object) throws SQLException {
+		object.setId(rs.getInt("tax_rate_id"));
+		object.setGeoZoneId(rs.getInt("geo_zone_id"));
+		object.setName(rs.getString("name"));
+		object.setRate(rs.getBigDecimal("rate"));
+		object.setType(rs.getString("type"));
+		object.setDateAdded(rs.getDate("date_added"));
+		object.setDateModified(rs.getDate("date_modified"));
+		return object;
 	}
 	
 }

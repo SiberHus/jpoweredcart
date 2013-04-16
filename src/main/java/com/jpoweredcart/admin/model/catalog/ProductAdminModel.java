@@ -29,7 +29,7 @@ public interface ProductAdminModel {
 	
 	public void delete(Integer productId);
 	
-	public Product get(Integer productId);
+	public Product get(Integer productId, Class<? extends Product> clazz);
 	
 	public List<Product> getList(PageParam pageParam);
 	

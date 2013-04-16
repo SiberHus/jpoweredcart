@@ -3,48 +3,30 @@ package com.jpoweredcart.common.entity.user.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.jpoweredcart.admin.form.user.UserForm;
 import com.jpoweredcart.common.entity.user.User;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
 
 @Component
-public class UserRowMapper implements RowMapper<User>{
-	
-	private static void setProperties(ResultSet rs, User user) throws SQLException{
-		
-		user.setId(rs.getInt("user_id"));
-		user.setUserGroupId(rs.getInt("user_group_id"));
-		user.setUsername(rs.getString("username"));
-		user.setPassword(rs.getString("password"));
-		user.setSalt(rs.getString("salt"));
-		user.setFirstName(rs.getString("firstname"));
-		user.setLastName(rs.getString("lastname"));
-		user.setEmail(rs.getString("email"));
-		user.setCode(rs.getString("code"));
-		user.setIp(rs.getString("ip"));
-		user.setStatus(rs.getInt("status"));
-		user.setDateAdded(rs.getDate("date_added"));
-	}
+public class UserRowMapper extends ObjectFactoryRowMapper<User>{
 	
 	@Override
-	public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-		User user = new User();
-		setProperties(rs, user);
-		return user;
+	public User mapRow(ResultSet rs, User object) throws SQLException {
+		object.setId(rs.getInt("user_id"));
+		object.setUserGroupId(rs.getInt("user_group_id"));
+		object.setUsername(rs.getString("username"));
+		object.setPassword(rs.getString("password"));
+		object.setSalt(rs.getString("salt"));
+		object.setFirstName(rs.getString("firstname"));
+		object.setLastName(rs.getString("lastname"));
+		object.setEmail(rs.getString("email"));
+		object.setCode(rs.getString("code"));
+		object.setIp(rs.getString("ip"));
+		object.setStatus(rs.getInt("status"));
+		object.setDateAdded(rs.getDate("date_added"));
+		return object;
 	}
 	
-	
-	public static class Form implements RowMapper<UserForm>{
-
-		@Override
-		public UserForm mapRow(ResultSet rs, int rowNum) throws SQLException {
-			UserForm form = new UserForm();
-			setProperties(rs, form);
-			return form;
-		}
-		
-	}
 }

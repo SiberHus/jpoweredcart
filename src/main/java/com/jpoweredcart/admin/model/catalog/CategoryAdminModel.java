@@ -21,7 +21,7 @@ public interface CategoryAdminModel {
 	
 	public CategoryForm getForm(Integer catId);
 	
-	public Category get(Integer catId);
+	public Category get(Integer catId, Class<? extends Category> clazz);
 	
 	public List<Category> getList(String separator, PageParam pageParam);
 	

@@ -174,17 +174,13 @@ public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminMo
 				sql, new Object[]{"category_id="+catId, catId}, 
 				new CategoryRowMapper(){
 					@Override
-					public Category newObject() {
-						return new CategoryForm();
-					}
-					@Override
 					public Category mapRow(ResultSet rs, int rowNum)
 							throws SQLException {
 						CategoryForm form = (CategoryForm)super.mapRow(rs, rowNum);
 						form.setKeyword(rs.getString("keyword"));
 						return form;
 					}
-			});
+			}.setTargetClass(CategoryForm.class));
 		catForm.setDescs(getDescriptions(catId));
 		catForm.setStores(getCatStores(catId));
 		catForm.setLayouts(getCatLayouts(catId));
@@ -193,11 +189,11 @@ public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminMo
 	}
 	
 	@Override
-	public Category get(Integer catId) {
+	public Category get(Integer catId, Class<? extends Category> clazz) {
 		
 		String sql = "SELECT * FROM " + quoteTable("category")+" WHERE category_id = ?";
 		Category cat = getJdbcOperations().queryForObject(sql, 
-				new Object[]{catId}, new CategoryRowMapper());
+				new Object[]{catId}, new CategoryRowMapper().setTargetClass(clazz));
 		return cat;
 	}
 	

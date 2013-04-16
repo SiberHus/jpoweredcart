@@ -10,6 +10,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jpoweredcart.admin.form.sale.OrderForm;
 import com.jpoweredcart.admin.form.sale.filter.TotalOrdersFilter;
 import com.jpoweredcart.admin.model.localisation.CountryAdminModel;
 import com.jpoweredcart.admin.model.localisation.CurrencyAdminModel;
@@ -69,32 +70,32 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 
 	@Transactional
 	@Override
-	public void create(Order order) {
+	public void create(OrderForm orderForm) {
 		
-		Store store = storeAdminModel.get(order.getStoreId());
+		Store store = storeAdminModel.get(orderForm.getStoreId());
 		String storeName = store.getName();
 		String storeUrl = store.getUrl();
 		
 		String invoicePrefix = null;
-		Map<String, Object> settings = settingAdminModel.getSettings(SettingGroup.CONFIG, order.getStoreId());
+		Map<String, Object> settings = settingAdminModel.getSettings(SettingGroup.CONFIG, orderForm.getStoreId());
 		if(settings.containsKey(SettingKey.INVOICE_PREFIX)){
 			invoicePrefix = ObjectUtils.toString(settings.get(SettingKey.INVOICE_PREFIX));
 		}else{
 			invoicePrefix = getSettingService().getConfig(SettingKey.CFG_INVOICE_PREFIX);
 		}
 		
-		Country country = countryAdminModel.get(order.getPaymentCountryId());
+		Country country = countryAdminModel.get(orderForm.getPaymentCountryId(), Country.class);
 		String shippingCountry = country.getName();
 		String shippingAddrFmt = country.getAddressFormat();
 		
-		Zone zone = zoneAdminModel.get(order.getShippingZoneId());
+		Zone zone = zoneAdminModel.get(orderForm.getShippingZoneId());
 		String shippingZone = zone.getName();
 		
-		country = countryAdminModel.get(order.getPaymentCountryId());
+		country = countryAdminModel.get(orderForm.getPaymentCountryId(), Country.class);
 		String paymentCountry = country.getName();
 		String paymentAddrFmt = country.getAddressFormat();
 		
-		zone = zoneAdminModel.get(order.getPaymentZoneId());
+		zone = zoneAdminModel.get(orderForm.getPaymentZoneId());
 		String paymentZone = zone.getName();
 		
 		String currencyCode = getSettingService().getConfig(SettingKey.CFG_CURRENCY);
@@ -107,7 +108,7 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 
 	@Transactional
 	@Override
-	public void update(Integer orderId) {
+	public void update(OrderForm orderForm) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -118,9 +119,21 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public OrderForm newForm() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
-	public Order get(Integer orderId) {
+	public OrderForm getForm(Integer orderId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Order get(Integer orderId, Class<? extends Order> clazz) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -132,39 +145,39 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 	}
 
 	@Override
-	public List<OrderProduct> getOrderProducts(Integer orderId) {
+	public List<OrderProduct> getProducts(Integer orderId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public OrderOption getOrderOption(Integer orderId, Integer orderOptionId) {
+	public OrderOption getOption(Integer orderId, Integer orderOptionId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<OrderOption> getOrderOptions(Integer orderId,
+	public List<OrderOption> getOptions(Integer orderId,
 			Integer orderProductId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<OrderDownload> getOrderDownloads(Integer orderId,
+	public List<OrderDownload> getDownloads(Integer orderId,
 			Integer orderProductId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<OrderVoucher> getOrderVouchers(Integer orderId) {
+	public List<OrderVoucher> getVouchers(Integer orderId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public OrderVoucher getOrderVoucherByVoucherId(Integer voucherId) {
+	public OrderVoucher getVoucherByVoucherId(Integer voucherId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -208,16 +221,16 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 	}
 	
 	@Override
-	public int getTotalSales() {
+	public BigDecimal getTotalSales() {
 		String sql = "SELECT SUM(total) AS total FROM "+quoteTable("order")+" WHERE order_status_id > '0'";
-		return getJdbcOperations().queryForObject(sql, Integer.class);
+		return getJdbcOperations().queryForObject(sql, BigDecimal.class);
 	}
-
+	
 	@Override
-	public int getTotalSalesByYear(int year) {
+	public BigDecimal getTotalSalesByYear(int year) {
 		String sql = "SELECT SUM(total) AS total FROM "+quoteTable("order")+
 				" WHERE order_status_id > '0' AND YEAR(date_added) = ?";
-		return getJdbcOperations().queryForObject(sql, new Object[]{year}, Integer.class);
+		return getJdbcOperations().queryForObject(sql, new Object[]{year}, BigDecimal.class);
 	}
 
 	@Override
@@ -227,13 +240,13 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 	}
 
 	@Override
-	public void addOrderHistory(OrderHistory orderHistory) {
+	public void addHistory(OrderHistory orderHistory) {
 		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
-	public List<OrderHistory> getOrderHistories(Integer orderId, int start,
+	public List<OrderHistory> getHistories(Integer orderId, int start,
 			int limit) {
 		start = start<0?0:start;
 		limit = limit<1?10:limit;
@@ -248,14 +261,14 @@ public class OrderAdminModelImpl extends BaseModel implements OrderAdminModel{
 	}
 
 	@Override
-	public int getTotalOrderHistories(Integer orderId) {
+	public int getTotalHistories(Integer orderId) {
 		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("order_history")+" WHERE order_id = ?";
 		return getJdbcOperations().queryForObject(sql, 
 				new Object[]{orderId}, Integer.class);
 	}
 
 	@Override
-	public int getTotalOrderHistoriesByOrderStatusId(Integer orderStatusId) {
+	public int getTotalHistoriesByOrderStatusId(Integer orderStatusId) {
 		
 		String sql = "SELECT COUNT(*) AS total FROM "+quoteTable("order_history")+
 				" WHERE order_status_id = ?";

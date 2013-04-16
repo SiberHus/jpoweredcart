@@ -7,22 +7,18 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.jpoweredcart.common.entity.sale.CustomerGroup;
 import com.jpoweredcart.common.entity.sale.CustomerGroupDesc;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class CustomerGroupRowMapper implements RowMapper<CustomerGroup>{
-	
-	public CustomerGroup newObject(){
-		return new CustomerGroup();
-	}
+public class CustomerGroupRowMapper extends ObjectFactoryRowMapper<CustomerGroup>{
 	
 	@Override
-	public CustomerGroup mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public CustomerGroup mapRow(ResultSet rs, CustomerGroup object) throws SQLException {
 		
-		CustomerGroup cg = newObject();
-		cg.setId(rs.getInt("customer_group_id"));
-		cg.setApproval(rs.getInt("approval"));
-		cg.setSortOrder(rs.getInt("sort_order"));
+		object.setId(rs.getInt("customer_group_id"));
+		object.setApproval(rs.getInt("approval"));
+		object.setSortOrder(rs.getInt("sort_order"));
 //		cg.setName(rs.getString("name"));
-		return cg;
+		return object;
 	}
 	
 	public static class Desc implements RowMapper<CustomerGroupDesc>{
@@ -41,6 +37,6 @@ public class CustomerGroupRowMapper implements RowMapper<CustomerGroup>{
 			return desc;
 		}
 		
-		
 	}
+	
 }

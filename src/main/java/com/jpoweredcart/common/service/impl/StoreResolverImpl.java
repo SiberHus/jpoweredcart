@@ -17,24 +17,28 @@ import com.jpoweredcart.common.system.setting.DefaultSettings;
 public class StoreResolverImpl extends BaseModel implements StoreResolver,
 	ScheduledDataUpdate, InitializingBean {
 	
-	private Map<String, Integer> storeMap = new HashMap<String, Integer>();
+	private Map<Integer, String> storeMap = new HashMap<Integer, String>();
 	
 	@Override
 	public void updateData() {
-		final Map<String, Integer> dataMap = new HashMap<String, Integer>();
+		final Map<Integer, String> dataMap = new HashMap<Integer, String>();
 		String http = getEnvironment().getProperty("app.http");
 		String https = getEnvironment().getProperty("app.https");
-		dataMap.put(http, 0);
-		dataMap.put(https, 0);
+		dataMap.put(0, http);
+		dataMap.put(0, https);
 		
-		String sql = "SELECT store_id, url, "+quoteName("ssl")+" FROM "+quoteTable("store");
+		String sql = "SELECT store_id, url FROM "+quoteTable("store");
 		
 		getJdbcOperations().query(sql, new RowCallbackHandler(){
 			@Override
 			public void processRow(ResultSet rs) throws SQLException {
 				Integer storeId = rs.getInt("store_id");
-				dataMap.put(rs.getString("url"), storeId);
-				dataMap.put(rs.getString("ssl"), storeId);
+				String url = rs.getString("url");
+				int pos = url.indexOf("://");
+				if(pos!=-1){
+					url = url.substring(pos+3);
+				}
+				dataMap.put(storeId, url);
 			}
 		});
 		this.storeMap = dataMap;
@@ -46,13 +50,27 @@ public class StoreResolverImpl extends BaseModel implements StoreResolver,
 	}
 	
 	@Override
-	public Integer resolve(String url) {
-		for(Entry<String, Integer> entry: storeMap.entrySet()){
-			if(url.startsWith(entry.getKey())){
-				return entry.getValue();
+	public Integer getStoreId(String url) {
+		int pos = url.indexOf("://");
+		if(pos!=-1){
+			url = url.substring(pos+3);
+		}
+		for(Entry<Integer, String> entry: storeMap.entrySet()){
+			if(url.startsWith(entry.getValue())){
+				return entry.getKey();
 			}
 		}
 		return DefaultSettings.STORE_ID;
+	}
+
+	@Override
+	public String getStoreUrl(Integer storeId, boolean secured) {
+		String url = storeMap.get(storeId);
+		if(url!=null){
+			String protocol = secured?"https://":"http://";
+			url = protocol + url;
+		}
+		return url;
 	}
 	
 	

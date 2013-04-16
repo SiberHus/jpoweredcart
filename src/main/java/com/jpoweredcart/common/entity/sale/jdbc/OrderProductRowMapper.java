@@ -4,29 +4,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.jpoweredcart.common.entity.sale.OrderProduct;
-import org.springframework.jdbc.core.RowMapper;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class OrderProductRowMapper implements RowMapper<OrderProduct>{
-
-	public OrderProduct newObject(){
-		return new OrderProduct();
-	}
+public class OrderProductRowMapper extends ObjectFactoryRowMapper<OrderProduct>{
 	
 	@Override
-	public OrderProduct mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public OrderProduct mapRow(ResultSet rs, OrderProduct object) throws SQLException {
 		
-		OrderProduct orderProduct = newObject();
-		orderProduct.setId(rs.getInt("order_product_id"));
-		orderProduct.setOrderId(rs.getInt("order_id"));
-		orderProduct.setProductId(rs.getInt("product_id"));
-		orderProduct.setName(rs.getString("name"));
-		orderProduct.setModel(rs.getString("model"));
-		orderProduct.setQuantity(rs.getInt("quantity"));
-		orderProduct.setPrice(rs.getBigDecimal("price"));
-		orderProduct.setTotal(rs.getBigDecimal("total"));
-		orderProduct.setTax(rs.getBigDecimal("tax"));
-		orderProduct.setReward(rs.getInt("reward"));
-		return orderProduct;
+		object.setId(rs.getInt("order_product_id"));
+		object.setOrderId(rs.getInt("order_id"));
+		object.setProductId(rs.getInt("product_id"));
+		object.setName(rs.getString("name"));
+		object.setModel(rs.getString("model"));
+		object.setQuantity(rs.getInt("quantity"));
+		object.setPrice(rs.getBigDecimal("price"));
+		object.setTotal(rs.getBigDecimal("total"));
+		object.setTax(rs.getBigDecimal("tax"));
+		object.setReward(rs.getInt("reward"));
+		return object;
 	}
 	
 }

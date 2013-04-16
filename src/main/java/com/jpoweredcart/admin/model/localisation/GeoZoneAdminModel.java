@@ -18,7 +18,7 @@ public interface GeoZoneAdminModel {
 	
 	public GeoZoneForm getForm(Integer geoZoneId);
 	
-	public GeoZone get(Integer geoZoneId);
+	public GeoZone get(Integer geoZoneId, Class<? extends GeoZone> clazz);
 	
 	public List<GeoZone> getList(PageParam pageParam);
 	

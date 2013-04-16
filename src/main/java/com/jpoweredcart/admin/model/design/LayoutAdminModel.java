@@ -19,7 +19,7 @@ public interface LayoutAdminModel {
 	
 	public LayoutForm getForm(Integer layoutId);
 	
-	public Layout get(Integer layoutId);
+	public Layout get(Integer layoutId, Class<? extends Layout> clazz);
 	
 	public List<Layout> getList(PageParam pageParam);
 	

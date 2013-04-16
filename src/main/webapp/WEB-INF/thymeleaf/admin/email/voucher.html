@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title th:text="#{text.subject(${fromName})}"></title>
+<style type="text/css">
+body {
+	color: #000000;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+body,td,th,input,textarea,select,a {
+	font-size: 12px;
+}
+
+p {
+	margin-top: 0px;
+	margin-bottom: 20px;
+}
+
+a,a:visited,a b {
+	color: #378DC1;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+a img {
+	border: none;
+}
+
+#container {
+	width: 680px;
+}
+</style>
+</head>
+<body>
+	<div id="container">
+		<div style="float: right; margin-left: 20px;">
+			<a th:href="${storeUrl}"
+				th:title="${storeName}">
+				<img th:src="${image}" th:alt="${storeName}" />
+			</a>
+		</div>
+		<div>
+			<p th:text="#{text.greeting(${amount})}"></p>
+			<p th:text="#{text.from(${fromName})}"></p>
+			<div th:if="${message!=null}">
+				<p th:text="#{text.message}"></p>
+				<p th:text="${message}"></p>
+			</div>
+			<p th:text="#{text.redeem(${code})}"></p>
+			<p>
+				<a th:href="${storeUrl}" th:title="${storeName}" th:text="${storeUrl}">
+				http://www.jpoweredcart.com
+				</a>
+			</p>
+			<p th:text="#{text.footer}"></p>
+		</div>
+	</div>
+</body>
+</html>

@@ -97,22 +97,16 @@ public class CustomerGroupAdminModelImpl extends BaseModel implements CustomerGr
 	public CustomerGroupForm getForm(Integer cgId){
 //		String sql = "SELECT DISTINCT * FROM " +quoteTable("customer_group")+ " cg LEFT JOIN " +quoteTable("customer_group_description")+ 
 //				" cgd ON (cg.customer_group_id = cgd.customer_group_id) WHERE cg.customer_group_id = ? AND cgd.language_id = ?";
-		String sql = "SELECT DISTINCT * FROM " +quoteTable("customer_group")+ " cg WHERE cg.customer_group_id = ?";
-		CustomerGroupForm cgForm = (CustomerGroupForm)getJdbcOperations().queryForObject(
-				sql, new Object[]{cgId}, new CustomerGroupRowMapper(){
-					@Override
-					public CustomerGroup newObject() {
-						return new CustomerGroupForm();
-					}
-				});
+		CustomerGroupForm cgForm = (CustomerGroupForm)get(cgId, CustomerGroupForm.class);
 		cgForm.setDescs(getDescriptions(cgId));
 		return cgForm;
 	}
 	
 	@Override
-	public CustomerGroup get(Integer cgId) {
-		
-		return getForm(cgId);
+	public CustomerGroup get(Integer cgId, Class<? extends CustomerGroup> clazz) {
+		String sql = "SELECT * FROM " +quoteTable("customer_group")+ " cg WHERE cg.customer_group_id = ?";
+		return getJdbcOperations().queryForObject(sql, new Object[]{cgId}, 
+				new CustomerGroupRowMapper().setTargetClass(clazz));
 	}
 	
 	@Override
@@ -126,13 +120,13 @@ public class CustomerGroupAdminModelImpl extends BaseModel implements CustomerGr
 		List<CustomerGroup> customerGroupList = getJdbcOperations()
 				.query(query.getSql(), query.getParameters(), new CustomerGroupRowMapper(){
 					@Override
-					public CustomerGroup mapRow(ResultSet rs, int rowNum)
+					public CustomerGroup mapRow(ResultSet rs, CustomerGroup object)
 							throws SQLException {
-						CustomerGroup customerGroup = super.mapRow(rs, rowNum);
+						CustomerGroup customerGroup = super.mapRow(rs, object);
 						customerGroup.setName(rs.getString("name"));
 						return customerGroup;
 					}
-				});
+				}.setTargetClass(CustomerGroup.class));
 		return customerGroupList;
 	}
 	

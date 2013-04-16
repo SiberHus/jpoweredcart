@@ -7,22 +7,17 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.jpoweredcart.common.entity.catalog.Attribute;
 import com.jpoweredcart.common.entity.catalog.AttributeDesc;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
 
-public class AttributeRowMapper implements RowMapper<Attribute>{
-	
-	public Attribute newObject(){
-		return new Attribute();
-	}
+public class AttributeRowMapper extends ObjectFactoryRowMapper<Attribute>{
 	
 	@Override
-	public Attribute mapRow(ResultSet rs, int rowNum) throws SQLException {
-		
-		Attribute attr = newObject();
-		attr.setId(rs.getInt("attribute_id"));
-		attr.setAttributeGroupId(rs.getInt("attribute_group_id"));
-		attr.setSortOrder(rs.getInt("sort_order"));
-		return attr;
+	public Attribute mapRow(ResultSet rs, Attribute object) throws SQLException {
+		object.setId(rs.getInt("attribute_id"));
+		object.setAttributeGroupId(rs.getInt("attribute_group_id"));
+		object.setSortOrder(rs.getInt("sort_order"));
+		return object;
 	}
 	
 	public static class Desc implements RowMapper<AttributeDesc>{

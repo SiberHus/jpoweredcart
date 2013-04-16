@@ -19,7 +19,7 @@ public interface DownloadAdminModel {
 	
 	public DownloadForm getForm(Integer dlId);
 	
-	public Download get(Integer dlId);
+	public Download get(Integer dlId, Class<? extends Download> clazz);
 	
 	public List<Download> getList(PageParam pageParam);
 	

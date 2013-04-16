@@ -1,6 +1,7 @@
 package com.jpoweredcart.common.entity.localisation;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import javax.validation.constraints.Size;
 
@@ -21,7 +22,7 @@ public class Language implements Serializable{
 	protected String code;
 	
 	@NotBlank
-	protected String locale;
+	protected Locale locale;
 	
 	@NotBlank @Size(min=3, max=32)
 	protected String image;
@@ -54,10 +55,10 @@ public class Language implements Serializable{
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public String getLocale() {
+	public Locale getLocale() {
 		return locale;
 	}
-	public void setLocale(String locale) {
+	public void setLocale(Locale locale) {
 		this.locale = locale;
 	}
 	public String getImage() {

@@ -5,8 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -14,12 +15,17 @@ import org.springframework.jdbc.core.RowCallbackHandler;
 
 import com.jpoweredcart.catalog.service.LengthService;
 import com.jpoweredcart.common.BaseModel;
+import com.jpoweredcart.common.entity.localisation.Language;
 import com.jpoweredcart.common.entity.localisation.LengthClass;
+import com.jpoweredcart.common.service.LanguageService;
 import com.jpoweredcart.common.system.ScheduledDataUpdate;
 
 public class LengthServiceImpl extends BaseModel implements LengthService, ScheduledDataUpdate, InitializingBean {
 	
 	private Map<String, LengthClass> lengthClassMap = new HashMap<String, LengthClass>();
+	
+	@Inject
+	private LanguageService languageService;
 	
 	@Override
 	public void updateData() {
@@ -69,12 +75,18 @@ public class LengthServiceImpl extends BaseModel implements LengthService, Sched
 	}
 	
 	@Override
-	public String format(Number value, Integer languageId, Integer classId, Locale locale) {
+	public String format(Number value, Integer languageId, Integer classId) {
 		
-		return NumberFormat.getInstance(locale).format(value)
-			+" "+getUnit(languageId, classId);
+		Language language = languageService.getById(languageId);
+		NumberFormat numberFormat = null;
+		if(language!=null && language.getLocale()!=null){
+			numberFormat = NumberFormat.getInstance(language.getLocale());
+		}else{
+			numberFormat = NumberFormat.getInstance();
+		}
+		return numberFormat.format(value)+" "+getUnit(languageId, classId);
 	}
-
+	
 	@Override
 	public String getUnit(Integer languageId, Integer classId) {
 		LengthClass lengthClass = lengthClassMap.get(languageId+"_"+classId);

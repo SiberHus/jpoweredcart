@@ -64,7 +64,7 @@ public class GeoZoneAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		model.addAttribute("geoZoneForm", countryAdminModel.newForm());
+		model.addAttribute("geoZoneForm", geoZoneAdminModel.newForm());
 		model.addAttribute("countries", countryAdminModel.getAll());
 		
 		return "/admin/localisation/geoZoneForm";
@@ -134,11 +134,11 @@ public class GeoZoneAdminController extends BaseController {
 		return "redirect:/admin/localisation/geoZone";
 	}
 	
-	@RequestMapping(value="/getZoneOptions.html", method=RequestMethod.GET)
+	@RequestMapping(value="/zoneOptions.html", method=RequestMethod.GET)
 	public @ResponseBody String getZoneOptions(@RequestParam("countryId") Integer countryId, 
 			@RequestParam("zoneId") Integer zoneId, HttpServletRequest request){
 		
-		logger.debug("getZoneOptions.html?countryId={}&zoneId={}", countryId, zoneId );
+		logger.debug("zoneOptions.html?countryId={}&zoneId={}", countryId, zoneId );
 		StringBuilder output = new StringBuilder();
 		output.append("<option value=\"0\">");
 		output.append(message(request, "text.allZones"));
@@ -152,7 +152,7 @@ public class GeoZoneAdminController extends BaseController {
 			}
 			output.append(">").append(zone.getName()).append("</option>");
 		}
-		logger.debug("getZoneOptions return size:{}", zoneList.size());
+		logger.debug("zoneOptions return size:{}", zoneList.size());
 		return output.toString();
 	}
 	

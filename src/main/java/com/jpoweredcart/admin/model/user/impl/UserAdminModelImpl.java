@@ -72,15 +72,14 @@ public class UserAdminModelImpl extends BaseModel implements UserAdminModel {
 	
 	@Override
 	public UserForm getForm(Integer userId) {
-		String sql = "SELECT * FROM " +quoteTable("user")+ " WHERE user_id = ?";
-		return getJdbcOperations().queryForObject(sql, new Object[]{userId}, 
-				new UserRowMapper.Form());
+		return (UserForm)get(userId, UserForm.class);
 	}
 
 	@Override
-	public User get(Integer userId) {
+	public User get(Integer userId, Class<? extends User> clazz) {
 		String sql = "SELECT * FROM " +quoteTable("user")+ " WHERE user_id = ?";
-		return getJdbcOperations().queryForObject(sql, new Object[]{userId}, new UserRowMapper());
+		return getJdbcOperations().queryForObject(sql, new Object[]{userId}, 
+				new UserRowMapper().setTargetClass(clazz));
 	}
 	
 	@Override

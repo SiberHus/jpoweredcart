@@ -19,7 +19,7 @@ public interface BannerAdminModel {
 	
 	public BannerForm getForm(Integer layoutId);
 	
-	public Banner get(Integer bannerId);
+	public Banner get(Integer bannerId, Class<? extends Banner> clazz);
 	
 	public List<Banner> getList(PageParam pageParam);
 	

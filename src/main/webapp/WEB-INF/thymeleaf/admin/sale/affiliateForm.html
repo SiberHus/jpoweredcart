@@ -66,7 +66,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td><span th:utext="#{entry.comapny}">Company:</span></td>
+										<td><span th:utext="#{entry.company}">Company:</span></td>
 										<td>
 											<input type="text" th:field="*{company}" />
 										</td>
@@ -267,8 +267,52 @@
 		<script th:inline="javascript">
 			/*<![CDATA[ */
 			$(function(){
-				$('.htabs a').tabs();
 				
+				var text = {}
+				text.select = /*[[#{text.select}]]*/'';
+				text.none = /*[[#{text.none}]]*/'';
+				text.wait = /*[[#{text.wait}]]*/'';
+				var zoneId = /*[[${affiliateForm.zoneId}]]*/'';
+				var countryUrl = /*[[@{/admin/sale/affiliate/country.json}]]*/'';
+				var loadingImgUrl = /*[[@{/resources/admin/image/loading.gif}]]*/'';
+				
+				$('select[name=\'countryId\']').on('change', function() {
+					$.ajax({
+						url: countryUrl+'?countryId=' + this.value,
+						dataType: 'json',
+						beforeSend: function() {
+							$('select[name=\'paymentCountryId\']').after('<img src="'+loadingImgUrl+'" class="loading" style="padding-left: 5px;" />');
+						},
+						complete: function() {
+							$('.loading').remove();
+						},
+						success: function(json) {
+							if (json['postcodeRequired'] == '1') {
+								$('#postcode-required').show();
+							} else {
+								$('#postcode-required').hide();
+							}
+							html = '<option value="">'+text.select+'</option>';
+							if (json != '' && json['zones'] != '') {
+								for (i = 0; i < json['zones'].length; i++) {
+									html += '<option value="' + json['zones'][i]['zoneId'] + '"';
+									if (json['zones'][i]['zoneId'] == zoneId) {
+										html += ' selected="selected"';
+									}
+									html += '>' + json['zones'][i]['name'] + '</option>';
+								}
+							} else {
+								html += '<option value="0" selected="selected">'+text.none+'</option>';
+							}
+							$('select[name=\'zoneId\']').html(html);
+						},
+						error: function(xhr, ajaxOptions, thrownError) {
+							alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+						}
+					});
+				});
+
+				$('select[name=\'countryId\']').trigger('change');
 				$('input[name=\'payment\']').on('change', function() {
 					$('.payment').hide();
 					$('#payment-' + this.value).show();
@@ -277,10 +321,38 @@
 				
 				$('#transaction .pagination a').live('click', function() {
 					$('#transaction').load(this.href);
-					
 					return false;
-				});	
+				});
 				
+				var affId = /*[[${affiliateForm.id}]]*/'';
+				var transUrl = /*[[@{/admin/sale/affiliate/transaction.html}]]*/'';
+				$('#transaction').load(transUrl+'?affiliateId='+affId);
+				
+				function addTransaction() {
+					$.ajax({
+						url: transUrl+'?affiliateId='+affId,
+						type: 'post',
+						dataType: 'html',
+						data: 'description=' + encodeURIComponent($('#tab-transaction input[name=\'description\']').val()) + 
+							'&amount=' + encodeURIComponent($('#tab-transaction input[name=\'amount\']').val()),
+						beforeSend: function() {
+							$('.success, .warning').remove();
+							$('#button-transaction').attr('disabled', true);
+							$('#transaction').before('<div class="attention"><img src="'+loadingImgUrl+'" alt="" /> '+text.wait+'</div>');
+						},
+						complete: function() {
+							$('#button-transaction').attr('disabled', false);
+							$('.attention').remove();
+						},
+						success: function(html) {
+							$('#transaction').html(html);
+							$('#tab-transaction input[name=\'amount\']').val('');
+							$('#tab-transaction input[name=\'description\']').val('');
+						}
+					});
+				}
+				
+				$('.htabs a').tabs();
 			});
 			/*]]>*/
 		</script>

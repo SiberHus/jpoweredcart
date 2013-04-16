@@ -69,7 +69,7 @@
 									</td>
 								</tr>
 								
-								<tr th:each="ztgz, rowStat : ${geoZone.zoneToGeoZones}" th:id="'tr_'+${rowStat.index}">
+								<tr th:each="ztgz, rowStat : ${geoZoneForm.zoneToGeoZones}" th:id="'tr_'+${rowStat.index}">
 									<td class="left">
 										<select name="zoneToGeoZones.countryId" class="country">
 											<option th:each="country : ${countries}"
@@ -87,7 +87,7 @@
 										</a>
 										<script th:inline="javascript">
 										/*<![CDATA[*/
-											var baseUrl = /*[[@{/admin/localisation/geoZone/getZoneOptions.html}]]*/ '';
+											var baseUrl = /*[[@{/admin/localisation/geoZone/zoneOptions.html}]]*/ '';
 											var rowId = /*[[${rowStat.index}]]*/ 0;
 											var countryId = /*[[${ztgz.countryId}]]*/0;
 											var zoneId = /*[[${ztgz.zoneId}]]*/0;
@@ -124,12 +124,12 @@
 		/*<![CDATA[*/
 			$(function(){
 				initDynaTable({
-					'startId' : /*[[${#lists.size(geoZone.zoneToGeoZones)}]]*/0,
+					'startId' : /*[[${#lists.size(geoZoneForm.zoneToGeoZones)}]]*/0,
 					'className': 'dynatable',
 					'rowName' : 'tr_',
 					'addCallback' : function(id, tr){
 						//alert(currentId);
-						var baseUrl = /*[[@{/admin/localisation/geoZone/getZoneOptions.html}]]*/ '';
+						var baseUrl = /*[[@{/admin/localisation/geoZone/zoneOptions.html}]]*/ '';
 						$('#tr_'+id+' select.zone').load(baseUrl+'?countryId=0&zoneId=0');
 						$('#tr_'+id+' select.country').change(function(){
 							$('#tr_'+id+' select.zone').load(baseUrl+'?countryId='+$(this).val()+'&zoneId=0');

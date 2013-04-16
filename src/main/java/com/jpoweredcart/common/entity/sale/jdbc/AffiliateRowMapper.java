@@ -4,54 +4,48 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.springframework.jdbc.core.RowMapper;
-
 import com.jpoweredcart.common.entity.sale.Affiliate;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class AffiliateRowMapper implements RowMapper<Affiliate>{
-
-	public Affiliate newObject(){
-		return new Affiliate();
-	}
+public class AffiliateRowMapper extends ObjectFactoryRowMapper<Affiliate>{
 	
 	@Override
-	public Affiliate mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public Affiliate mapRow(ResultSet rs, Affiliate object) throws SQLException {
 		
-		Affiliate aff = newObject();
-		aff.setId(rs.getInt("affiliate_id"));
-		aff.setFirstName(rs.getString("firstname"));
-		aff.setLastName(rs.getString("lastname"));
-		aff.setEmail(rs.getString("email"));
-		aff.setTelephone(rs.getString("telephone"));
-		aff.setFax(rs.getString("fax"));
-		aff.setPassword(rs.getString("password"));
-		aff.setSalt(rs.getString("salt"));
-		aff.setCompany(rs.getString("company"));
-		aff.setWebsite(rs.getString("website"));
-		aff.setAddress1(rs.getString("address_1"));
-		aff.setAddress2(rs.getString("address_2"));
-		aff.setCity(rs.getString("city"));
-		aff.setPostcode(rs.getString("postcode"));
-		aff.setCountryId(rs.getInt("country_id"));
-		aff.setZoneId(rs.getInt("zone_id"));
-		aff.setCode (rs.getString("code"));
+		object.setId(rs.getInt("affiliate_id"));
+		object.setFirstName(rs.getString("firstname"));
+		object.setLastName(rs.getString("lastname"));
+		object.setEmail(rs.getString("email"));
+		object.setTelephone(rs.getString("telephone"));
+		object.setFax(rs.getString("fax"));
+		object.setPassword(rs.getString("password"));
+		object.setSalt(rs.getString("salt"));
+		object.setCompany(rs.getString("company"));
+		object.setWebsite(rs.getString("website"));
+		object.setAddress1(rs.getString("address_1"));
+		object.setAddress2(rs.getString("address_2"));
+		object.setCity(rs.getString("city"));
+		object.setPostcode(rs.getString("postcode"));
+		object.setCountryId(rs.getInt("country_id"));
+		object.setZoneId(rs.getInt("zone_id"));
+		object.setCode (rs.getString("code"));
 		BigDecimal commission = rs.getBigDecimal("commission");
 		if(commission==null) commission = BigDecimal.ZERO;
-		aff.setCommission(commission);
-		aff.setTax(rs.getString("tax"));
-		aff.setPayment(rs.getString("payment"));
-		aff.setCheque(rs.getString("cheque"));
-		aff.setPaypal(rs.getString("paypal"));
-		aff.setBankName(rs.getString("bank_name"));
-		aff.setBankBranchNumber(rs.getString("bank_branch_number"));
-		aff.setBankSwiftCode(rs.getString("bank_swift_code"));
-		aff.setBankAccountName(rs.getString("bank_account_name"));
-		aff.setBankAccountNumber(rs.getString("bank_account_number"));
-		aff.setIp(rs.getString("ip"));
-		aff.setStatus(rs.getShort("status"));
-		aff.setApproved(rs.getBoolean("approved"));
-		aff.setDateAdded(rs.getTimestamp("date_added"));
-		return aff;
+		object.setCommission(commission);
+		object.setTax(rs.getString("tax"));
+		object.setPayment(rs.getString("payment"));
+		object.setCheque(rs.getString("cheque"));
+		object.setPaypal(rs.getString("paypal"));
+		object.setBankName(rs.getString("bank_name"));
+		object.setBankBranchNumber(rs.getString("bank_branch_number"));
+		object.setBankSwiftCode(rs.getString("bank_swift_code"));
+		object.setBankAccountName(rs.getString("bank_account_name"));
+		object.setBankAccountNumber(rs.getString("bank_account_number"));
+		object.setIp(rs.getString("ip"));
+		object.setStatus(rs.getShort("status"));
+		object.setApproved(rs.getBoolean("approved"));
+		object.setDateAdded(rs.getTimestamp("date_added"));
+		return object;
 	}
 	
 }

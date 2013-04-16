@@ -7,20 +7,16 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.jpoweredcart.common.entity.localisation.LengthClass;
 import com.jpoweredcart.common.entity.localisation.LengthClassDesc;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class LengthClassRowMapper implements RowMapper<LengthClass> {
-	
-	public LengthClass newObject(){
-		return new LengthClass();
-	}
+public class LengthClassRowMapper extends ObjectFactoryRowMapper<LengthClass> {
 	
 	@Override
-	public LengthClass mapRow(ResultSet rs, int rowNum) throws SQLException {
-		LengthClass lc = newObject();
-		lc.setId(rs.getInt("length_class_id"));
-		lc.setValue(rs.getBigDecimal("value"));
+	public LengthClass mapRow(ResultSet rs, LengthClass object) throws SQLException {
+		object.setId(rs.getInt("length_class_id"));
+		object.setValue(rs.getBigDecimal("value"));
 		
-		return lc;
+		return object;
 	}
 	
 	public static class Desc implements RowMapper<LengthClassDesc>{

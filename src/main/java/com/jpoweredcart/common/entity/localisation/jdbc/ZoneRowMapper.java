@@ -5,16 +5,16 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import com.jpoweredcart.common.entity.localisation.Zone;
-import org.springframework.jdbc.core.RowMapper;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class ZoneRowMapper implements RowMapper<Zone> {
+public class ZoneRowMapper extends ObjectFactoryRowMapper<Zone> {
 	
 	private boolean init = false;
 	
 	private boolean hasExtraColumn = false;
 	
 	@Override
-	public Zone mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public Zone mapRow(ResultSet rs, Zone zone) throws SQLException {
 		if(!this.init){
 			this.init = true;
 			ResultSetMetaData rsmd = rs.getMetaData();
@@ -26,7 +26,6 @@ public class ZoneRowMapper implements RowMapper<Zone> {
 				}
 			}
 		}
-		Zone zone = new Zone();
 		zone.setId(rs.getInt("zone_id"));
 		zone.setCountryId(rs.getInt("country_id"));
 		if(hasExtraColumn){

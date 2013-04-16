@@ -16,6 +16,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.inject.Inject;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -27,12 +29,17 @@ import org.springframework.jdbc.core.RowCallbackHandler;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.entity.Status;
 import com.jpoweredcart.common.entity.localisation.Currency;
+import com.jpoweredcart.common.entity.localisation.Language;
 import com.jpoweredcart.common.service.CurrencyService;
+import com.jpoweredcart.common.service.LanguageService;
 import com.jpoweredcart.common.system.ScheduledDataUpdate;
 
 public class CurrencyServiceImpl extends BaseModel implements CurrencyService, ScheduledDataUpdate, InitializingBean {
 	
 	public static final MessageFormat XR_URL = new MessageFormat("http://download.finance.yahoo.com/d/quotes.csv?s={0}&f=sl1&e=.csv");
+	
+	@Inject
+	private LanguageService languageService;
 	
 	private Map<String, Currency> currencyMap = new HashMap<String, Currency>();
 	
@@ -181,7 +188,13 @@ public class CurrencyServiceImpl extends BaseModel implements CurrencyService, S
 	}
 	
 	@Override
-	public String format(Number value, String code, Locale locale) {
+	public String format(BigDecimal number, String code, BigDecimal overrideRate, Integer languageId) {
+		Language language = languageService.getById(languageId);
+		return format(number, code, overrideRate, language.getLocale());
+	}
+	
+	@Override
+	public String format(BigDecimal number, String code, BigDecimal overrideRate, Locale locale) {
 		
 		Currency currency = currencyMap.get(code);
 		if(currency==null){
@@ -191,7 +204,17 @@ public class CurrencyServiceImpl extends BaseModel implements CurrencyService, S
 		String result = "";
 		if(currency.getSymbolLeft()!=null) result = currency.getSymbolLeft();
 		
-		result += NumberFormat.getInstance(locale).format(value);
+		NumberFormat numberFormat = locale==null?NumberFormat.getInstance():
+			NumberFormat.getInstance(locale);
+		
+		BigDecimal value = null;
+		if(overrideRate!=null){
+			value = number.multiply(overrideRate);
+		}else{
+			value = number.multiply(currency.getValue());
+		}
+		
+		result += numberFormat.format(value);
 		
 		if(currency.getSymbolRight()!=null) result += currency.getSymbolRight();
 		
@@ -199,8 +222,8 @@ public class CurrencyServiceImpl extends BaseModel implements CurrencyService, S
 	}
 
 	@Override
-	public BigDecimal convert(BigDecimal value, String fromCode, String toCode) {
-		if(value==null){
+	public BigDecimal convert(BigDecimal number, String fromCode, String toCode) {
+		if(number==null){
 			return BigDecimal.ZERO;
 		}
 		Currency fromCurrency = currencyMap.get(fromCode);
@@ -220,7 +243,7 @@ public class CurrencyServiceImpl extends BaseModel implements CurrencyService, S
 			to = toCurrency.getValue();
 		}
 		
-		return value.multiply(to.divide(from));
+		return number.multiply(to.divide(from));
 	}
 	
 	@Override

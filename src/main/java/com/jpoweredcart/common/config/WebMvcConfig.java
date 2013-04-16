@@ -37,6 +37,7 @@ import com.jpoweredcart.common.exception.TemplateMappingExceptionResolver;
 import com.jpoweredcart.common.i18n.CustomMessageResolver;
 import com.jpoweredcart.common.i18n.MessageResolver;
 import com.jpoweredcart.common.service.CurrencyService;
+import com.jpoweredcart.common.service.LanguageService;
 import com.jpoweredcart.common.service.StoreResolver;
 import com.jpoweredcart.common.system.UserDataInterceptor;
 import com.jpoweredcart.common.system.setting.SettingService;
@@ -61,6 +62,9 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	private SettingService settingService;
 	
 	@Inject
+	private LanguageService languageService;
+	
+	@Inject
 	private StoreResolver storeResolver;
 	
 	@Inject
@@ -71,6 +75,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		UserDataInterceptor userDataInterceptor = new UserDataInterceptor();
 		userDataInterceptor.setJdbcOperations(jdbcOperations);
 		userDataInterceptor.setSettingService(settingService);
+		userDataInterceptor.setLanguageService(languageService);
 		userDataInterceptor.setStoreResolver(storeResolver);
 		userDataInterceptor.setCurrencyService(currencyService);
 		userDataInterceptor.setLanguageParam(env.getProperty("language.param", "language_code"));

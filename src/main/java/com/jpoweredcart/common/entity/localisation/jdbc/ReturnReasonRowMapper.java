@@ -5,16 +5,16 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import com.jpoweredcart.common.entity.localisation.ReturnReasons.ReturnReason;
-import org.springframework.jdbc.core.RowMapper;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class ReturnReasonRowMapper implements RowMapper<ReturnReason> {
+public class ReturnReasonRowMapper extends ObjectFactoryRowMapper<ReturnReason> {
 	
 	private boolean init = false;
 	
 	private boolean hasExtraColumns = false;
 	
 	@Override
-	public ReturnReason mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public ReturnReason mapRow(ResultSet rs, ReturnReason object) throws SQLException {
 		
 		if(!this.init){
 			this.init = true;
@@ -28,17 +28,16 @@ public class ReturnReasonRowMapper implements RowMapper<ReturnReason> {
 			}
 		}
 		
-		ReturnReason returnReason = new ReturnReason();
-		returnReason.setId(rs.getInt("return_reason_id"));
-		returnReason.setLanguageId(rs.getInt("language_id"));
-		returnReason.setName(rs.getString("name"));
+		object.setId(rs.getInt("return_reason_id"));
+		object.setLanguageId(rs.getInt("language_id"));
+		object.setName(rs.getString("name"));
 		
 		if(hasExtraColumns){
-			returnReason.setLanguageName(rs.getString("language_name"));
-			returnReason.setLanguageImage(rs.getString("language_image"));
+			object.setLanguageName(rs.getString("language_name"));
+			object.setLanguageImage(rs.getString("language_image"));
 		}
 		
-		return returnReason;
+		return object;
 	}
 	
 	

@@ -19,7 +19,7 @@ public interface LengthClassAdminModel {
 	
 	public LengthClassForm getForm(Integer lcId);
 	
-	public LengthClass get(Integer lcId);
+	public LengthClass get(Integer lcId, Class<? extends LengthClass> clazz);
 	
 	public List<LengthClass> getList(PageParam pageParam);
 	

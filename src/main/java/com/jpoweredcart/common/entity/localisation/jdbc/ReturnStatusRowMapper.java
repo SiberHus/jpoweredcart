@@ -5,16 +5,16 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import com.jpoweredcart.common.entity.localisation.ReturnStatuses.ReturnStatus;
-import org.springframework.jdbc.core.RowMapper;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class ReturnStatusRowMapper implements RowMapper<ReturnStatus> {
+public class ReturnStatusRowMapper extends ObjectFactoryRowMapper<ReturnStatus> {
 	
 	private boolean init = false;
 	
 	private boolean hasExtraColumns = false;
 	
 	@Override
-	public ReturnStatus mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public ReturnStatus mapRow(ResultSet rs, ReturnStatus object) throws SQLException {
 		
 		if(!this.init){
 			this.init = true;
@@ -28,17 +28,16 @@ public class ReturnStatusRowMapper implements RowMapper<ReturnStatus> {
 			}
 		}
 		
-		ReturnStatus returnStatus = new ReturnStatus();
-		returnStatus.setId(rs.getInt("return_status_id"));
-		returnStatus.setLanguageId(rs.getInt("language_id"));
-		returnStatus.setName(rs.getString("name"));
+		object.setId(rs.getInt("return_status_id"));
+		object.setLanguageId(rs.getInt("language_id"));
+		object.setName(rs.getString("name"));
 		
 		if(hasExtraColumns){
-			returnStatus.setLanguageName(rs.getString("language_name"));
-			returnStatus.setLanguageImage(rs.getString("language_image"));
+			object.setLanguageName(rs.getString("language_name"));
+			object.setLanguageImage(rs.getString("language_image"));
 		}
 		
-		return returnStatus;
+		return object;
 	}
 	
 	

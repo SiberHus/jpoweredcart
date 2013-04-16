@@ -56,16 +56,14 @@ public class ReviewAdminModelImpl extends BaseModel implements ReviewAdminModel 
 				+quoteTable("review")+" r WHERE r.review_id =?";
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		return (ReviewForm)getJdbcOperations().queryForObject(sql, new Object[]{reviewId, languageId}, 
-				new ReviewRowMapper(){
-					public Review newObject(){
-						return new ReviewForm();
-					}
-		});
+				new ReviewRowMapper().setTargetClass(ReviewForm.class));
 	}
 	
 	@Override
-	public Review get(Integer reviewId) {
-		return getForm(reviewId);
+	public Review get(Integer reviewId, Class<? extends Review> clazz) {
+		String sql = "SELECT * FROM "+quoteTable("review")+" WHERE review_id=?";
+		return getJdbcOperations().queryForObject(sql, new Object[]{reviewId},
+				new ReviewRowMapper().setTargetClass(clazz));
 	}
 	
 	@Override

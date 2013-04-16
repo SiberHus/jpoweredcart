@@ -148,7 +148,7 @@ public class SettingKey {
 
 	//============================ Derived settings ===============================//
 	public static final String ADMIN_LANGUAGE_ID = "admin_language_id";
-	
+	public static final String LANGUAGE_ID = "language_id";
 	
 	//============================ Alias ====================================//
 		

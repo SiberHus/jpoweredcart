@@ -16,11 +16,11 @@ public class JmsEmailService extends SmtpEmailService implements MessageListener
 	private JmsTemplate jmsTemplate;
 	
 	@Override
-	public void send(final EmailMessage message) {
+	public void send(final EmailMessage email) {
 		jmsTemplate.send(queueName, new MessageCreator() {
 			@Override
 			public Message createMessage(Session session) throws JMSException {
-				return session.createObjectMessage(message);
+				return session.createObjectMessage(email);
 			}
 		});
 	}

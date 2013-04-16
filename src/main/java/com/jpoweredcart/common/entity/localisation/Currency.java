@@ -27,7 +27,7 @@ public class Currency implements Serializable{
 	@Min(0) @Max(9)
 	protected int decimalPlace; //TODO: I don't know why OpenCart define this data as char type
 	
-	protected BigDecimal value;
+	protected BigDecimal value;//rate
 	
 	protected short status = 1;
 	

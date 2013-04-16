@@ -21,7 +21,7 @@ public interface AffiliateAdminModel {
 	
 	public AffiliateForm getForm(Integer affId);
 	
-	public Affiliate get(Integer affId);
+	public Affiliate get(Integer affId, Class<? extends Affiliate> clazz);
 	
 	public Affiliate getOneByEmail(String email);
 	

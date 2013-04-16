@@ -15,9 +15,11 @@ public interface CurrencyService {
 	
 	public boolean has(String code);
 	
-	public String format(Number value, String code, Locale locale);
+	public String format(BigDecimal number, String code, BigDecimal overrideRate, Integer languageId);
 	
-	public BigDecimal convert(BigDecimal value, String fromCode, String toCode);
+	public String format(BigDecimal number, String code, BigDecimal overrideRate, Locale locale);
+	
+	public BigDecimal convert(BigDecimal number, String fromCode, String toCode);
 	
 	public String getSymbolLeft(String code);
 	

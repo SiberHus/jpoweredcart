@@ -74,7 +74,7 @@ public class ZoneAdminModelImpl extends BaseModel implements ZoneAdminModel {
 	}
 	
 	@Override
-	public int getTotalZonesByCountryId(Integer countryId) {
+	public int getTotalByCountryId(Integer countryId) {
 		String sql = "SELECT COUNT(*) AS total FROM " +quoteTable("zone") +
 				" WHERE country_id=?";
 		return getJdbcOperations().queryForObject(sql, Integer.class, countryId);

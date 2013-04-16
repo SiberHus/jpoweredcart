@@ -105,14 +105,7 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 	@Override
 	public LengthClassForm getForm(Integer lcId) {
 		
-		String sql = "SELECT * FROM "+quoteTable("length_class")+ " WHERE length_class_id=?";
-		LengthClassForm lcForm = (LengthClassForm)getJdbcOperations().queryForObject(
-				sql, new Object[]{lcId}, new LengthClassRowMapper(){
-					@Override
-					public LengthClass newObject() {
-						return new LengthClassForm();
-					}
-				});
+		LengthClassForm lcForm = (LengthClassForm)get(lcId, LengthClassForm.class);
 		
 		List<LengthClassDesc> desc = getDescriptions(lcId);
 		if(desc!=null){
@@ -123,13 +116,11 @@ public class LengthClassAdminModelImpl extends BaseModel implements LengthClassA
 	}
 	
 	@Override
-	public LengthClass get(Integer lcId) {
+	public LengthClass get(Integer lcId, Class<? extends LengthClass> clazz) {
 		
 		String sql = "SELECT * FROM "+quoteTable("length_class")+ " WHERE length_class_id=?";
-		LengthClass lengthClass = getJdbcOperations().queryForObject(sql, 
-				new Object[]{lcId}, new LengthClassRowMapper());
-		
-		return lengthClass;
+		return getJdbcOperations().queryForObject(sql, new Object[]{lcId}, 
+				new LengthClassRowMapper().setTargetClass(clazz));
 	}
 	
 	

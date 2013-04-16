@@ -20,7 +20,7 @@ public interface AttributeAdminModel {
 	
 	public AttributeForm getForm(Integer attrId);
 	
-	public Attribute get(Integer attrId);
+	public Attribute get(Integer attrId, Class<? extends Attribute> clazz);
 	
 	public List<Attribute> getList(PageParam pageParam);
 	

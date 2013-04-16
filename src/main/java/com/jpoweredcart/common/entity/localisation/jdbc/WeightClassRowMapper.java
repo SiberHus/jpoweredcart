@@ -6,16 +6,18 @@ import java.sql.SQLException;
 
 import com.jpoweredcart.common.entity.localisation.WeightClass;
 import com.jpoweredcart.common.entity.localisation.WeightClassDesc;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
+
 import org.springframework.jdbc.core.RowMapper;
 
-public class WeightClassRowMapper implements RowMapper<WeightClass> {
+public class WeightClassRowMapper extends ObjectFactoryRowMapper<WeightClass> {
 	
 	private boolean init = false;
 	
 	private boolean hasExtraColumns = false;
 	
 	@Override
-	public WeightClass mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public WeightClass mapRow(ResultSet rs, WeightClass object) throws SQLException {
 		
 		if(!this.init){
 			this.init = true;
@@ -28,16 +30,14 @@ public class WeightClassRowMapper implements RowMapper<WeightClass> {
 				}
 			}
 		}
-		
-		WeightClass wc = new WeightClass();
-		wc.setId(rs.getInt("weight_class_id"));
-		wc.setValue(rs.getBigDecimal("value"));
+		object.setId(rs.getInt("weight_class_id"));
+		object.setValue(rs.getBigDecimal("value"));
 		if(hasExtraColumns){
-			wc.setTitle(rs.getString("title"));
-			wc.setUnit(rs.getString("unit"));
+			object.setTitle(rs.getString("title"));
+			object.setUnit(rs.getString("unit"));
 		}
 		
-		return wc;
+		return object;
 	}
 	
 	public static class Desc implements RowMapper<WeightClassDesc>{

@@ -51,17 +51,14 @@ public class CurrencyAdminModelImpl extends BaseModel implements CurrencyAdminMo
 
 	@Override
 	public CurrencyForm getForm(Integer currencyId) {
-		String sql = "SELECT * FROM " +quoteTable("currency")+ " WHERE currency_id = ?";
-		return (CurrencyForm)getJdbcOperations().queryForObject(
-				sql, new Object[]{currencyId}, new CurrencyRowMapper(){
-					@Override
-					public Currency newObject() { return new CurrencyForm(); }
-				});
+		return (CurrencyForm)get(currencyId, CurrencyForm.class);
 	}
 	
 	@Override
-	public Currency get(Integer currencyId) {
-		return getForm(currencyId);
+	public Currency get(Integer currencyId, Class<? extends Currency> clazz) {
+		String sql = "SELECT * FROM " +quoteTable("currency")+ " WHERE currency_id = ?";
+		return getJdbcOperations().queryForObject(sql, new Object[]{currencyId}, 
+				new CurrencyRowMapper().setTargetClass(clazz));
 	}
 	
 	@Override

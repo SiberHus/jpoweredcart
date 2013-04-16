@@ -60,7 +60,7 @@ public class CustomerAdminModelImpl extends BaseModel implements CustomerAdminMo
 	}
 
 	@Override
-	public Customer get(Integer custId) {
+	public Customer get(Integer custId, Class<? extends Customer> clazz) {
 		// TODO Auto-generated method stub
 		return null;
 	}

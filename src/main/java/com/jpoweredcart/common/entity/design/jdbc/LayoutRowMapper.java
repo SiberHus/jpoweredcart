@@ -3,23 +3,17 @@ package com.jpoweredcart.common.entity.design.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.springframework.jdbc.core.RowMapper;
-
 import com.jpoweredcart.common.entity.design.Layout;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class LayoutRowMapper implements RowMapper<Layout>{
-
-	public Layout newObject(){
-		return new Layout();
-	}
+public class LayoutRowMapper extends ObjectFactoryRowMapper<Layout>{
 	
 	@Override
-	public Layout mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public Layout mapRow(ResultSet rs, Layout object) throws SQLException {
 		
-		Layout layout = newObject();
-		layout.setId(rs.getInt("layout_id"));
-		layout.setName(rs.getString("name"));
-		return layout;
+		object.setId(rs.getInt("layout_id"));
+		object.setName(rs.getString("name"));
+		return object;
 	}
 	
 }

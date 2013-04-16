@@ -40,7 +40,7 @@ public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminMo
 				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				ps.setString(1, lang.getName());
 				ps.setString(2, lang.getCode());
-				ps.setString(3, lang.getLocale());
+				ps.setString(3, lang.getLocaleAsString());
 				ps.setString(4, lang.getDirectory());
 				ps.setString(5, lang.getFilename());
 				ps.setString(6, lang.getImage());
@@ -261,17 +261,14 @@ public class LanguageAdminModelImpl extends BaseModel implements LanguageAdminMo
 	
 	@Override
 	public LanguageForm getForm(Integer langId) {
-		String sql = "SELECT * FROM " +quoteTable("language")+ " WHERE language_id = ?";
-		return (LanguageForm)getJdbcOperations().queryForObject(
-				sql, new Object[]{langId}, new LanguageRowMapper(){
-					@Override
-					public Language newObject() { return new LanguageForm();}
-				});
+		return (LanguageForm)get(langId, LanguageForm.class);
 	}
 	
 	@Override
-	public Language get(Integer langId) {
-		return getForm(langId);
+	public Language get(Integer langId, Class<? extends Language> clazz) {
+		String sql = "SELECT * FROM " +quoteTable("language")+ " WHERE language_id = ?";
+		return getJdbcOperations().queryForObject(sql, new Object[]{langId}, 
+				new LanguageRowMapper().setTargetClass(clazz));
 	}
 	
 	@Override

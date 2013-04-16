@@ -97,13 +97,9 @@ public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminMode
 	
 	@Override
 	public GeoZoneForm getForm(Integer geoZoneId){
-		String sql = "SELECT * FROM " +quoteTable("geo_zone")+ " WHERE geo_zone_id = ?";
-		GeoZoneForm geoZoneForm = (GeoZoneForm)getJdbcOperations().queryForObject(sql, 
-				new Object[]{geoZoneId}, new GeoZoneRowMapper(){
-					@Override
-					public GeoZone newObject() { return new GeoZoneForm();}
-		});
-		sql = "SELECT * FROM "+quoteTable("zone_to_geo_zone")+ " WHERE geo_zone_id =?";
+		GeoZoneForm geoZoneForm = (GeoZoneForm)get(geoZoneId, GeoZoneForm.class);
+		
+		String sql = "SELECT * FROM "+quoteTable("zone_to_geo_zone")+ " WHERE geo_zone_id =?";
 		List<ZoneToGeoZone> zoneToGeoZones = getJdbcOperations()
 				.query(sql, new Object[]{geoZoneId}, new ZoneToGeoZoneRowMapper());
 		geoZoneForm.setZoneToGeoZones(zoneToGeoZones);
@@ -111,11 +107,10 @@ public class GeoZoneAdminModelImpl extends BaseModel implements GeoZoneAdminMode
 	}
 	
 	@Override
-	public GeoZone get(Integer geoZoneId) {
+	public GeoZone get(Integer geoZoneId, Class<? extends GeoZone> clazz) {
 		String sql = "SELECT * FROM " +quoteTable("geo_zone")+ " WHERE geo_zone_id = ?";
-		GeoZone geoZone = getJdbcOperations().queryForObject(sql, 
-				new Object[]{geoZoneId}, new GeoZoneRowMapper());
-		return geoZone;
+		return getJdbcOperations().queryForObject(sql, 
+				new Object[]{geoZoneId}, new GeoZoneRowMapper().setTargetClass(clazz));
 	}
 	
 	@Override

@@ -4,22 +4,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.jpoweredcart.common.entity.design.Banner;
-import org.springframework.jdbc.core.RowMapper;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class BannerRowMapper implements RowMapper<Banner>{
-	
-	public Banner newObject(){
-		return new Banner();
-	}
+public class BannerRowMapper extends ObjectFactoryRowMapper<Banner>{
 	
 	@Override
-	public Banner mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public Banner mapRow(ResultSet rs, Banner object) throws SQLException {
 		
-		Banner banner = newObject();
-		banner.setId(rs.getInt("banner_id"));
-		banner.setName(rs.getString("name"));
-		banner.setStatus(rs.getInt("status"));
-		return banner;
+		object.setId(rs.getInt("banner_id"));
+		object.setName(rs.getString("name"));
+		object.setStatus(rs.getInt("status"));
+		return object;
 	}
 	
 }

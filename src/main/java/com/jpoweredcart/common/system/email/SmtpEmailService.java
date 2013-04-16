@@ -26,15 +26,15 @@ public class SmtpEmailService implements EmailService {
 	private SettingService settingService;
 	
 	@Override
-	public void send(EmailMessage message) {
+	public void send(EmailMessage email) {
 		
-		String to = message.getTo();
-		String from = message.getFrom();
-		String senderName = message.getSenderName();
-		String subject = message.getSubject();
-		String bodyHtml = message.getBodyHtml();
-		String bodyText = message.getBodyText();
-		Integer storeId = message.getStoreId();
+		String to = email.getTo();
+		String from = email.getFrom();
+		String senderName = email.getSenderName();
+		String subject = email.getSubject();
+		String bodyHtml = email.getBodyHtml();
+		String bodyText = email.getBodyText();
+		Integer storeId = email.getStoreId();
 		
 		if(from==null){
 			from = settingService.getConfig(storeId, SettingKey.CFG_EMAIL, String.class);
@@ -43,7 +43,7 @@ public class SmtpEmailService implements EmailService {
 			senderName = settingService.getConfig(storeId, SettingKey.CFG_NAME, String.class);
 		}
 		
-		Map<String, String> variables = message.getVariables();
+		Map<String, String> variables = email.getVariables();
 		if(variables!=null){
 			StrSubstitutor substitutor = new StrSubstitutor(variables, "${", "}");
 			subject = substitutor.replace(subject);
@@ -55,7 +55,7 @@ public class SmtpEmailService implements EmailService {
 			from = senderName+" <"+from+">";
 		}
 		
-		JavaMailSender emailSender = createJavaMailSender(message.getStoreId());
+		JavaMailSender emailSender = createJavaMailSender(email.getStoreId());
 		
 		MimeMessage mimeMessage = emailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);

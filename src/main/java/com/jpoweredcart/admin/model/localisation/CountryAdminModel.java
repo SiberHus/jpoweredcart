@@ -19,7 +19,7 @@ public interface CountryAdminModel {
 	
 	public CountryForm getForm(Integer countryId);
 	
-	public Country get(Integer countryId);
+	public Country get(Integer countryId, Class<? extends Country> clazz);
 	
 	public List<Country> getAll();
 	

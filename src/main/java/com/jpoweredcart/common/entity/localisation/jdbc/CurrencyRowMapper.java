@@ -3,27 +3,21 @@ package com.jpoweredcart.common.entity.localisation.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.springframework.jdbc.core.RowMapper;
-
 import com.jpoweredcart.common.entity.localisation.Currency;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
 
-public class CurrencyRowMapper implements RowMapper<Currency> {
-
-	public Currency newObject(){
-		return new Currency();
-	}
+public class CurrencyRowMapper extends ObjectFactoryRowMapper<Currency> {
 	
 	@Override
-	public Currency mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Currency currency = newObject();
-		currency.setId(rs.getInt("currency_id"));
-		currency.setTitle(rs.getString("title"));
-		currency.setCode(rs.getString("code"));
-		currency.setSymbolLeft(rs.getString("symbol_left"));
-		currency.setSymbolRight(rs.getString("symbol_right"));
+	public Currency mapRow(ResultSet rs, Currency object) throws SQLException {
+		object.setId(rs.getInt("currency_id"));
+		object.setTitle(rs.getString("title"));
+		object.setCode(rs.getString("code"));
+		object.setSymbolLeft(rs.getString("symbol_left"));
+		object.setSymbolRight(rs.getString("symbol_right"));
 		try{
-			currency.setDecimalPlace(rs.getInt("decimal_place"));
+			object.setDecimalPlace(rs.getInt("decimal_place"));
 		}catch(Exception e){
 			/*
 			 * Opencart define this column as char(1), so it's possible that
@@ -31,10 +25,10 @@ public class CurrencyRowMapper implements RowMapper<Currency> {
 			 */
 			e.printStackTrace();//TODO: remove this when confirm that JDBC API can convert type
 		}
-		currency.setValue(rs.getBigDecimal("value"));
-		currency.setStatus(rs.getShort("status"));
-		currency.setDateModified(rs.getDate("date_modified"));
-		return currency;
+		object.setValue(rs.getBigDecimal("value"));
+		object.setStatus(rs.getShort("status"));
+		object.setDateModified(rs.getDate("date_modified"));
+		return object;
 	}
 	
 }

@@ -157,17 +157,13 @@ public class InformationAdminModelImpl extends BaseModel implements InformationA
 				sql, new Object[]{"information_id="+infoId, infoId}, 
 				new InformationRowMapper(){
 					@Override
-					public Information newObject() {
-						return new InformationForm();
-					}
-					@Override
 					public Information mapRow(ResultSet rs, int rowNum)
 							throws SQLException {
 						InformationForm form = (InformationForm)super.mapRow(rs, rowNum);
 						form.setKeyword(rs.getString("keyword"));
 						return form;
 					}
-				});
+				}.setTargetClass(InformationForm.class));
 		infoForm.setDescs(getDescriptions(infoId));
 		infoForm.setStores(getInfoStores(infoId));
 		infoForm.setLayouts(getInfoLayouts(infoId));
@@ -176,11 +172,11 @@ public class InformationAdminModelImpl extends BaseModel implements InformationA
 	}
 	
 	@Override
-	public Information get(Integer infoId) {
+	public Information get(Integer infoId, Class<? extends Information> clazz) {
 		
 		String sql = "SELECT * FROM " + quoteTable("information")+" WHERE information_id = ?";
 		Information info = getJdbcOperations().queryForObject(sql, 
-				new Object[]{infoId}, new InformationRowMapper());
+				new Object[]{infoId}, new InformationRowMapper().setTargetClass(clazz));
 		return info;
 	}
 	

@@ -7,23 +7,19 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.jpoweredcart.common.entity.catalog.Download;
 import com.jpoweredcart.common.entity.catalog.DownloadDesc;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class DownloadRowMapper implements RowMapper<Download>{
-	
-	public Download newObject(){
-		return new Download();
-	}
+public class DownloadRowMapper extends ObjectFactoryRowMapper<Download>{
 	
 	@Override
-	public Download mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public Download mapRow(ResultSet rs, Download object) throws SQLException {
 		
-		Download dl = newObject();
-		dl.setId(rs.getInt("download_id"));
-		dl.setFileName(rs.getString("filename"));
-		dl.setMask(rs.getString("mask"));
-		dl.setRemaining(rs.getInt("remaining"));
-		dl.setDateAdded(rs.getDate("date_added"));
-		return dl;
+		object.setId(rs.getInt("download_id"));
+		object.setFileName(rs.getString("filename"));
+		object.setMask(rs.getString("mask"));
+		object.setRemaining(rs.getInt("remaining"));
+		object.setDateAdded(rs.getDate("date_added"));
+		return object;
 	}
 	
 	public static class Desc implements RowMapper<DownloadDesc>{

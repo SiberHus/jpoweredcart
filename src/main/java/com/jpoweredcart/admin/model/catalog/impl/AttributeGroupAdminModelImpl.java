@@ -90,26 +90,16 @@ public class AttributeGroupAdminModelImpl extends BaseModel implements Attribute
 	
 	@Override
 	public AttributeGroupForm getForm(Integer attrGrpId) {
-		AttributeGroupForm attrGrpForm = (AttributeGroupForm)getJdbcOperations()
-				.queryForObject(getSelectSql(), new Object[]{attrGrpId}, 
-						new AttributeGroupRowMapper(){
-							@Override
-							public AttributeGroup newObject() {
-								return new AttributeGroupForm();
-							}
-				});
+		AttributeGroupForm attrGrpForm = (AttributeGroupForm)get(attrGrpId, AttributeGroupForm.class);
 		attrGrpForm.setDescs(getDescriptions(attrGrpId));
 		return attrGrpForm;
 	}
 	
 	@Override
-	public AttributeGroup get(Integer attrGrpId) {
-		return getJdbcOperations().queryForObject(getSelectSql(), 
-			new Object[]{attrGrpId}, new AttributeGroupRowMapper());
-	}
-	
-	protected String getSelectSql(){
-		return "SELECT * FROM " + quoteTable("attribute_group")+" WHERE attribute_group_id = ?";
+	public AttributeGroup get(Integer attrGrpId, Class<? extends AttributeGroup> clazz) {
+		String sql = "SELECT * FROM " + quoteTable("attribute_group")+" WHERE attribute_group_id = ?";
+		return getJdbcOperations().queryForObject(sql, 
+			new Object[]{attrGrpId}, new AttributeGroupRowMapper().setTargetClass(clazz));
 	}
 	
 	@Override

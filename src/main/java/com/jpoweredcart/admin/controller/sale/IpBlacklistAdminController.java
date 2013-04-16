@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jpoweredcart.admin.form.sale.IpBlacklistForm;
 import com.jpoweredcart.admin.model.sale.IpBlacklistAdminModel;
 import com.jpoweredcart.common.BaseController;
 import com.jpoweredcart.common.PageParam;
@@ -51,7 +52,7 @@ public class IpBlacklistAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		model.addAttribute("ipBlacklist", new IpBlacklist());
+		addFormAttributes(ipBlacklistAdminModel.newForm(), model);
 		
 		return "/admin/sale/ipBlacklistForm";
 	}
@@ -61,27 +62,27 @@ public class IpBlacklistAdminController extends BaseController {
 		
 		checkModifyPermission();
 		
-		IpBlacklist ipBlacklist = ipBlacklistAdminModel.get(id);
-		model.addAttribute("ipBlacklist", ipBlacklist);
+		IpBlacklistForm ipBlacklistForm = ipBlacklistAdminModel.getForm(id);
+		addFormAttributes(ipBlacklistForm, model);
 		
 		return "/admin/sale/ipBlacklistForm";
 	}
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public String save(@Valid IpBlacklist ipBlacklist, BindingResult result, Model model, 
+	public String save(@Valid IpBlacklistForm ipBlacklistForm, BindingResult result, Model model, 
 			RedirectAttributes redirect){
 		
 		checkModifyPermission();
 		
 		if(result.hasErrors()){
-			model.addAttribute("ipBlacklist", ipBlacklist);
+			addFormAttributes(ipBlacklistForm, model);
 			return "/admin/sale/ipBlacklistForm";
 		}
 		
-		if(ipBlacklist.getId()!=null){
-			ipBlacklistAdminModel.update(ipBlacklist);
+		if(ipBlacklistForm.getId()!=null){
+			ipBlacklistAdminModel.update(ipBlacklistForm);
 		}else{
-			ipBlacklistAdminModel.create(ipBlacklist);
+			ipBlacklistAdminModel.create(ipBlacklistForm);
 		}
 		
 		redirect.addFlashAttribute("msg_success", "text.success");
@@ -104,6 +105,10 @@ public class IpBlacklistAdminController extends BaseController {
 		return "redirect:/admin/sale/ipBlacklist";
 	}
 	
+	private void addFormAttributes(IpBlacklistForm form, Model model){
+	
+		model.addAttribute("ipBlacklistForm", form);
+	}
 
 	private void checkModifyPermission(){
 		UserPermissions.checkModify("sale/customer_blacklist", 

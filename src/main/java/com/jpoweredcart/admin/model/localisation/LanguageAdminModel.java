@@ -19,7 +19,7 @@ public interface LanguageAdminModel {
 	
 	public LanguageForm getForm(Integer langId);
 	
-	public Language get(Integer langId);
+	public Language get(Integer langId, Class<? extends Language> clazz);
 	
 	public List<Language> getList(PageParam pageParam);
 	

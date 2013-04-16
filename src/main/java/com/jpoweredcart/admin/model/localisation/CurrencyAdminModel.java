@@ -19,7 +19,7 @@ public interface CurrencyAdminModel {
 	
 	public CurrencyForm getForm(Integer currencyId);
 	
-	public Currency get(Integer currencyId);
+	public Currency get(Integer currencyId, Class<? extends Currency> clazz);
 	
 	public Currency getOneByCode(String code);
 	

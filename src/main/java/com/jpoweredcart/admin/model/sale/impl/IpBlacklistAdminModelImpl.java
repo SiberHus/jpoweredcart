@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jpoweredcart.admin.form.sale.IpBlacklistForm;
 import com.jpoweredcart.admin.model.sale.IpBlacklistAdminModel;
 import com.jpoweredcart.common.BaseModel;
 import com.jpoweredcart.common.PageParam;
@@ -17,16 +18,16 @@ public class IpBlacklistAdminModelImpl extends BaseModel implements IpBlacklistA
 	
 	@Transactional
 	@Override
-	public void create(IpBlacklist blacklist) {
+	public void create(IpBlacklistForm blacklistForm) {
 		String sql = "INSERT INTO " +quoteTable("customer_ip_blacklist")+ "(ip) VALUES (?)";
-		getJdbcOperations().update(sql, blacklist.getIp());
+		getJdbcOperations().update(sql, blacklistForm.getIp());
 	}
 
 	@Transactional
 	@Override
-	public void update(IpBlacklist blacklist) {
+	public void update(IpBlacklistForm blacklistForm) {
 		String sql = "UPDATE " +quoteTable("customer_ip_blacklist")+ " SET ip=? WHERE customer_ip_blacklist_id=?";
-		getJdbcOperations().update(sql, blacklist.getIp(), blacklist.getId());
+		getJdbcOperations().update(sql, blacklistForm.getIp(), blacklistForm.getId());
 	}
 	
 	@Transactional
@@ -37,9 +38,20 @@ public class IpBlacklistAdminModelImpl extends BaseModel implements IpBlacklistA
 	}
 	
 	@Override
-	public IpBlacklist get(Integer blacklistId) {
+	public IpBlacklistForm newForm() {
+		return new IpBlacklistForm();
+	}
+
+	@Override
+	public IpBlacklistForm getForm(Integer blacklistId) {
+		return (IpBlacklistForm)get(blacklistId, IpBlacklistForm.class);
+	}
+	
+	@Override
+	public IpBlacklist get(Integer blacklistId, Class<? extends IpBlacklist> clazz) {
 		String sql = "SELECT * FROM " +quoteTable("customer_ip_blacklist")+ " WHERE customer_ip_blacklist_id = ?";
-		return getJdbcOperations().queryForObject(sql, new Object[]{blacklistId}, new IpBlacklistRowMapper());
+		return getJdbcOperations().queryForObject(sql, new Object[]{blacklistId}, 
+				new IpBlacklistRowMapper().setTargetClass(clazz));
 	}
 	
 	@Override
@@ -57,7 +69,7 @@ public class IpBlacklistAdminModelImpl extends BaseModel implements IpBlacklistA
 						blacklist.setTotalCustomers(rs.getInt("total"));
 						return blacklist;
 					}
-		});
+		}.setTargetClass(IpBlacklist.class));
 		return blacklists;
 	}
 

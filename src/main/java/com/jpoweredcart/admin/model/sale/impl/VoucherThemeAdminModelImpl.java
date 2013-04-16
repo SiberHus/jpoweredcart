@@ -91,19 +91,17 @@ public class VoucherThemeAdminModelImpl extends BaseModel implements VoucherThem
 	
 	@Override
 	public VoucherThemeForm getForm(Integer vtId){
-		String sql = "SELECT * FROM " +quoteTable("voucher_theme")+ " WHERE voucher_theme_id = ?";
-		VoucherThemeForm vtForm = (VoucherThemeForm)getJdbcOperations().queryForObject(
-				sql, new Object[]{vtId}, new VoucherThemeRowMapper(){
-					public VoucherTheme newObject(){ return new VoucherThemeForm(); }
-				});
+		
+		VoucherThemeForm vtForm = (VoucherThemeForm)get(vtId, VoucherThemeForm.class);
 		vtForm.setDescs(getDescriptions(vtId));
 		return vtForm;
 	}
 	
 	@Override
-	public VoucherTheme get(Integer vtId) {
-		
-		return getForm(vtId);
+	public VoucherTheme get(Integer vtId, Class<? extends VoucherTheme> clazz) {
+		String sql = "SELECT * FROM " +quoteTable("voucher_theme")+ " WHERE voucher_theme_id = ?";
+		return getJdbcOperations().queryForObject(sql, new Object[]{vtId}, 
+				new VoucherThemeRowMapper().setTargetClass(clazz));
 	}
 	
 	@Override

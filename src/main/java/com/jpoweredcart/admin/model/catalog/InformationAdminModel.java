@@ -21,7 +21,7 @@ public interface InformationAdminModel {
 	
 	public InformationForm getForm(Integer infoId);
 	
-	public Information get(Integer infoId);
+	public Information get(Integer infoId, Class<? extends Information> clazz);
 	
 	public List<Information> getList(PageParam pageParam);
 	

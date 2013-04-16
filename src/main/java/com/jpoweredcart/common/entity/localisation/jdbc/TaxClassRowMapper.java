@@ -4,19 +4,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.jpoweredcart.common.entity.localisation.TaxClass;
-import org.springframework.jdbc.core.RowMapper;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class TaxClassRowMapper implements RowMapper<TaxClass>{
+public class TaxClassRowMapper extends ObjectFactoryRowMapper<TaxClass>{
 	
 	@Override
-	public TaxClass mapRow(ResultSet rs, int rowNum) throws SQLException {
-		TaxClass taxClass = new TaxClass();
-		taxClass.setId(rs.getInt("tax_class_id"));
-		taxClass.setTitle(rs.getString("title"));
-		taxClass.setDescription(rs.getString("description"));
-		taxClass.setDateAdded(rs.getDate("date_added"));
-		taxClass.setDateModified(rs.getDate("date_modified"));
-		return taxClass;
+	public TaxClass mapRow(ResultSet rs, TaxClass object) throws SQLException {
+		object.setId(rs.getInt("tax_class_id"));
+		object.setTitle(rs.getString("title"));
+		object.setDescription(rs.getString("description"));
+		object.setDateAdded(rs.getDate("date_added"));
+		object.setDateModified(rs.getDate("date_modified"));
+		return object;
 	}
 	
 	

@@ -22,6 +22,6 @@ public interface ZoneAdminModel {
 	
 	public int getTotal();
 	
-	public int getTotalZonesByCountryId(Integer countryId);
+	public int getTotalByCountryId(Integer countryId);
 	
 }

@@ -65,7 +65,7 @@ public class Affiliate implements Serializable{
 	
 	protected String tax;
 	
-	protected String payment;
+	protected String payment = "cheque";
 	
 	protected String cheque;
 	

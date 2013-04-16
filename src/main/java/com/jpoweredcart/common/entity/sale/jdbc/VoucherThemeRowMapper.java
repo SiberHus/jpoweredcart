@@ -7,20 +7,16 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.jpoweredcart.common.entity.sale.VoucherTheme;
 import com.jpoweredcart.common.entity.sale.VoucherThemeDesc;
+import com.jpoweredcart.common.jdbc.ObjectFactoryRowMapper;
 
-public class VoucherThemeRowMapper implements RowMapper<VoucherTheme>{
-	
-	public VoucherTheme newObject(){
-		return new VoucherTheme();
-	}
+public class VoucherThemeRowMapper extends ObjectFactoryRowMapper<VoucherTheme>{
 	
 	@Override
-	public VoucherTheme mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public VoucherTheme mapRow(ResultSet rs, VoucherTheme object) throws SQLException {
 		
-		VoucherTheme vt = newObject();
-		vt.setId(rs.getInt("voucher_theme_id"));
-		vt.setImage(rs.getString("image"));
-		return vt;
+		object.setId(rs.getInt("voucher_theme_id"));
+		object.setImage(rs.getString("image"));
+		return object;
 	}
 	
 	public static class Desc implements RowMapper<VoucherThemeDesc>{

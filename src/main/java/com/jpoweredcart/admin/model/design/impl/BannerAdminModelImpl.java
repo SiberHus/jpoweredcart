@@ -112,16 +112,7 @@ public class BannerAdminModelImpl extends BaseModel implements BannerAdminModel 
 	@Override
 	public BannerForm getForm(Integer bannerId) {
 		
-		String sql = "SELECT * FROM " +quoteTable("banner")+ " WHERE banner_id = ?";
-		
-		BannerForm bannerForm = (BannerForm)getJdbcOperations().queryForObject(
-				sql, new Object[]{bannerId}, 
-				new BannerRowMapper(){
-					@Override
-					public Banner newObject() {
-						return new BannerForm();
-					}
-				});
+		BannerForm bannerForm = (BannerForm)get(bannerId, BannerForm.class);
 		
 		List<BannerImage> imageList = getBannerImages(bannerId);
 		bannerForm.setImages(imageList);
@@ -129,8 +120,11 @@ public class BannerAdminModelImpl extends BaseModel implements BannerAdminModel 
 	}
 	
 	@Override
-	public Banner get(Integer bannerId) {
-		return getForm(bannerId);
+	public Banner get(Integer bannerId, Class<? extends Banner> clazz) {
+		String sql = "SELECT * FROM " +quoteTable("banner")+ " WHERE banner_id = ?";
+		return getJdbcOperations().queryForObject(
+				sql, new Object[]{bannerId}, 
+				new BannerRowMapper().setTargetClass(clazz));
 	}
 	
 	@Override

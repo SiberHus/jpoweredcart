@@ -15,13 +15,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jpoweredcart.admin.form.sale.AffiliateForm;
+import com.jpoweredcart.admin.form.sale.CountryWithZones;
 import com.jpoweredcart.admin.form.sale.filter.AffiliateFilter;
+import com.jpoweredcart.admin.model.localisation.CountryAdminModel;
+import com.jpoweredcart.admin.model.localisation.ZoneAdminModel;
 import com.jpoweredcart.admin.model.sale.AffiliateAdminModel;
 import com.jpoweredcart.common.BaseController;
 import com.jpoweredcart.common.PageParam;
+import com.jpoweredcart.common.entity.localisation.Country;
+import com.jpoweredcart.common.entity.localisation.Zone;
 import com.jpoweredcart.common.entity.sale.Affiliate;
 import com.jpoweredcart.common.exception.admin.UnauthorizedAdminException;
 import com.jpoweredcart.common.security.UserPermissions;
@@ -31,6 +37,12 @@ import com.jpoweredcart.common.view.Pagination;
 @RequestMapping("/admin/sale/affiliate")
 public class AffiliateAdminController extends BaseController {
 
+	@Inject
+	private CountryAdminModel countryAdminModel;
+	
+	@Inject
+	private ZoneAdminModel zoneAdminModel;
+	
 	@Inject
 	private AffiliateAdminModel affiliateAdminModel;
 	
@@ -110,6 +122,19 @@ public class AffiliateAdminController extends BaseController {
 		return "redirect:/admin/sale/affiliate";
 	}
 	
+	@RequestMapping(value="/country.json", method=RequestMethod.GET)
+	public @ResponseBody CountryWithZones getCountriesAsJson(@RequestParam("countryId") Integer countryId, 
+			HttpServletRequest request){
+		if(countryId==null || countryId==0) return new CountryWithZones();
+		CountryWithZones cwz = (CountryWithZones)countryAdminModel
+				.get(countryId, CountryWithZones.class);
+		if(cwz!=null){
+			List<Zone> zones = zoneAdminModel.getAllByCountryId(countryId);
+			cwz.setZones(zones);
+		}
+		return cwz;
+	}
+	
 	@InitBinder
 	@Override
 	protected void initBinder(WebDataBinder binder, HttpServletRequest request) {
@@ -119,6 +144,7 @@ public class AffiliateAdminController extends BaseController {
 	private void addFormAttributes(AffiliateForm form, Model model){
 		
 		model.addAttribute("affiliateForm", form);
+		model.addAttribute("countries", countryAdminModel.getAll());
 	}
 	
 	private void checkModifyPermission(){

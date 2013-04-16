@@ -1,7 +1,6 @@
 package com.jpoweredcart.admin.controller.common;
 
 import java.util.Calendar;
-import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -53,15 +52,14 @@ public class CommonAdminController {
 		CurrencyService c = currencyService;
 		
 		UserAttributes userAttrs = (UserAttributes)WebUtils.getSessionAttribute(request, UserAttributes.NAME);
-		Locale locale = userAttrs.getLocale();
-		String currencyCode = userAttrs.getCurrency();
+		String currencyCode = userAttrs.getCurrencyCode();
 		/* Current year */
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		
 		model.addAttribute("totalSale", c.format(
-				orderAdminModel.getTotalSales(), currencyCode, locale));
+				orderAdminModel.getTotalSales(), currencyCode, null, userAttrs.getLanguageId()));
 		model.addAttribute("totalSaleYear", c.format(
-				orderAdminModel.getTotalSalesByYear(year), currencyCode, locale));
+				orderAdminModel.getTotalSalesByYear(year), currencyCode, null, userAttrs.getLanguageId()));
 		
 		model.addAttribute("totalOrder", orderAdminModel.getTotal(new TotalOrdersFilter()));
 		

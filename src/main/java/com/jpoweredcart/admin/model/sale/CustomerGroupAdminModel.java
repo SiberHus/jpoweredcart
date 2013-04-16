@@ -19,7 +19,7 @@ public interface CustomerGroupAdminModel {
 	
 	public CustomerGroupForm getForm(Integer cgId);
 	
-	public CustomerGroup get(Integer cgId);
+	public CustomerGroup get(Integer cgId, Class<? extends CustomerGroup> clazz);
 	
 	public List<CustomerGroup> getList(PageParam pageParam);
 	
