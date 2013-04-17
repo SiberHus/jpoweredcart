@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/sale/voucher}" th:text="#{heading.title}">Gift Voucher</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="success" th:if="${msg_success!=null}" th:text="#{${msg_success}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/payment.png}" alt="" />
+							<span th:text="#{heading.title}"></span>
+						</h1>
+						<div class="buttons">
+							<a th:href="@{/admin/sale/voucher/create}" class="button" th:text="#{button.insert}">Insert</a>
+							<a onclick="$('form').submit();" class="button" th:text="#{button.delete}">Delete</a>
+						</div>
+					</div>
+					<div class="content">
+						<form th:action="@{/admin/sale/voucher/delete}" method="post" id="form">
+							<table class="list">
+								<thead>
+									<tr>
+										<td width="1" style="text-align: center;"><input type="checkbox" onclick="$('input[name*=\'selected\']').attr('checked', this.checked);" /></td>
+										<td class="left">
+											<a th:href="@{/admin/sale/voucher}+'?sort=v.code&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='v.code'?param.order[0]:''}" th:text="#{column.code}">Code</a>
+										</td>
+										<td class="left">
+											<a th:href="@{/admin/sale/voucher}+'?sort=v.from_name&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='v.from_name'?param.order[0]:''}" th:text="#{column.fromName}">From</a>
+										</td>
+										<td class="left">
+											<a th:href="@{/admin/sale/voucher}+'?sort=v.to_name&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='v.to_name'?param.order[0]:''}" th:text="#{column.toName}">To</a>
+										</td>
+										<td class="right">
+											<a th:href="@{/admin/sale/voucher}+'?sort=v.amount&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='v.amount'?param.order[0]:''}" th:text="#{column.amount}">Amount</a>
+										</td>
+										<td class="left">
+											<a th:href="@{/admin/sale/voucher}+'?sort=v.theme&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='v.theme'?param.order[0]:''}" th:text="#{column.theme}">Theme</a>
+										</td>
+										<td class="left">
+											<a th:href="@{/admin/sale/voucher}+'?sort=v.status&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='v.status'?param.order[0]:''}" th:text="#{column.status}">Status</a>
+										</td>
+										<td class="left">
+											<a th:href="@{/admin/sale/voucher}+'?sort=v.date_added&amp;order='+${param.order!=null and param.order[0]=='asc'?'desc':'asc'}" 
+												th:class="${param.sort!=null and param.sort[0]=='v.date_added'?param.order[0]:''}" th:text="#{column.dateAdded}">Date Added</a>
+										</td>
+										<td class="right" th:text="#{column.action}">Action</td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="voucher : ${vouchers}">
+										<td style="text-align: center;">
+											<input type="checkbox" name="selected" th:value="${voucher.id}" />
+										</td>
+										<td class="left">
+											<span th:text="${voucher.code}">Code</span>
+										</td>
+										<td class="left">
+											<span th:text="${voucher.fromName}">From</span>
+										</td>
+										<td class="left">
+											<span th:text="${voucher.toName}">To</span>
+										</td>
+										<td class="right">
+											<span th:text="${currency.format(voucher.amount, session[userAttrs].currencyCode, null, session[userAttrs].languageId)}">$100</span>
+										</td>
+										<td class="left">
+											<span th:text="${voucher.theme}">Birthday</span>
+										</td>
+										<td class="left">
+											<span th:if="${voucher.status==1}" th:text="#{text.enabled}">Enabled</span>
+											<span th:if="${voucher.status==0}" th:text="#{text.disabled}">Disabled</span>
+										</td>
+										<td class="left">
+											<span th:text="${#dates.format(voucher.dateAdded,#messages.msg('date.formatShort'))}">Birthday</span>
+										</td>
+										<td class="right">
+											[ <a th:href="@{/admin/sale/voucher/edit/}+${voucher.id}" th:text="#{text.edit}">Edit</a> ]
+										</td>
+									</tr>
+									<tr th:if="${#lists.isEmpty(vouchers)}">
+										<td class="center" colspan="9" th:text="#{text.noResults}">No results!</td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+						<div class="pagination" th:utext="${pagination}"></div>
+					</div> <!-- .content -->
+				</div> <!-- .box -->
+			</div>  <!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
+	</body>
+</html>

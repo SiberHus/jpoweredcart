@@ -119,9 +119,9 @@ public class AttributeGroupAdminModelImpl extends BaseModel implements Attribute
 						attrGrp.setName(rs.getString("name"));
 						return attrGrp;
 					}
-		});
+			}.setTargetClass(AttributeGroup.class));
 	}
-
+	
 	@Override
 	public List<AttributeGroupDesc> getDescriptions(Integer attrGrpId) {
 		String sql = "SELECT agd.attribute_group_id, agd.language_id, l.name AS language_name, l.image AS language_image, agd.name FROM " +

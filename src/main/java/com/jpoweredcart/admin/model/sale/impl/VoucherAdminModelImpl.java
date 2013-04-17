@@ -2,6 +2,7 @@ package com.jpoweredcart.admin.model.sale.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -107,19 +108,27 @@ public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminMode
 
 	@Override
 	public List<Voucher> getList(PageParam pageParam) {
-		String sql = "SELECT v.voucher_id, v.code, v.from_name, v.from_email, v.to_name, v.to_email, (SELECT vtd.name FROM " 
+		String sql = "SELECT *, (SELECT vtd.name FROM " 
 				+quoteTable("voucher_theme_description")+ " vtd WHERE vtd.voucher_theme_id = v.voucher_theme_id AND vtd.language_id = ?) AS theme, v.amount, v.status, v.date_added FROM " +quoteTable("voucher")+ " v";
 		Integer languageId = getSettingService().getConfig(SettingKey.ADMIN_LANGUAGE_ID, Integer.class);
 		//sortedKeys={"v.code", "v.from_name", "v.from_email", "v.to_name", "v.to_email","v.theme", "v.amount", "v.status", "v.date_added"}
 		QueryBean query = createPaginationQuery(sql, pageParam);
 		query.addParameters(languageId);
-		List< Voucher> vouchers = getJdbcOperations().query(query.getSql(), 
-				query.getParameters(), new VoucherRowMapper());
+		List<Voucher> vouchers = getJdbcOperations().query(query.getSql(), 
+				query.getParameters(), new VoucherRowMapper(){
+					@Override
+					public Voucher mapRow(ResultSet rs, Voucher object)
+							throws SQLException {
+						super.mapRow(rs, object);
+						object.setTheme(rs.getString("theme"));
+						return object;
+					}
+		}.setTargetClass(Voucher.class));
 		return vouchers;
 	}
 
 	@Override
-	public void sendVoucher(Integer voucherId) {
+	public void sendVoucher(Integer voucherId, Map<String, String> messageMap) {
 		Voucher voucher = get(voucherId, Voucher.class);
 		if(voucher==null){
 			return;
@@ -129,41 +138,45 @@ public class VoucherAdminModelImpl extends BaseModel implements VoucherAdminMode
 				.get(voucher.getVoucherThemeId(), VoucherTheme.class);
 		
 		Map<String, Object> model = new HashMap<String, Object>(); 
-		model.put("fromName", voucher.getFromName());
 		
 		String storeName = null;
 		String storeUrl = null;
-		
 		String image = voucherTheme.getImage();
 		image = mediaService.getImageUrl(image);
-		model.put("image", image);
-		
+		String amount = null;
 		Integer orderId = voucher.getOrderId();
 		Order order = orderAdminModel.get(orderId, Order.class);
 		// If voucher belongs to an order
 		if(order!=null){
 			Integer languageId = order.getLanguageId();
-			String amount = currencyService.format(voucher.getAmount(), order.getCurrencyCode(),
+			amount = currencyService.format(voucher.getAmount(), order.getCurrencyCode(),
 					order.getCurrencyValue(), languageId);
-			model.put("amount", amount);
 			storeName = order.getStoreName();
 			storeUrl = order.getStoreUrl();
 		}else{
-			String languageCode = getSettingService().getConfig(SettingKey.CFG_LANGUAGE);
 			
-//			String amount = currencyService.format(voucher.getAmount(), order.getCurrencyCode(),
-//					order.getCurrencyValue(), );
-//			model.put("amount", amount);
+			//get default language and currency code TODO: these data should be kept in customer table?
+			Integer languageId = getSettingService().getConfig(SettingKey.LANGUAGE_ID, Integer.class);
+			String currencyCode = getSettingService().getConfig(SettingKey.CFG_CURRENCY);
+			amount = currencyService.format(voucher.getAmount(), currencyCode, null, languageId);
+			storeName = getSettingService().getConfig(SettingKey.CFG_NAME);
+			storeUrl = getEnvironment().getProperty("app.http");
 		}
-		
+		model.put("fromName", voucher.getFromName());
+		model.put("amount", amount);
+		model.put("image", image);
 		model.put("code", voucher.getCode());
-		model.put("storeName", storeUrl);
+		model.put("storeName", storeName);
 		model.put("storeUrl", storeUrl);
 		
-		String text = templateService.renderTemplate("/admin/email/voucher", model);
 		EmailMessage email = new EmailMessage();
 		email.setTo(voucher.getToEmail());
+		
+		email.setFrom(getSettingService().getConfig(SettingKey.CFG_EMAIL));
 		email.setSenderName(storeName);
+		String subject = MessageFormat.format(messageMap.get("text.subject"), voucher.getFromName());
+		email.setSubject(subject);
+		String text = templateService.renderTemplate("/admin/email/voucher", model);
 		email.setBodyHtml(text);
 		
 		emailService.send(email);

@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
 public class Voucher implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -12,14 +16,19 @@ public class Voucher implements Serializable {
 	
 	protected Integer orderId;
 	
+	@NotBlank @Length(min=3, max=10)
 	protected String code;
 	
+	@NotBlank @Length(min=1, max=64)
 	protected String fromName;
 	
+	@NotBlank @Email
 	protected String fromEmail;
 	
+	@NotBlank @Length(min=1, max=64)
 	protected String toName;
 	
+	@NotBlank @Email
 	protected String toEmail;
 	
 	protected Integer voucherThemeId;
@@ -32,6 +41,9 @@ public class Voucher implements Serializable {
 	
 	protected Date dateAdded;
 
+	/*========== Transient ===========*/
+	protected String theme;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -126,6 +138,14 @@ public class Voucher implements Serializable {
 
 	public void setDateAdded(Date dateAdded) {
 		this.dateAdded = dateAdded;
+	}
+
+	public String getTheme() {
+		return theme;
+	}
+
+	public void setTheme(String theme) {
+		this.theme = theme;
 	}
 	
 }

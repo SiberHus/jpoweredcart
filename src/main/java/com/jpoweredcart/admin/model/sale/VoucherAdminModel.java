@@ -1,6 +1,7 @@
 package com.jpoweredcart.admin.model.sale;
 
 import java.util.List;
+import java.util.Map;
 
 import com.jpoweredcart.admin.form.sale.VoucherForm;
 import com.jpoweredcart.common.PageParam;
@@ -25,7 +26,7 @@ public interface VoucherAdminModel {
 	
 	public List<Voucher> getList(PageParam pageParam);
 	
-	public void sendVoucher(Integer voucherId);
+	public void sendVoucher(Integer voucherId, Map<String, String> messageMap);
 	
 	public int getTotal();
 	

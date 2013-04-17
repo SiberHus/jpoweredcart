@@ -121,7 +121,7 @@ public class VoucherThemeAdminModelImpl extends BaseModel implements VoucherThem
 						vt.setName(rs.getString("name"));
 						return vt;
 					}
-				});
+				}.setTargetClass(VoucherTheme.class));
 		return customerGroupList;
 	}
 	

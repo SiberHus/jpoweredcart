@@ -197,7 +197,7 @@ public class InformationAdminModelImpl extends BaseModel implements InformationA
 				info.setTitle(rs.getString("title"));
 				return info;
 			}
-		});
+		}.setTargetClass(Information.class));
 		return infoList;
 	}
 	

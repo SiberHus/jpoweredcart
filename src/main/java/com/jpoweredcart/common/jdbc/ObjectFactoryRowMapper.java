@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
+
 public abstract class ObjectFactoryRowMapper<T> implements RowMapper<T>{
 	
 	private Class<? extends T> targetClass;

@@ -163,7 +163,7 @@ public class DownloadAdminModelImpl extends BaseModel implements DownloadAdminMo
 						download.setName(rs.getString("name"));
 						return download;
 					}
-		});
+		}.setTargetClass(Download.class));
 	}
 	
 	@Override

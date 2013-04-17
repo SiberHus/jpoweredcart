@@ -215,7 +215,7 @@ public class CategoryAdminModelImpl extends BaseModel implements CategoryAdminMo
 				cat.setName(getPath(cat.getId(), separator));
 				return cat;
 			}
-		});
+		}.setTargetClass(Category.class));
 		
 		Collections.sort(catList, new Comparator<Category>() {
 			@Override

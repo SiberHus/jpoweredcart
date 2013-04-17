@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="/admin :: header"></head>
+	<body>
+		<div id="container">
+			<div th:include="/admin :: content_top"></div>
+			<div id="content">
+				<div class="breadcrumb">
+					<a th:href="@{/admin/common/home}" th:text="#{text.home}">Home</a> ::
+					<a th:href="@{/admin/sale/voucher}" th:text="#{heading.title}">Gift Voucher</a>
+				</div>
+				<div class="warning" th:if="${msg_warning!=null}" th:text="#{${msg_warning}}"></div>
+				<div class="box">
+					<div class="heading">
+						<h1>
+							<img th:src="@{/resources/admin/image/payment.png}" alt="" />
+							<span th:text="#{heading.title}"></span>
+						</h1>
+						<div class="buttons">
+							<a onclick="$('#form').submit();" class="button" th:text="#{button.save}">Save</a>
+							<a th:href="@{/admin/sale/voucher}" class="button" th:text="#{button.cancel}">Cancel</a>
+						</div>
+					</div>
+					<div class="content">
+						<div id="tabs" class="htabs">
+							<a href="#tab-general" th:text="#{tab.general}">General</a>
+							<a th:if="${voucherForm.id!=null}" href="#tab-history" th:text="#{tab.voucherHistory}">Voucher History</a>
+						</div>
+						<form th:action="@{/admin/sale/voucher/save}" th:object="${voucherForm}" 
+							method="post" id="form">
+							<input type="hidden" th:field="*{id}" />
+							<div id="tab-general">
+							<table class="form">
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.code}">Code:</span></td>
+									<td>
+										<input type="text" th:field="*{code}" />
+										<span class="error" th:if="${#fields.hasErrors('code')}" th:text="#{error.code}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.fromName}">From Name:</span></td>
+									<td>
+										<input type="text" th:field="*{fromName}" />
+										<span class="error" th:if="${#fields.hasErrors('fromName')}" th:text="#{error.fromName}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.fromEmail}">From Email:</span></td>
+									<td>
+										<input type="text" th:field="*{fromEmail}" />
+										<span class="error" th:if="${#fields.hasErrors('fromEmail')}" th:text="#{error.email}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.toName}">To Name:</span></td>
+									<td>
+										<input type="text" th:field="*{toName}" />
+										<span class="error" th:if="${#fields.hasErrors('toName')}" th:text="#{error.toName}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.toEmail}">To Email:</span></td>
+									<td>
+										<input type="text" th:field="*{toEmail}" />
+										<span class="error" th:if="${#fields.hasErrors('toEmail')}" th:text="#{error.email}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.theme}">Theme:</span></td>
+									<td>
+										<select th:field="*{voucherThemeId}">
+											<option th:each="theme: ${voucherThemes}" th:value="${theme.id}" 
+												th:text="${theme.name}">Birthday</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td><span class="required">*</span><span th:utext="#{entry.message}">Message:</span></td>
+									<td>
+										<textarea th:field="*{message}" cols="40" rows="5"></textarea>
+										<span class="error" th:if="${#fields.hasErrors('message')}" th:text="#{error.message}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.amount}">Amount:</span></td>
+									<td>
+										<input type="text" th:field="*{amount}" />
+										<span class="error" th:if="${#fields.hasErrors('amount')}" th:text="#{error.amount}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td><span th:utext="#{entry.status}">Status:</span></td>
+									<td>
+										<select th:field="*{status}">
+											<option value="1" th:text="#{text.enabled}">Enabled</option>
+											<option value="0" th:text="#{text.disabled}">Disabled</option>
+										</select>
+									</td>
+								</tr>
+							</table>
+							</div>
+							<div th:if="${voucherForm.id!=null}" id="tab-history">
+								<div id="history"></div>
+							</div>
+						</form>
+					</div><!-- .content -->
+				</div><!-- .box -->
+			</div><!-- #content -->
+		</div> <!-- #container -->
+		
+		<div id="footer" th:include="/admin :: footer"></div>
+		
+		<script th:inline="javascript">
+			/*<![CDATA[ */
+			$('#history .pagination a').live('click', function() {
+				$('#history').load(this.href);
+				return false;
+			});
+			var voucherHistoryUrl = /*[[@{/admin/sale/voucher/history.html}]]*/'';
+			var voucherId = /*[[${voucherForm.id}]]*/'';
+			$('#history').load(voucherHistoryUrl+'?voucherId='+voucherId);
+			$('#tabs a').tabs(); 
+			/*]]>*/
+		</script>
+		
+	</body>
+</html>

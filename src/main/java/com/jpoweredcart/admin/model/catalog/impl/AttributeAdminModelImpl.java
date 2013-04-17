@@ -123,7 +123,7 @@ public class AttributeAdminModelImpl extends BaseModel implements AttributeAdmin
 						attr.setAttributeGroupName(rs.getString("attribute_group"));
 						return attr;
 					}
-		});
+			}.setTargetClass(Attribute.class));
 	}
 
 	@Override
